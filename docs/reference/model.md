@@ -33,7 +33,8 @@ options:
 Input / output:
   input                 Input PDB or PDBx/mmCIF file (must contain polymer
                         sequence metadata or use --fasta)
-  -o, --output OUTPUT   MODELLER output PDB, or a new directory bundle for
+  -o OUTPUT, --output OUTPUT
+                        MODELLER output PDB, or a new directory bundle for
                         diffusion (defaults: <input>_model.pdb or
                         <input>_model_diffusion)
   --fasta FASTA         FASTA file with complete sequence(s). Headers must
@@ -68,7 +69,7 @@ Diffusion options:
                         (Protpardelle fixed geometric context only)
 
 Modelling parameters:
-  -n, --num-models NUM_MODELS
+  -n NUM_MODELS, --num-models NUM_MODELS
                         Number of initial models to generate (default: 1)
   --num-loops NUM_LOOPS
                         Number of loop refinement models per initial model

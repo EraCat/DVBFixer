@@ -32,11 +32,11 @@ def test_static_diffusion_profiles_publish_required_labels_and_metadata():
     assert profiles["protenix-v1-cuda"]["evidence_labels"] == [
         "experimental",
         "confirmatory-selected-in-frozen-scope",
-        "public-cli-bounded-replay",
+        "public-cli-frozen-cohort-replayed",
     ]
     assert (
         profiles["protenix-v1-cuda"]["status"]
-        == "bounded-hardware-verified-cohort-pending"
+        == "production-wrapper-frozen-cohort-replayed-deployment-pending"
     )
     assert profiles["protpardelle-1c-mps"]["evidence_labels"] == [
         "experimental",

@@ -1,0 +1,59 @@
+name: Protenix hardware smoke
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: protenix-hardware-acceptance
+  cancel-in-progress: false
+
+jobs:
+  public-cli-repeat:
+    runs-on: [self-hosted, linux, x64, dvbfixer-protenix-acceptance]
+    timeout-minutes: 150
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Run public CLI smoke in disposable native storage
+        shell: bash
+        run: |
+          set -euo pipefail
+          : "${DVBFIXER_CORE_PYTHON:?Provision the core Python executable}"
+          : "${DVBFIXER_BACKEND_PYTHON:?Provision the pinned backend Python executable}"
+          : "${DVBFIXER_PROTENIX_CHECKPOINT:?Provision the checkpoint}"
+          : "${DVBFIXER_PROTENIX_ENGINE_ROOT:?Provision the patched engine checkout}"
+          : "${DVBFIXER_PROTENIX_KALIGN:?Provision pinned Kalign}"
+          : "${DVBFIXER_PROTENIX_COHORT_ROOT:?Provision the frozen v5 cohort}"
+          work_root="$(mktemp -d "$RUNNER_TEMP/protenix-acceptance.XXXXXX")"
+          trap 'rm -rf "$work_root"' EXIT
+          export PYTHONPATH="$GITHUB_WORKSPACE/src"
+          export XDG_DATA_HOME="$work_root/data"
+          "$DVBFIXER_BACKEND_PYTHON" scripts/install_diffusion_backend.py \
+            protenix "$DVBFIXER_PROTENIX_CHECKPOINT" \
+            --engine-root "$DVBFIXER_PROTENIX_ENGINE_ROOT" \
+            --kalign "$DVBFIXER_PROTENIX_KALIGN" > "$work_root/install.log" 2>&1
+          for run in first repeat; do
+            "$DVBFIXER_CORE_PYTHON" scripts/run_protenix_public_cohort.py \
+              "$DVBFIXER_PROTENIX_COHORT_ROOT" "$work_root/$run" \
+              --work-parent "$work_root" \
+              --dvbfixer "$(dirname "$DVBFIXER_CORE_PYTHON")/dvbfixer" \
+              --case 36hb --timeout 3600 > "$work_root/$run.log" 2>&1
+          done
+          "$DVBFIXER_CORE_PYTHON" scripts/check_protenix_hardware_acceptance.py \
+            "$work_root/first/cases/36hb/bundle" \
+            "$work_root/repeat/cases/36hb/bundle" \
+            --output .artifacts/protenix-hardware-acceptance.json
+
+      - name: Upload portable smoke evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: protenix-hardware-smoke-${{ github.sha }}
+          path: .artifacts/protenix-hardware-acceptance.json
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 30

@@ -94,11 +94,11 @@ class DiffusionProfileMetadata:
 DIFFUSION_PROFILES = {
     "protenix-v1-cuda": DiffusionProfileMetadata(
         profile="protenix-v1-cuda",
-        status="bounded-hardware-verified-cohort-pending",
+        status="production-wrapper-frozen-cohort-replayed-deployment-pending",
         evidence_labels=(
             "experimental",
             "confirmatory-selected-in-frozen-scope",
-            "public-cli-bounded-replay",
+            "public-cli-frozen-cohort-replayed",
         ),
         engine="Protenix v1",
         source_revision="85767b811c40ed46e73a9b39519cf6bfca8701ba",

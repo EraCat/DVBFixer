@@ -1,10 +1,17 @@
 # Linux/NVIDIA Protenix Acceptance
 
 - Evaluation date: 2026-10-07.
-- Status: bounded hardware workflow verification passed; full WP1 acceptance remains
-  blocked on the frozen 231-case replay and self-hosted lane.
+- Status: full public-CLI cohort replay and independent revalidation completed;
+  final OCI/self-hosted deployment acceptance remains pending.
 - Profile: `protenix-v1-cuda`.
 - DVBFixer branch baseline: `bf6496de5e6da76db14282c2862847bb4406ef56`.
+
+Latest results: [public-CLI 231-case replay](linux-protenix-public-replay-results.md),
+219 accepted and 12 scientific rejects. Earlier sections below preserve the
+bounded-run and operational-stop history.
+Fresh local hardware repeats, full package exports, the `9eho` controlled
+investigation and actual OCI/GitHub access limits are recorded in
+[local deployment evidence](linux-protenix-local-deployment-evidence.md).
 
 ## Candidate Environment Identity
 
@@ -197,6 +204,20 @@ python scripts/run_protenix_public_cohort.py \
 
 ### Test Results
 
+The manual self-hosted NVIDIA lane is defined in
+`.github/workflows/protenix-hardware-acceptance.yml`; its provisioning contract
+is documented in `deploy/protenix-v1/README.md`. The portable checker verifies
+independent seed-7 public bundles and emits bounded, path-free smoke evidence.
+Its CPU tests exercise incompatible checkpoint/request identity, CPU fallback,
+missing callback evidence and refinement. The lane has not been dispatched and
+does not establish OCI or full-cohort acceptance. It must not contend with the
+currently running cohort for the same GPU.
+
+Portable lane verification: `16 passed` for the focused smoke/replay tests;
+full non-slow suite `1022 passed, 6 skipped, 31 deselected`. Workflow YAML and
+embedded Bash syntax passed validation, as did Ruff, agent-documentation and
+version checks. No checkpoint inference was launched for this implementation.
+
 - Focused runner, Protenix wrapper, validation, and pipeline tests after final
   edits: `80 passed in 21.69s` with `PYTHONPATH=src`.
 - Full non-slow repository suite with source isolation: `994 passed, 6 skipped,
@@ -211,8 +232,10 @@ python scripts/run_protenix_public_cohort.py \
 
 Checkpoint-backed reconstruction, independent same-seed repeats, multi-seed
 execution, bounded public replay, and checkpoint failure injection passed. The
-frozen 231-case production-wrapper replay has not run, no final OCI image digest
-is available, and a self-hosted acceptance lane is not enabled. Therefore the
-accepted baseline has not yet been reproduced end to end and full WP1 acceptance
-is not claimed. No public scope, default, fallback, batch, ZBS, or Homology claim
-changes. MODELLER remains the default.
+frozen 231-case production-wrapper replay is complete and all candidates were
+independently revalidated: 219 passed, 12 rejected, with only `9eho` changing
+status from the 220-pass historical baseline. Pass-rate noninferiority is
+demonstrated; exact scientific status reproduction is not. No final OCI image
+digest is available and the manual self-hosted lane has not been executed, so
+full WP1 deployment acceptance is not claimed. No public scope, default,
+fallback, batch, ZBS, or Homology claim changes. MODELLER remains the default.

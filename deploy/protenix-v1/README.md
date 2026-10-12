@@ -65,8 +65,10 @@ and deterministic OpenMM `Reference` boundary refinement.
 
 The wrapper is committed, dependency-light tests run in core CI, and a
 checkpoint-backed public-CLI reconstruction passed on the pinned Linux/A100
-host. The frozen 231-case production-wrapper replay remains pending; do not
-interpret the single-case result as broad hardware or scientific acceptance.
+host. The frozen 231-case production-wrapper replay and independent revalidation
+completed with 219 accepted and 12 rejected candidates. See
+[`linux-protenix-public-replay-results.md`](../../docs/research/linux-protenix-public-replay-results.md)
+for the single changed scientific status and remaining deployment gates.
 
 On the pinned Linux environment:
 
@@ -97,5 +99,49 @@ verifies its digest, critical installed package versions, and Kalign executable
 before loading Protenix. It also records the pinned CUDA base-image digest; a
 built image's final digest and a complete accepted package export remain
 operator evidence. The image digest may be supplied as
-`DVBFIXER_PROTENIX_IMAGE_DIGEST`. The final image build, self-hosted lane, and
-frozen 231-case cohort are still pending.
+`DVBFIXER_PROTENIX_IMAGE_DIGEST`. The final image build and deployment acceptance
+remain pending; the full public cohort replay is complete.
+
+## Manual self-hosted hardware smoke
+
+`.github/workflows/protenix-hardware-acceptance.yml` defines a manual
+`workflow_dispatch` lane on a runner labelled `self-hosted`, `linux`, `x64`, and
+`dvbfixer-protenix-acceptance`. It does not run on pushes or pull requests and
+does not add CUDA or checkpoints to ordinary CI.
+
+Provision these environment variables in the runner service:
+
+| Variable | Provisioned asset |
+|---|---|
+| `DVBFIXER_CORE_PYTHON` | Python executable in the scientific DVBFixer environment; `dvbfixer` must exist beside it |
+| `DVBFIXER_BACKEND_PYTHON` | Python executable in the exact profile-lock backend environment |
+| `DVBFIXER_PROTENIX_CHECKPOINT` | Operator-owned digest-matching checkpoint |
+| `DVBFIXER_PROTENIX_ENGINE_ROOT` | Pinned, callback-patched Protenix checkout and auxiliary data |
+| `DVBFIXER_PROTENIX_KALIGN` | Digest-pinned Kalign executable |
+| `DVBFIXER_PROTENIX_COHORT_ROOT` | Frozen v5 materialized cohort, including its digest-matching aggregate |
+
+The runner must provide the frozen A100 device, the bounded memory cgroup
+required by production preflight, and native `RUNNER_TEMP` storage supporting
+atomic no-replace directory publication. Reserve the GPU for this lane: GitHub
+concurrency serializes workflow runs, but cannot coordinate unrelated local
+cohort jobs. Trigger it after those jobs finish.
+
+Each run installs a private launcher in disposable `XDG_DATA_HOME`, leaving
+other installed launchers intact. It performs two independent public-CLI
+`36hb` seed-7 reconstructions. `scripts/check_protenix_hardware_acceptance.py`
+checks bundle digests, independent validation, frozen PDB identity, request
+identity, checkpoint/source/environment provenance, CUDA placement, 200/200
+callbacks, zero projection error, and localized refinement. Only portable
+digest/resource evidence is uploaded; checkpoints, input structures, host paths,
+and raw logs are not included. Temporary work is removed when the step exits.
+
+This is a repeatability smoke, not full-cohort acceptance. The workflow and
+CPU-only evidence-gate tests are implemented; provisioning a GitHub runner and
+executing the workflow remain operator/hardware acceptance steps.
+
+The workflow's exact hardware step has also been executed locally, with two
+accepted, byte-identical public-CLI repeats. Full package exports and the
+controlled `9eho` ordering investigation are recorded in
+[`linux-protenix-local-deployment-evidence.md`](../../docs/research/linux-protenix-local-deployment-evidence.md).
+The GitHub dispatch and final OCI build remain separate infrastructure checks;
+native usage does not require either.

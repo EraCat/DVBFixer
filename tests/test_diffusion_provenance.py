@@ -126,11 +126,11 @@ def test_manifest_records_auditable_evidence_without_raw_diagnostics(
     }
     assert payload["candidate"]["seed"] == 7
     assert payload["requested_profile"] == "protenix-v1-cuda"
-    assert payload["profile_status"] == "bounded-hardware-verified-cohort-pending"
+    assert payload["profile_status"] == "production-wrapper-frozen-cohort-replayed-deployment-pending"
     assert payload["profile_evidence_labels"] == [
         "experimental",
         "confirmatory-selected-in-frozen-scope",
-        "public-cli-bounded-replay",
+        "public-cli-frozen-cohort-replayed",
     ]
     assert payload["training_membership_status"] == (
         "temporally-eligible-frozen-cohort"

@@ -17,6 +17,7 @@ step is needed after minimize.
 """
 
 import argparse
+import math
 import sys
 from pathlib import Path
 
@@ -76,7 +77,18 @@ def parse_args(argv=None):
     skip.add_argument("--skip-minimize", action="store_true",
                       help="Skip the minimize step")
 
-    model_grp = p.add_argument_group("Model step (Modeller)")
+    model_grp = p.add_argument_group("Model step")
+    model_grp.add_argument("--model-backend", choices=["modeller", "diffusion"], default="modeller",
+                           help="Modeling backend; independent of the prepare --backend (default: modeller)")
+    model_grp.add_argument("--diffusion-model", choices=["protenix", "protpardelle"],
+                           help="Installed diffusion model (default: host-compatible auto selection)")
+    model_grp.add_argument("--diffusion-seed", action="append", type=int, dest="diffusion_seeds",
+                           help="Candidate seed; repeat for multiple candidates (default: 7)")
+    model_grp.add_argument("--diffusion-timeout", type=float, default=900.0,
+                           help="Diffusion runner timeout in seconds (default: 900)")
+    model_grp.add_argument("--diffusion-work-parent", help="Existing parent for private diffusion workspaces")
+    model_grp.add_argument("--diffusion-resume", action="store_true",
+                           help="Reuse a verified model bundle matching the current scientific request")
     model_grp.add_argument("--fasta", help="FASTA file with complete sequence(s) for model step")
     model_grp.add_argument("--no-terminal", action="store_true",
                            help="Do not model missing N/C terminal residues; "
@@ -220,6 +232,21 @@ def parse_args(argv=None):
     from dvbfixer.batch import add_runtime_help
     add_runtime_help(p, batch=True)
     args = p.parse_args(argv)
+    provided = {token.split("=", 1)[0] for token in (sys.argv[1:] if argv is None else argv) if token.startswith("-")}
+    diffusion_flags = {"--diffusion-model", "--diffusion-seed", "--diffusion-timeout", "--diffusion-work-parent", "--diffusion-resume"}
+    if args.model_backend == "modeller" and provided & diffusion_flags:
+        p.error("diffusion options require --model-backend diffusion")
+    if args.model_backend == "diffusion":
+        if args.skip_model:
+            p.error("--model-backend diffusion cannot be combined with --skip-model")
+        if provided & {"--num-loops", "--md-level", "--num-output", "--pin-input", "--no-pin-input"}:
+            p.error("Modeller modeling options are incompatible with --model-backend diffusion")
+        seeds = args.diffusion_seeds or [7]
+        if any(seed < 0 for seed in seeds) or len(seeds) != len(set(seeds)):
+            p.error("diffusion seeds must be unique non-negative integers")
+        if not math.isfinite(args.diffusion_timeout) or args.diffusion_timeout <= 0:
+            p.error("diffusion timeout must be positive and finite")
+        args.diffusion_seeds = seeds
 
     if args.backend == "tleap-reduce" and args.mutate:
         p.error("--mutate is not supported by the tleap-reduce backend; "
@@ -260,6 +287,14 @@ def main(argv=None):
               f"rebuild the affected residue by hand.",
               file=sys.stderr)
         sys.exit(2)
+    except _lazy_import_publication_error() as e:
+        print(f"\nERROR: {e}", file=sys.stderr)
+        sys.exit(1)
+
+
+def _lazy_import_publication_error():
+    from dvbfixer.model.diffusion.publication import PublicationError
+    return PublicationError
 
 
 def _lazy_import_chirality_error():
@@ -289,12 +324,17 @@ def _print_dry_run(args, input_path, final_output):
               "FASTA/SEQRES-based residue renumbering"
               + (", keep water" if args.keep_water else ""))
     if not args.skip_model:
-        notes = f"Modeller LoopModel, --md-level {args.md_level}"
+        notes = ("diffusion bundle; first independently validated ranked candidate"
+                 if args.model_backend == "diffusion" else f"Modeller LoopModel, --md-level {args.md_level}")
         if args.fasta:
             notes += f", --fasta {args.fasta}"
         if not args.pin_input:
             notes += ", --no-pin-input"
-        _line("model", "_model", notes)
+        if args.model_backend == "diffusion":
+            print(f"  {step}. model        → {input_path.stem}_model_diffusion/   ({notes})")
+            step += 1
+        else:
+            _line("model", "_model", notes)
     if not args.skip_prepare:
         notes = (f"backend: {args.backend} (PDBFixer + Modeller.addHydrogens)"
                   if args.backend == "legacy" else
@@ -393,10 +433,23 @@ def _run_pipeline(args, input_path):
         print(f"{'='*60}")
         from dvbfixer.model import main as model_main
         out = step_output("model")
-        model_argv = [current, "-o", out,
-                      "--num-loops", str(args.num_loops),
-                      "--md-level", args.md_level,
-                      "--num-output", str(args.num_output)]
+        if args.model_backend == "diffusion":
+            bundle = artifact_base.with_name(artifact_base.name + "_model_diffusion")
+            model_argv = [current, "-o", str(bundle), "--backend", "diffusion",
+                          "--diffusion-timeout", str(args.diffusion_timeout)]
+            if args.diffusion_model:
+                model_argv.extend(["--diffusion-model", args.diffusion_model])
+            for seed in args.diffusion_seeds:
+                model_argv.extend(["--diffusion-seed", str(seed)])
+            if args.diffusion_work_parent:
+                model_argv.extend(["--diffusion-work-parent", args.diffusion_work_parent])
+            if args.diffusion_resume:
+                model_argv.append("--diffusion-resume")
+        else:
+            model_argv = [current, "-o", out,
+                          "--num-loops", str(args.num_loops),
+                          "--md-level", args.md_level,
+                          "--num-output", str(args.num_output)]
         if args.no_terminal:
             model_argv.append("--no-terminal")
         if args.fasta:
@@ -408,13 +461,17 @@ def _run_pipeline(args, input_path):
         # the user has explicitly asked to strip downstream.
         if not args.keep_heterogens:
             model_argv.append("--strip-heterogens")
-        if args.keep_water:
+        if args.keep_water and args.model_backend == "modeller":
             model_argv.append("--keep-water")
-        if args.no_infer_conect:
+        if args.no_infer_conect and args.model_backend == "modeller":
             model_argv.append("--no-infer-conect")
         if args.verbose:
             model_argv.append("-v")
         model_main(model_argv)
+        if args.model_backend == "diffusion":
+            from dvbfixer.model.diffusion.publication import copy_selected_candidate
+
+            copy_selected_candidate(bundle, Path(out), resume=args.diffusion_resume)
         # With --num-output > 1, model writes _model_1.pdb, _model_2.pdb, ...
         # zbs picks the best (_1) for the downstream pipeline; other candidates
         # remain on disk for the user to inspect.
@@ -425,7 +482,8 @@ def _run_pipeline(args, input_path):
                 interim_files.append(multi_out)
                 interim_files.append(str(Path(multi_out).with_suffix('.dat')))
                 out = multi_out
-        _maybe_align(out)
+        if args.model_backend == "modeller":
+            _maybe_align(out)
         current = out
 
     # 3. Prepare
@@ -471,6 +529,17 @@ def _run_pipeline(args, input_path):
         if args.verbose:
             prepare_argv.append("-v")
         prepare_main(prepare_argv)
+        if args.model_backend == "diffusion":
+            from dvbfixer.ffutils.dat import DatRecord
+
+            upstream_dat = Path(current).with_suffix(".dat")
+            downstream_dat = Path(out).with_suffix(".dat")
+            if upstream_dat.exists():
+                downstream = DatRecord.load(downstream_dat) if downstream_dat.exists() else DatRecord()
+                carried = downstream.merge(DatRecord.load(upstream_dat))
+                downstream.save(downstream_dat, verbose=False)
+                if carried:
+                    print(f"Carried {carried} modeled atoms into prepare restraint data")
         _maybe_align(out)
         current = out
 

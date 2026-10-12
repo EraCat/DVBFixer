@@ -19,6 +19,16 @@ def _make_atom(chain: str = "A", resid: str = "10", atom: str = "HA", *, element
     }
 
 
+def test_blank_insertion_codes_merge_without_collapsing_real_codes() -> None:
+    blank = _make_atom(atom="CA", element="C")
+    spaced = {**blank, "icode": " "}
+    upper = {**blank, "icode": "A"}
+    lower = {**blank, "icode": "a"}
+    record = DatRecord(added_atoms=[spaced, upper])
+    assert record.merge(DatRecord(added_atoms=[blank, lower])) == 1
+    assert record.added_keys() == {("A", "10", "", "CA"), ("A", "10", "A", "CA"), ("A", "10", "a", "CA")}
+
+
 def test_roundtrip(tmp_workdir: Path) -> None:
     rec = DatRecord(
         description="test",

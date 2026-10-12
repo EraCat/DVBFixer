@@ -3,6 +3,8 @@ import crypto from 'node:crypto'
 import { isDeepStrictEqual } from 'node:util'
 import fs from 'node:fs'
 import path from 'node:path'
+import os from 'node:os'
+import { readDiffusionPublication } from './diffusion-bundle'
 import { runDvbfixerArgs, type DvbfixerRunResult } from './dvbfixer-runner'
 import {
   assertWorkspaceAccess, loadWorkspace, updateWorkspace, workspaceRoot, writeJsonAtomic,
@@ -108,14 +110,16 @@ export function validatedModelArgs(options: Record<string, unknown> | null | und
     throw new Error('--backend has an unsupported value')
   }
   if (backend === 'diffusion') {
-    if (values['--diffusion-model'] !== undefined && values['--diffusion-model'] !== 'protpardelle') {
+    if (values['--diffusion-model'] !== undefined && values['--diffusion-model'] !== '' &&
+        !['protpardelle', 'protenix'].includes(String(values['--diffusion-model']))) {
       throw new Error('--diffusion-model has an unsupported value')
     }
     const seed = values['--diffusion-seed'] ?? 7
     if (typeof seed !== 'number' || !Number.isInteger(seed) || seed < 0) {
       throw new Error('--diffusion-seed must be a non-negative integer')
     }
-    args.push('--backend', 'diffusion', '--diffusion-model', 'protpardelle', '--diffusion-seed', String(seed))
+    args.push('--backend', 'diffusion', '--diffusion-seed', String(seed))
+    if (values['--diffusion-model']) args.push('--diffusion-model', String(values['--diffusion-model']))
   } else if (values['--diffusion-model'] !== undefined || values['--diffusion-seed'] !== undefined) {
     throw new Error('diffusion model options require --backend diffusion')
   }
@@ -516,10 +520,12 @@ function registerRun(
   project: HomologyProject,
   files: string[],
   authorizePublication: () => void,
+  diffusion?: ReturnType<typeof readDiffusionPublication>,
 ): string {
   const relativeFiles = files.map(file => path.relative(root, file).replace(/\\/g, '/'))
-  const primary = relativeFiles.find(file => file.endsWith('.pdb')) || relativeFiles[0]
-  if (!primary) return ''
+  const primary = diffusion ? (diffusion.primary ? path.relative(root, diffusion.primary).replace(/\\/g, '/') : null)
+    : relativeFiles.find(file => file.endsWith('.pdb')) || relativeFiles[0]
+  if (relativeFiles.length === 0) return ''
   const dataRoot = path.dirname(path.dirname(root))
   const workspaceId = path.basename(root)
   updateWorkspace(dataRoot, workspaceId, manifest => {
@@ -528,17 +534,19 @@ function registerRun(
       if (manifest.artifacts.some(artifact => artifact.file === relative)) continue
       manifest.artifacts.push({
         id: crypto.randomUUID(), file: relative,
-        name: relative === primary ? `${project.name} → homology` : path.basename(relative),
+        name: relative === primary ? `${project.name} → homology`
+          : `${diffusion?.status === 'validation_failed' && relative.endsWith('.pdb') ? '[rejected] ' : ''}${path.basename(relative)}`,
         kind: relative.endsWith('.pdb') ? 'structure' : 'artifact', artifactType: 'homology-model',
         command: 'homology', folder: path.dirname(relative),
         hidden: ['run.json', 'stdout.log', 'stderr.log', 'target.fasta', 'alignment.pir'].includes(path.basename(relative)) ||
-          path.basename(relative).startsWith('_') || (relative.endsWith('.pdb') && relative !== primary && !path.basename(relative).startsWith(sanitize(project.name || 'target'))),
+          path.basename(relative).startsWith('_') || (relative.endsWith('.pdb') && relative !== primary &&
+            !(diffusion?.candidates.includes(path.join(root, relative))) && !path.basename(relative).startsWith(sanitize(project.name || 'target'))),
       })
     }
     manifest.toolState = { ...manifest.toolState, lastHomologyRun: { projectId: project.id, files: relativeFiles } }
     return manifest
   })
-  return primary
+  return primary || ''
 }
 
 async function modelProject(
@@ -559,29 +567,43 @@ async function modelProject(
     })),
     alignmentGroups: project.alignmentGroups,
   })
-  const prefix = path.join(runDir, sanitize(project.name || 'target'))
+  const nativeRoot = project.modelOptions['--backend'] === 'diffusion'
+    ? fs.mkdtempSync(path.join(os.tmpdir(), 'dvbfixer-homology-')) : undefined
+  const prefix = path.join(nativeRoot || runDir, sanitize(project.name || 'target'))
   const args = [fasta, '--template-plan', plan, '-o', prefix]
   args.push(...validatedModelArgs(project.modelOptions))
+  if (nativeRoot) args.push('--diffusion-work-parent', nativeRoot)
+  try {
   const result = await runDvbfixerArgs('homology', args, runDir, { signal })
   assertRunAdmitted(result)
   writeJsonAtomic(path.join(runDir, 'run.json'), { projectId: project.id, args, exitCode: result.code })
   fs.writeFileSync(path.join(runDir, 'stdout.log'), result.stdout)
   fs.writeFileSync(path.join(runDir, 'stderr.log'), result.stderr)
+  if (nativeRoot && result.code === 0 && !signal?.aborted) {
+    authorizePublication()
+    const indexes = listFiles(nativeRoot).filter(file => path.basename(file) === 'bundle.json')
+    if (indexes.length !== 1) throw new Error('homology diffusion did not publish exactly one complete bundle')
+    for (const index of indexes) readDiffusionPublication(index)
+    for (const entry of fs.readdirSync(nativeRoot)) {
+      fs.cpSync(path.join(nativeRoot, entry), path.join(runDir, entry), { recursive: true, force: false, errorOnExist: true })
+    }
+  }
   const files = listFiles(runDir)
   const bundleManifest = files.find(file => path.basename(file) === 'bundle.json')
   let modelStatus = result.code === 0 ? 'success' : 'failed'
+  let diffusion: ReturnType<typeof readDiffusionPublication> | undefined
   if (bundleManifest) {
-    try {
-      modelStatus = String(JSON.parse(fs.readFileSync(bundleManifest, 'utf8')).status || modelStatus)
-    } catch {
-      modelStatus = 'invalid-bundle'
-    }
+    diffusion = readDiffusionPublication(bundleManifest)
+    modelStatus = diffusion.status
   }
-  const outputFile = result.code === 0 ? registerRun(root, project, files, authorizePublication) : ''
+  const outputFile = result.code === 0 ? registerRun(root, project, files, authorizePublication, diffusion) : ''
   return { ok: result.code === 0, exitCode: result.code, stdout: result.stdout, stderr: result.stderr,
     modelStatus,
     outputFile, outputDir: path.relative(root, runDir).replace(/\\/g, '/'),
     artifacts: files.map(file => path.relative(root, file).replace(/\\/g, '/')) }
+  } finally {
+    if (nativeRoot) fs.rmSync(nativeRoot, { recursive: true, force: true })
+  }
 }
 
 async function structurallyAlignGroups(

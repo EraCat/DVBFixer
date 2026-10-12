@@ -8,15 +8,16 @@
 usage: dvbfixer homology [-h] [--template TEMPLATE]
                          [--template-plan TEMPLATE_PLAN] [-o OUTPUT]
                          [--backend {modeller,diffusion}]
-                         [--diffusion-model {protpardelle}]
+                         [--diffusion-model {protpardelle,protenix}]
                          [--diffusion-seed DIFFUSION_SEEDS]
                          [--diffusion-timeout DIFFUSION_TIMEOUT]
                          [--diffusion-work-parent DIFFUSION_WORK_PARENT]
-                         [--alignment ALIGNMENT] [--salign] [-n NUM_MODELS]
+                         [--diffusion-resume] [--alignment ALIGNMENT]
+                         [--salign] [-n NUM_MODELS]
                          [--md-level {none,fast,slow,very_slow,slow_large}]
                          [--no-loop-refine] [--antibody] [--prepare]
-                         [--minimize] [--ph PH] [--keep-workdir] [-v]
-                         [--log-file PATH]
+                         [--minimize] [--ph PH] [--no-solvent]
+                         [--keep-workdir] [-v] [--log-file PATH]
                          fasta
 
 Multi-template homology modeling with Modeller or explicit experimental mosaic
@@ -40,9 +41,9 @@ Backend:
   --backend {modeller,diffusion}
                         Modeling backend (default: modeller; diffusion is
                         experimental)
-  --diffusion-model {protpardelle}
-                        Diffusion model for mosaic completion (default:
-                        protpardelle)
+  --diffusion-model {protpardelle,protenix}
+                        Installed diffusion model for mosaic completion
+                        (default: host-compatible auto selection)
   --diffusion-seed DIFFUSION_SEEDS
                         Candidate seed; repeat for multiple candidates
                         (default: 7)
@@ -50,6 +51,8 @@ Backend:
                         Runner timeout in seconds (default: 900)
   --diffusion-work-parent DIFFUSION_WORK_PARENT
                         Parent directory for the private runner workspace
+  --diffusion-resume    Reuse a verified bundle matching the current mosaic
+                        request
 
 Alignment:
   --alignment ALIGNMENT
@@ -69,6 +72,7 @@ Post-processing pipeline:
   --prepare             Run dvbfixer prepare on output
   --minimize            Run dvbfixer prepare + minimize on output
   --ph PH               pH for hydrogen addition (default: 7.0)
+  --no-solvent          Use vacuum for optional downstream minimization
 
 Diagnostics:
   --keep-workdir        Keep homology working directory

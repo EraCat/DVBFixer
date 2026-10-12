@@ -250,7 +250,7 @@ def test_directory_rejects_ambiguous_output_option(tmp_path: Path):
     "backend_args",
     (["--backend", "diffusion"], ["--backend=diffusion"]),
 )
-def test_directory_rejects_diffusion_before_creating_output_or_running(
+def test_directory_diffusion_reports_missing_publication(
     tmp_path: Path,
     backend_args: list[str],
 ):
@@ -260,7 +260,7 @@ def test_directory_rejects_diffusion_before_creating_output_or_running(
     output = tmp_path / "results"
     calls: list[list[str]] = []
 
-    with pytest.raises(SystemExit, match="only single-input mode"):
+    with pytest.raises(SystemExit):
         run_directory(
             "model",
             calls.append,
@@ -273,8 +273,9 @@ def test_directory_rejects_diffusion_before_creating_output_or_running(
             backend_args,
         )
 
-    assert calls == []
-    assert not output.exists()
+    assert len(calls) == 1
+    assert calls[0][-1].endswith("a_model_diffusion")
+    assert (output / "diffusion-batch.json").exists()
 
 
 def test_directory_continues_by_default_and_prints_clear_summary(tmp_path: Path, capsys):

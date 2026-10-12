@@ -104,11 +104,12 @@ def test_component_commands_keep_gui_paths_workspace_scoped() -> None:
     assert "--output-root" not in reconstruction_fields
 
 
-def test_gui_schema_excludes_model_backend_and_diffusion_options() -> None:
+def test_gui_schema_exposes_workflow_backend_but_not_private_paths() -> None:
     from scripts.gen_gui_spec import command_schema
 
     model = command_schema("model", COMMAND_BY_NAME["model"].description)
     flags = {field["flag"] for field in model["flags"]}
 
-    assert "--backend" not in flags
-    assert not any(flag.startswith("--diffusion-") for flag in flags)
+    assert {"--backend", "--diffusion-model", "--diffusion-seed"} <= flags
+    assert not {"--diffusion-request", "--diffusion-work-parent", "--diffusion-resume"} & flags
+    assert model["backendOutputModes"] == {"diffusion": "directory"}

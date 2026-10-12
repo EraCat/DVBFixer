@@ -86,6 +86,10 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         help="Parent directory for the private runner workspace",
     )
     diffusion.add_argument(
+        "--diffusion-resume", action="store_true",
+        help="Reuse an existing digest-verified bundle only when its scientific request matches",
+    )
+    diffusion.add_argument(
         "--diffusion-heterogen-smiles",
         action="append",
         default=[],
@@ -194,6 +198,7 @@ def _validate_backend_options(
         "--diffusion-seed",
         "--diffusion-timeout",
         "--diffusion-work-parent",
+        "--diffusion-resume",
         "--diffusion-heterogen-smiles",
     }
     provided = {token.split("=", 1)[0] for token in argv if token.startswith("-")}

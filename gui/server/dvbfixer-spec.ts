@@ -35,6 +35,7 @@ export interface CommandDef {
   groups: FieldGroup[]
   outputExtension: string
   outputMode: 'file' | 'prefix' | 'directory' | 'stdout'
+  backendOutputModes?: Record<string, 'file' | 'prefix' | 'directory' | 'stdout'>
   hasOutput: boolean
   outputKind: 'artifact' | 'report'
   batch: boolean

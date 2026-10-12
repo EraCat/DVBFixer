@@ -29,6 +29,8 @@ class CommandSpec:
     success_codes: tuple[int, ...] = (0,)
     specialized: bool = False
     normalize_cif: bool = True
+    backend_output_modes: tuple[tuple[str, OutputMode], ...] = ()
+    backend_batch_suffixes: tuple[tuple[str, str], ...] = ()
 
     @property
     def batch(self) -> bool:
@@ -38,7 +40,8 @@ class CommandSpec:
 COMMAND_REGISTRY: tuple[CommandSpec, ...] = (
     CommandSpec("split", "dvbfixer.split_chains", "Split chains empirically or extract deposited biological assemblies", "Structure preparation", batch_output_suffix="_split.pdb"),
     CommandSpec("renumber", "dvbfixer.renumber", "Renumber residues using FASTA or SEQRES alignment", "Structure preparation", batch_output_suffix="_renum.pdb"),
-    CommandSpec("model", "dvbfixer.model", "Rebuild missing loops/gaps with Modeller", "Structure preparation", batch_output_suffix="_model.pdb"),
+    CommandSpec("model", "dvbfixer.model", "Rebuild missing loops/gaps (default: Modeller)", "Structure preparation", batch_output_suffix="_model.pdb",
+                backend_output_modes=(("diffusion", "directory"),), backend_batch_suffixes=(("diffusion", "_model_diffusion"),)),
     CommandSpec("pull", "dvbfixer.pull", "Pull atoms together to form a bond (geometry-only)", "Refinement", batch_output_suffix="_pulled.pdb"),
     CommandSpec("prepare", "dvbfixer.prepare", "Fix missing atoms/residues with PDBFixer", "Structure preparation", batch_output_suffix="_prepared.pdb"),
     CommandSpec("minimize", "dvbfixer.minimize", "Energy-minimize with OpenMM using selective restraints", "Refinement", batch_output_suffix="_minimized.pdb"),

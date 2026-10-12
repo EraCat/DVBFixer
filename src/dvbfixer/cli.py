@@ -69,14 +69,6 @@ def main() -> None:
         if not informational:
             print(run_header(command), file=sys.stderr)
         if batch_options.input_dir:
-            if command == "model" and any(
-                token == "--backend=diffusion"
-                or (token == "--backend" and index + 1 < len(argv) and argv[index + 1] == "diffusion")
-                for index, token in enumerate(argv)
-            ):
-                raise SystemExit(
-                    "dvbfixer model --backend diffusion does not support --input-dir"
-                )
             from dvbfixer.batch import run_directory
 
             run_directory(command, normalized_main, batch_options, argv)

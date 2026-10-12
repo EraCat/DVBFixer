@@ -12,13 +12,20 @@ The GUI is an editor and orchestrator. Structural fitting, mask resolution,
 mosaic construction, PIR generation, and modeling are implemented by the
 Python `dvbfixer homology --template-plan` workflow.
 
-The Model tab can select either **Modeller** or experimental **Protpardelle
-diffusion**. Diffusion uses the same fitted mosaic and painted ownership masks,
+The Model tab can select either **Modeller** or experimental **diffusion**, with
+Auto, Protenix, and Protpardelle model selection. Diffusion uses the same fitted mosaic and painted ownership masks,
 keeps covered matching residues exact, and publishes a validated directory
 bundle without falling back to Modeller. The GUI registers the candidate and
 its bundle artifacts; a scientifically rejected candidate is labeled as
 rejected rather than reported as a successful model. The server still requires
-an independently installed, preflight-compatible Protpardelle runner.
+an independently installed, preflight-compatible runner for the selected model.
+
+The GUI runs scientific bundle publication in private native temporary storage,
+then verifies transport digests before copying results into the owning workspace
+and re-reading the manifest for registration. Publication rank determines the
+primary candidate. Rejected bundles remain inspectable but have no automatic
+primary output and are labeled `[rejected]`. Node does not duplicate scientific
+validation, fitting, or materialization. Covered substitutions remain fail closed.
 
 Target, Templates, Alignment, and Model use the same compact toolbar geometry:
 32-pixel controls, consistent action widths and spacing, and an opaque panel
@@ -30,7 +37,7 @@ the full workspace path remains available as the label title.
 
 - A working DVBfixer environment on the GUI server's `PATH`.
 - Modeller and its license for the default comparative-modeling step, or an
-  installed Protpardelle runner for the explicit diffusion backend.
+  installed compatible Protenix or Protpardelle runner for the explicit diffusion backend.
 - At least one external sequence aligner: MAFFT, MUSCLE 5, or Clustal Omega.
 - Biopython, installed by the DVBfixer environment, for the default structural
   superposition engine.

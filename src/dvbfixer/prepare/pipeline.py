@@ -1078,6 +1078,9 @@ def _main_tleap_reduce_backend(args, input_path, output_path, dat_path):
         variant_overrides={f"{c}:{r}:{i}": v
                             for (c, r, i), v in result["renames"].items()},
     )
+    upstream_dat = original_input_path.with_suffix('.dat')
+    if upstream_dat.exists():
+        dat.merge(DatRecord.load(upstream_dat))
     dat.save(dat_path)
     print(f"Saved prepared structure: {output_path}")
     print(f"Saved restraint data: {dat_path} "
@@ -1505,7 +1508,9 @@ def main(argv=None):
     # Merge with upstream .dat (e.g. from model step) if it exists.
     # Delegate to ffutils.dat's merge logic so the "downstream wins on
     # optional-field collision" semantics stay in one place.
-    upstream_dat = input_path.with_suffix('.dat')
+    # Preprocessing may replace input_path with an inferred/capped/converted
+    # temporary PDB. The model restraint sidecar belongs to the user's input.
+    upstream_dat = Path(args.input).with_suffix('.dat')
     if upstream_dat.exists():
         from dvbfixer.ffutils.dat import DatRecord
 

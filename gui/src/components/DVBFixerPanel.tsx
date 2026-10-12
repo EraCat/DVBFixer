@@ -28,6 +28,7 @@ import { createManagedJobRequest, isActiveManagedJob, managedJobStatusLabel, sel
 import { structureMetaFromArtifact } from '../lib/workspace-metadata'
 import { apiFetch, apiSse } from '../lib/api-client'
 import { v1Client } from '../lib/v1-client'
+import { workflowOptionActive, workflowValues } from '../lib/workflow-backend-options'
 
 // Re-declare the spec types here (mirrors server/dvbfixer-spec.ts) so the
 // frontend doesn't have to import server/. The actual spec is fetched at
@@ -583,7 +584,7 @@ export function DVBFixerPanel() {
           workspaceId: workspace.id,
           inputFile,
           inputs: runInputs,
-          values: activeValues,
+          values: workflowValues(activeCmd.name, activeValues),
           fastaContent,
         }),
       })
@@ -852,6 +853,7 @@ export function DVBFixerPanel() {
                 .map(flag => activeCmd.flags.find(field => field.flag === flag))
                 .filter((field): field is FlagDef => !!field)
                 .filter(field => !(activeCmd.name === 'model' && field.flag === '--fasta'))
+                .filter(field => workflowOptionActive(activeCmd.name, field.flag, activeValues))
               if (fields.length === 0) return null
               return (
                 <Box key={group.name} sx={{ border: 1, borderColor: 'divider', borderRadius: 1, p: 1 }}>
@@ -967,6 +969,7 @@ function FlagControl({ flag, value, artifactOptions, onChange }: {
           onChange={(e) => onChange(e.target.value)}
           sx={{ fontSize: '0.75rem' }}
         >
+          {flag.flag === '--diffusion-model' && <MenuItem value="">Auto</MenuItem>}
           {(flag.options ?? []).map(opt => (
             <MenuItem key={String(opt)} value={opt} sx={{ fontSize: '0.75rem' }}>{opt}</MenuItem>
           ))}
@@ -981,8 +984,8 @@ function FlagControl({ flag, value, artifactOptions, onChange }: {
       size="small"
       label={flag.label}
       value={value ?? ''}
-      onChange={(e) => onChange(flag.type === 'number' ? (e.target.value === '' ? '' : Number(e.target.value)) : e.target.value)}
-      type={flag.type === 'number' ? 'number' : 'text'}
+      onChange={(e) => onChange(flag.type === 'number' && !flag.repeatable ? (e.target.value === '' ? '' : Number(e.target.value)) : e.target.value)}
+      type={flag.type === 'number' && !flag.repeatable ? 'number' : 'text'}
       slotProps={{
         ...(flag.type === 'number' ? { htmlInput: { step: flag.step, min: flag.min, max: flag.max } } : {}),
         inputLabel: { sx: { fontSize: '0.75rem' } },

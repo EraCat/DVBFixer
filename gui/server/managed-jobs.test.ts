@@ -85,6 +85,48 @@ afterEach(() => {
 })
 
 describe('managed DVBfixer jobs', () => {
+  it.each([true, false])('archives native diffusion output without auto-loading rejected candidates (passed=%s)', async passed => {
+    const dataRoot = root()
+    const workspace = listWorkspaces(dataRoot)[0]
+    fs.writeFileSync(path.join(workspaceRoot(dataRoot, workspace.id), 'input.pdb'), 'END\n')
+    useNode(`
+      const fs=require('node:fs'), path=require('node:path'), crypto=require('node:crypto');
+      const out=process.argv[process.argv.indexOf('-o')+1]; fs.mkdirSync(out,{recursive:true});
+      const references={};
+      for(const label of ['pdb','dat','provenance','sampler_trace']) {
+        const name='ranked-first.'+label; fs.writeFileSync(path.join(out,name),label);
+        references[label]={path:name,sha256:crypto.createHash('sha256').update(label).digest('hex')};
+      }
+      fs.writeFileSync(path.join(out,'bundle.json'),JSON.stringify({schema_version:2,status:${JSON.stringify(passed ? 'success' : 'validation_failed')},
+        candidates:[{candidate_id:'ranked-first',validation_passed:${passed},...references}]}));
+    `)
+    const created = createManagedJob(dataRoot, {
+      workspaceId: workspace.id, command: 'model', inputFile: 'input.pdb', values: { '--backend': 'diffusion' },
+    })
+    const finished = await terminal(dataRoot, workspace.id, created.id)
+    expect(finished.status).toBe('succeeded')
+    expect(finished.outputFile).toBe(passed ? `${finished.outputDir}/result/ranked-first.pdb` : null)
+    expect(finished.args).toContain('--diffusion-work-parent')
+    const temporary = finished.args[finished.args.indexOf('--diffusion-work-parent') + 1]
+    expect(fs.existsSync(temporary)).toBe(false)
+    expect(loadWorkspace(dataRoot, workspace.id).artifacts.some(artifact => artifact.file.endsWith('/bundle.json'))).toBe(true)
+    if (passed) {
+      const immutable = path.join(workspaceRoot(dataRoot, workspace.id), finished.outputDir, 'result')
+      const before = Object.fromEntries(fs.readdirSync(immutable).map(file => [file, fs.readFileSync(path.join(immutable, file), 'utf8')]))
+      useNode(`
+        const fs=require('node:fs'); const input=process.argv[2];
+        if(!input.includes('_input_') || !fs.existsSync(input.replace(/\\.pdb$/,'.dat'))) process.exit(2);
+        fs.writeFileSync(process.argv[process.argv.indexOf('-o')+1],fs.readFileSync(input));
+      `)
+      const next = createManagedJob(dataRoot, {
+        workspaceId: workspace.id, command: 'prepare', inputFile: finished.outputFile!,
+      })
+      const prepared = await terminal(dataRoot, workspace.id, next.id)
+      expect(prepared.status).toBe('succeeded')
+      expect(prepared.outputFile).not.toContain('_input_')
+      expect(Object.fromEntries(fs.readdirSync(immutable).map(file => [file, fs.readFileSync(path.join(immutable, file), 'utf8')]))).toEqual(before)
+    }
+  })
   it('exposes versioned workspace routes with the common error envelope', async () => {
     const dataRoot = root()
     const workspace = listWorkspaces(dataRoot)[0]

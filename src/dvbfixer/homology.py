@@ -8,6 +8,7 @@ Antibody mode (--antibody): uses ANARCI for numbering/CDR detection.
 """
 
 import argparse
+import json
 import math
 import os
 import shutil
@@ -27,7 +28,7 @@ from dvbfixer.model import (
 # FASTA parsing
 # ---------------------------------------------------------------------------
 
-def parse_fasta_chains(fasta_path):
+def parse_fasta_chains(fasta_path, *, logical_ids=False):
     """Parse multi-chain FASTA. Returns list of (chain_id, sequence) tuples.
 
     Chain ID is extracted from the header: >ChainName or >Protein_X
@@ -44,16 +45,17 @@ def parse_fasta_chains(fasta_path):
                     chains.append((current_id, ''.join(current_seq)))
                 header = line[1:].split()[0]
                 # Extract chain ID: last char after underscore, or last char
-                if '_' in header:
+                if logical_ids:
+                    chain_id = header
+                elif '_' in header:
                     chain_id = header.split('_')[-1]
                     if len(chain_id) == 1:
                         pass  # single letter chain ID
                     else:
                         chain_id = header[-1]
                 else:
-                    upper = header.upper()
-                    if upper in ('VH', 'VL'):
-                        chain_id = upper[-1]
+                    if header in ('VH', 'VL'):
+                        chain_id = header[-1]
                     else:
                         chain_id = header[-1] if len(header) == 1 else header[0]
                 current_id = chain_id
@@ -637,9 +639,9 @@ def parse_args(argv=None):
     backend.add_argument('--backend', choices=['modeller', 'diffusion'],
                          default='modeller',
                          help='Modeling backend (default: modeller; diffusion is experimental)')
-    backend.add_argument('--diffusion-model', choices=['protpardelle'],
-                         default='protpardelle',
-                         help='Diffusion model for mosaic completion (default: protpardelle)')
+    backend.add_argument('--diffusion-model', choices=['protpardelle', 'protenix'],
+                         default=None,
+                         help='Installed diffusion model for mosaic completion (default: host-compatible auto selection)')
     backend.add_argument('--diffusion-seed', action='append', type=int,
                          dest='diffusion_seeds',
                          help='Candidate seed; repeat for multiple candidates (default: 7)')
@@ -647,6 +649,8 @@ def parse_args(argv=None):
                          help='Runner timeout in seconds (default: 900)')
     backend.add_argument('--diffusion-work-parent', default=None,
                          help='Parent directory for the private runner workspace')
+    backend.add_argument('--diffusion-resume', action='store_true',
+                         help='Reuse a verified bundle matching the current mosaic request')
 
     alignment = p.add_argument_group('Alignment')
     alignment.add_argument('--alignment', default=None,
@@ -673,6 +677,8 @@ def parse_args(argv=None):
                           help='Run dvbfixer prepare + minimize on output')
     pipeline.add_argument('--ph', type=float, default=7.0,
                           help='pH for hydrogen addition (default: 7.0)')
+    pipeline.add_argument('--no-solvent', action='store_true',
+                          help='Use vacuum for optional downstream minimization')
 
     diag = p.add_argument_group('Diagnostics')
     diag.add_argument('--keep-workdir', action='store_true',
@@ -687,7 +693,7 @@ def parse_args(argv=None):
     provided = {token.split('=', 1)[0] for token in raw_args if token.startswith('-')}
     diffusion_flags = {
         '--diffusion-model', '--diffusion-seed', '--diffusion-timeout',
-        '--diffusion-work-parent',
+        '--diffusion-work-parent', '--diffusion-resume',
     }
     modeller_flags = {'--num-models', '-n', '--md-level', '--no-loop-refine', '--salign'}
     invalid = (
@@ -716,18 +722,13 @@ def main(argv=None):
         raise SystemExit('ERROR: --template-plan cannot be combined with --template or --alignment')
     if args.backend == 'diffusion' and not args.template_plan:
         raise SystemExit('ERROR: homology diffusion requires --template-plan')
-    if args.backend == 'diffusion' and (args.prepare or args.minimize):
-        raise SystemExit(
-            'ERROR: --prepare/--minimize cannot consume a diffusion bundle; '
-            'run them explicitly on an accepted candidate PDB'
-        )
     if args.backend == 'diffusion' and args.antibody:
         raise SystemExit('ERROR: --antibody is not supported by homology diffusion')
     if not math.isfinite(args.diffusion_timeout) or args.diffusion_timeout <= 0:
         raise SystemExit('ERROR: --diffusion-timeout must be positive')
     args.diffusion_seeds = args.diffusion_seeds or [7]
-    if any(seed < 0 for seed in args.diffusion_seeds):
-        raise SystemExit('ERROR: --diffusion-seed must be non-negative')
+    if any(seed < 0 for seed in args.diffusion_seeds) or len(set(args.diffusion_seeds)) != len(args.diffusion_seeds):
+        raise SystemExit('ERROR: --diffusion-seed must be unique and non-negative')
     for tpl in args.template:
         if not Path(tpl).exists():
             print(f"Error: template {tpl} not found", file=sys.stderr)
@@ -735,6 +736,14 @@ def main(argv=None):
 
     # 1. Parse target FASTA
     target_chains = parse_fasta_chains(fasta_path)
+    if args.backend == 'diffusion':
+        with open(args.template_plan) as stream:
+            declared = {group['chainId'] for group in json.load(stream)['alignmentGroups']}
+        logical = parse_fasta_chains(fasta_path, logical_ids=True)
+        target_chains = [
+            (logical_id if logical_id in declared else mapped_id, sequence)
+            for (logical_id, sequence), (mapped_id, _) in zip(logical, target_chains)
+        ]
     print(f"Target: {len(target_chains)} chain(s)")
     for ch_id, seq in target_chains:
         print(f"  Chain {ch_id}: {len(seq)} residues")
@@ -770,10 +779,18 @@ def main(argv=None):
                 diffusion_work_parent=args.diffusion_work_parent,
                 diffusion_heterogen_smiles=[],
                 diffusion_template_ownership=ownership,
+                diffusion_resume=args.diffusion_resume,
                 keep_heterogens=True,
                 no_terminal=False,
                 verbose=args.verbose,
             ))
+            if args.prepare or args.minimize:
+                from dvbfixer.model.diffusion.publication import copy_selected_candidate
+
+                selected = copy_selected_candidate(
+                    Path(output_bundle), Path(f"{output_prefix}_homology.pdb"), resume=args.diffusion_resume,
+                )
+                _postprocess_model(str(selected), args)
         except (DiffusionCliError, ValueError) as exc:
             raise SystemExit(f'ERROR: homology diffusion failed: {exc}') from exc
         finally:
@@ -867,7 +884,11 @@ def main(argv=None):
         else:
             shutil.rmtree(workdir, ignore_errors=True)
 
-    # 9. Optional pipeline
+    _postprocess_model(output_pdb, args)
+
+
+def _postprocess_model(output_pdb, args):
+    """Shared PDB/.dat post-processing after either model backend."""
     if args.prepare or args.minimize:
         print("\nRunning prepare...")
         from dvbfixer.prepare import main as prepare_main
@@ -877,10 +898,20 @@ def main(argv=None):
         prepare_main(prepare_args)
 
         prepared_pdb = output_pdb.replace('.pdb', '_prepared.pdb')
+        from dvbfixer.ffutils.dat import DatRecord
+
+        upstream_dat = Path(output_pdb).with_suffix('.dat')
+        downstream_dat = Path(prepared_pdb).with_suffix('.dat')
+        if upstream_dat.exists() and Path(prepared_pdb).exists():
+            downstream = DatRecord.load(downstream_dat) if downstream_dat.exists() else DatRecord()
+            downstream.merge(DatRecord.load(upstream_dat))
+            downstream.save(downstream_dat, verbose=False)
         if args.minimize and Path(prepared_pdb).exists():
             print("\nRunning minimize...")
             from dvbfixer.minimize import main as minimize_main
             minimize_args = [prepared_pdb, '--ph', str(args.ph)]
+            if args.no_solvent:
+                minimize_args.append('--no-solvent')
             if args.verbose:
                 minimize_args.append('-v')
             minimize_main(minimize_args)

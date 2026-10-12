@@ -92,7 +92,7 @@ describe('homology project materialization', () => {
       '--num-models', '8', '--md-level', 'slow',
     ])
     expect(validatedModelArgs({ '--backend': 'diffusion', '--diffusion-seed': 11 })).toEqual([
-      '--backend', 'diffusion', '--diffusion-model', 'protpardelle', '--diffusion-seed', '11',
+      '--backend', 'diffusion', '--diffusion-seed', '11',
     ])
     expect(() => validatedModelArgs({ '-o': '/tmp/escape' })).toThrow(/unsupported homology model option/)
     expect(() => validatedModelArgs({ '--num-models': 0 })).toThrow(/integer from 1 to 1000/)

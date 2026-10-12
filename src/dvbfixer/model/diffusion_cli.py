@@ -355,7 +355,8 @@ def run_diffusion_model(args: argparse.Namespace) -> None:
         if output_value
         else input_path.with_name(input_path.stem + "_model_diffusion")
     )
-    if output_path.exists() or output_path.is_symlink():
+    resume = getattr(args, "diffusion_resume", False)
+    if (output_path.exists() or output_path.is_symlink()) and not resume:
         raise DiffusionCliError(f"diffusion output directory already exists: {output_path}")
 
     work_parent_value = args.diffusion_work_parent
@@ -469,6 +470,14 @@ def run_diffusion_model(args: argparse.Namespace) -> None:
                 "diffusion input is outside the supported scope: "
                 + ", ".join(admission.reasons)
             )
+        if resume and output_path.exists():
+            from dvbfixer.model.diffusion.publication import read_published_bundle
+
+            published = read_published_bundle(
+                output_path, request=request, source_root=source_root, work_parent=work_parent,
+            )
+            print(f"Reused verified diffusion bundle {output_path} ({published.status})")
+            return
         if runtime.model == "protpardelle" and len(request.target_sequences) > 1:
             sampled_chains = tuple(dict.fromkeys(gap.chain for gap in request.gaps))
             print(

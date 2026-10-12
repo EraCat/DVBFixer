@@ -11,8 +11,6 @@ export function buildArgs(commandName: string, values: Record<string, any>): str
     if (flag.type === 'bool') {
       if (value === true) args.push(flag.flag)
       else if (value === false && flag.falseFlag) args.push(flag.falseFlag)
-    } else if (flag.type === 'number') {
-      args.push(flag.flag, String(value))
     } else if (flag.repeatable && Array.isArray(value)) {
       for (const item of value) if (String(item).trim()) args.push(flag.flag, String(item))
     } else if (flag.multi && Array.isArray(value)) {
@@ -22,6 +20,8 @@ export function buildArgs(commandName: string, values: Record<string, any>): str
       for (const item of value.split(',').map(item => item.trim()).filter(Boolean)) {
         args.push(flag.flag, ...(flag.multi ? item.split(/\s+/).filter(Boolean) : [item]))
       }
+    } else if (flag.type === 'number') {
+      args.push(flag.flag, String(value))
     } else if (flag.multi && typeof value === 'string') {
       const items = value.split(/\s+/).map(item => item.trim()).filter(Boolean)
       if (items.length) args.push(flag.flag, ...items)

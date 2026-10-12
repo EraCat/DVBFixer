@@ -23,7 +23,7 @@ ARTIFACT_DESTS = {
     "fasta", "alignment", "dat", "gaussian_log", "variant_overrides",
     "ccd_cif", "structure",
 }
-HIDDEN_DESTS = {"report_json", "cache_dir", "json_path", "output_root"}
+HIDDEN_DESTS = {"report_json", "cache_dir", "json_path", "output_root", "diffusion_request", "diffusion_work_parent", "diffusion_resume"}
 OUTPUT_EXTENSIONS = {
     command.name: command.output_extension for command in COMMAND_REGISTRY
 }
@@ -147,7 +147,9 @@ def command_schema(name: str, description: str) -> dict:
         for action in exclusive._group_actions:
             exclusive_by_action[action] = identifier
     for group in parser._action_groups:
-        if group.title in {"Global logging", "Batch mode", "Diffusion options", "Backend"}:
+        if group.title in {"Global logging", "Batch mode"}:
+            continue
+        if name not in {"model", "zbs", "homology"} and group.title in {"Diffusion options", "Backend"}:
             continue
         group_fields: list[str] = []
         for action in group._group_actions:
@@ -178,6 +180,7 @@ def command_schema(name: str, description: str) -> dict:
         "groups": groups,
         "outputExtension": command.output_extension,
         "outputMode": command.output_mode,
+        **({"backendOutputModes": dict(command.backend_output_modes)} if command.backend_output_modes else {}),
         "hasOutput": has_output,
         "outputKind": command.output_kind,
         "batch": command.batch,

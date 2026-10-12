@@ -115,6 +115,19 @@ class DatRecord:
         """
         with open(path) as f:
             raw = json.load(f)
+        return cls.from_dict(raw)
+
+    @classmethod
+    def from_json(cls, text: str) -> DatRecord:
+        """Decode already digest-verified sidecar bytes without reopening a path."""
+        raw = json.loads(text)
+        if not isinstance(raw, dict):
+            raise ValueError(".dat content must be a JSON object")
+        return cls.from_dict(raw)
+
+    @classmethod
+    def from_dict(cls, raw: dict[str, Any]) -> DatRecord:
+        """Canonical schema decoding shared by file and verified-byte consumers."""
         return cls(
             description=raw.get("description", ""),
             added_atoms=list(raw.get("added_atoms", [])),
@@ -164,7 +177,7 @@ class DatRecord:
         ``minimize`` to look restraints up per topology atom.
         """
         return {
-            (a["chain"], a["resid"], a["icode"], a["atom"])
+            (a["chain"], a["resid"], a["icode"].strip(), a["atom"])
             for a in self.added_atoms
         }
 
@@ -182,7 +195,7 @@ class DatRecord:
         existing = self.added_keys()
         carried = 0
         for atom in upstream.added_atoms:
-            key = (atom["chain"], atom["resid"], atom["icode"], atom["atom"])
+            key = (atom["chain"], atom["resid"], atom["icode"].strip(), atom["atom"])
             if key in existing:
                 continue
             self.added_atoms.append(atom)

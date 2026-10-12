@@ -22,7 +22,8 @@ non-overlapping fragment templates. Do not combine `--template-plan` with
 `--template` or `--alignment`; the plan produces both internally.
 
 With `--backend diffusion`, the template plan instead feeds the authoritative
-`selected_template_mosaic.pdb` directly to the isolated Protpardelle runner.
+`selected_template_mosaic.pdb` directly to the selected isolated Protenix or
+Protpardelle runner (or the host-compatible installed model under auto selection).
 DVBFixer exports `selected_template_mosaic.coverage.json`, preserves the
 zero-based half-open masks and earlier-template-wins ownership, maps logical
 target IDs such as `VH`/`VL` to distinct PDB chains, and records each covered
@@ -67,6 +68,10 @@ dvbfixer homology target.fasta --template fab.pdb --template igg.pdb --antibody 
 # Experimental coordinate-preserving mosaic completion
 dvbfixer homology target.fasta --template-plan template-plan.json \
   --backend diffusion --diffusion-model protpardelle -o target
+
+# Protenix internal-gap completion followed by preparation/minimization
+dvbfixer homology target.fasta --template-plan template-plan.json \
+  --backend diffusion --diffusion-model protenix --minimize --no-solvent -o target
 ```
 
 ## Inputs and keys
@@ -78,10 +83,11 @@ dvbfixer homology target.fasta --template-plan template-plan.json \
 | `--template-plan JSON` | — | GUI-compatible chain/range selection plan. Cannot be combined with `--template` or `--alignment`. |
 | `-o`, `--output PREFIX` | FASTA stem | Output prefix for ranked model PDB and `.dat` files. |
 | `--backend` | `modeller` | `modeller` or experimental `diffusion`; diffusion requires `--template-plan`. |
-| `--diffusion-model` | `protpardelle` | Accepted mosaic diffusion engine. |
+| `--diffusion-model` | auto | Installed Protenix or Protpardelle model, subject to its normal scope admission. |
 | `--diffusion-seed N` | `7` | Candidate seed; repeatable. |
 | `--diffusion-timeout SECONDS` | `900` | Positive finite runner timeout. |
 | `--diffusion-work-parent DIR` | output parent | Parent for the private isolated-runner workspace. |
+| `--diffusion-resume` | off | Reuse only a verified bundle matching the current mosaic request. |
 | `--alignment PIR` | auto | Use a pre-built PIR alignment instead of automatic alignment. |
 | `--salign` | off | Use Modeller structure-based SALIGN rather than pairwise `align2d`. |
 | `-n`, `--num-models N` | `5` | Number of candidate models to generate. |
@@ -91,19 +97,23 @@ dvbfixer homology target.fasta --template-plan template-plan.json \
 | `--prepare` | off | Run DVBFixer prepare on the selected model. |
 | `--minimize` | off | Run prepare and minimize on the selected model. |
 | `--ph PH` | `7.0` | Hydrogen-addition pH used by post-processing. |
+| `--no-solvent` | off | Vacuum for optional downstream minimization. |
 | `--keep-workdir` | off | Preserve Modeller intermediate files for debugging. |
 | `-v`, `--verbose` | off | Print template mapping, alignment, and modeling details. |
 | `--log-file PATH` | — | Append complete stdout/stderr to a file while retaining terminal output. |
 
-Modeller is required. ANARCI is required only for `--antibody`. Automatic
+Modeller is required for the Modeller backend. ANARCI is required only for `--antibody`. Automatic
 multi-template mode maps each target chain to its best template chain;
 `--template-plan` instead materializes the explicitly selected aligned ranges.
 The Modeller output is the best-ranked PDB plus a matching `.dat` restraint
 sidecar for downstream `prepare`/`minimize`. Diffusion writes an atomic directory
 bundle named `<PREFIX>_homology_diffusion`; accepted and rejected bundles retain
 the same validation/provenance semantics as `model --backend diffusion`.
-`--prepare`, `--minimize`, and `--antibody` are rejected in this mode; run later
-preparation explicitly on an accepted candidate PDB.
+`--prepare` and `--minimize` copy the first independently validated ranked PDB
+and its canonical `.dat` into a separate downstream handoff, preserving the
+complete bundle. They fail closed on scientific rejection. `--antibody` remains
+unsupported with diffusion. Logical plan target IDs remain case-sensitive and
+are not truncated before coverage/ownership validation.
 
 ## See also
 

@@ -356,7 +356,7 @@ export const GENERATED_COMMANDS = [
   {
     "name": "model",
     "label": "Model",
-    "description": "Rebuild missing loops/gaps with Modeller",
+    "description": "Rebuild missing loops/gaps (default: Modeller)",
     "category": "Structure preparation",
     "inputs": [
       {
@@ -384,6 +384,72 @@ export const GENERATED_COMMANDS = [
         "required": false,
         "repeatable": false,
         "multi": false
+      },
+      {
+        "flag": "--backend",
+        "dest": "backend",
+        "label": "Backend",
+        "type": "select",
+        "group": "Backend",
+        "help": "Modeling backend (default: modeller; diffusion is experimental)",
+        "required": false,
+        "repeatable": false,
+        "multi": false,
+        "default": "modeller",
+        "options": [
+          "modeller",
+          "diffusion"
+        ]
+      },
+      {
+        "flag": "--diffusion-model",
+        "dest": "diffusion_model",
+        "label": "Diffusion Model",
+        "type": "select",
+        "group": "Diffusion options",
+        "help": "Diffusion model (default: select an installed model for this machine)",
+        "required": false,
+        "repeatable": false,
+        "multi": false,
+        "options": [
+          "protpardelle",
+          "protenix"
+        ]
+      },
+      {
+        "flag": "--diffusion-seed",
+        "dest": "diffusion_seeds",
+        "label": "Diffusion Seeds",
+        "type": "number",
+        "group": "Diffusion options",
+        "help": "Candidate seed; repeat for multiple candidates (default: 7)",
+        "required": false,
+        "repeatable": true,
+        "multi": false
+      },
+      {
+        "flag": "--diffusion-timeout",
+        "dest": "diffusion_timeout",
+        "label": "Diffusion Timeout",
+        "type": "number",
+        "group": "Diffusion options",
+        "help": "Runner timeout in seconds (default: 900; covers multi-chain sampling/refinement)",
+        "required": false,
+        "repeatable": false,
+        "multi": false,
+        "default": 900.0
+      },
+      {
+        "flag": "--diffusion-heterogen-smiles",
+        "dest": "diffusion_heterogen_smiles",
+        "label": "Diffusion Heterogen Smiles",
+        "type": "text",
+        "group": "Diffusion options",
+        "help": "Authoritative SMILES for a retained isolated HETATM residue; repeat for multiple residue names (Protpardelle fixed geometric context only)",
+        "required": false,
+        "repeatable": true,
+        "multi": false,
+        "default": []
       },
       {
         "flag": "--num-models",
@@ -546,6 +612,21 @@ export const GENERATED_COMMANDS = [
         ]
       },
       {
+        "name": "Backend",
+        "fields": [
+          "--backend"
+        ]
+      },
+      {
+        "name": "Diffusion options",
+        "fields": [
+          "--diffusion-model",
+          "--diffusion-seed",
+          "--diffusion-timeout",
+          "--diffusion-heterogen-smiles"
+        ]
+      },
+      {
         "name": "Modelling parameters",
         "fields": [
           "--num-models",
@@ -575,6 +656,9 @@ export const GENERATED_COMMANDS = [
     ],
     "outputExtension": ".pdb",
     "outputMode": "file",
+    "backendOutputModes": {
+      "diffusion": "directory"
+    },
     "hasOutput": true,
     "outputKind": "artifact",
     "batch": true,
@@ -3385,6 +3469,60 @@ export const GENERATED_COMMANDS = [
         "multi": false
       },
       {
+        "flag": "--backend",
+        "dest": "backend",
+        "label": "Backend",
+        "type": "select",
+        "group": "Backend",
+        "help": "Modeling backend (default: modeller; diffusion is experimental)",
+        "required": false,
+        "repeatable": false,
+        "multi": false,
+        "default": "modeller",
+        "options": [
+          "modeller",
+          "diffusion"
+        ]
+      },
+      {
+        "flag": "--diffusion-model",
+        "dest": "diffusion_model",
+        "label": "Diffusion Model",
+        "type": "select",
+        "group": "Backend",
+        "help": "Installed diffusion model for mosaic completion (default: host-compatible auto selection)",
+        "required": false,
+        "repeatable": false,
+        "multi": false,
+        "options": [
+          "protpardelle",
+          "protenix"
+        ]
+      },
+      {
+        "flag": "--diffusion-seed",
+        "dest": "diffusion_seeds",
+        "label": "Diffusion Seeds",
+        "type": "number",
+        "group": "Backend",
+        "help": "Candidate seed; repeat for multiple candidates (default: 7)",
+        "required": false,
+        "repeatable": true,
+        "multi": false
+      },
+      {
+        "flag": "--diffusion-timeout",
+        "dest": "diffusion_timeout",
+        "label": "Diffusion Timeout",
+        "type": "number",
+        "group": "Backend",
+        "help": "Runner timeout in seconds (default: 900)",
+        "required": false,
+        "repeatable": false,
+        "multi": false,
+        "default": 900.0
+      },
+      {
         "flag": "--alignment",
         "dest": "alignment",
         "label": "Alignment",
@@ -3499,6 +3637,18 @@ export const GENERATED_COMMANDS = [
         "default": 7.0
       },
       {
+        "flag": "--no-solvent",
+        "dest": "no_solvent",
+        "label": "No Solvent",
+        "type": "bool",
+        "group": "Post-processing pipeline",
+        "help": "Use vacuum for optional downstream minimization",
+        "required": false,
+        "repeatable": false,
+        "multi": false,
+        "default": false
+      },
+      {
         "flag": "--keep-workdir",
         "dest": "keep_workdir",
         "label": "Keep Workdir",
@@ -3532,6 +3682,15 @@ export const GENERATED_COMMANDS = [
         ]
       },
       {
+        "name": "Backend",
+        "fields": [
+          "--backend",
+          "--diffusion-model",
+          "--diffusion-seed",
+          "--diffusion-timeout"
+        ]
+      },
+      {
         "name": "Alignment",
         "fields": [
           "--alignment",
@@ -3552,7 +3711,8 @@ export const GENERATED_COMMANDS = [
         "fields": [
           "--prepare",
           "--minimize",
-          "--ph"
+          "--ph",
+          "--no-solvent"
         ]
       },
       {
@@ -4197,11 +4357,65 @@ export const GENERATED_COMMANDS = [
         "default": false
       },
       {
+        "flag": "--model-backend",
+        "dest": "model_backend",
+        "label": "Model Backend",
+        "type": "select",
+        "group": "Model step",
+        "help": "Modeling backend; independent of the prepare --backend (default: modeller)",
+        "required": false,
+        "repeatable": false,
+        "multi": false,
+        "default": "modeller",
+        "options": [
+          "modeller",
+          "diffusion"
+        ]
+      },
+      {
+        "flag": "--diffusion-model",
+        "dest": "diffusion_model",
+        "label": "Diffusion Model",
+        "type": "select",
+        "group": "Model step",
+        "help": "Installed diffusion model (default: host-compatible auto selection)",
+        "required": false,
+        "repeatable": false,
+        "multi": false,
+        "options": [
+          "protenix",
+          "protpardelle"
+        ]
+      },
+      {
+        "flag": "--diffusion-seed",
+        "dest": "diffusion_seeds",
+        "label": "Diffusion Seeds",
+        "type": "number",
+        "group": "Model step",
+        "help": "Candidate seed; repeat for multiple candidates (default: 7)",
+        "required": false,
+        "repeatable": true,
+        "multi": false
+      },
+      {
+        "flag": "--diffusion-timeout",
+        "dest": "diffusion_timeout",
+        "label": "Diffusion Timeout",
+        "type": "number",
+        "group": "Model step",
+        "help": "Diffusion runner timeout in seconds (default: 900)",
+        "required": false,
+        "repeatable": false,
+        "multi": false,
+        "default": 900.0
+      },
+      {
         "flag": "--fasta",
         "dest": "fasta",
         "label": "Fasta",
         "type": "artifact",
-        "group": "Model step (Modeller)",
+        "group": "Model step",
         "help": "FASTA file with complete sequence(s) for model step",
         "required": false,
         "repeatable": false,
@@ -4212,7 +4426,7 @@ export const GENERATED_COMMANDS = [
         "dest": "no_terminal",
         "label": "No Terminal",
         "type": "bool",
-        "group": "Model step (Modeller)",
+        "group": "Model step",
         "help": "Do not model missing N/C terminal residues; rebuild only gaps between observed anchors",
         "required": false,
         "repeatable": false,
@@ -4224,7 +4438,7 @@ export const GENERATED_COMMANDS = [
         "dest": "num_loops",
         "label": "Num Loops",
         "type": "number",
-        "group": "Model step (Modeller)",
+        "group": "Model step",
         "help": "Number of loop models (default: 2)",
         "required": false,
         "repeatable": false,
@@ -4236,7 +4450,7 @@ export const GENERATED_COMMANDS = [
         "dest": "md_level",
         "label": "Md Level",
         "type": "select",
-        "group": "Model step (Modeller)",
+        "group": "Model step",
         "help": "Modeller MD refinement level (default: fast)",
         "required": false,
         "repeatable": false,
@@ -4255,7 +4469,7 @@ export const GENERATED_COMMANDS = [
         "dest": "num_output",
         "label": "Num Output",
         "type": "number",
-        "group": "Model step (Modeller)",
+        "group": "Model step",
         "help": "Save top-N candidate models from Modeller (default: 1). With N>1, the model step writes <stem>_model_1.pdb, ..._2.pdb, ... zbs picks _1 (best) for downstream.",
         "required": false,
         "repeatable": false,
@@ -4267,7 +4481,7 @@ export const GENERATED_COMMANDS = [
         "dest": "pin_input",
         "label": "Pin Input",
         "type": "bool",
-        "group": "Model step (Modeller)",
+        "group": "Model step",
         "help": "During Modeller's loop refinement MD, allow only the gap residues to move (no ±flank margin). Default ON — pass --no-pin-input to restore the legacy LoopModel behaviour (gap ±~3 residue flank mobile).",
         "required": false,
         "repeatable": false,
@@ -4663,8 +4877,12 @@ export const GENERATED_COMMANDS = [
         ]
       },
       {
-        "name": "Model step (Modeller)",
+        "name": "Model step",
         "fields": [
+          "--model-backend",
+          "--diffusion-model",
+          "--diffusion-seed",
+          "--diffusion-timeout",
           "--fasta",
           "--no-terminal",
           "--num-loops",

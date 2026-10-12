@@ -8,6 +8,15 @@ Since 0.7.7, PROPKA + MolProbity Reduce run **inside** the prepare step — PROP
 
 Intermediate files are cleaned up by default — use `--keep-interim` to preserve them. The `.dat` file flows from model (gap atoms) through prepare (merged with PDBFixer additions) to minimize (selective restraints). Water is removed by default. With `--keep-water`, crystallographic input waters are forwarded through renumber, model, prepare, and minimize and remain in the final structure; the minimize stage preserves those input waters rather than keeping any temporary solvent box it creates. Each step can be skipped individually. `--dry-run` prints the planned steps + output filenames without running anything.
 
+The modeling backend is selected independently via `--model-backend` (default:
+`modeller`). `--backend` continues to select only the preparation backend.
+Diffusion retains the complete `<stem>_model_diffusion/` bundle, even without
+`--keep-interim`, and copies the first independently validated ranked candidate
+plus its `.dat` into a separate downstream handoff. Rejected or corrupted bundles
+never enter prepare/minimize; no fallback is attempted. Model bundles are not
+realigned or modified by the pipeline. All named intermediates stay beside the
+final output, including under batch operation.
+
 ## Pipeline
 
 | # | Step | What it does |
@@ -56,6 +65,14 @@ dvbfixer zbs input.pdb --no-protassign -v
 
 # Preview the pipeline without running it
 dvbfixer zbs input.pdb --skip-model --dry-run
+
+# Opt-in Protenix modeling with the default legacy preparation backend
+dvbfixer zbs input.pdb --fasta sequence.fasta --model-backend diffusion \
+  --diffusion-model protenix --no-solvent -o output.pdb
+
+# Restart modeling from its verified, matching bundle
+dvbfixer zbs input.pdb --fasta sequence.fasta --model-backend diffusion \
+  --diffusion-model protenix --diffusion-resume --no-solvent -o output.pdb
 ```
 
 ## Options
@@ -87,6 +104,12 @@ Organised by which pipeline step each flag flows into.
 | Flag | Default | Description |
 |------|---------|-------------|
 | `--skip-model` | off | Skip this step |
+| `--model-backend` | `modeller` | Modeling backend; `diffusion` is explicit and remains scope-gated |
+| `--diffusion-model` | auto | Installed model choice: `protenix` or `protpardelle` |
+| `--diffusion-seed` | 7 | Repeatable seeds; scientific ranking selects the accepted downstream candidate |
+| `--diffusion-timeout` | 900 | Runner timeout in seconds; increase for long/high-cost targets |
+| `--diffusion-work-parent` | output parent | Existing directory for private runner workspaces |
+| `--diffusion-resume` | off | Reuse a matching verified bundle; invalid/incomplete results fail closed |
 | `--no-terminal` | off | Trim reference sequence outside the first/last observed anchors and model only genuine internal gaps between them. |
 | `--num-loops` | 2 | Number of loop refinement models per initial model |
 | `--md-level` | fast | Modeller MD refinement level (`none`, `fast`, `slow`, `very_slow`, `slow_large`) |

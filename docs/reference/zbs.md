@@ -8,8 +8,14 @@
 usage: dvbfixer zbs [-h] [-o OUTPUT] [--ph PH] [--ff FF [FF ...]]
                     [--atom-naming {gromacs,standard}] [--parametrize-ligands]
                     [--extra-ff FILE] [--skip-renumber] [--skip-model]
-                    [--skip-prepare] [--skip-minimize] [--fasta FASTA]
-                    [--no-terminal] [--num-loops NUM_LOOPS]
+                    [--skip-prepare] [--skip-minimize]
+                    [--model-backend {modeller,diffusion}]
+                    [--diffusion-model {protenix,protpardelle}]
+                    [--diffusion-seed DIFFUSION_SEEDS]
+                    [--diffusion-timeout DIFFUSION_TIMEOUT]
+                    [--diffusion-work-parent DIFFUSION_WORK_PARENT]
+                    [--diffusion-resume] [--fasta FASTA] [--no-terminal]
+                    [--num-loops NUM_LOOPS]
                     [--md-level {none,fast,slow,very_slow,slow_large}]
                     [--num-output NUM_OUTPUT] [--pin-input | --no-pin-input]
                     [--strip-heterogens] [--backend {tleap-reduce,legacy}]
@@ -69,7 +75,22 @@ Pipeline skip flags:
   --skip-prepare        Skip the prepare step
   --skip-minimize       Skip the minimize step
 
-Model step (Modeller):
+Model step:
+  --model-backend {modeller,diffusion}
+                        Modeling backend; independent of the prepare --backend
+                        (default: modeller)
+  --diffusion-model {protenix,protpardelle}
+                        Installed diffusion model (default: host-compatible
+                        auto selection)
+  --diffusion-seed DIFFUSION_SEEDS
+                        Candidate seed; repeat for multiple candidates
+                        (default: 7)
+  --diffusion-timeout DIFFUSION_TIMEOUT
+                        Diffusion runner timeout in seconds (default: 900)
+  --diffusion-work-parent DIFFUSION_WORK_PARENT
+                        Existing parent for private diffusion workspaces
+  --diffusion-resume    Reuse a verified model bundle matching the current
+                        scientific request
   --fasta FASTA         FASTA file with complete sequence(s) for model step
   --no-terminal         Do not model missing N/C terminal residues; rebuild
                         only gaps between observed anchors

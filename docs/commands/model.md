@@ -65,6 +65,15 @@ dvbfixer model input.pdb --fasta sequence.fasta \
 # sequence placement. input/normalized.pdb must be the request's exact artifact.
 dvbfixer model workspace/input/normalized.pdb --backend diffusion \
   --diffusion-request workspace/request.json -o input_model_diffusion
+
+# Sequential directory processing; each input gets its own atomic bundle
+dvbfixer model --input-dir structures --output-dir models \
+  --backend diffusion --diffusion-model protenix --fasta sequence.fasta
+
+# Reuse matching bundles after digest checks and independent revalidation
+dvbfixer model --input-dir structures --output-dir models \
+  --backend diffusion --diffusion-model protenix --fasta sequence.fasta \
+  --diffusion-resume
 ```
 
 ### Experimental diffusion scope
@@ -92,7 +101,22 @@ PTMs, cofactors, and covalent ligands. Unsupported chemistry fails before runner
 launch. `--strip-heterogens`
 explicitly creates a protein-only private input before admission and removes
 associated ANISOU, LINK, and CONECT records; the source file is never changed.
-Batch mode, GUI, `zbs`, and `homology` do not expose diffusion.
+Directory batch, GUI, `zbs --model-backend diffusion`, and mosaic-first
+`homology --backend diffusion` expose the same scoped backend. These workflow
+adapters do not widen scientific admission or enable fallback.
+
+Batch outputs are `<stem>_model_diffusion/` under `--output-dir`, retaining
+relative input subdirectories. Destinations and filename collisions are checked
+before inference, source/output trees must be disjoint, and GPU jobs run
+sequentially. `diffusion-batch.json` records success, scientific rejection,
+unsupported input, execution failure, and skipped cases; any failed/rejected case
+makes the batch exit nonzero. A shared FASTA applies to every input. An explicit
+`--diffusion-request` is single-input only.
+
+`--diffusion-resume` requires unchanged scientific request identity, intact
+digest-linked artifacts, valid modeled-atom `.dat` identities, and matching
+independent revalidation under the current policy. It does not overwrite or
+repair incomplete bundles. Resume reads preserved results without sampling.
 
 `--diffusion-request` accepts an existing schema-4 request when sequence
 placement and masks were materialized independently. The positional input must
@@ -156,6 +180,7 @@ fatal and publish nothing.
 | `--diffusion-seed` | 7 | Candidate seed; repeat for multiple candidates |
 | `--diffusion-timeout` | 900 | External runner timeout in seconds; the default covers sequential multi-chain sampling and local refinement |
 | `--diffusion-work-parent` | output parent | Existing directory under which the private runner workspace is created |
+| `--diffusion-resume` | off | Reuse only a matching, digest-verified, independently revalidated bundle |
 | `-n`, `--num-models` | 1 | Number of initial models to generate |
 | `--num-loops` | 2 | Number of loop refinement models per initial model |
 | `--num-output` | 1 | Number of top-ranked candidates to save (ceiling: `num_models × num_loops`). Sorted ascending by Modeller's `molpdf` (best first). With `--num-output > 1`, output filenames get a `_N` suffix |

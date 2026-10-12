@@ -2,8 +2,10 @@ import type { IncomingMessage, ServerResponse } from 'node:http'
 import crypto from 'node:crypto'
 import fs from 'node:fs'
 import path from 'node:path'
+import os from 'node:os'
 import { Value } from '@sinclair/typebox/value'
 import { buildArgs } from './command-args'
+import { readDiffusionPublication } from './diffusion-bundle'
 import { COMMANDS } from './dvbfixer-spec'
 import { runDvbfixerArgs } from './dvbfixer-runner'
 import { errorStatus, readRequestBody } from './request-body'
@@ -179,6 +181,7 @@ function prepareArgs(
   dataRoot: string,
   request: ManagedJobRequest,
   directory: string,
+  publicationRoot = directory,
 ): { args: string[]; inputBase: string; resolvedInputs: ManagedJobProvenance['resolvedInputs'] } {
   const def = COMMANDS.find(command => command.name === request.command)
   if (!def) throw httpError(400, `unknown command: ${request.command}`)
@@ -195,7 +198,17 @@ function prepareArgs(
     if (input.required && items.length === 0) throw httpError(400, `${input.label} is required`)
     for (const item of items) {
       const resolved = resolveWorkspaceFile(dataRoot, request.workspaceId, item)
-      positional.push(resolved)
+      let commandInput = resolved
+      const bundleIndex = path.join(path.dirname(resolved), 'bundle.json')
+      if (input.dest === 'input' && fs.existsSync(bundleIndex) && ['prepare', 'minimize', 'zbs'].includes(request.command)) {
+        const publication = readDiffusionPublication(bundleIndex)
+        if (!publication.candidates.includes(resolved)) throw new Error('input is not a declared diffusion candidate')
+        commandInput = path.join(directory, `_input_${path.basename(resolved)}`)
+        fs.copyFileSync(resolved, commandInput, fs.constants.COPYFILE_EXCL)
+        const sidecar = publication.sidecars[resolved]
+        fs.copyFileSync(sidecar, commandInput.replace(/\.pdb$/i, '.dat'), fs.constants.COPYFILE_EXCL)
+      }
+      positional.push(commandInput)
       const bytes = fs.readFileSync(resolved)
       resolvedInputs.push({
         artifactId: workspace.artifacts.find(artifact => artifact.file === item)?.id || null,
@@ -204,8 +217,9 @@ function prepareArgs(
       })
     }
   }
-  const inputBase = positional[0]
-    ? path.basename(positional[0], path.extname(positional[0])) : request.command
+  const originalInput = resolvedInputs[0]?.file || positional[0]
+  const inputBase = originalInput
+    ? path.basename(originalInput, path.extname(originalInput)) : request.command
   const values = { ...(request.values || {}) }
   for (const field of def.flags.filter(field => field.type === 'artifact')) {
     const raw = values[field.flag]
@@ -223,12 +237,15 @@ function prepareArgs(
     fs.writeFileSync(fasta, request.fastaContent)
     values['--fasta'] = fasta
   }
-  const outputStem = path.join(directory, `${inputBase}_${request.command}`)
-  const outputTarget = def.outputMode === 'directory' ? path.join(directory, 'result')
+  const outputStem = path.join(publicationRoot, `${inputBase}_${request.command}`)
+  const backendMode = def.backendOutputModes?.[String(values['--backend'])]
+  const diffusionBundle = backendMode === 'directory'
+  const outputTarget = (def.outputMode === 'directory' || diffusionBundle) ? path.join(publicationRoot, 'result')
     : def.outputMode === 'prefix' ? outputStem : `${outputStem}${def.outputExtension || ''}`
   const args = [...positional]
   if (def.hasOutput && def.outputMode !== 'stdout') args.push('-o', outputTarget)
   args.push(...buildArgs(request.command, values))
+  if (publicationRoot !== directory) args.push('--diffusion-work-parent', publicationRoot)
   return { args, inputBase, resolvedInputs }
 }
 
@@ -237,8 +254,17 @@ function registerOutputs(dataRoot: string, record: ManagedJobRecord, inputBase: 
   const directory = jobDirectory(dataRoot, record.workspaceId, record.id)
   const control = new Set(['job.json', 'stdout.log', 'stderr.log', 'cancel.requested'])
   const files = listFiles(directory).filter(file => !control.has(file))
-  const primary = files.find(file => /\.(pdb|cif|mmcif)$/i.test(file)) || files[0] || null
-  if (!primary) return record
+  const modelFlag = record.command === 'zbs' ? '--model-backend' : '--backend'
+  const usesDiffusion = record.args[record.args.indexOf(modelFlag) + 1] === 'diffusion'
+  const manifest = usesDiffusion ? files.find(file => path.basename(file) === 'bundle.json') : undefined
+  const diffusion = manifest ? readDiffusionPublication(path.join(directory, manifest)) : null
+  const declared = record.args?.includes('-o') ? record.args[record.args.indexOf('-o') + 1] : null
+  const declaredRelative = declared ? (declared.startsWith(`${directory}${path.sep}`)
+    ? path.relative(directory, declared).replace(/\\/g, '/') : path.basename(declared)) : null
+  const primary = declaredRelative && files.includes(declaredRelative) ? declaredRelative
+    : diffusion ? (diffusion.primary ? path.relative(directory, diffusion.primary).replace(/\\/g, '/') : null)
+      : files.find(file => /\.(pdb|cif|mmcif)$/i.test(file)) || files[0] || null
+  if (files.length === 0) return record
   const folder = path.relative(workspaceRoot(dataRoot, record.workspaceId), directory).replace(/\\/g, '/')
   const outputs: ManagedJobProvenance['outputs'] = []
   updateWorkspace(dataRoot, record.workspaceId, workspace => {
@@ -251,7 +277,8 @@ function registerOutputs(dataRoot: string, record: ManagedJobRecord, inputBase: 
       outputs.push({ artifactId, file: relative, sha256: digest })
       workspace.artifacts.push({
         id: artifactId, file: relative,
-        name: file === primary ? `${inputBase} → ${record.command}` : path.basename(file),
+        name: file === primary ? `${inputBase} → ${record.command}`
+          : `${diffusion?.status === 'validation_failed' && file.endsWith('.pdb') ? '[rejected] ' : ''}${path.basename(file)}`,
         kind: /\.(pdb|cif|mmcif)$/i.test(file) ? 'structure' : 'artifact',
         artifactType: def.outputKind, command: record.command, folder,
         hidden: path.basename(file).startsWith('_'),
@@ -265,7 +292,7 @@ function registerOutputs(dataRoot: string, record: ManagedJobRecord, inputBase: 
   })
   return {
     ...record,
-    outputFile: `${folder}/${primary}`,
+    outputFile: primary ? `${folder}/${primary}` : null,
     provenance: record.provenance && { ...record.provenance, outputs },
   }
 }
@@ -278,6 +305,7 @@ async function executeJob(
   release: () => void,
 ): Promise<void> {
   let current = record
+  let nativeRoot: string | undefined
   const cancelFile = cancellationPath(dataRoot, record.workspaceId, record.id)
   const cancellationPoll = setInterval(() => {
     if (fs.existsSync(cancelFile)) controller.abort()
@@ -288,7 +316,10 @@ async function executeJob(
     assertWorkspaceAccess(
       loadWorkspace(dataRoot, record.workspaceId), record.requestedByPrincipalId, 'writer',
     )
-    const prepared = prepareArgs(dataRoot, request, directory)
+    const usesDiffusion = (request.command === 'model' && request.values?.['--backend'] === 'diffusion') ||
+      (request.command === 'zbs' && request.values?.['--model-backend'] === 'diffusion')
+    if (usesDiffusion) nativeRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'dvbfixer-workflow-'))
+    const prepared = prepareArgs(dataRoot, request, directory, nativeRoot || directory)
     current = {
       ...current,
       args: prepared.args,
@@ -305,6 +336,16 @@ async function executeJob(
         persistJob(dataRoot, current)
       },
     })
+    if (nativeRoot && result.code === 0 && !controller.signal.aborted) {
+      assertWorkspaceAccess(loadWorkspace(dataRoot, record.workspaceId), record.requestedByPrincipalId, 'writer')
+      const indexes = listFiles(nativeRoot).filter(file => path.basename(file) === 'bundle.json')
+      if (indexes.length !== 1) throw new Error('diffusion workflow did not publish exactly one complete bundle')
+      for (const index of indexes) readDiffusionPublication(path.join(nativeRoot, index))
+      for (const entry of fs.readdirSync(nativeRoot)) {
+        fs.cpSync(path.join(nativeRoot, entry), path.join(directory, entry), { recursive: true, errorOnExist: true, force: false })
+      }
+      for (const index of indexes) readDiffusionPublication(path.join(directory, index))
+    }
     assertWorkspaceQuota(workspaceRoot(dataRoot, record.workspaceId))
     fs.writeFileSync(path.join(directory, 'stdout.log'), result.stdout)
     fs.writeFileSync(path.join(directory, 'stderr.log'), result.stderr)
@@ -334,6 +375,7 @@ async function executeJob(
       finishedAt: new Date().toISOString(), error: error?.message || String(error),
     }
   } finally {
+    if (nativeRoot) fs.rmSync(nativeRoot, { recursive: true, force: true })
     clearInterval(cancellationPoll)
     fs.rmSync(cancelFile, { force: true })
     const directory = jobDirectory(dataRoot, record.workspaceId, record.id)

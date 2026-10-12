@@ -840,6 +840,7 @@ def main(
     args = parse_args(argv)
     if args.backend == "diffusion":
         from dvbfixer.model.diffusion.pipeline import DiffusionPipelineError
+        from dvbfixer.model.diffusion.publication import PublicationError
         from dvbfixer.model.diffusion.runner import DiffusionRunnerError
         from dvbfixer.model.diffusion.validate import DiffusionValidationError
         from dvbfixer.model.diffusion_cli import DiffusionCliError, run_diffusion_model
@@ -851,6 +852,7 @@ def main(
             DiffusionPipelineError,
             DiffusionRunnerError,
             DiffusionValidationError,
+            PublicationError,
         ) as exc:
             print(f"ERROR: {exc}", file=sys.stderr)
             raise SystemExit(1) from exc

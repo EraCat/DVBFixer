@@ -36,6 +36,16 @@
 
 ## Current Expansion Baseline
 
+Workflow implementation update: the current scoped slice of WP9–WP11 and WP12
+orchestration is implemented and verified. This includes backend-dependent output
+metadata, sequential diffusion batch/resume, validated ZBS PDB/`.dat` handoff,
+Protenix/Protpardelle mosaic selection, and GUI native publication/workspace
+archival. See [workflow integration evidence](../research/diffusion-workflow-integration.md).
+The remaining unchecked scientific expansion tasks below (covered substitutions,
+broader context contracts, interface cohorts, and new gap-length strata) are not
+implied by that workflow slice. WP3 remains paused/cancelled pending a separate
+decision to resume validation-policy work.
+
 - [x] Multichain input, multiple ordinary gaps, and independent per-gap-bearing-
   chain Protpardelle invocations are implemented.
 - [x] Protpardelle receives deterministic contiguous crops from neighboring

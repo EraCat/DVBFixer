@@ -854,7 +854,7 @@ export function HomologyPanel() {
             <Box sx={homologyToolbarSx}>
               <FormControl size="small" sx={toolbarControlSx}><InputLabel>Backend</InputLabel><Select label="Backend" value={project.modelOptions['--backend'] ?? 'modeller'}
                 onChange={event => setModelBackend(String(event.target.value))}>
-                <MenuItem value="modeller">Modeller</MenuItem><MenuItem value="diffusion">Protpardelle diffusion</MenuItem>
+                <MenuItem value="modeller">Modeller</MenuItem><MenuItem value="diffusion">Diffusion</MenuItem>
               </Select></FormControl>
               {(project.modelOptions['--backend'] ?? 'modeller') === 'modeller' ? <>
                 <TextField sx={toolbarControlSx} size="small" type="number" label="Models" value={project.modelOptions['--num-models'] ?? 5}
@@ -863,8 +863,16 @@ export function HomologyPanel() {
                   onChange={event => update({ modelOptions: { ...project.modelOptions, '--md-level': event.target.value } })}>
                   {['none', 'fast', 'slow', 'very_slow', 'slow_large'].map(level => <MenuItem key={level} value={level}>{level}</MenuItem>)}
                 </Select></FormControl>
-              </> : <TextField sx={toolbarControlSx} size="small" type="number" label="Seed" value={project.modelOptions['--diffusion-seed'] ?? 7}
-                onChange={event => update({ modelOptions: { ...project.modelOptions, '--diffusion-seed': Number(event.target.value), '--diffusion-model': 'protpardelle' } })} />}
+              </> : <>
+                <FormControl size="small" sx={toolbarControlSx}><InputLabel>Diffusion model</InputLabel>
+                  <Select label="Diffusion model" value={project.modelOptions['--diffusion-model'] ?? ''}
+                    onChange={event => update({ modelOptions: { ...project.modelOptions, '--diffusion-model': event.target.value } })}>
+                    <MenuItem value="">Auto</MenuItem><MenuItem value="protenix">Protenix</MenuItem><MenuItem value="protpardelle">Protpardelle</MenuItem>
+                  </Select>
+                </FormControl>
+                <TextField sx={toolbarControlSx} size="small" type="number" label="Seed" value={project.modelOptions['--diffusion-seed'] ?? 7}
+                  onChange={event => update({ modelOptions: { ...project.modelOptions, '--diffusion-seed': Number(event.target.value) } })} />
+              </>}
               <Button sx={primaryActionSx} variant="contained"
                 onClick={runModel} disabled={busy !== '' || !project.alignmentGroups.length}>Run {(project.modelOptions['--backend'] ?? 'modeller') === 'diffusion' ? 'Diffusion' : 'Modeller'}</Button>
             </Box>

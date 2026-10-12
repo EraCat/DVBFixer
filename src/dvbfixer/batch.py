@@ -10,7 +10,7 @@ from collections.abc import Callable, Sequence
 from contextlib import redirect_stderr, redirect_stdout
 from pathlib import Path
 
-from dvbfixer.command_registry import COMMAND_REGISTRY
+from dvbfixer.command_registry import COMMAND_REGISTRY, get_command
 
 OUTPUT_SUFFIXES = {
     command.name: command.batch_output_suffix
@@ -143,10 +143,8 @@ def run_directory(
             and command_argv[index + 1] == "diffusion")
         for index, token in enumerate(command_argv)
     ):
-        raise SystemExit(
-            "dvbfixer model --backend diffusion supports only single-input mode; "
-            "directory batch input is unavailable"
-        )
+        _run_diffusion_directory(command_main, options, command_argv)
+        return
     if "-o" in command_argv or "--output" in command_argv:
         raise SystemExit("Use --output-dir, not -o/--output, with --input-dir")
 
@@ -239,3 +237,85 @@ def run_directory(
             print(f"  - {path} (report: {report_path})")
         raise SystemExit(1)
     print(f"Batch mode completed: {successes} succeeded, 0 failed.")
+
+
+def _run_diffusion_directory(
+    command_main: Callable[[list[str]], object],
+    options: argparse.Namespace,
+    command_argv: list[str],
+) -> None:
+    """Preflight all destinations, then run contained bundle jobs sequentially."""
+    import json
+    import os
+
+    from dvbfixer.model.cli import parse_args
+    from dvbfixer.model.diffusion.publication import read_published_bundle
+
+    args = parse_args(["batch-input.pdb", *command_argv])
+    if args.output or args.diffusion_request:
+        raise SystemExit("Diffusion batch uses --output-dir and per-input request construction")
+    source = Path(options.input_dir).expanduser().resolve()
+    destination = Path(options.output_dir or f"{source.name}_dvbfixer").expanduser().resolve()
+    if not source.is_dir():
+        raise SystemExit(f"Input directory does not exist: {source}")
+    if destination.is_relative_to(source) or source.is_relative_to(destination):
+        raise SystemExit("Diffusion batch source and output directories must be disjoint")
+    globber = source.rglob if options.recursive else source.glob
+    inputs = sorted(p for p in globber("*") if p.is_file() and p.suffix.lower() in {".pdb", ".ent", ".cif", ".mmcif"})
+    if not inputs or len(inputs) > 10_000:
+        raise SystemExit("Diffusion batch requires 1–10000 structure inputs")
+    suffix = dict(get_command("model").backend_batch_suffixes)["diffusion"]
+    outputs = [destination / p.relative_to(source).parent / f"{p.stem}{suffix}" for p in inputs]
+    if len(set(outputs)) != len(outputs):
+        raise SystemExit("Diffusion batch has colliding output stems")
+    for output in outputs:
+        for parent in output.parents:
+            if parent == destination:
+                break
+            if parent.is_symlink():
+                raise SystemExit(f"Diffusion batch output parent is a symlink: {parent}")
+        if output.is_symlink() or (output.exists() and not args.diffusion_resume):
+            raise SystemExit(f"Diffusion batch output already exists: {output}")
+        if output.exists():
+            read_published_bundle(output)
+    destination.mkdir(parents=True, exist_ok=True)
+    rows = []
+    print(f"Diffusion batch: {len(inputs)} inputs; sequential GPU execution (concurrency=1)")
+    for input_path, output in zip(inputs, outputs):
+        relative = input_path.relative_to(source).as_posix()
+        output.parent.mkdir(parents=True, exist_ok=True)
+        existed = output.exists()
+        stdout_capture = _Mirror(sys.stdout)
+        stderr_capture = _Mirror(sys.stderr)
+        try:
+            with redirect_stdout(stdout_capture), redirect_stderr(stderr_capture):
+                command_main([str(input_path), *command_argv, "-o", str(output)])
+            published = read_published_bundle(output)
+            status = "success" if published.status == "success" else "validation_failed"
+            row = {"input": relative, "output": output.relative_to(destination).as_posix(),
+                   "status": status, "resumed": existed}
+        except (Exception, SystemExit) as exc:
+            message = _last_reported_error(stdout_capture.captured() + "\n" + stderr_capture.captured()) or str(exc)
+            status = "unsupported" if "outside the supported scope" in message else "failed"
+            row = {"input": relative, "status": status, "error": message[:2000]}
+        finally:
+            stdout_capture.close()
+            stderr_capture.close()
+        rows.append(row)
+        print(f"  {relative}: {row['status']}")
+        if options.fail_fast and row["status"] != "success":
+            break
+    rows.extend({"input": p.relative_to(source).as_posix(), "status": "skipped"} for p in inputs[len(rows):])
+    report = {"schema_version": 1, "command": "model", "backend": "diffusion",
+              "concurrency": 1, "seeds": args.diffusion_seeds, "results": rows}
+    temporary = destination / f".diffusion-batch.{os.getpid()}.json"
+    try:
+        with temporary.open("x", encoding="utf-8") as stream:
+            json.dump(report, stream, ensure_ascii=False, indent=2)
+            stream.flush()
+            os.fsync(stream.fileno())
+        temporary.replace(destination / "diffusion-batch.json")
+    finally:
+        temporary.unlink(missing_ok=True)
+    if any(row["status"] not in {"success", "skipped"} for row in rows):
+        raise SystemExit(1)

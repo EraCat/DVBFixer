@@ -40,7 +40,48 @@ from dvbfixer.model.diffusion.contract import (
     RunnerResult,
     SamplerTrace,
 )
+from dvbfixer.model.diffusion.reference_metrics import (
+    ReferenceScoreCase,
+    paired_reference_score_difference,
+    reference_metrics,
+    summarize_reference_metrics,
+)
 from dvbfixer.model.diffusion.validate import build_validated_result
+
+
+def measure_modeller_reference(source, request, reference, *, work_parent, interface_chain_pairs):
+    """Measure the frozen two-model comparator pool without changing selection."""
+    from analyze_modeller_benchmark import _normalize_target_identities
+
+    marker = _read_json(source / ".confirmatory/stages/analysis.json")
+    summary_path = "confirmatory/modeller-analysis.json"
+    if _sha256(source / summary_path) != marker["outputs"][summary_path]:
+        raise PublicCohortError("frozen MODELLER analysis digest mismatch")
+    summary = _read_json(source / summary_path)
+    records = []
+    for row in summary["candidates"]:
+        digest = marker["inputs"][row["path"]]
+        coordinates = load_pdb_coordinates(source, ArtifactReference(row["path"], digest))
+        if row["identity_normalized"]:
+            normalized = _normalize_target_identities(request, (source / row["path"]).read_text())
+            with tempfile.TemporaryDirectory(prefix="modeller-metric-identity-", dir=work_parent) as directory:
+                path = Path(directory) / "normalized.pdb"
+                path.write_text(normalized)
+                coordinates = load_pdb_coordinates(path.parent, ArtifactReference(path.name, _sha256(path)))
+        metrics = reference_metrics(
+            reference, coordinates,
+            generated_residues={residue for gap in request.gaps for residue in gap.generated_residues},
+            anchor_residues={anchor for gap in request.gaps for anchor in (gap.left_anchor, gap.right_anchor) if anchor is not None},
+            chain_pairs=interface_chain_pairs, expected_generated_atoms=set(request.generated_atoms),
+        )
+        records.append({"path": row["path"], "sha256": digest, "validation_passed": row["validation_passed"],
+                        "reference_metrics": asdict(metrics)})
+    values = {}
+    for name in ("generated_lddt", "junction_lddt", "interface_lddt"):
+        scores = [row["reference_metrics"][name]["value"] for row in records]
+        values[name] = float(median(scores)) if scores and all(score is not None for score in scores) else None
+    return {"pool_policy": "median-of-frozen-two-model-pool-no-new-selection", "candidates": records,
+            "case_scores": values, "validation_passed": bool(records) and all(row["validation_passed"] for row in records)}
 
 
 def summarize(cases: list[dict]) -> dict:
@@ -78,6 +119,8 @@ def validate_completion(report: dict, members: tuple[dict, ...]) -> None:
 def analyze(
     archive: Path, cohort: Path, *, manifest_path: Path = DEFAULT_MANIFEST,
     work_parent: Path | None = None,
+    interface_chain_pairs: tuple[tuple[str, str], ...] = (),
+    compare_modeller: bool = False,
 ) -> dict:
     if _sha256(manifest_path) != FROZEN_MANIFEST_SHA256:
         raise PublicCohortError("frozen manifest digest changed")
@@ -95,6 +138,7 @@ def analyze(
     validate_completion(report, members)
 
     replay_runs = []
+    reference_metric_rows = []
     rows = []
     report_by_id = {case["case_id"]: case for case in report["cases"]}
     profile_lock_path = Path(__file__).resolve().parents[1] / "deploy/protenix-v1/profile-lock.json"
@@ -167,16 +211,23 @@ def analyze(
         reference_artifact = ArtifactReference(
             "reference.pdb", accepted["artifacts"]["reference.pdb"]["sha256"],
         )
+        reference_coordinates = load_pdb_coordinates(source, reference_artifact)
         quality = candidate_quality(
             evidence["candidate_id"],
-            load_pdb_coordinates(source, reference_artifact),
+            reference_coordinates,
             load_pdb_coordinates(bundle, ArtifactReference(**evidence["artifacts"]["pdb"])),
             generated_residues={residue for gap in request.gaps for residue in gap.generated_residues},
             fixed_atoms=set(request.fixed_atoms),
             anchor_residues={anchor for gap in request.gaps for anchor in (gap.left_anchor, gap.right_anchor) if anchor is not None},
             closure_passed="junction-peptide-connectivity" not in evidence["hard_gate_failures"],
             validation_passed=evidence["validation_passed"],
+            interface_chain_pairs=interface_chain_pairs,
+            expected_generated_atoms=set(request.generated_atoms),
         )
+        reference_metric_rows.append((quality.reference_metrics, evidence["validation_passed"]))
+        modeller_metrics = measure_modeller_reference(
+            source, request, reference_coordinates, work_parent=work_parent, interface_chain_pairs=interface_chain_pairs,
+        ) if compare_modeller else None
         metrics = provenance["resource_metrics"]
         if any(metrics.get(key) is None for key in (
             "wall_time_seconds", "peak_ram_bytes", "peak_vram_bytes",
@@ -207,13 +258,25 @@ def analyze(
             "pdb_sha256": evidence["artifacts"]["pdb"]["sha256"],
             "baseline_validation_passed": baseline_by_id[case_id]["validation_passed"],
             "quality": asdict(quality), "resource_metrics": metrics,
+            **({"modeller_reference_metrics": modeller_metrics} if modeller_metrics else {}),
         })
     baseline_runs = tuple(BackendCaseResult(**{
         **case, "eligibility_policy": BackendEligibilityPolicy(case["eligibility_policy"]),
     }) for case in baseline_cases)
     comparison = compare_paired_backends(tuple(replay_runs), baseline_runs)
+    reference_comparisons = {}
+    if compare_modeller:
+        for stratum, selected in (("all", rows), ("5", [row for row in rows if row["gap_length"] == 5]), ("10", [row for row in rows if row["gap_length"] == 10])):
+            reference_comparisons[stratum] = {
+                name: paired_reference_score_difference(
+                    tuple(ReferenceScoreCase(row["case_id"], baseline_by_id[row["case_id"]]["independence_group"],
+                                             row["quality"]["reference_metrics"][name]["value"], row["validation_passed"]) for row in selected),
+                    tuple(ReferenceScoreCase(row["case_id"], baseline_by_id[row["case_id"]]["independence_group"],
+                                             row["modeller_reference_metrics"]["case_scores"][name], row["modeller_reference_metrics"]["validation_passed"]) for row in selected),
+                ) for name in ("generated_lddt", "junction_lddt", "interface_lddt")
+            }
     return {
-        "schema_version": 1,
+        "schema_version": 2,
         "scope": "frozen-231-case-public-cli-production-replay",
         "verified_case_count": len(rows),
         "independently_revalidated_case_count": len(rows),
@@ -221,6 +284,13 @@ def analyze(
         "baseline_aggregate_sha256": _sha256(baseline_path),
         "replay_report_sha256": _sha256(archive / "report.json"),
         "summary": summarize(rows),
+        "reference_metric_summary": summarize_reference_metrics(tuple(reference_metric_rows)),
+        "reference_metric_strata": {
+            str(length): summarize_reference_metrics(tuple(
+                metric_row for member, metric_row in zip(members, reference_metric_rows) if member["gap_length"] == length
+            )) for length in (5, 10)
+        },
+        "paired_modeller_reference_comparison": reference_comparisons or None,
         "baseline_summary": asdict(summarize_backend_cases(baseline_runs)),
         "paired_comparison": asdict(comparison),
         "resource_timing_caveat": "Replay runner sampling/refinement timings exclude CLI preflight/publication; historical complete-stage timings have a different boundary.",
@@ -240,8 +310,13 @@ def main() -> int:
     parser.add_argument("cohort", type=Path)
     parser.add_argument("--output", required=True, type=Path)
     parser.add_argument("--work-parent", type=Path)
+    parser.add_argument("--interface-chain-pair", action="append", default=[], metavar="A:B",
+                        help="Explicit interface chain pair applied to evaluated cases; repeatable")
+    parser.add_argument("--compare-modeller", action="store_true", help="Measure and compare the frozen MODELLER pool with paired cluster-bootstrap intervals")
     args = parser.parse_args()
-    result = analyze(args.archive, args.cohort, work_parent=args.work_parent)
+    pairs = tuple(tuple(item.split(":")) for item in args.interface_chain_pair)
+    result = analyze(args.archive, args.cohort, work_parent=args.work_parent,
+                     interface_chain_pairs=pairs, compare_modeller=args.compare_modeller)
     _atomic_json(args.output, result)
     print(json.dumps({key: result[key] for key in ("verified_case_count", "summary", "status_changes")}, indent=2))
     return 0

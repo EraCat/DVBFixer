@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+from dataclasses import asdict
 from pathlib import Path
 
 from dvbfixer.model.diffusion.benchmark import (
@@ -58,6 +59,7 @@ def analyze(first: Path, second: Path) -> dict[str, object]:
         anchor_residues={request.gaps[0].left_anchor, request.gaps[0].right_anchor},
         closure_passed="junction-peptide-connectivity" not in summary.hard_gate_failures,
         validation_passed=summary.passed,
+        expected_generated_atoms=set(request.generated_atoms),
     )
     repeatability = assess_same_seed_repeatability(
         first_coordinates,
@@ -73,6 +75,7 @@ def analyze(first: Path, second: Path) -> dict[str, object]:
             "gap_backbone_rmsd_angstrom": quality.gap_backbone_rmsd_angstrom,
             "gap_all_heavy_rmsd_angstrom": quality.gap_all_heavy_rmsd_angstrom,
             "fixed_heavy_rmsd_angstrom": quality.fixed_heavy_rmsd_angstrom,
+            "reference_metrics": asdict(quality.reference_metrics),
         },
         "repeatability": {
             "classification": repeatability.classification,

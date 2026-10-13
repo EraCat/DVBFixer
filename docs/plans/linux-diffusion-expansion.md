@@ -248,25 +248,30 @@ decision to resume validation-policy work.
 
 ## WP4: Reference-Dependent Benchmark Metrics
 
+Implemented local/interface measurement slice and frozen-cohort descriptive
+follow-up: [reference metrics evidence](../research/diffusion-reference-metrics.md).
+GDT-HA/TM-score remain conditional on meaningful declared large-region inputs and
+a reviewed global-alignment engine; they are not reported for short-loop cases.
+
 - Suggested owner: benchmark agent.
 - Owned surfaces:
   - `src/dvbfixer/model/diffusion/benchmark.py`;
   - benchmark schemas, aggregation scripts, and tests.
 - Tasks:
-  - [ ] Add generated-region and junction-neighborhood lDDT.
-  - [ ] Add interface lDDT and contact precision/recall for declared interface
+  - [x] Add generated-region and junction-neighborhood lDDT.
+  - [x] Add interface lDDT and contact precision/recall for declared interface
     cases.
   - [ ] Add GDT-HA only where the evaluated region is large enough for the
     metric to be interpretable.
   - [ ] Add TM-score only for declared full-domain or sufficiently long-region
     comparisons; do not report it for short loops.
-  - [ ] Preserve gap backbone/all-heavy RMSD, fixed/anchor RMSD, top-1, oracle
+  - [x] Preserve gap backbone/all-heavy RMSD, fixed/anchor RMSD, top-1, oracle
     top-k, pairwise diversity, ranking enrichment, and failure classes.
-  - [ ] Report paired MODELLER comparisons and confidence intervals by stratum.
-  - [ ] Keep engine confidence, MODELLER `molpdf`, physical energies,
+  - [x] Report paired MODELLER comparisons and confidence intervals by stratum.
+  - [x] Keep engine confidence, MODELLER `molpdf`, physical energies,
     independent geometry, and reference metrics as separate named scales.
 - Exit gate:
-  - [ ] No aggregate score hides a hard-gate failure or compares unlike
+  - [x] No aggregate score hides a hard-gate failure or compares unlike
     objectives as if they shared a physical scale.
 
 ## WP5: Backend-Neutral Context Contract Expansion

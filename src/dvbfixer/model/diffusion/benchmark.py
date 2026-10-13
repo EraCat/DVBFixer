@@ -10,6 +10,7 @@ from dataclasses import dataclass
 from enum import StrEnum
 from pathlib import Path
 from statistics import NormalDist, median
+from typing import TYPE_CHECKING
 
 import numpy as np
 
@@ -18,6 +19,9 @@ from dvbfixer.model.diffusion.contract import (
     AtomIdentity,
     ResidueIdentity,
 )
+
+if TYPE_CHECKING:
+    from dvbfixer.model.diffusion.reference_metrics import ReferenceMetrics
 
 REPEATABILITY_RMSD_MAX_ANGSTROM = 0.01
 _BACKBONE_ATOMS = frozenset({"N", "CA", "C", "O"})
@@ -45,6 +49,7 @@ class CandidateQuality:
     anchor_heavy_rmsd_angstrom: float
     closure_passed: bool
     validation_passed: bool
+    reference_metrics: ReferenceMetrics | None = None
 
 
 @dataclass(frozen=True, slots=True)
@@ -632,6 +637,8 @@ def candidate_quality(
     anchor_residues: set[ResidueIdentity],
     closure_passed: bool,
     validation_passed: bool,
+    interface_chain_pairs: tuple[tuple[str, str], ...] = (),
+    expected_generated_atoms: set[AtomIdentity] | None = None,
 ) -> CandidateQuality:
     """Compute honest coordinate metrics against withheld reference atoms."""
     generated_heavy = {
@@ -650,6 +657,8 @@ def candidate_quality(
         for identity in reference
         if _residue(identity) in anchor_residues and not _is_hydrogen(identity)
     }
+    from dvbfixer.model.diffusion.reference_metrics import reference_metrics
+
     return CandidateQuality(
         candidate_id=candidate_id,
         gap_backbone_rmsd_angstrom=_rmsd(
@@ -678,6 +687,11 @@ def candidate_quality(
         ),
         closure_passed=closure_passed,
         validation_passed=validation_passed,
+        reference_metrics=reference_metrics(
+            reference, candidate, generated_residues=generated_residues,
+            anchor_residues=anchor_residues, chain_pairs=interface_chain_pairs,
+            expected_generated_atoms=expected_generated_atoms,
+        ),
     )
 
 

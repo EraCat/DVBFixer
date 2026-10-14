@@ -1,0 +1,44 @@
+{
+  "cases": [
+    {
+      "artifacts": {
+        "input/normalized.pdb": "9cc83cb959000ff35730feb8e12f6392ae3678feb06572368ca8a558e29f50f2",
+        "request.json": "ce66d4287e15302fe51e1fcc8c919a6131a238251a4732bcf53830e535da5fd1"
+      },
+      "case_id": "partner-on"
+    },
+    {
+      "artifacts": {
+        "input/normalized.pdb": "9cc83cb959000ff35730feb8e12f6392ae3678feb06572368ca8a558e29f50f2",
+        "request.json": "de6aaa7ca5d4e4a7ca58a621bd7d80df77f53804aedcbc2f5b1fd73767f45116"
+      },
+      "case_id": "partner-off"
+    }
+  ],
+  "causal_gate": {
+    "forward_call_index": 100,
+    "minimum_generated_response_angstrom": 0.0001,
+    "partner_translation_angstrom": [
+      25.0,
+      0.0,
+      0.0
+    ],
+    "repeat_max_abs_delta_angstrom": 0.0
+  },
+  "checkpoint_sha256": "dfc9895b399ec4497bf6d646502168725f01dcbd55bc0b541fc3e3cc1f2f0483",
+  "config_sha256": "e9999ace79bf3044351cc982a624fc3459add3a4f91cbf97ff5b437b8942eb9d",
+  "device": "cuda",
+  "engine_revision": "ee378400f25b801fa481028000f9060183d7fb4c",
+  "limitations": [
+    "CUDA research audit does not establish MPS acceptance",
+    "one source and seed",
+    "on/off changes atom axis; same-state probe isolates coordinate intervention"
+  ],
+  "patched_models_sha256": "2ec52fee68368ba3addfa4b46eec70949c6730801f05cb309c8eb5ed22f1f810",
+  "per_step_reinjection": true,
+  "s_churn": 200.0,
+  "seed": 7,
+  "status": "frozen-before-cc89-context-inference",
+  "step_scale": 1.2,
+  "steps": 200
+}

@@ -14,6 +14,7 @@ usage: dvbfixer homology [-h] [--template TEMPLATE]
                          [--diffusion-work-parent DIFFUSION_WORK_PARENT]
                          [--diffusion-resume]
                          [--diffusion-context {none,local,full}]
+                         [--diffusion-regenerate-covered]
                          [--alignment ALIGNMENT] [--salign] [-n NUM_MODELS]
                          [--md-level {none,fast,slow,very_slow,slow_large}]
                          [--no-loop-refine] [--antibody] [--prepare]
@@ -55,8 +56,11 @@ Backend:
   --diffusion-resume    Reuse a verified bundle matching the current mosaic
                         request
   --diffusion-context {none,local,full}
-                        Experimental Protenix protein conditioning policy
-                        (default: none)
+                        Experimental shared protein conditioning policy;
+                        engine capabilities are checked (default: none)
+  --diffusion-regenerate-covered
+                        Opt in to bounded regeneration of covered
+                        substitutions and short uncovered windows
 
 Alignment:
   --alignment ALIGNMENT

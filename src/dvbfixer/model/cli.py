@@ -91,7 +91,7 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     )
     diffusion.add_argument(
         "--diffusion-context", choices=("none", "local", "full"), default="none",
-        help="Experimental explicit Protenix protein context selection (default: none/legacy path)",
+        help="Experimental shared protein context selection; engine capabilities are checked (default: none/legacy path)",
     )
     diffusion.add_argument(
         "--diffusion-heterogen-smiles",

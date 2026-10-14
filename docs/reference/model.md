@@ -68,8 +68,8 @@ Diffusion options:
   --diffusion-resume    Reuse an existing digest-verified bundle only when its
                         scientific request matches
   --diffusion-context {none,local,full}
-                        Experimental explicit Protenix protein context
-                        selection (default: none/legacy path)
+                        Experimental shared protein context selection; engine
+                        capabilities are checked (default: none/legacy path)
   --diffusion-heterogen-smiles RESNAME=SMILES
                         Authoritative SMILES for a retained isolated HETATM
                         residue; repeat for multiple residue names

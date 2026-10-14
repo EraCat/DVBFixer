@@ -99,6 +99,7 @@ const MD_LEVELS = new Set(['none', 'fast', 'slow', 'very_slow', 'slow_large'])
 const MODEL_OPTION_FLAGS = new Set([
   '--num-models', '--md-level', '--backend', '--diffusion-model', '--diffusion-seed',
   '--diffusion-context',
+  '--diffusion-regenerate-covered',
 ])
 
 export function validatedModelArgs(options: Record<string, unknown> | null | undefined): string[] {
@@ -125,7 +126,11 @@ export function validatedModelArgs(options: Record<string, unknown> | null | und
       if (!['local', 'full'].includes(String(values['--diffusion-context']))) throw new Error('--diffusion-context has an unsupported value')
       args.push('--diffusion-context', String(values['--diffusion-context']))
     }
-  } else if (values['--diffusion-model'] !== undefined || values['--diffusion-seed'] !== undefined || values['--diffusion-context'] !== undefined) {
+    if (values['--diffusion-regenerate-covered'] !== undefined) {
+      if (typeof values['--diffusion-regenerate-covered'] !== 'boolean') throw new Error('--diffusion-regenerate-covered must be boolean')
+      if (values['--diffusion-regenerate-covered']) args.push('--diffusion-regenerate-covered')
+    }
+  } else if (values['--diffusion-model'] !== undefined || values['--diffusion-seed'] !== undefined || values['--diffusion-context'] !== undefined || values['--diffusion-regenerate-covered'] !== undefined) {
     throw new Error('diffusion model options require --backend diffusion')
   }
   if (backend === 'modeller' && values['--num-models'] !== undefined && values['--num-models'] !== '') {

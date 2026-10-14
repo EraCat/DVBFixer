@@ -30,6 +30,14 @@ verify that none of the source fixtures changed accidentally.
 | `warnings/*` | `test/warnings/{8ct6_t_b.pdb,8ct6_renamed.fasta}` | Real addHydrogens/connectivity-warning input and companion FASTA |
 | `overlap/8dis_t_u.pdb` | `test/overlap/8dis_t_u.pdb` | Coordinate-identical chains `d`/`D` caused by missing MODEL/ENDMDL separators |
 | `insertion_codes/{7K8S.pdb,7K8S.fasta}` | RCSB PDB entry 7K8S coordinate and FASTA downloads | Antibody heavy-chain insertion-code diffusion benchmark (`H/82A`-`H/82C`) |
+| `protein_context/{1UBQ,1TIM,1A3N}.pdb` | Unmodified RCSB PDB downloads on 2026-10-14 from `https://files.rcsb.org/download/<ID>.pdb` | Frozen protein-context expansion: ubiquitin nonlocal-contact strata, triosephosphate-isomerase dimer, and hemoglobin protein interface |
+
+The protein-context materializer derives protein-only, heavy-atom inputs from
+these deposited sources. Heterogens (including 1A3N hemes) are excluded explicitly;
+this is a protein-context mechanism study, not acceptance for complete hemoglobin
+chemistry. Low/high contact counts are structural proxies, not measured solvent
+accessibility. Derived masks, controls, and outcomes live in ignored evidence
+archives; only deposited source inputs and frozen manifests are tracked.
 
 ## 8UCD molecule retention and connectivity
 

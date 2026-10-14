@@ -83,7 +83,8 @@ def test_homology_diffusion_dispatches_materialized_mosaic_with_ownership(
     captured = []
 
     def capture(args):
-        captured.append((args, Path(args.fasta).read_text()))
+        from dvbfixer.model.diffusion.contract import DiffusionRequest
+        captured.append((args, DiffusionRequest.from_json(Path(args.diffusion_request).read_text())))
 
     monkeypatch.setattr(
         "dvbfixer.model.diffusion_cli.run_diffusion_model",
@@ -101,10 +102,10 @@ def test_homology_diffusion_dispatches_materialized_mosaic_with_ownership(
     ])
 
     assert len(captured) == 1
-    args, diffusion_fasta = captured[0]
-    assert Path(args.input).name == "selected_template_mosaic.pdb"
-    assert diffusion_fasta == ">A\nASGGA\n"
-    assert [(item.target_index, item.template_id) for item in args.diffusion_template_ownership] == [
+    args, request = captured[0]
+    assert Path(args.input).name == "mosaic_diffusion_input.pdb"
+    assert request.target_sequences[0].sequence == "ASGGA"
+    assert [(item.target_index, item.template_id) for item in request.template_ownership] == [
         (0, "known"),
         (4, "known"),
     ]

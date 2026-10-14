@@ -652,7 +652,9 @@ def parse_args(argv=None):
     backend.add_argument('--diffusion-resume', action='store_true',
                          help='Reuse a verified bundle matching the current mosaic request')
     backend.add_argument('--diffusion-context', choices=['none', 'local', 'full'], default='none',
-                         help='Experimental Protenix protein conditioning policy (default: none)')
+                         help='Experimental shared protein conditioning policy; engine capabilities are checked (default: none)')
+    backend.add_argument('--diffusion-regenerate-covered', action='store_true',
+                         help='Opt in to bounded regeneration of covered substitutions and short uncovered windows')
 
     alignment = p.add_argument_group('Alignment')
     alignment.add_argument('--alignment', default=None,
@@ -695,7 +697,7 @@ def parse_args(argv=None):
     provided = {token.split('=', 1)[0] for token in raw_args if token.startswith('-')}
     diffusion_flags = {
         '--diffusion-model', '--diffusion-seed', '--diffusion-timeout',
-        '--diffusion-work-parent', '--diffusion-resume', '--diffusion-context',
+        '--diffusion-work-parent', '--diffusion-resume', '--diffusion-context', '--diffusion-regenerate-covered',
     }
     modeller_flags = {'--num-models', '-n', '--md-level', '--no-loop-refine', '--salign'}
     invalid = (
@@ -750,37 +752,53 @@ def main(argv=None):
     for ch_id, seq in target_chains:
         print(f"  Chain {ch_id}: {len(seq)} residues")
 
-    workdir = tempfile.mkdtemp(prefix='dvbfixer_homology_')
-    if args.template_plan:
-        from dvbfixer.homology_plan import materialize_template_plan
-        template_paths, args.alignment = materialize_template_plan(
-            Path(args.template_plan).resolve(), Path(workdir), verbose=args.verbose)
-    else:
-        template_paths = [str(Path(t).resolve()) for t in args.template]
+    workdir = tempfile.mkdtemp(prefix='dvbfixer_homology_',
+                              dir=args.diffusion_work_parent if args.backend == 'diffusion' else None)
+    try:
+        if args.template_plan:
+            from dvbfixer.homology_plan import materialize_template_plan
+            template_paths, args.alignment = materialize_template_plan(
+                Path(args.template_plan).resolve(), Path(workdir), verbose=args.verbose)
+        else:
+            template_paths = [str(Path(t).resolve()) for t in args.template]
+    except Exception:
+        if args.keep_workdir:
+            print(f"Homology mosaic workdir: {workdir}")
+        else:
+            shutil.rmtree(workdir, ignore_errors=True)
+        raise
 
     if args.backend == 'diffusion':
-        from dvbfixer.homology_plan import prepare_mosaic_diffusion_inputs
+        from dvbfixer.homology_plan import build_mosaic_diffusion_request
+        from dvbfixer.model.diffusion.runtime import (
+            DiffusionRuntimeError,
+            resolve_diffusion_runtime,
+        )
         from dvbfixer.model.diffusion_cli import DiffusionCliError, run_diffusion_model
 
         mosaic = Path(template_paths[0])
         coverage = mosaic.with_name('selected_template_mosaic.coverage.json')
         try:
-            diffusion_fasta, ownership = prepare_mosaic_diffusion_inputs(
+            runtime = resolve_diffusion_runtime(args.diffusion_model)
+            mosaic_input, mosaic_request = build_mosaic_diffusion_request(
                 coverage,
                 target_chains,
                 Path(workdir),
+                seeds=tuple(args.diffusion_seeds),
+                regenerate_covered=args.diffusion_regenerate_covered,
+                profile=runtime.profile,
             )
             output_bundle = f"{output_prefix}_homology_diffusion"
             run_diffusion_model(argparse.Namespace(
-                input=str(mosaic),
+                input=str(mosaic_input),
                 output=output_bundle,
-                fasta=str(diffusion_fasta),
-                diffusion_model=args.diffusion_model,
+                fasta=None,
+                diffusion_request=str(mosaic_request),
+                diffusion_model=runtime.model,
                 diffusion_seeds=args.diffusion_seeds,
                 diffusion_timeout=args.diffusion_timeout,
                 diffusion_work_parent=args.diffusion_work_parent,
                 diffusion_heterogen_smiles=[],
-                diffusion_template_ownership=ownership,
                 diffusion_resume=args.diffusion_resume,
                 diffusion_context=args.diffusion_context,
                 keep_heterogens=True,
@@ -794,7 +812,7 @@ def main(argv=None):
                     Path(output_bundle), Path(f"{output_prefix}_homology.pdb"), resume=args.diffusion_resume,
                 )
                 _postprocess_model(str(selected), args)
-        except (DiffusionCliError, ValueError) as exc:
+        except (DiffusionCliError, DiffusionRuntimeError, ValueError) as exc:
             raise SystemExit(f'ERROR: homology diffusion failed: {exc}') from exc
         finally:
             if args.keep_workdir:

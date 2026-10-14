@@ -22,7 +22,7 @@ non-overlapping fragment templates. Do not combine `--template-plan` with
 `--template` or `--alignment`; the plan produces both internally.
 
 With `--backend diffusion`, the template plan instead feeds the authoritative
-`selected_template_mosaic.pdb` directly to the selected isolated Protenix or
+`selected_template_mosaic.pdb` through an exact coverage-derived request to the selected isolated Protenix or
 Protpardelle runner (or the host-compatible installed model under auto selection).
 DVBFixer exports `selected_template_mosaic.coverage.json`, preserves the
 zero-based half-open masks and earlier-template-wins ownership, maps logical
@@ -30,8 +30,22 @@ target IDs such as `VH`/`VL` to distinct PDB chains, and records each covered
 residue's template owner in request and publication provenance. Covered residues
 whose amino-acid identity matches the target are fixed exactly; only uncovered
 regions admitted by the normal diffusion scope are generated. A covered
-substitution currently fails closed rather than silently fixing the wrong
-residue. There is no fallback to Modeller.
+substitution fails closed by default. With explicit
+`--diffusion-regenerate-covered`, substitutions and deletion boundaries regenerate
+bounded windows, expanding short windows to at least three residues and rejecting
+merged windows longer than twelve. Template ownership of regenerated covered
+residues is recorded separately from fixed template ownership. Atoms outside the
+declared windows remain fixed. Positions come directly from coverage, without
+FASTA re-alignment, so repeated sequence blocks cannot move the masks.
+
+Protenix `--diffusion-context local|full` supports multiple uncovered spans and
+jointly sampled gap-bearing chains, including distinct logical `VH`/`VL` mappings.
+Every group still requires a chain from the common reference structure. Multiple
+templates are fitted and merged before inference. Protpardelle explicit context
+currently requires one gap-bearing chain and one contiguous span per represented
+source chain; unsupported mappings fail before runner launch. There is no fallback
+to Modeller. These remain experimental capabilities subject to independent
+geometry validation and the frozen context/Homology acceptance studies.
 
 | JSON key | Type | Description |
 |---|---|---|
@@ -71,7 +85,13 @@ dvbfixer homology target.fasta --template-plan template-plan.json \
 
 # Protenix internal-gap completion followed by preparation/minimization
 dvbfixer homology target.fasta --template-plan template-plan.json \
-  --backend diffusion --diffusion-model protenix --minimize --no-solvent -o target
+  --backend diffusion --diffusion-model protenix --diffusion-context full \
+  --minimize --no-solvent -o target
+
+# Explicit bounded substitutions/deletion-boundary regeneration
+dvbfixer homology target.fasta --template-plan template-plan.json \
+  --backend diffusion --diffusion-model protenix --diffusion-context full \
+  --diffusion-regenerate-covered -o target
 ```
 
 ## Inputs and keys
@@ -88,6 +108,8 @@ dvbfixer homology target.fasta --template-plan template-plan.json \
 | `--diffusion-timeout SECONDS` | `900` | Positive finite runner timeout. |
 | `--diffusion-work-parent DIR` | output parent | Parent for the private isolated-runner workspace. |
 | `--diffusion-resume` | off | Reuse only a verified bundle matching the current mosaic request. |
+| `--diffusion-context` | `none` | Shared `local`/`full` protein context; checked against engine capabilities. Required for Protenix multi-chain or multi-gap plans. |
+| `--diffusion-regenerate-covered` | off | Opt in to bounded covered-substitution, deletion-boundary, and short-window regeneration. |
 | `--alignment PIR` | auto | Use a pre-built PIR alignment instead of automatic alignment. |
 | `--salign` | off | Use Modeller structure-based SALIGN rather than pairwise `align2d`. |
 | `-n`, `--num-models N` | `5` | Number of candidate models to generate. |

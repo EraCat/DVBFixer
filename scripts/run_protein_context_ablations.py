@@ -32,6 +32,8 @@ POLICIES = {
     "full-protein": ProteinContextPolicy(partner_mode="full"),
     "template-only": ProteinContextPolicy(target_flanks=8, same_chain_spatial=True),
     "local-partner-refined": ProteinContextPolicy(target_flanks=8, same_chain_spatial=True),
+    "direct-shell": ProteinContextPolicy(target_flanks=8, same_chain_spatial=True, secondary_radius_angstrom=6.0),
+    "budget-64": ProteinContextPolicy(target_flanks=8, same_chain_spatial=True, residue_budget=64),
 }
 
 
@@ -78,9 +80,10 @@ def worker(args):
     request = DiffusionRequest.from_json(request_path.read_text())
     input_path = builder.build_input(request_path, args.workspace / "input-features")
     mode = SamplingAblationMode.TEMPLATE_ONLY if args.arm == "template-only" else SamplingAblationMode.REINJECTION
+    probe_supported = any(item.atom.chain not in {gap.chain for gap in request.gaps} for item in request.protein_context.fixed_conditioning)
     result, raw_summary_path = adapter.run(request_path, input_path, args.workspace / "raw", args.kalign,
                                          args.checkpoint, cycles=1, steps=200, ablation_mode=mode,
-                                         context_probe=args.arm in {"local-partner", "full-protein"})
+                                         context_probe=probe_supported and args.arm in {"local-partner", "full-protein", "local-partner-refined"})
     if args.arm == "local-partner-refined":
         result = refine_runner_result(request_path, result, args.workspace / "refined", platform_name="Reference")
     validated = build_validated_result(request, result, workspace=args.workspace)
@@ -95,7 +98,7 @@ def worker(args):
         anchor_residues={anchor for gap in request.gaps for anchor in (gap.left_anchor, gap.right_anchor) if anchor is not None},
         closure_passed="junction-peptide-connectivity" not in summary.hard_gate_failures,
         validation_passed=summary.passed,
-        interface_chain_pairs=((request.gaps[0].chain, next(target.chain for target in request.target_sequences if target.chain != request.gaps[0].chain)),),
+        interface_chain_pairs=tuple((request.gaps[0].chain, target.chain) for target in request.target_sequences if target.chain != request.gaps[0].chain),
         expected_generated_atoms=set(request.generated_atoms),
     )
     raw = json.loads(raw_summary_path.read_text())
@@ -127,7 +130,11 @@ def run(args):
             if hashlib.sha256((source / relative).read_bytes()).hexdigest() != digest:
                 raise ValueError("context materialization digest changed")
         original = DiffusionRequest.from_json((source / "request.json").read_text())
-        for arm in args.arm or manifest["arms"]:
+        for arm in args.arm or case.get("arms", manifest["arms"]):
+            support = case.get("arm_support", {}).get(arm, {})
+            if support.get("status") == "unsupported":
+                records.append({"case_id": case["case_id"], "arm": arm, **support})
+                continue
             destination = args.output / case["case_id"] / arm
             if destination.exists():
                 completion = json.loads((destination / "complete.json").read_text())

@@ -1,0 +1,141 @@
+{
+  "cases": [
+    {
+      "artifacts": {
+        "context-request.json": "34f8907e85cfaadc29f0acafcc3d9b71a9bd055041e7f7f8b5d49891df12b180",
+        "materialized/mosaic_diffusion_input.pdb": "c3d75e1be7234aa73a57aaff5b275e732810a9cc96b221f824416879ad2e62c0",
+        "materialized/mosaic_diffusion_request.json": "9cc96da79765330375e41b3f523fa45505aab60f0f555eb3eadf49df808cb988",
+        "materialized/selected_template_mosaic.coverage.json": "f2e2b50fb6f6c33467614f2fa74bc6cbe8d40ef721c0877bd1d3b8290ec48766",
+        "materialized/selected_template_mosaic.pdb": "c3d75e1be7234aa73a57aaff5b275e732810a9cc96b221f824416879ad2e62c0",
+        "materialized/selected_template_mosaic.pir": "6ca79a5d87f4c7d5700e358bbdbfb3ec69d91fd36197b27fb69fa49fc2986b2d",
+        "materialized/selected_template_mosaic.target.fasta": "a56c0c5ee951d0d7fa7534a37cde5b1485f64aceafe839b101aec6a38ce3e9c4",
+        "reference-materialized/selected_template_mosaic.coverage.json": "cfd07ae44592726fc6628e245b6ff24b0f2f2d3ec7391c8b628e9b2608e8fcc2",
+        "reference-materialized/selected_template_mosaic.pdb": "b9333069edf03fa3efc9f754487707aafc92e23ba95ea0b754dfae392358f4a7",
+        "reference-materialized/selected_template_mosaic.pir": "e8b5fdd54d6705bfa6b4e2c1e5481c4e43167eefba0159003afff8adb1309f53",
+        "reference-plan.json": "fb4fe85bf8e277566c1ed10987b65d1e2927ef86048e3e889ab56c9113ccf95c",
+        "target.fasta": "430c3f9aafa1d137cffabbfb7024670cc9749e3782607cced3052571ae9d540a",
+        "template-plan.json": "d9a6aea6ecab5be850879989492304369202682cab29d14bba5754413e49f1b0"
+      },
+      "case_id": "joint-vh-vl",
+      "gap_chains": [
+        "H",
+        "L"
+      ],
+      "gap_count": 2,
+      "regenerate_covered": false,
+      "template_source_sha256": "8988cf76e4fed328b9dda9a195a8fc299cdc3ee88c7a4155454537863226bcfe"
+    },
+    {
+      "artifacts": {
+        "context-request.json": "f64432dee767daf5093e865969eef08e96f9098243837ba8b68d773d8734a1fd",
+        "materialized/mosaic_diffusion_input.pdb": "5302563f8dec5cf7477c22da2edcc09c44633f7c4d69d96b4a1b921201dbba50",
+        "materialized/mosaic_diffusion_request.json": "b29e7b3d742ee6144870779d10b7c683ff6b803f6e3aaa930763119e9b94295f",
+        "materialized/selected_template_mosaic.coverage.json": "ac75112a035f76b40cade9dd94e1bf81e38180023d488841bfca096c500222f2",
+        "materialized/selected_template_mosaic.pdb": "5302563f8dec5cf7477c22da2edcc09c44633f7c4d69d96b4a1b921201dbba50",
+        "materialized/selected_template_mosaic.pir": "a29f901d9f1e08dbb9fd45af4dd746a37cd8710be40e86d3e8c3483a96d68c61",
+        "materialized/selected_template_mosaic.target.fasta": "beee0bc2843220c7b2b5eb631be1da54f8a9df409038d3b76c30b44b5d4f9644",
+        "reference-materialized/selected_template_mosaic.coverage.json": "83d0f0f130b2ab3d255640dbfc05ad7b1e614b2b65abc098a9988eb051703a3d",
+        "reference-materialized/selected_template_mosaic.pdb": "fab957432e97868dab61d2baf4648edcf04c9e6132277f22acbe2a616da19a5c",
+        "reference-materialized/selected_template_mosaic.pir": "c5840115b17f743e5041196a9fcc76db2d40412943006785a105b1a78e0411e7",
+        "reference-plan.json": "2076e9afefd04b31d9d4378ff80a53e6df02aff860c6b86cdca4912ae0279aab",
+        "target.fasta": "beee0bc2843220c7b2b5eb631be1da54f8a9df409038d3b76c30b44b5d4f9644",
+        "template-plan.json": "cde19d0996390f2c017d07ee09980aac63ed58342348ce19efc4ae24baaff7bc"
+      },
+      "case_id": "multiple-spans",
+      "gap_chains": [
+        "A"
+      ],
+      "gap_count": 2,
+      "regenerate_covered": false,
+      "template_source_sha256": "8988cf76e4fed328b9dda9a195a8fc299cdc3ee88c7a4155454537863226bcfe"
+    },
+    {
+      "artifacts": {
+        "context-request.json": "3649a94a1bc0afd855e120e20c7eea2c4bfd9975b53b87fdf2cf7bed374c74e2",
+        "materialized/mosaic_diffusion_input.pdb": "4c266ed4eff173c0c592ad94db74e2c83fb35b732008125e19d409680e3c637d",
+        "materialized/mosaic_diffusion_request.json": "d0d21fff69ced01abeddb2e8eff322cb15eb364d7d288786e3b1ed4fa4e3c5a3",
+        "materialized/selected_template_mosaic.coverage.json": "5f9a1494344cef13745c4c9556eb0e15cc620cec81b9453c93ac143df274d78c",
+        "materialized/selected_template_mosaic.pdb": "fab957432e97868dab61d2baf4648edcf04c9e6132277f22acbe2a616da19a5c",
+        "materialized/selected_template_mosaic.pir": "ffd02378f04ff74bcb353b66bac9462b940d16e81566b2f14b93c1c74e349b05",
+        "materialized/selected_template_mosaic.target.fasta": "3b444d7e79f44b440cb6420401929a3fe78f895cd44c6dc7d45cba8edbf7b35e",
+        "target.fasta": "3b444d7e79f44b440cb6420401929a3fe78f895cd44c6dc7d45cba8edbf7b35e",
+        "template-plan.json": "777b897d96cb5b0bca15287abff86498a41ca7e9b4cd3af42fcfc97055c4595c"
+      },
+      "case_id": "substitution",
+      "gap_chains": [
+        "A"
+      ],
+      "gap_count": 1,
+      "regenerate_covered": true,
+      "template_source_sha256": "8988cf76e4fed328b9dda9a195a8fc299cdc3ee88c7a4155454537863226bcfe"
+    },
+    {
+      "artifacts": {
+        "context-request.json": "4f2888a035f0cedfbc3d9bc5e34f58c814309983a43f8ea5c72aabae440eb0a0",
+        "materialized/mosaic_diffusion_input.pdb": "10532c3e6e817afc01971eb7a643d746e03386c16ed60b2d33caa7df11d2e323",
+        "materialized/mosaic_diffusion_request.json": "a2593f675acf301070a91d45ed268529fb10a8d44f933862015c5f75d90e2852",
+        "materialized/selected_template_mosaic.coverage.json": "63d934d4e9cfeedee13866543de4911b15cd50437f84d417ce59f7589d58b00a",
+        "materialized/selected_template_mosaic.pdb": "74ad8f32db00d3c0191d3e3ef826a3b400fb2da2afd6be155c4bad4bd2175d44",
+        "materialized/selected_template_mosaic.pir": "1980ba77369a6721539d22cab3ba364c2ec7aff365beeda59aa080a5f92ae2db",
+        "materialized/selected_template_mosaic.target.fasta": "27505ab944f91681b2ca6ab3b628b7f327efab470091e9fa8bc7a93623acf333",
+        "target.fasta": "27505ab944f91681b2ca6ab3b628b7f327efab470091e9fa8bc7a93623acf333",
+        "template-plan.json": "882cf5a42cecf96c6aed4bf81a415b9364514dfc4f3b4328e3ce9f3d34173478"
+      },
+      "case_id": "deletion",
+      "gap_chains": [
+        "A"
+      ],
+      "gap_count": 1,
+      "regenerate_covered": true,
+      "template_source_sha256": "8988cf76e4fed328b9dda9a195a8fc299cdc3ee88c7a4155454537863226bcfe"
+    },
+    {
+      "artifacts": {
+        "context-request.json": "89e3d0576e25ebb4f744d2cbc98495113fc23396fb3680b154df05cd7b78f0f4",
+        "materialized/fitted/A/template_1_A_fit.pdb": "36fc31846b38e701924ddc401197bae85af4f8b48253dc1fa6a09a37360f3df8",
+        "materialized/fitted/A/template_2_A_fit.pdb": "36fc31846b38e701924ddc401197bae85af4f8b48253dc1fa6a09a37360f3df8",
+        "materialized/fitted/B/template_1_B_fit.pdb": "3dcacea1d50b4b474c23f5c95094df0296da375157904d5ca43bff19a161d922",
+        "materialized/fitted/B/template_2_B_fit.pdb": "3dcacea1d50b4b474c23f5c95094df0296da375157904d5ca43bff19a161d922",
+        "materialized/mosaic_diffusion_input.pdb": "5dd65441f52613f17b2879d7c4ed8b9d8c3903bbde5514f75c3ef37c2bee3f61",
+        "materialized/mosaic_diffusion_request.json": "c6efc12d8b87aad6a2c2a5e172fa038248b650e8a1539ff308b7685c07601b70",
+        "materialized/selected_template_mosaic.coverage.json": "175baec31fd35f3bc85c9cab4292f30292c41d0111800c2380f990e3d64fc75d",
+        "materialized/selected_template_mosaic.pdb": "5dd65441f52613f17b2879d7c4ed8b9d8c3903bbde5514f75c3ef37c2bee3f61",
+        "materialized/selected_template_mosaic.pir": "9485498a313c83119630cb41705aaa11d601a4342c4941c18e89a64cbbd9abf4",
+        "materialized/selected_template_mosaic.target.fasta": "beee0bc2843220c7b2b5eb631be1da54f8a9df409038d3b76c30b44b5d4f9644",
+        "materialized/structural_alignment_A.pir": "f5019d77b6bd246e490115f9dc5e30443cf8f4f968df04a40d06a26335b2b8f4",
+        "materialized/structural_alignment_B.pir": "c53e1b1e73883a0e8a7fff78b6a8c517ec9280a07404f33077733e1a49bbde2d",
+        "reference-materialized/fitted/A/template_1_A_fit.pdb": "36fc31846b38e701924ddc401197bae85af4f8b48253dc1fa6a09a37360f3df8",
+        "reference-materialized/fitted/A/template_2_A_fit.pdb": "36fc31846b38e701924ddc401197bae85af4f8b48253dc1fa6a09a37360f3df8",
+        "reference-materialized/fitted/B/template_1_B_fit.pdb": "3dcacea1d50b4b474c23f5c95094df0296da375157904d5ca43bff19a161d922",
+        "reference-materialized/fitted/B/template_2_B_fit.pdb": "3dcacea1d50b4b474c23f5c95094df0296da375157904d5ca43bff19a161d922",
+        "reference-materialized/selected_template_mosaic.coverage.json": "1b207df804eeb8ee9a1f457c46f564a2ded8797ca5b7f20b64268ad1c181e031",
+        "reference-materialized/selected_template_mosaic.pdb": "fab957432e97868dab61d2baf4648edcf04c9e6132277f22acbe2a616da19a5c",
+        "reference-materialized/selected_template_mosaic.pir": "c5840115b17f743e5041196a9fcc76db2d40412943006785a105b1a78e0411e7",
+        "reference-materialized/structural_alignment_A.pir": "f5019d77b6bd246e490115f9dc5e30443cf8f4f968df04a40d06a26335b2b8f4",
+        "reference-materialized/structural_alignment_B.pir": "c53e1b1e73883a0e8a7fff78b6a8c517ec9280a07404f33077733e1a49bbde2d",
+        "reference-plan.json": "9b8e3bf69f20451c25379f2f5416254b7ece34f7b3f5ecba59cc9b4e3aeba20e",
+        "target.fasta": "beee0bc2843220c7b2b5eb631be1da54f8a9df409038d3b76c30b44b5d4f9644",
+        "template-plan.json": "65de6da4db3fab6b4408a754cc16c9e85c77732c0248a08bd758ca0256e77951",
+        "translated_reference.pdb": "fdb01f2b280b1621f0a52647c502716c568ffb77a21416be17ae8194d5bd1562"
+      },
+      "case_id": "multiple-templates",
+      "gap_chains": [
+        "A"
+      ],
+      "gap_count": 1,
+      "regenerate_covered": false,
+      "template_source_sha256": "8988cf76e4fed328b9dda9a195a8fc299cdc3ee88c7a4155454537863226bcfe"
+    }
+  ],
+  "comparison": "identical-template-plan-and-target-MODELLER-single-candidate-md-none",
+  "context": "full",
+  "limits": [
+    "synthetic logical VH/VL engineering mapping; source is not an antibody",
+    "covered edits have no experimentally solved mutant reference",
+    "no threshold changes"
+  ],
+  "no_replacement": true,
+  "schema_version": 1,
+  "seed": 7,
+  "status": "frozen-before-homology-inference"
+}

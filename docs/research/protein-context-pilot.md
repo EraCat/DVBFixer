@@ -114,11 +114,15 @@ The legacy 36HB public smoke retained its previous selected PDB SHA-256,
 
 Re-audit the durable archive:
 
+The original analysis digest above records the first pilot analyzer. The current
+schema-2 analyzer adds raw/fixed-environment measurements; write its follow-up
+separately to preserve that original evidence:
+
 ```bash
 PYTHONPATH=src python scripts/analyze_protein_context_ablations.py \
   --manifest docs/research/protein-context-cohort.json \
   --outcomes .artifacts/protein-context-acceptance \
-  --output .artifacts/protein-context-acceptance/analysis.json \
+  --output .artifacts/protein-context-acceptance/analysis-current.json \
   --public-bundle .artifacts/protein-context-acceptance/public-cli-bundle
 ```
 

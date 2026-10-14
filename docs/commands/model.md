@@ -81,9 +81,13 @@ dvbfixer model --input-dir structures --output-dir models \
 Protenix can opt into source-only protein context with
 `--diffusion-model protenix --diffusion-context local` (eight sequence flanks and
 observed-anchor spatial/partner shells) or `--diffusion-context full` (the
-supported protein environment). The default is `none`. Context-v1 supports one
-gap-bearing chain, complete canonical protein context, and a bounded residue
-axis; unsupported selections fail before inference. Fixed conditioning and
+supported protein environment). The default is `none`. Explicit context requires
+complete canonical protein context and a bounded residue
+axis; unsupported selections fail before inference. Protenix also supports an
+explicit jointly sampled plan for multiple gap-bearing chains. Protpardelle can
+use the same explicit selector for one gap-bearing chain and one contiguous span
+per represented source chain; discontiguous entities and joint gap-bearing chains
+are rejected before runner launch. Fixed conditioning and
 preserved-only atoms are distinguished in provenance. See the
 [bounded causal pilot and remaining acceptance](../research/protein-context-pilot.md).
 
@@ -185,7 +189,7 @@ fatal and publish nothing.
 | `--fasta` | none | FASTA file with complete sequence(s) (alternative to SEQRES) |
 | `--backend` | `modeller` | Select `modeller` or the explicit experimental `diffusion` path |
 | `--diffusion-model` | auto | Optional model choice: `protpardelle` or `protenix`; by default DVBFixer selects an installed model compatible with the machine |
-| `--diffusion-context` | `none` | Experimental Protenix protein context: `local` or `full`; one gap-bearing chain |
+| `--diffusion-context` | `none` | Experimental shared protein context: `local` or `full`; engine-specific capability checks |
 | `--diffusion-request` | none | Existing schema-4 request with explicit sequence placement and masks; requires its exact referenced normalized PDB |
 | `--diffusion-seed` | 7 | Candidate seed; repeat for multiple candidates |
 | `--diffusion-timeout` | 900 | External runner timeout in seconds; the default covers sequential multi-chain sampling and local refinement |

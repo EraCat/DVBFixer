@@ -91,8 +91,8 @@ Model step:
   --diffusion-work-parent DIFFUSION_WORK_PARENT
                         Existing parent for private diffusion workspaces
   --diffusion-context {none,local,full}
-                        Experimental Protenix protein conditioning policy
-                        (default: none)
+                        Experimental shared protein conditioning policy;
+                        engine capabilities are checked (default: none)
   --diffusion-resume    Reuse a verified model bundle matching the current
                         scientific request
   --fasta FASTA         FASTA file with complete sequence(s) for model step

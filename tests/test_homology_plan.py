@@ -1,12 +1,15 @@
 import json
 import shutil
+from pathlib import Path
 
 import pytest
 
 from dvbfixer.homology_plan import (
+    build_mosaic_diffusion_request,
     materialize_template_plan,
     prepare_mosaic_diffusion_inputs,
 )
+from dvbfixer.model.diffusion.contract import DiffusionRequest
 
 
 def _atom(serial, residue, number, x):
@@ -165,3 +168,112 @@ def test_mosaic_diffusion_rejects_covered_substitution(tmp_path):
 
     with pytest.raises(ValueError, match="covered substitutions"):
         prepare_mosaic_diffusion_inputs(coverage, [("A", "AGGG")], tmp_path)
+
+
+@pytest.mark.parametrize("scenario", ["multiple", "substitution", "deletion", "joint"])
+def test_explicit_mosaic_requests_keep_authoritative_positions_and_edit_ownership(tmp_path, scenario):
+    template = tmp_path / "template.pdb"
+    chains = ("D", "d") if scenario == "joint" else ("A",)
+    template.write_text("".join(_atom(index + 1 + offset * 14, "ALA", index + 1, index * 3.8)
+                               .replace("ALA A", f"ALA {chain}")
+                               for offset, chain in enumerate(chains) for index in range(14)) + "END\n")
+    target = "A" * 14
+    if scenario == "substitution":
+        target = target[:6] + "S" + target[7:]
+    if scenario == "deletion":
+        target = target[:6] + "-" + target[7:]
+    groups = []
+    for chain in chains:
+        spans = [{"start": 0, "end": 1}, {"start": 4, "end": 14}] if scenario == "joint" else (
+            [{"start": 0, "end": 1}, {"start": 4, "end": 9}, {"start": 12, "end": 14}]
+            if scenario == "multiple" else [])
+        groups.append({"chainId": chain, "rows": [
+            {"id": chain, "kind": "target", "sequence": target},
+            {"id": f"known-{chain}", "kind": "template", "templateId": f"known-{chain}", "sequence": "A" * 14},
+        ], "masks": {f"known-{chain}": spans}, "maskModes": {f"known-{chain}": "ranges" if spans else "all"}})
+    plan = tmp_path / "plan.json"
+    plan.write_text(json.dumps({"templates": [{"id": f"known-{chain}", "path": str(template), "chain": chain, "targetChain": chain}
+                                            for chain in chains], "alignmentGroups": groups}))
+    work = tmp_path / "work"
+    materialize_template_plan(plan, work)
+    coverage = work / "selected_template_mosaic.coverage.json"
+    if scenario in {"substitution", "deletion"}:
+        with pytest.raises(ValueError, match="substitutions|deletions"):
+            build_mosaic_diffusion_request(coverage, [(chain, target.replace("-", "")) for chain in chains], work, seeds=(7,))
+    input_path, request_path = build_mosaic_diffusion_request(coverage, [(chain, target.replace("-", "")) for chain in chains], work,
+                                                          seeds=(7, 19), regenerate_covered=scenario in {"substitution", "deletion"})
+    request = DiffusionRequest.from_json(request_path.read_text())
+    assert request.seeds == (7, 19)
+    assert {item.chain for item in request.target_sequences} == set(chains)
+    assert {owner.residue for owner in request.template_ownership}.isdisjoint(
+        {residue for gap in request.gaps for residue in gap.generated_residues})
+    assert all(atom.residue_number not in {residue.residue_number for gap in request.gaps if gap.chain == atom.chain
+                                         for residue in gap.generated_residues} for atom in request.fixed_atoms)
+    if scenario == "multiple":
+        assert [(gap.target_interval.start, gap.target_interval.stop) for gap in request.gaps] == [(1, 4), (9, 12)]
+        assert request.sequence_placements[0].observed_target_indices == (0, 4, 5, 6, 7, 8, 12, 13)
+    elif scenario == "joint":
+        assert [gap.chain for gap in request.gaps] == ["D", "d"]
+    else:
+        assert len(request.gaps) == 1
+        assert request.regenerated_template_ownership
+        assert {owner.residue for owner in request.regenerated_template_ownership} == set(request.gaps[0].generated_residues)
+        assert not any(line[22:26].strip() in {residue.residue_number for residue in request.gaps[0].generated_residues}
+                       for line in input_path.read_text().splitlines() if line.startswith("ATOM"))
+
+
+@pytest.mark.parametrize("distance, linked", [(2.05, True), (12.0, False)])
+def test_covered_regeneration_cannot_erase_an_existing_disulfide(tmp_path, distance, linked):
+    template = tmp_path / "template.pdb"
+    sequence = "AACAAAACAAA"
+    lines = []
+    for index, aa in enumerate(sequence):
+        name = "CYS" if aa == "C" else "ALA"
+        lines.append(_atom(len(lines) + 1, name, index + 1, index * 3.8))
+        if aa == "C":
+            point = 0 if index == 2 else distance
+            lines.append(_atom(len(lines) + 1, name, index + 1, point).replace(" CA ", " SG ").replace(" C  \n", " S  \n"))
+    template.write_text("".join(lines) + "END\n")
+    target = sequence[:2] + "S" + sequence[3:]
+    plan = tmp_path / "plan.json"
+    plan.write_text(json.dumps({"templates": [{"id": "known", "path": str(template), "chain": "A", "targetChain": "A"}],
+        "alignmentGroups": [{"chainId": "A", "rows": [{"id": "A", "kind": "target", "sequence": target},
+            {"id": "known", "kind": "template", "sequence": sequence}], "maskModes": {"known": "all"}}]}))
+    work = tmp_path / "work"
+    materialize_template_plan(plan, work)
+    before = (work / "selected_template_mosaic.pdb").read_bytes()
+    if linked:
+        with pytest.raises(ValueError, match="disulfide-linked"):
+            build_mosaic_diffusion_request(work / "selected_template_mosaic.coverage.json", [("A", target)], work,
+                                          seeds=(7,), regenerate_covered=True)
+        assert not (work / "mosaic_diffusion_input.pdb").exists()
+    else:
+        build_mosaic_diffusion_request(work / "selected_template_mosaic.coverage.json", [("A", target)], work,
+                                      seeds=(7,), regenerate_covered=True)
+    assert (work / "selected_template_mosaic.pdb").read_bytes() == before
+
+
+def test_modeller_comparator_mapping_preserves_original_and_case_distinct_chains(tmp_path, monkeypatch):
+    import importlib.util
+    from types import SimpleNamespace
+
+    script = Path(__file__).resolve().parents[1] / "scripts/run_context_homology_acceptance.py"
+    monkeypatch.syspath_prepend(str(script.parent))
+    spec = importlib.util.spec_from_file_location("context_comparator", script)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    original = tmp_path / "model.pdb"
+    payload = (_atom(1, "ALA", 1, 1).replace("ALA A", "ALA D") + "TER       2      ALA D   1\n"
+               + _atom(2, "GLY", 2, 2).replace("GLY A", "GLY d"))
+    original.write_text(payload)
+    destination = tmp_path / "comparator.pdb"
+    request = SimpleNamespace(target_sequences=[SimpleNamespace(chain="D", sequence="A"), SimpleNamespace(chain="d", sequence="G")])
+    mapping = module.normalize_comparator_ids(original, destination, request)
+    assert original.read_text() == payload
+    assert [line[21:27] for line in destination.read_text().splitlines() if line.startswith("ATOM")] == ["D   1 ", "d   1 "]
+    assert len(destination.read_text().splitlines()) == 3
+    assert mapping[1]["original_residue_number"] == "2"
+    request.target_sequences[1].sequence = "A"
+    with pytest.raises(ValueError, match="complete declared target"):
+        module.normalize_comparator_ids(original, tmp_path / "bad.pdb", request)
+    assert not (tmp_path / "bad.pdb").exists()

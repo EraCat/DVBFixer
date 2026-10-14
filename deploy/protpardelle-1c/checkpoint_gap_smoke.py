@@ -13,7 +13,7 @@ import tempfile
 import threading
 import time
 from collections.abc import Callable
-from contextlib import nullcontext
+from contextlib import contextmanager, nullcontext
 from dataclasses import asdict, replace
 from pathlib import Path
 from typing import Any
@@ -39,6 +39,7 @@ from dvbfixer.model.diffusion.contract import (
 )
 from dvbfixer.model.diffusion.geometry import synchronize_and_reinject, weighted_kabsch
 from dvbfixer.model.diffusion.pdb_materialize import materialize_candidate_pdb
+from dvbfixer.model.diffusion.protein_context import context_evidence, sampling_entities, select_legacy_partner_spans, validate_context_source
 from dvbfixer.model.diffusion.runner import DIFFUSION_RUNNER_PROTOCOL_VERSION
 from dvbfixer.model.diffusion.trace import build_sampler_trace, write_sampler_trace
 from dvbfixer.model.diffusion.validate import validate_runner_result
@@ -251,6 +252,32 @@ def _chain_sampling_requests(
     fixed_coordinates: dict[AtomIdentity, np.ndarray] | None = None,
 ) -> tuple[DiffusionRequest, ...]:
     """Build gap-chain invocations with optional local fixed partner context."""
+    if request.protein_context is not None:
+        if len({gap.chain for gap in request.gaps}) != 1:
+            raise ValueError("Protpardelle explicit context does not support joint gap-bearing chains")
+        entities = sampling_entities(request)
+        if len({entity.target.chain for entity in entities}) != len(entities):
+            raise ValueError("Protpardelle explicit context does not support discontiguous source-chain entities")
+        starts = {span.chain: span.start for span in request.protein_context.spans}
+        selected = {item.atom for item in request.protein_context.fixed_conditioning}
+        return (replace(
+            request, protein_context=None,
+            target_sequences=tuple(entity.target for entity in entities),
+            sequence_placements=tuple(entity.placement for entity in entities),
+            gaps=tuple(replace(gap, target_interval=type(gap.target_interval)(
+                gap.target_interval.start - starts[gap.chain],
+                gap.target_interval.stop - starts[gap.chain],
+            )) for gap in request.gaps),
+            fixed_atoms=tuple(atom for atom in request.fixed_atoms if atom in selected),
+            template_ownership=tuple(replace(owner, target_index=owner.target_index - starts[owner.chain])
+                                     for owner in request.template_ownership if owner.residue in {
+                                         ResidueIdentity(atom.chain, atom.residue_number, atom.insertion_code) for atom in selected
+                                     }),
+            regenerated_template_ownership=(tuple(replace(owner, target_index=owner.target_index - starts[owner.chain])
+                                                   for owner in request.regenerated_template_ownership)
+                                            if request.regenerated_template_ownership is not None else None),
+            retained_explicit_links=(),
+        ),)
     gap_chains = {gap.chain for gap in request.gaps}
     requests: list[DiffusionRequest] = []
     for target in request.target_sequences:
@@ -303,6 +330,8 @@ def _chain_sampling_requests(
                 for ownership in request.template_ownership
                 if ownership.chain == chain
             ),
+            regenerated_template_ownership=(tuple(owner for owner in request.regenerated_template_ownership if owner.chain == chain)
+                                            if request.regenerated_template_ownership is not None else None),
             retained_explicit_links=(),
         ))
     if not requests:
@@ -321,121 +350,25 @@ def _local_partner_context(
     tuple[SequencePlacement, ...],
     tuple[AtomIdentity, ...],
 ]:
-    """Select deterministic contiguous partner-chain crops near gap anchors."""
-    if residue_budget <= 0:
-        return (), (), ()
-    anchor_residues = {
-        anchor
-        for gap in request.gaps
-        if gap.chain == target_chain
-        for anchor in (gap.left_anchor, gap.right_anchor)
-        if anchor is not None
-    }
-    anchor_coordinates = np.asarray([
-        coordinate
-        for atom, coordinate in fixed_coordinates.items()
-        if ResidueIdentity(
-            atom.chain,
-            atom.residue_number,
-            atom.insertion_code,
-        ) in anchor_residues
-    ])
-    if len(anchor_coordinates) == 0:
-        return (), (), ()
-
+    """Materialize the shared legacy-compatible source-only selection policy."""
     targets = {target.chain: target for target in request.target_sequences}
-    placements = {
-        placement.chain: placement for placement in request.sequence_placements
-    }
-    candidates: list[
-        tuple[float, str, int, int, int, tuple[tuple[int, ResidueIdentity], ...]]
-    ] = []
-    for partner_chain, target in targets.items():
-        if partner_chain == target_chain:
-            continue
-        placement = placements[partner_chain]
-        observed = tuple(zip(
-            placement.observed_target_indices,
-            placement.observed_residues,
-        ))
-        distance_by_index: dict[int, float] = {}
-        for index, residue in observed:
-            residue_coordinates = np.asarray([
-                coordinate
-                for atom, coordinate in fixed_coordinates.items()
-                if ResidueIdentity(
-                    atom.chain,
-                    atom.residue_number,
-                    atom.insertion_code,
-                ) == residue
-            ])
-            if len(residue_coordinates) == 0:
-                continue
-            distances = np.linalg.norm(
-                residue_coordinates[:, None, :] - anchor_coordinates[None, :, :],
-                axis=2,
-            )
-            minimum = float(np.min(distances))
-            if minimum <= _INTERCHAIN_CONTEXT_CUTOFF_ANGSTROM:
-                distance_by_index[index] = minimum
-        if not distance_by_index:
-            continue
-
-        runs: list[list[tuple[int, ResidueIdentity]]] = []
-        for item in observed:
-            if not runs or item[0] != runs[-1][-1][0] + 1:
-                runs.append([item])
-            else:
-                runs[-1].append(item)
-        eligible = [
-            run for run in runs if any(index in distance_by_index for index, _ in run)
-        ]
-        run = min(
-            eligible,
-            key=lambda items: (
-                -sum(index in distance_by_index for index, _ in items),
-                min(distance_by_index.get(index, float("inf")) for index, _ in items),
-                items[0][0],
-            ),
-        )
-        contact_indices = [index for index, _ in run if index in distance_by_index]
-        start = max(run[0][0], min(contact_indices) - _INTERCHAIN_CONTEXT_SEQUENCE_PADDING)
-        stop = min(run[-1][0] + 1, max(contact_indices) + 1 + _INTERCHAIN_CONTEXT_SEQUENCE_PADDING)
-        candidates.append((
-            min(distance_by_index[index] for index in contact_indices),
-            partner_chain,
-            start,
-            stop,
-            min(contact_indices, key=distance_by_index.__getitem__),
-            tuple(run),
-        ))
-
+    placements = {placement.chain: placement for placement in request.sequence_placements}
     selected_targets: list[TargetSequence] = []
     selected_placements: list[SequencePlacement] = []
     selected_residues: set[ResidueIdentity] = set()
-    remaining = residue_budget
-    for _distance, partner_chain, start, stop, closest_contact, run in sorted(candidates):
-        if remaining <= 0:
-            break
-        if stop - start > remaining:
-            start = max(start, closest_contact - (remaining - 1) // 2)
-            stop = min(stop, start + remaining)
-            start = max(run[0][0], stop - remaining)
-        selected = tuple(
-            (index, residue) for index, residue in run if start <= index < stop
-        )
-        if not selected:
-            continue
-        sequence = targets[partner_chain].sequence[start:stop]
-        selected_targets.append(TargetSequence(partner_chain, sequence))
+    for span in select_legacy_partner_spans(request, target_chain, fixed_coordinates, residue_budget=residue_budget):
+        placement = placements[span.chain]
+        selected = tuple((index, residue) for index, residue in zip(placement.observed_target_indices, placement.observed_residues)
+                         if span.start <= index < span.stop)
+        sequence = targets[span.chain].sequence[span.start:span.stop]
+        selected_targets.append(TargetSequence(span.chain, sequence))
         selected_placements.append(SequencePlacement(
-            chain=partner_chain,
+            chain=span.chain,
             target_length=len(sequence),
-            observed_target_indices=tuple(index - start for index, _ in selected),
+            observed_target_indices=tuple(index - span.start for index, _ in selected),
             observed_residues=tuple(residue for _, residue in selected),
         ))
         selected_residues.update(residue for _, residue in selected)
-        remaining -= len(sequence)
 
     selected_atoms = tuple(
         atom
@@ -849,6 +782,72 @@ def _artifact(workspace: Path, path: Path) -> ArtifactReference:
     return ArtifactReference(path.resolve().relative_to(workspace.resolve()).as_posix(), _sha256(path))
 
 
+class _DenoiserContextProbe:
+    """Research-only, same-input intervention before projection at forward call 100."""
+
+    def __init__(self, request):
+        from protpardelle.common import residue_constants
+
+        mapped = _target_residue_map(request)
+        index = {residue: position for position, residue in mapped.items()}
+        gap_chains = {gap.chain for gap in request.gaps}
+        def address(atom):
+            residue = ResidueIdentity(atom.chain, atom.residue_number, atom.insertion_code)
+            return index[residue], residue_constants.atom_order[atom.atom_name]
+        self.partners = tuple(address(atom) for atom in request.fixed_atoms if atom.chain not in gap_chains)
+        self.generated = tuple(address(atom) for atom in request.generated_atoms)
+        if not self.partners or not self.generated:
+            raise ValueError("causal probe requires represented fixed partner and generated atoms")
+        self.calls = 0
+        self.result = None
+
+    def __call__(self, module, args, kwargs):
+        import torch
+
+        index = self.calls
+        self.calls += 1
+        if index != 100:
+            return
+        if len(args) != 3:
+            raise RuntimeError("unexpected Protpardelle denoiser positional signature")
+        state = args[0]
+        cpu_rng = torch.random.get_rng_state()
+        cuda_rng = torch.cuda.get_rng_state_all() if state.device.type == "cuda" else None
+        mps_rng = torch.mps.get_rng_state() if state.device.type == "mps" else None
+        try:
+            base = module.forward(*args, **kwargs).clone()
+            repeat = module.forward(*args, **kwargs).clone()
+            shifted = state.clone()
+            for residue, atom in self.partners:
+                shifted[:, residue, atom, 0] += 25.0
+            changed = module.forward(shifted, *args[1:], **kwargs)
+            delta = torch.stack([changed[:, residue, atom] - base[:, residue, atom]
+                                 for residue, atom in self.generated], dim=1)
+            self.result = {
+                "forward_call_index": index, "partner_translation_angstrom": [25.0, 0.0, 0.0],
+                "same_features_and_sigma": True, "before_projection": True,
+                "repeat_max_abs_delta_angstrom": float((repeat - base).abs().max().item()),
+                "generated_response_rmsd_angstrom": float(torch.sqrt(torch.mean(torch.sum(delta * delta, dim=-1))).item()),
+                "generated_response_max_displacement_angstrom": float(torch.linalg.vector_norm(delta, dim=-1).max().item()),
+            }
+        finally:
+            torch.random.set_rng_state(cpu_rng)
+            if cuda_rng is not None:
+                torch.cuda.set_rng_state_all(cuda_rng)
+            if mps_rng is not None:
+                torch.mps.set_rng_state(mps_rng)
+
+
+@contextmanager
+def _probe_hook(module, probe):
+    hook = module.register_forward_pre_hook(probe, with_kwargs=True) if probe else None
+    try:
+        yield
+    finally:
+        if hook:
+            hook.remove()
+
+
 def _run_staged(
     request_path: Path,
     output_dir: Path,
@@ -861,6 +860,7 @@ def _run_staged(
     per_step_reinjection: bool,
     device_name: str,
     mps_profile: bool,
+    context_probe: bool = False,
 ) -> tuple[RunnerResult, Path]:
     import torch
     from protpardelle.common import residue_constants
@@ -885,6 +885,8 @@ def _run_staged(
     source = workspace.joinpath(*Path(request.normalized_pdb.path).parts)
     if _sha256(source) != request.normalized_pdb.sha256:
         raise ValueError("normalized PDB digest mismatch")
+    if request.protein_context is not None:
+        validate_context_source(request, source.read_bytes())
     fixed_coordinates = _read_fixed_coordinates(source, request.fixed_atoms)
     fixed_residue_names = _read_fixed_residue_names(source, request.fixed_atoms)
     sampling_requests = _chain_sampling_requests(request, fixed_coordinates)
@@ -944,6 +946,7 @@ def _run_staged(
     fit_squared_displacement = 0.0
     fit_max_displacement = 0.0
     conditioning_contexts: list[SamplerConditioningContext] = []
+    context_probes = []
     for invocation_index, sampling_request in enumerate(sampling_requests):
         invocation_seed = seed + invocation_index
         seed_everything(invocation_seed)
@@ -1026,7 +1029,8 @@ def _run_staged(
         _synchronize(torch, device)
         denoising_start = time.perf_counter()
         profile_context = torch.mps.profiler.profile() if mps_profile else nullcontext()
-        with profile_context:
+        probe = _DenoiserContextProbe(sampling_request) if context_probe else None
+        with profile_context, _probe_hook(model.struct_model, probe):
             sampled = model.sample(
                 seq_mask=seq_mask,
                 residue_index=residue_index,
@@ -1052,6 +1056,10 @@ def _run_staged(
                 uniform_steps=True,
                 **sample_options,
             )
+        if probe:
+            if probe.result is None:
+                raise RuntimeError("causal denoiser probe did not execute")
+            context_probes.append(probe.result)
         _assert_tensor_device("sampled coordinates", sampled["x"], device)
         _synchronize(torch, device)
         denoising_seconds += time.perf_counter() - denoising_start
@@ -1194,6 +1202,9 @@ def _run_staged(
                     for atom in context.atoms
                 )
             ),
+            protein_context_evidence=(
+                context_evidence(request, sampler_atom_order) if request.protein_context else None
+            ),
         ),
     )
 
@@ -1324,6 +1335,7 @@ def _run_staged(
         "step_scale": step_scale,
         "s_churn": s_churn,
         "motif_placements": placements,
+        **({"denoiser_context_probes": context_probes} if context_probe else {}),
         "native_conditioning_fit": native_conditioning_fit,
         "per_step_reinjection": per_step_reinjection,
         "per_step_callback": callback_stats,
@@ -1358,6 +1370,7 @@ def run(
     per_step_reinjection: bool = False,
     device: str = "cuda",
     mps_profile: bool = False,
+    context_probe: bool = False,
 ) -> None:
     request_path = request_path.resolve()
     workspace = request_path.parent
@@ -1382,6 +1395,7 @@ def run(
             per_step_reinjection=per_step_reinjection,
             device_name=device,
             mps_profile=mps_profile,
+            context_probe=context_probe,
         )
         staging.rename(output_dir)
     finally:
@@ -1402,6 +1416,7 @@ def main() -> None:
     parser.add_argument("--device", choices=("cpu", "cuda", "mps"), default="cuda")
     parser.add_argument("--mps-profile", action="store_true")
     parser.add_argument("--per-step-reinjection", action="store_true")
+    parser.add_argument("--context-probe", action="store_true")
     args = parser.parse_args()
     run(
         args.request,
@@ -1414,6 +1429,7 @@ def main() -> None:
         per_step_reinjection=args.per_step_reinjection,
         device=args.device,
         mps_profile=args.mps_profile,
+        context_probe=args.context_probe,
     )
 
 

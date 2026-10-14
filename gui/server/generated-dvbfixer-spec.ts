@@ -445,7 +445,7 @@ export const GENERATED_COMMANDS = [
         "label": "Diffusion Context",
         "type": "select",
         "group": "Diffusion options",
-        "help": "Experimental explicit Protenix protein context selection (default: none/legacy path)",
+        "help": "Experimental shared protein context selection; engine capabilities are checked (default: none/legacy path)",
         "required": false,
         "repeatable": false,
         "multi": false,
@@ -3546,7 +3546,7 @@ export const GENERATED_COMMANDS = [
         "label": "Diffusion Context",
         "type": "select",
         "group": "Backend",
-        "help": "Experimental Protenix protein conditioning policy (default: none)",
+        "help": "Experimental shared protein conditioning policy; engine capabilities are checked (default: none)",
         "required": false,
         "repeatable": false,
         "multi": false,
@@ -3556,6 +3556,18 @@ export const GENERATED_COMMANDS = [
           "local",
           "full"
         ]
+      },
+      {
+        "flag": "--diffusion-regenerate-covered",
+        "dest": "diffusion_regenerate_covered",
+        "label": "Diffusion Regenerate Covered",
+        "type": "bool",
+        "group": "Backend",
+        "help": "Opt in to bounded regeneration of covered substitutions and short uncovered windows",
+        "required": false,
+        "repeatable": false,
+        "multi": false,
+        "default": false
       },
       {
         "flag": "--alignment",
@@ -3723,7 +3735,8 @@ export const GENERATED_COMMANDS = [
           "--diffusion-model",
           "--diffusion-seed",
           "--diffusion-timeout",
-          "--diffusion-context"
+          "--diffusion-context",
+          "--diffusion-regenerate-covered"
         ]
       },
       {
@@ -4452,7 +4465,7 @@ export const GENERATED_COMMANDS = [
         "label": "Diffusion Context",
         "type": "select",
         "group": "Model step",
-        "help": "Experimental Protenix protein conditioning policy (default: none)",
+        "help": "Experimental shared protein conditioning policy; engine capabilities are checked (default: none)",
         "required": false,
         "repeatable": false,
         "multi": false,

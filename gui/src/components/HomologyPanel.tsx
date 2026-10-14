@@ -646,6 +646,7 @@ export function HomologyPanel() {
       delete options['--diffusion-model']
       delete options['--diffusion-seed']
       delete options['--diffusion-context']
+      delete options['--diffusion-regenerate-covered']
     }
     update({ modelOptions: options })
   }
@@ -877,6 +878,12 @@ export function HomologyPanel() {
                   <Select label="Protein context" value={project.modelOptions['--diffusion-context'] ?? 'none'}
                     onChange={event => update({ modelOptions: { ...project.modelOptions, '--diffusion-context': event.target.value } })}>
                     <MenuItem value="none">Legacy / none</MenuItem><MenuItem value="local">Local (experimental)</MenuItem><MenuItem value="full">Full (experimental)</MenuItem>
+                  </Select>
+                </FormControl>
+                <FormControl size="small" sx={toolbarControlSx}><InputLabel>Covered edits</InputLabel>
+                  <Select label="Covered edits" value={project.modelOptions['--diffusion-regenerate-covered'] ? 'regenerate' : 'reject'}
+                    onChange={event => update({ modelOptions: { ...project.modelOptions, '--diffusion-regenerate-covered': event.target.value === 'regenerate' } })}>
+                    <MenuItem value="reject">Reject edits</MenuItem><MenuItem value="regenerate">Regenerate (experimental)</MenuItem>
                   </Select>
                 </FormControl>
               </>}

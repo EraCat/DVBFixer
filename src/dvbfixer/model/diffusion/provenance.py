@@ -80,6 +80,7 @@ class DiffusionProvenanceManifest:
     resource_metrics: RunnerResourceMetrics
     artifacts: tuple[PublicationArtifact, ...]
     protein_context: ProteinContextPlan | None = None
+    regenerated_template_ownership: tuple[TemplateOwnership, ...] | None = None
 
     def __post_init__(self) -> None:
         if self.schema_version != DIFFUSION_PROVENANCE_SCHEMA_VERSION:
@@ -122,6 +123,7 @@ class DiffusionProvenanceManifest:
             "heterogen_contexts": _encode(self.heterogen_contexts),
             "template_ownership": _encode(self.template_ownership),
             **({"protein_context": _encode(self.protein_context)} if self.protein_context is not None else {}),
+            **({"regenerated_template_ownership": _encode(self.regenerated_template_ownership)} if self.regenerated_template_ownership is not None else {}),
             "requested_profile": self.requested_profile,
             "profile_status": self.profile_status,
             "profile_evidence_labels": list(self.profile_evidence_labels),
@@ -178,6 +180,7 @@ def build_provenance_manifest(
         heterogen_contexts=request.heterogen_contexts,
         template_ownership=request.template_ownership,
         protein_context=request.protein_context,
+        regenerated_template_ownership=request.regenerated_template_ownership,
         requested_profile=requested_profile,
         profile_status=profile.status if profile is not None else "unregistered",
         profile_evidence_labels=profile.evidence_labels if profile is not None else (),

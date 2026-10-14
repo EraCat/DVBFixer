@@ -36,6 +36,14 @@
 
 ## Current Expansion Baseline
 
+Blocks WP5–WP8 and WP12 now have an additional implemented slice and frozen
+expanded studies: [context/Homology expansion protocol](../research/protein-context-expansion.md).
+The shared selector handles joint Protenix gap-bearing chains; Protpardelle uses
+the shared compatibility/explicit selectors with stated adapter boundaries.
+Homology uses authoritative coverage requests and opt-in bounded substitutions
+and deletion repair. Expanded outcomes, sensitivity, causal audit, and paired
+Homology comparisons require completed verified archives before acceptance claims.
+
 Workflow implementation update: the current scoped slice of WP9–WP11 and WP12
 orchestration is implemented and verified. This includes backend-dependent output
 metadata, sequential diffusion batch/resume, validated ZBS PDB/`.dat` handoff,

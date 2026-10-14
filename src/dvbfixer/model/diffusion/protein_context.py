@@ -24,7 +24,11 @@ from dvbfixer.model.diffusion.contract import (
     atom_identity_digest,
     protein_context_digest,
 )
-from dvbfixer.model.diffusion.scope import _CANONICAL_ONE_TO_THREE, canonical_heavy_atom_identities
+from dvbfixer.model.diffusion.scope import (
+    _CANONICAL_ONE_TO_THREE,
+    CANONICAL_HEAVY_ATOMS,
+    canonical_heavy_atom_identities,
+)
 
 
 class ProteinContextError(ValueError):
@@ -34,16 +38,27 @@ class ProteinContextError(ValueError):
 def source_coordinates(request: DiffusionRequest, pdb: bytes) -> dict[AtomIdentity, np.ndarray]:
     if hashlib.sha256(pdb).hexdigest() != request.normalized_pdb.sha256:
         raise ProteinContextError("context source digest mismatch")
+    try:
+        text = pdb.decode("utf-8")
+    except UnicodeDecodeError as exc:
+        raise ProteinContextError("context source is not valid UTF-8") from exc
+    fixed = set(request.fixed_atoms)
     points = {}
-    for line in pdb.decode("utf-8").splitlines():
+    for line in text.splitlines():
         if not line.startswith("ATOM  "):
             continue
-        atom = AtomIdentity(line[21], line[22:26].strip(), line[26].strip(), line[12:16].strip())
-        if atom not in request.fixed_atoms:
+        try:
+            atom = AtomIdentity(line[21], line[22:26].strip(), line[26].strip(), line[12:16].strip())
+        except (ValueError, IndexError) as exc:
+            raise ProteinContextError("malformed context source atom identity") from exc
+        if atom not in fixed:
             continue
         if atom in points:
             raise ProteinContextError("duplicate context source atom identity")
-        coordinate = np.asarray([float(line[30:38]), float(line[38:46]), float(line[46:54])])
+        try:
+            coordinate = np.asarray([float(line[30:38]), float(line[38:46]), float(line[46:54])])
+        except ValueError as exc:
+            raise ProteinContextError("malformed context source coordinate") from exc
         if not np.isfinite(coordinate).all():
             raise ProteinContextError("non-finite context source coordinate")
         points[atom] = coordinate
@@ -61,9 +76,8 @@ def select_protein_context(request: DiffusionRequest, pdb: bytes, policy: Protei
     targets = {target.chain: target for target in request.target_sequences}
     placements = {placement.chain: placement for placement in request.sequence_placements}
     gap_chains = {gap.chain for gap in request.gaps}
-    if len(gap_chains) != 1 or request.heterogen_contexts:
-        raise ProteinContextError("context-v1 requires one gap-bearing chain and canonical protein context")
-    target_chain = next(iter(gap_chains))
+    if not gap_chains or request.heterogen_contexts:
+        raise ProteinContextError("protein context requires gap-bearing chains and canonical protein context")
     points = source_coordinates(request, pdb)
     atoms_by_residue: dict[ResidueIdentity, list[AtomIdentity]] = {}
     for atom in request.fixed_atoms:
@@ -72,25 +86,25 @@ def select_protein_context(request: DiffusionRequest, pdb: bytes, policy: Protei
     anchor_points = np.asarray([points[atom] for residue in sorted(anchors) for atom in atoms_by_residue.get(residue, [])])
     if len(anchor_points) < 3:
         raise ProteinContextError("context requires complete observed anchor geometry")
-    first = min(gap.target_interval.start for gap in request.gaps)
-    last = max(gap.target_interval.stop for gap in request.gaps)
-    target_start = 0 if policy.target_flanks is None else max(0, first - policy.target_flanks)
-    target_stop = len(targets[target_chain].sequence) if policy.target_flanks is None else min(len(targets[target_chain].sequence), last + policy.target_flanks)
-    selected = {(target_chain, index) for index in range(target_start, target_stop)}
+    selected: set[tuple[str, int]] = set()
+    for gap in request.gaps:
+        start = 0 if policy.target_flanks is None else max(0, gap.target_interval.start - policy.target_flanks)
+        stop = len(targets[gap.chain].sequence) if policy.target_flanks is None else min(len(targets[gap.chain].sequence), gap.target_interval.stop + policy.target_flanks)
+        selected.update((gap.chain, index) for index in range(start, stop))
     priorities = []
     for chain, placement in placements.items():
-        if chain != target_chain and policy.partner_mode == "none":
+        if chain not in gap_chains and policy.partner_mode == "none":
             continue
         for index, residue in zip(placement.observed_target_indices, placement.observed_residues):
             if (chain, index) in selected:
                 continue
-            if chain == target_chain and not policy.same_chain_spatial:
+            if chain in gap_chains and not policy.same_chain_spatial:
                 continue
             residue_atoms = atoms_by_residue.get(residue, [])
             if not residue_atoms:
                 continue
             distance = float(np.min(np.linalg.norm(np.asarray([points[atom] for atom in residue_atoms])[:, None, :] - anchor_points[None, :, :], axis=2)))
-            full_partner = chain != target_chain and policy.partner_mode == "full"
+            full_partner = chain not in gap_chains and policy.partner_mode == "full"
             if not full_partner and distance > policy.secondary_radius_angstrom:
                 continue
             rank = 0 if distance <= policy.direct_radius_angstrom else 1
@@ -98,7 +112,7 @@ def select_protein_context(request: DiffusionRequest, pdb: bytes, policy: Protei
     # Include every required shell contact and complete neighboring sequence
     # windows. Priority is deterministic; budget failure never trims contacts.
     for _rank, _distance, chain, index in sorted(priorities):
-        if policy.partner_mode == "full" and chain != target_chain:
+        if policy.partner_mode == "full" and chain not in gap_chains:
             selected.update((chain, i) for i in range(len(targets[chain].sequence)))
         else:
             observed = set(placements[chain].observed_target_indices)
@@ -111,7 +125,9 @@ def select_protein_context(request: DiffusionRequest, pdb: bytes, policy: Protei
                     right += 1
             selected.update((chain, i) for i in range(left, right))
     spans: list[ProteinContextSpan] = []
-    for chain in (target_chain, *sorted(set(targets) - {target_chain})):
+    # Retain declared target order for gap-bearing entities and deterministic
+    # partner order. Single-chain legacy plans retain their exact span ordering.
+    for chain in (*(target.chain for target in request.target_sequences if target.chain in gap_chains), *sorted(set(targets) - gap_chains)):
         indices = sorted(index for c, index in selected if c == chain)
         for index in indices:
             if spans and spans[-1].chain == chain and spans[-1].stop == index:
@@ -194,8 +210,8 @@ def context_evidence(request: DiffusionRequest, atom_axis: tuple[AtomIdentity, .
         for residue in entity.residues
     }
     alignment = tuple(atom for atom in selected if _residue(atom) in primary_residues)
-    capability = "multichain-conditioned" if any(atom.chain not in target_chains for atom in selected) else "same-chain-conditioned"
-    if plan.policy.target_flanks == 1 and plan.policy.partner_mode == "none" and not plan.policy.same_chain_spatial:
+    capability = "multichain-conditioned" if len(target_chains) > 1 or any(atom.chain not in target_chains for atom in selected) else "same-chain-conditioned"
+    if len(target_chains) == 1 and plan.policy.target_flanks == 1 and plan.policy.partner_mode == "none" and not plan.policy.same_chain_spatial:
         capability = "gap-only"
     return ProteinContextEvidence(protein_context_digest(plan), atom_identity_digest(atom_axis), selected_coordinate_digest(plan), selected, plan.preserved_only, alignment, capability)
 
@@ -211,3 +227,96 @@ def validate_context_source(request: DiffusionRequest, pdb: bytes) -> None:
     expected = select_protein_context(replace(request, protein_context=None), pdb, request.protein_context.policy)
     if expected.protein_context != request.protein_context:
         raise ProteinContextError("protein context plan differs from deterministic source selection")
+
+
+def validate_context_capability(request: DiffusionRequest, model: str) -> None:
+    """Reject engine-incompatible plans before preflight or checkpoint loading."""
+    if request.protein_context is None:
+        if model == "protenix" and (len(request.target_sequences) != 1 or len(request.gaps) != 1):
+            raise ProteinContextError("Protenix multiple chains or gaps require explicit --diffusion-context local|full")
+        return
+    if sum(span.stop - span.start for span in request.protein_context.spans) > 512:
+        raise ProteinContextError("explicit protein context exceeds the audited 512-residue engine-axis budget")
+    if model == "protenix":
+        try:
+            sampling_entities(request)
+        except ValueError as exc:
+            raise ProteinContextError(f"unsupported Protenix context mapping: {exc}") from exc
+        return
+    if model != "protpardelle":
+        raise ProteinContextError("selected engine does not support explicit protein context")
+    if len({gap.chain for gap in request.gaps}) != 1:
+        raise ProteinContextError("Protpardelle explicit context does not support joint gap-bearing chains")
+    spans = request.protein_context.spans
+    if len({span.chain for span in spans}) != len(spans):
+        raise ProteinContextError("Protpardelle explicit context does not support discontiguous source-chain entities")
+    if len(spans) > 26:
+        raise ProteinContextError("Protpardelle explicit context supports at most 26 engine chains")
+    canonical_names = {name for names in CANONICAL_HEAVY_ATOMS.values() for name in names}
+    if any(item.atom.atom_name not in canonical_names for item in request.protein_context.fixed_conditioning):
+        raise ProteinContextError("Protpardelle explicit context contains atoms outside its audited canonical-heavy mask")
+
+
+def select_legacy_partner_spans(
+    request: DiffusionRequest,
+    target_chain: str,
+    coordinates: dict[AtomIdentity, np.ndarray],
+    *,
+    residue_budget: int,
+) -> tuple[ProteinContextSpan, ...]:
+    """Compatibility policy for the previously accepted cc89 local crops.
+
+    This preserves the legacy 12 Å, one-run-per-chain, budget-trim behavior.
+    Explicit context plans use the complete fail-closed selector above instead.
+    Keeping the old policy here removes scientific selection from the adapter.
+    """
+    if residue_budget <= 0:
+        return ()
+    anchors = {anchor for gap in request.gaps if gap.chain == target_chain
+               for anchor in (gap.left_anchor, gap.right_anchor) if anchor is not None}
+    anchor_points = np.asarray([xyz for atom, xyz in coordinates.items() if _residue(atom) in anchors])
+    if not len(anchor_points):
+        return ()
+    by_residue: dict[ResidueIdentity, list[np.ndarray]] = {}
+    for atom, xyz in coordinates.items():
+        by_residue.setdefault(_residue(atom), []).append(xyz)
+    candidates = []
+    for placement in request.sequence_placements:
+        if placement.chain == target_chain:
+            continue
+        observed = tuple(zip(placement.observed_target_indices, placement.observed_residues))
+        distances = {}
+        for index, residue in observed:
+            points = by_residue.get(residue, [])
+            if points:
+                distance = float(np.linalg.norm(np.asarray(points)[:, None] - anchor_points[None], axis=2).min())
+                if distance <= 12.0:
+                    distances[index] = distance
+        if not distances:
+            continue
+        runs: list[list[tuple[int, ResidueIdentity]]] = []
+        for item in observed:
+            if not runs or item[0] != runs[-1][-1][0] + 1:
+                runs.append([item])
+            else:
+                runs[-1].append(item)
+        eligible = [run for run in runs if any(index in distances for index, _residue_id in run)]
+        run = min(eligible, key=lambda items: (-sum(index in distances for index, _residue_id in items),
+                                              min(distances.get(index, float("inf")) for index, _residue_id in items), items[0][0]))
+        contacts = [index for index, _residue_id in run if index in distances]
+        start = max(run[0][0], min(contacts) - 2)
+        stop = min(run[-1][0] + 1, max(contacts) + 3)
+        candidates.append((min(distances[index] for index in contacts), placement.chain, start, stop,
+                           min(contacts, key=distances.__getitem__), run[0][0]))
+    remaining = residue_budget
+    spans = []
+    for _distance, chain, start, stop, closest, run_start in sorted(candidates):
+        if remaining <= 0:
+            break
+        if stop - start > remaining:
+            start = max(start, closest - (remaining - 1) // 2)
+            stop = min(stop, start + remaining)
+            start = max(run_start, stop - remaining)
+        spans.append(ProteinContextSpan(chain, start, stop))
+        remaining -= stop - start
+    return tuple(spans)

@@ -956,6 +956,7 @@ class DiffusionRequest(_JsonContract):
     heterogen_contexts: tuple[HeterogenContext, ...] = ()
     template_ownership: tuple[TemplateOwnership, ...] = ()
     protein_context: ProteinContextPlan | None = dataclass_field(default=None, metadata={"omit_if_none": True})
+    regenerated_template_ownership: tuple[TemplateOwnership, ...] | None = dataclass_field(default=None, metadata={"omit_if_none": True})
 
     def __post_init__(self) -> None:
         super(DiffusionRequest, self).__post_init__()
@@ -1053,6 +1054,17 @@ class DiffusionRequest(_JsonContract):
             raise DiffusionContractError(
                 "template ownership must match an observed target placement"
             )
+        if self.regenerated_template_ownership is not None:
+            generated_placements = {
+                (gap.chain, index): residue for gap in self.gaps
+                for index, residue in zip(range(gap.target_interval.start, gap.target_interval.stop), gap.generated_residues)
+            }
+            keys = [(owner.chain, owner.target_index) for owner in self.regenerated_template_ownership]
+            if len(set(keys)) != len(keys) or any(
+                generated_placements.get((owner.chain, owner.target_index)) != owner.residue
+                for owner in self.regenerated_template_ownership
+            ):
+                raise DiffusionContractError("regenerated template ownership must match generated target placements")
         option_names = [option.name for option in self.backend_options]
         if len(option_names) != len(set(option_names)):
             raise DiffusionContractError("backend option names must be unique")

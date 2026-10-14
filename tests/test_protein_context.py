@@ -30,6 +30,7 @@ from dvbfixer.model.diffusion.protein_context import (
     context_evidence,
     sampling_entities,
     select_protein_context,
+    validate_context_capability,
 )
 from dvbfixer.model.diffusion.scope import canonical_heavy_atom_identities
 from dvbfixer.model.diffusion.trace import build_sampler_trace, validate_sampler_trace_context
@@ -169,3 +170,72 @@ def test_failed_research_workspace_keeps_diagnostics_without_completion_marker(t
     assert (archive / "worker.log").read_text() == "diagnostic evidence\n"
     assert json.loads((archive / "failure.json").read_text())["exception_type"] == "ValueError"
     assert not (archive / "complete.json").exists()
+
+
+def test_joint_gap_chains_are_one_exact_context_plan_and_fail_closed_for_protpardelle():
+    first, first_pdb = context_request(("D", "d"))
+    second, second_pdb = context_request(("d", "D"))
+    pdb = ("".join(line + "\n" for line in first_pdb.decode().splitlines() if line.startswith("ATOM") and line[21] == "D")
+           + "TER\n" + "".join(line + "\n" for line in second_pdb.decode().splitlines() if line.startswith("ATOM") and line[21] == "d") + "TER\nEND\n").encode()
+    request = replace(first,
+        normalized_pdb=ArtifactReference("input.pdb", hashlib.sha256(pdb).hexdigest()),
+        target_sequences=(first.target_sequences[0], second.target_sequences[0]),
+        sequence_placements=(first.sequence_placements[0], second.sequence_placements[0]),
+        gaps=(*first.gaps, *second.gaps), generated_atoms=(*first.generated_atoms, *second.generated_atoms),
+        fixed_atoms=tuple(atom for atom in first.fixed_atoms if atom.chain == "D") + tuple(atom for atom in second.fixed_atoms if atom.chain == "d"))
+    selected = select_protein_context(request, pdb, ProteinContextPolicy(target_flanks=1, partner_mode="none"))
+    entities = sampling_entities(selected)
+    assert [entity.engine_chain for entity in entities] == ["D", "d"]
+    axis = (*selected.fixed_atoms, *selected.generated_atoms)
+    assert context_evidence(selected, axis).capability == "multichain-conditioned"
+    validate_context_capability(selected, "protenix")
+    with pytest.raises(ProteinContextError, match="joint gap-bearing"):
+        validate_context_capability(selected, "protpardelle")
+    with pytest.raises(ProteinContextError, match="require explicit"):
+        validate_context_capability(request, "protenix")
+
+
+@pytest.mark.parametrize("payload, reason", [(b"\xff", "valid UTF-8"), (b"ATOM  \n", "atom identity")])
+def test_malformed_context_source_has_a_stable_prelaunch_error(payload, reason):
+    request, _pdb = context_request()
+    request = replace(request, normalized_pdb=ArtifactReference("input.pdb", hashlib.sha256(payload).hexdigest()))
+    with pytest.raises(ProteinContextError, match=reason):
+        select_protein_context(request, payload, ProteinContextPolicy())
+
+
+def test_protpardelle_explicit_context_uses_shared_plan_and_cropped_gap_indices():
+    request, pdb = context_request()
+    selected = select_protein_context(request, pdb, ProteinContextPolicy(target_flanks=1))
+    adapter = load_research_module("deploy/protpardelle-1c/checkpoint_gap_smoke.py")
+    sampling, = adapter._chain_sampling_requests(selected)
+    assert sampling.protein_context is None  # Internal cropped view, not new public semantics.
+    assert sampling.fixed_atoms == tuple(item.atom for item in selected.protein_context.fixed_conditioning)
+    assert sampling.generated_atoms == selected.generated_atoms
+    assert adapter._target_residue_map(sampling)[1] == selected.gaps[0].generated_residues[0]
+    request, pdb = context_request(partner_y={2: 100})
+    discontiguous = select_protein_context(request, pdb, ProteinContextPolicy(sequence_padding=0))
+    with pytest.raises(ProteinContextError, match="discontiguous"):
+        validate_context_capability(discontiguous, "protpardelle")
+
+
+def test_environment_metrics_fit_fixed_atoms_without_hiding_gap_movement():
+    from dvbfixer.model.diffusion.context_metrics import measure_gap_environment
+    from dvbfixer.model.diffusion.protein_context import source_coordinates
+
+    request, pdb = context_request()
+    reference = source_coordinates(request, pdb)
+    reference.update({atom: np.asarray((float(atom.residue_number) * 3, 2, 1)) for atom in request.generated_atoms})
+    rotation = np.asarray(((0, -1, 0), (1, 0, 0), (0, 0, 1)))
+    candidate = {atom: rotation @ point + (50, -20, 10) for atom, point in reference.items()}
+    measurement, = measure_gap_environment(request, reference, candidate)
+    assert measurement.gap_backbone_rmsd_after_fixed_alignment_angstrom == pytest.approx(0, abs=1e-12)
+    moved = {atom: point + rotation @ np.asarray((0, 4, 0)) if atom in request.generated_atoms else point
+             for atom, point in candidate.items()}
+    measurement, = measure_gap_environment(request, reference, moved)
+    assert measurement.gap_backbone_rmsd_after_fixed_alignment_angstrom == pytest.approx(4)
+    assert measurement.gap_centroid_displacement_angstrom == pytest.approx(4)
+    assert measurement.gap_anchor_vector_angle_degrees > 0
+    missing = {atom: point for atom, point in moved.items() if atom != request.generated_atoms[0]}
+    measurement, = measure_gap_environment(request, reference, missing)
+    assert measurement.gap_backbone_rmsd_after_fixed_alignment_angstrom is None
+    assert "missing-generated-backbone" in measurement.undefined_reasons

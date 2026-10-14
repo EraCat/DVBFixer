@@ -1,0 +1,728 @@
+{
+  "arms": [
+    "same-chain-spatial",
+    "local-partner-refined"
+  ],
+  "cases": [
+    {
+      "arm_support": {
+        "budget-64": {
+          "selected_residue_count": 55,
+          "status": "eligible"
+        },
+        "direct-shell": {
+          "selected_residue_count": 28,
+          "status": "eligible"
+        },
+        "local-partner-refined": {
+          "selected_residue_count": 55,
+          "status": "eligible"
+        },
+        "same-chain-spatial": {
+          "selected_residue_count": 55,
+          "status": "eligible"
+        }
+      },
+      "arms": [
+        "same-chain-spatial",
+        "local-partner-refined"
+      ],
+      "artifacts": {
+        "input/normalized.pdb": "b3a8576c16d1c350bd67436d87c6076f593f578ebb002af21cc89c3f4a63cf0c",
+        "reference.pdb": "b3dd4103f338f741fbfcee70f3b01c245ed79b385109e920be1fcc2599634768",
+        "request.json": "8b0794cab56b7763a2120743d8b26be4f225afd058d0f3377acc2aa266ab2164"
+      },
+      "case_id": "1ubq-low-contact",
+      "mask_metrics": {
+        "A": {
+          "nonlocal_same_chain_contact_residue_count": 7,
+          "reference_interface_minimum_distance_angstrom": null
+        }
+      },
+      "seed": 7,
+      "source": "tests/fixtures/protein_context/1UBQ.pdb",
+      "source_sha256": "d4a6812d8951cf6594e6a0763f089e35f5a80b62acb3c117b2c5565228a7b161",
+      "status": "eligible",
+      "stratum": "low-contact"
+    },
+    {
+      "arm_support": {
+        "budget-64": {
+          "selected_residue_count": 55,
+          "status": "eligible"
+        },
+        "direct-shell": {
+          "selected_residue_count": 28,
+          "status": "eligible"
+        },
+        "local-partner-refined": {
+          "selected_residue_count": 55,
+          "status": "eligible"
+        }
+      },
+      "arms": [
+        "local-partner-refined"
+      ],
+      "artifacts": {
+        "input/normalized.pdb": "b3a8576c16d1c350bd67436d87c6076f593f578ebb002af21cc89c3f4a63cf0c",
+        "reference.pdb": "b3dd4103f338f741fbfcee70f3b01c245ed79b385109e920be1fcc2599634768",
+        "request.json": "a24f2cedd8f5b56d74cde0dc4a64870b0d3448f9a8fc6366d31c7b1b5fe25a5c"
+      },
+      "case_id": "1ubq-low-contact-seed19",
+      "mask_metrics": {
+        "A": {
+          "nonlocal_same_chain_contact_residue_count": 7,
+          "reference_interface_minimum_distance_angstrom": null
+        }
+      },
+      "seed": 19,
+      "source": "tests/fixtures/protein_context/1UBQ.pdb",
+      "source_sha256": "d4a6812d8951cf6594e6a0763f089e35f5a80b62acb3c117b2c5565228a7b161",
+      "status": "eligible",
+      "stratum": "low-contact"
+    },
+    {
+      "arm_support": {
+        "budget-64": {
+          "selected_residue_count": 55,
+          "status": "eligible"
+        },
+        "direct-shell": {
+          "selected_residue_count": 34,
+          "status": "eligible"
+        },
+        "local-partner-refined": {
+          "selected_residue_count": 55,
+          "status": "eligible"
+        },
+        "same-chain-spatial": {
+          "selected_residue_count": 55,
+          "status": "eligible"
+        }
+      },
+      "arms": [
+        "same-chain-spatial",
+        "local-partner-refined"
+      ],
+      "artifacts": {
+        "input/normalized.pdb": "a94c4327b93e33095ea262a22e2e79f7fe5a00b2c0d8b44b2a9956614a44d579",
+        "reference.pdb": "b3dd4103f338f741fbfcee70f3b01c245ed79b385109e920be1fcc2599634768",
+        "request.json": "8aeacf813edc8c4c712159b5b8115972c8c40d3932e73bdf6b4b5f6e2727c9f7"
+      },
+      "case_id": "1ubq-core",
+      "mask_metrics": {
+        "A": {
+          "nonlocal_same_chain_contact_residue_count": 26,
+          "reference_interface_minimum_distance_angstrom": null
+        }
+      },
+      "seed": 7,
+      "source": "tests/fixtures/protein_context/1UBQ.pdb",
+      "source_sha256": "d4a6812d8951cf6594e6a0763f089e35f5a80b62acb3c117b2c5565228a7b161",
+      "status": "eligible",
+      "stratum": "high-contact"
+    },
+    {
+      "arm_support": {
+        "budget-64": {
+          "selected_residue_count": 55,
+          "status": "eligible"
+        },
+        "direct-shell": {
+          "selected_residue_count": 34,
+          "status": "eligible"
+        },
+        "local-partner-refined": {
+          "selected_residue_count": 55,
+          "status": "eligible"
+        }
+      },
+      "arms": [
+        "local-partner-refined"
+      ],
+      "artifacts": {
+        "input/normalized.pdb": "a94c4327b93e33095ea262a22e2e79f7fe5a00b2c0d8b44b2a9956614a44d579",
+        "reference.pdb": "b3dd4103f338f741fbfcee70f3b01c245ed79b385109e920be1fcc2599634768",
+        "request.json": "ec38f5b14afa3c6d599b44973cdf6f506dbf0c5e4f7191a0c9e45464d1888884"
+      },
+      "case_id": "1ubq-core-seed19",
+      "mask_metrics": {
+        "A": {
+          "nonlocal_same_chain_contact_residue_count": 26,
+          "reference_interface_minimum_distance_angstrom": null
+        }
+      },
+      "seed": 19,
+      "source": "tests/fixtures/protein_context/1UBQ.pdb",
+      "source_sha256": "d4a6812d8951cf6594e6a0763f089e35f5a80b62acb3c117b2c5565228a7b161",
+      "status": "eligible",
+      "stratum": "high-contact"
+    },
+    {
+      "arm_support": {
+        "budget-64": {
+          "reason": "required protein context exceeds residue budget; no neighbors were silently dropped",
+          "status": "unsupported"
+        },
+        "direct-shell": {
+          "selected_residue_count": 99,
+          "status": "eligible"
+        },
+        "local-partner-refined": {
+          "selected_residue_count": 152,
+          "status": "eligible"
+        },
+        "same-chain-spatial": {
+          "selected_residue_count": 135,
+          "status": "eligible"
+        }
+      },
+      "arms": [
+        "same-chain-spatial",
+        "local-partner-refined"
+      ],
+      "artifacts": {
+        "input/normalized.pdb": "c113ce32752afdb33fa48bec320502868e6e85d2a9fdbc521e72131dce00ca1b",
+        "reference.pdb": "b03fd6bc521a495597d76ea41dbd0ae02da72418c113bb3145f27af29b580617",
+        "request.json": "4c2fc1e479e0a5316e254005c1d99e5f3888b240ed6a621392902fa291e3d4b4"
+      },
+      "case_id": "1tim-interface",
+      "mask_metrics": {
+        "A": {
+          "nonlocal_same_chain_contact_residue_count": 32,
+          "reference_interface_minimum_distance_angstrom": 3.3855606625786496
+        }
+      },
+      "seed": 7,
+      "source": "tests/fixtures/protein_context/1TIM.pdb",
+      "source_sha256": "79b35b419696a1e368aad2121ae2712e46444b5978de1e86bdc286f482222cdc",
+      "status": "eligible",
+      "stratum": "interface"
+    },
+    {
+      "arm_support": {
+        "budget-64": {
+          "reason": "required protein context exceeds residue budget; no neighbors were silently dropped",
+          "status": "unsupported"
+        },
+        "direct-shell": {
+          "selected_residue_count": 99,
+          "status": "eligible"
+        },
+        "local-partner-refined": {
+          "selected_residue_count": 152,
+          "status": "eligible"
+        }
+      },
+      "arms": [
+        "local-partner-refined"
+      ],
+      "artifacts": {
+        "input/normalized.pdb": "c113ce32752afdb33fa48bec320502868e6e85d2a9fdbc521e72131dce00ca1b",
+        "reference.pdb": "b03fd6bc521a495597d76ea41dbd0ae02da72418c113bb3145f27af29b580617",
+        "request.json": "57234789b25670ec4924569c28ffa1025ab2280eb2db98af3ce6b5ec61cb37d4"
+      },
+      "case_id": "1tim-interface-seed19",
+      "mask_metrics": {
+        "A": {
+          "nonlocal_same_chain_contact_residue_count": 32,
+          "reference_interface_minimum_distance_angstrom": 3.3855606625786496
+        }
+      },
+      "seed": 19,
+      "source": "tests/fixtures/protein_context/1TIM.pdb",
+      "source_sha256": "79b35b419696a1e368aad2121ae2712e46444b5978de1e86bdc286f482222cdc",
+      "status": "eligible",
+      "stratum": "interface"
+    },
+    {
+      "arm_support": {
+        "budget-64": {
+          "reason": "required protein context exceeds residue budget; no neighbors were silently dropped",
+          "status": "unsupported"
+        },
+        "direct-shell": {
+          "selected_residue_count": 94,
+          "status": "eligible"
+        },
+        "local-partner-refined": {
+          "selected_residue_count": 135,
+          "status": "eligible"
+        },
+        "same-chain-spatial": {
+          "selected_residue_count": 135,
+          "status": "eligible"
+        }
+      },
+      "arms": [
+        "same-chain-spatial",
+        "local-partner-refined"
+      ],
+      "artifacts": {
+        "input/normalized.pdb": "990b2861a8971c7972dc9f14f7e708e2a8f0a51666166095302db6f0109bd244",
+        "reference.pdb": "ee36a6db36aedbcea408ff6a3edeb4ae737645c4badc491c0f68ff64fdfeb545",
+        "request.json": "1d0ac79ce07cf6b5206d9588e95d8cdecaa5fcaf08dda747b4d70fff110127f4"
+      },
+      "case_id": "1tim-interface-distant",
+      "mask_metrics": {
+        "A": {
+          "nonlocal_same_chain_contact_residue_count": 32,
+          "reference_interface_minimum_distance_angstrom": 3.3855606625786496
+        }
+      },
+      "seed": 7,
+      "source": "tests/fixtures/protein_context/1TIM.pdb",
+      "source_sha256": "79b35b419696a1e368aad2121ae2712e46444b5978de1e86bdc286f482222cdc",
+      "status": "eligible",
+      "stratum": "distant-negative-control"
+    },
+    {
+      "arm_support": {
+        "budget-64": {
+          "reason": "required protein context exceeds residue budget; no neighbors were silently dropped",
+          "status": "unsupported"
+        },
+        "direct-shell": {
+          "selected_residue_count": 46,
+          "status": "eligible"
+        },
+        "local-partner-refined": {
+          "selected_residue_count": 94,
+          "status": "eligible"
+        },
+        "same-chain-spatial": {
+          "selected_residue_count": 81,
+          "status": "eligible"
+        }
+      },
+      "arms": [
+        "same-chain-spatial",
+        "local-partner-refined"
+      ],
+      "artifacts": {
+        "input/normalized.pdb": "2e575d15b6eb7a77815929f6cf62d9983ad414d79b685f525d177dad3bced162",
+        "reference.pdb": "c13ef24bb60379c2a9a1efabf1f1d506b83fbfd16c5955fe239ed76a6aaa74af",
+        "request.json": "2ee46348d7dbfe02b0fad9f8765dba8f428f39a734c3107eeb2eb53abb54bb1d"
+      },
+      "case_id": "1a3n-interface",
+      "mask_metrics": {
+        "A": {
+          "nonlocal_same_chain_contact_residue_count": 25,
+          "reference_interface_minimum_distance_angstrom": 4.621237712994215
+        }
+      },
+      "seed": 7,
+      "source": "tests/fixtures/protein_context/1A3N.pdb",
+      "source_sha256": "a4db006269e9b6f9db0eb5447a5d40e59d67857484a9294b9ca71d642ffe9861",
+      "status": "eligible",
+      "stratum": "interface"
+    },
+    {
+      "arm_support": {
+        "budget-64": {
+          "reason": "required protein context exceeds residue budget; no neighbors were silently dropped",
+          "status": "unsupported"
+        },
+        "direct-shell": {
+          "selected_residue_count": 46,
+          "status": "eligible"
+        },
+        "local-partner-refined": {
+          "selected_residue_count": 94,
+          "status": "eligible"
+        }
+      },
+      "arms": [
+        "local-partner-refined"
+      ],
+      "artifacts": {
+        "input/normalized.pdb": "2e575d15b6eb7a77815929f6cf62d9983ad414d79b685f525d177dad3bced162",
+        "reference.pdb": "c13ef24bb60379c2a9a1efabf1f1d506b83fbfd16c5955fe239ed76a6aaa74af",
+        "request.json": "467b0b44e9c50ec8bca1b05305fe6fab982f2743adaf5a0d742869892da6a27f"
+      },
+      "case_id": "1a3n-interface-seed19",
+      "mask_metrics": {
+        "A": {
+          "nonlocal_same_chain_contact_residue_count": 25,
+          "reference_interface_minimum_distance_angstrom": 4.621237712994215
+        }
+      },
+      "seed": 19,
+      "source": "tests/fixtures/protein_context/1A3N.pdb",
+      "source_sha256": "a4db006269e9b6f9db0eb5447a5d40e59d67857484a9294b9ca71d642ffe9861",
+      "status": "eligible",
+      "stratum": "interface"
+    },
+    {
+      "arm_support": {
+        "budget-64": {
+          "reason": "required protein context exceeds residue budget; no neighbors were silently dropped",
+          "status": "unsupported"
+        },
+        "direct-shell": {
+          "selected_residue_count": 46,
+          "status": "eligible"
+        },
+        "local-partner-refined": {
+          "selected_residue_count": 81,
+          "status": "eligible"
+        },
+        "same-chain-spatial": {
+          "selected_residue_count": 81,
+          "status": "eligible"
+        }
+      },
+      "arms": [
+        "same-chain-spatial",
+        "local-partner-refined"
+      ],
+      "artifacts": {
+        "input/normalized.pdb": "95c42c12250765708430f847fca8d69d07a2c8f9306c2c6b0ce1560be6350b81",
+        "reference.pdb": "c55e0f16ef1f1207bdc046f7270ab2ece2eef882672bf388c3bf427cd644fce8",
+        "request.json": "531ae0e4f912f62373ac6ad6247f1664238fb5f3704cf8be576db8bc21b96171"
+      },
+      "case_id": "1a3n-interface-distant",
+      "mask_metrics": {
+        "A": {
+          "nonlocal_same_chain_contact_residue_count": 25,
+          "reference_interface_minimum_distance_angstrom": 4.621237712994215
+        }
+      },
+      "seed": 7,
+      "source": "tests/fixtures/protein_context/1A3N.pdb",
+      "source_sha256": "a4db006269e9b6f9db0eb5447a5d40e59d67857484a9294b9ca71d642ffe9861",
+      "status": "eligible",
+      "stratum": "distant-negative-control"
+    },
+    {
+      "arm_support": {
+        "budget-64": {
+          "reason": "required protein context exceeds residue budget; no neighbors were silently dropped",
+          "status": "unsupported"
+        },
+        "direct-shell": {
+          "selected_residue_count": 59,
+          "status": "eligible"
+        },
+        "local-partner-refined": {
+          "selected_residue_count": 105,
+          "status": "eligible"
+        },
+        "same-chain-spatial": {
+          "selected_residue_count": 96,
+          "status": "eligible"
+        }
+      },
+      "arms": [
+        "same-chain-spatial",
+        "local-partner-refined"
+      ],
+      "artifacts": {
+        "input/normalized.pdb": "693ab15258e565c13bf511352e1d6e6c56ff04376eb8b535595da4f0ce28b815",
+        "reference.pdb": "08295c35a42ae73e91d278ce0b42af230dbb97edaf945e73baf1ecbae51e451e",
+        "request.json": "92f87e42b37a5ecf6c2165384f9c3901dfcad5340864bc2e11971168b5099cee"
+      },
+      "case_id": "7k8s-insertion",
+      "mask_metrics": {
+        "H": {
+          "nonlocal_same_chain_contact_residue_count": 23,
+          "reference_interface_minimum_distance_angstrom": 5.160181585952199
+        }
+      },
+      "seed": 7,
+      "source": "tests/fixtures/insertion_codes/7K8S.pdb",
+      "source_sha256": "8b996736b9a1e157b044f9004aa160ffd5167abfa38f555f3b78e0e592643910",
+      "status": "eligible",
+      "stratum": "insertion"
+    },
+    {
+      "arm_support": {
+        "budget-64": {
+          "reason": "required protein context exceeds residue budget; no neighbors were silently dropped",
+          "status": "unsupported"
+        },
+        "direct-shell": {
+          "selected_residue_count": 59,
+          "status": "eligible"
+        },
+        "local-partner-refined": {
+          "selected_residue_count": 105,
+          "status": "eligible"
+        }
+      },
+      "arms": [
+        "local-partner-refined"
+      ],
+      "artifacts": {
+        "input/normalized.pdb": "693ab15258e565c13bf511352e1d6e6c56ff04376eb8b535595da4f0ce28b815",
+        "reference.pdb": "08295c35a42ae73e91d278ce0b42af230dbb97edaf945e73baf1ecbae51e451e",
+        "request.json": "0e2ccb43e35b6bddd3e08d05e49b772cbe229eee5010c6c7b5446e53f8fee385"
+      },
+      "case_id": "7k8s-insertion-seed19",
+      "mask_metrics": {
+        "H": {
+          "nonlocal_same_chain_contact_residue_count": 23,
+          "reference_interface_minimum_distance_angstrom": 5.160181585952199
+        }
+      },
+      "seed": 19,
+      "source": "tests/fixtures/insertion_codes/7K8S.pdb",
+      "source_sha256": "8b996736b9a1e157b044f9004aa160ffd5167abfa38f555f3b78e0e592643910",
+      "status": "eligible",
+      "stratum": "insertion"
+    },
+    {
+      "arm_support": {
+        "budget-64": {
+          "reason": "required protein context exceeds residue budget; no neighbors were silently dropped",
+          "status": "unsupported"
+        },
+        "direct-shell": {
+          "selected_residue_count": 59,
+          "status": "eligible"
+        },
+        "local-partner-refined": {
+          "selected_residue_count": 96,
+          "status": "eligible"
+        },
+        "same-chain-spatial": {
+          "selected_residue_count": 96,
+          "status": "eligible"
+        }
+      },
+      "arms": [
+        "same-chain-spatial",
+        "local-partner-refined"
+      ],
+      "artifacts": {
+        "input/normalized.pdb": "0d16df1a71a827d69a7ea934d3602252ec9de881837a57b49b4efbc7df41ea52",
+        "reference.pdb": "9e5f50ddcf23728e819917248e5d5589adcf84011ed2cacfefa1baf04d7c9a08",
+        "request.json": "eba47db4af2e1247c5ff8a527eb6e2e2118edf73e0cebb62c53e8c5243dd592f"
+      },
+      "case_id": "7k8s-insertion-distant",
+      "mask_metrics": {
+        "H": {
+          "nonlocal_same_chain_contact_residue_count": 23,
+          "reference_interface_minimum_distance_angstrom": 5.160181585952199
+        }
+      },
+      "seed": 7,
+      "source": "tests/fixtures/insertion_codes/7K8S.pdb",
+      "source_sha256": "8b996736b9a1e157b044f9004aa160ffd5167abfa38f555f3b78e0e592643910",
+      "status": "eligible",
+      "stratum": "distant-negative-control"
+    },
+    {
+      "arm_support": {
+        "budget-64": {
+          "reason": "required protein context exceeds residue budget; no neighbors were silently dropped",
+          "status": "unsupported"
+        },
+        "direct-shell": {
+          "selected_residue_count": 88,
+          "status": "eligible"
+        },
+        "local-partner-refined": {
+          "selected_residue_count": 139,
+          "status": "eligible"
+        },
+        "same-chain-spatial": {
+          "selected_residue_count": 139,
+          "status": "eligible"
+        }
+      },
+      "arms": [
+        "same-chain-spatial",
+        "local-partner-refined"
+      ],
+      "artifacts": {
+        "input/normalized.pdb": "94b7f2daaf938b9f25dc0ffe95ef957372866664ac7cf04f16b7928d0bd7cfba",
+        "reference.pdb": "8988cf76e4fed328b9dda9a195a8fc299cdc3ee88c7a4155454537863226bcfe",
+        "request.json": "524bd50d5cd0ad2f3a680d7fd35ef063ea0737fcf2bb4b694797b1b40f7cdfb4"
+      },
+      "case_id": "1emv-joint",
+      "mask_metrics": {
+        "A": {
+          "nonlocal_same_chain_contact_residue_count": 7,
+          "reference_interface_minimum_distance_angstrom": 2.979717100665767
+        },
+        "B": {
+          "nonlocal_same_chain_contact_residue_count": 24,
+          "reference_interface_minimum_distance_angstrom": 2.8350389768043764
+        }
+      },
+      "seed": 7,
+      "source": "tests/fixtures/regressions/1EMV.pdb",
+      "source_sha256": "b464fafe9c5c240e245328c3d348e545279b95573d8ad5334d00aaf65ee3f5e3",
+      "status": "eligible",
+      "stratum": "joint"
+    },
+    {
+      "arm_support": {
+        "budget-64": {
+          "reason": "required protein context exceeds residue budget; no neighbors were silently dropped",
+          "status": "unsupported"
+        },
+        "direct-shell": {
+          "selected_residue_count": 88,
+          "status": "eligible"
+        },
+        "local-partner-refined": {
+          "selected_residue_count": 139,
+          "status": "eligible"
+        }
+      },
+      "arms": [
+        "local-partner-refined"
+      ],
+      "artifacts": {
+        "input/normalized.pdb": "94b7f2daaf938b9f25dc0ffe95ef957372866664ac7cf04f16b7928d0bd7cfba",
+        "reference.pdb": "8988cf76e4fed328b9dda9a195a8fc299cdc3ee88c7a4155454537863226bcfe",
+        "request.json": "2edf8ff3321839f3f6ec71b26fe91e9d4a63a525ad56ced8c8f19a129612bee1"
+      },
+      "case_id": "1emv-joint-seed19",
+      "mask_metrics": {
+        "A": {
+          "nonlocal_same_chain_contact_residue_count": 7,
+          "reference_interface_minimum_distance_angstrom": 2.979717100665767
+        },
+        "B": {
+          "nonlocal_same_chain_contact_residue_count": 24,
+          "reference_interface_minimum_distance_angstrom": 2.8350389768043764
+        }
+      },
+      "seed": 19,
+      "source": "tests/fixtures/regressions/1EMV.pdb",
+      "source_sha256": "b464fafe9c5c240e245328c3d348e545279b95573d8ad5334d00aaf65ee3f5e3",
+      "status": "eligible",
+      "stratum": "joint"
+    }
+  ],
+  "limitations": [
+    "training membership unknown",
+    "contact count is not solvent accessibility",
+    "heterogens stripped for protein-only mechanism study",
+    "no joint Protpardelle promotion"
+  ],
+  "no_replacement": true,
+  "policies": {
+    "anchors-gap": {
+      "direct_radius_angstrom": 6.0,
+      "name": "anchor-shell-v1",
+      "partner_mode": "none",
+      "residue_budget": 512,
+      "same_chain_spatial": false,
+      "secondary_radius_angstrom": 10.0,
+      "sequence_padding": 2,
+      "target_flanks": 1
+    },
+    "budget-64": {
+      "direct_radius_angstrom": 6.0,
+      "name": "anchor-shell-v1",
+      "partner_mode": "local",
+      "residue_budget": 64,
+      "same_chain_spatial": true,
+      "secondary_radius_angstrom": 10.0,
+      "sequence_padding": 2,
+      "target_flanks": 8
+    },
+    "direct-shell": {
+      "direct_radius_angstrom": 6.0,
+      "name": "anchor-shell-v1",
+      "partner_mode": "local",
+      "residue_budget": 512,
+      "same_chain_spatial": true,
+      "secondary_radius_angstrom": 6.0,
+      "sequence_padding": 2,
+      "target_flanks": 8
+    },
+    "full-protein": {
+      "direct_radius_angstrom": 6.0,
+      "name": "anchor-shell-v1",
+      "partner_mode": "full",
+      "residue_budget": 512,
+      "same_chain_spatial": false,
+      "secondary_radius_angstrom": 10.0,
+      "sequence_padding": 2,
+      "target_flanks": null
+    },
+    "local-partner": {
+      "direct_radius_angstrom": 6.0,
+      "name": "anchor-shell-v1",
+      "partner_mode": "local",
+      "residue_budget": 512,
+      "same_chain_spatial": true,
+      "secondary_radius_angstrom": 10.0,
+      "sequence_padding": 2,
+      "target_flanks": 8
+    },
+    "local-partner-refined": {
+      "direct_radius_angstrom": 6.0,
+      "name": "anchor-shell-v1",
+      "partner_mode": "local",
+      "residue_budget": 512,
+      "same_chain_spatial": true,
+      "secondary_radius_angstrom": 10.0,
+      "sequence_padding": 2,
+      "target_flanks": 8
+    },
+    "same-chain-spatial": {
+      "direct_radius_angstrom": 6.0,
+      "name": "anchor-shell-v1",
+      "partner_mode": "none",
+      "residue_budget": 512,
+      "same_chain_spatial": true,
+      "secondary_radius_angstrom": 10.0,
+      "sequence_padding": 2,
+      "target_flanks": 8
+    },
+    "sequence-16": {
+      "direct_radius_angstrom": 6.0,
+      "name": "anchor-shell-v1",
+      "partner_mode": "none",
+      "residue_budget": 512,
+      "same_chain_spatial": false,
+      "secondary_radius_angstrom": 10.0,
+      "sequence_padding": 2,
+      "target_flanks": 16
+    },
+    "sequence-8": {
+      "direct_radius_angstrom": 6.0,
+      "name": "anchor-shell-v1",
+      "partner_mode": "none",
+      "residue_budget": 512,
+      "same_chain_spatial": false,
+      "secondary_radius_angstrom": 10.0,
+      "sequence_padding": 2,
+      "target_flanks": 8
+    },
+    "template-only": {
+      "direct_radius_angstrom": 6.0,
+      "name": "anchor-shell-v1",
+      "partner_mode": "local",
+      "residue_budget": 512,
+      "same_chain_spatial": true,
+      "secondary_radius_angstrom": 10.0,
+      "sequence_padding": 2,
+      "target_flanks": 8
+    }
+  },
+  "primary_causal_gate": {
+    "minimum_generated_response_angstrom": 0.0001,
+    "partner_translation_angstrom": [
+      25.0,
+      0.0,
+      0.0
+    ],
+    "probe_step_index": 100,
+    "repeat_max_abs_delta_angstrom": 0.0
+  },
+  "schema_version": 1,
+  "scope": "expanded-descriptive-protein-context-not-production-promotion",
+  "selection": "observed-complete-canonical-protein; gap5; no-CYS; file-order interfaces/insertion; min/max nonlocal-contact proxy",
+  "status": "frozen-before-context-inference",
+  "stop_rules": [
+    "mapping/source/projection failure stops execution",
+    "geometry rejection is a terminal outcome without replacement"
+  ]
+}

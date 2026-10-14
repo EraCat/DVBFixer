@@ -94,6 +94,8 @@ def _model_atom_axis(
     atom_array: Any,
     request: DiffusionRequest,
 ) -> tuple[tuple[AtomIdentity, ...], tuple[str, ...], tuple[str, ...]]:
+    if request.protein_context is not None:
+        return _context_atom_axis(atom_array, request)
     target = request.target_sequences[0]
     residue_map = _target_residue_map(request)
     chain_ids = {str(value) for value in atom_array.chain_id}
@@ -138,6 +140,37 @@ def _model_atom_axis(
     return axis, tuple(residue_names), tuple(elements)
 
 
+def _context_atom_axis(atom_array: Any, request: DiffusionRequest):
+    from dvbfixer.model.diffusion.protein_context import sampling_entities
+
+    entities = sampling_entities(request)
+    identities = []
+    names = []
+    elements = []
+    for entity_id, engine_chain, ordinal, name, residue_name, element in zip(
+        atom_array.label_entity_id, atom_array.chain_id, atom_array.res_id,
+        atom_array.atom_name, atom_array.res_name, atom_array.element,
+    ):
+        index = int(entity_id) - 1
+        if not 0 <= index < len(entities):
+            raise ValueError("unknown Protenix context entity ID")
+        entity = entities[index]
+        position = int(ordinal) - 1
+        if str(engine_chain) != entity.engine_chain or not 0 <= position < len(entity.residues):
+            raise ValueError("Protenix context entity/ordinal mapping changed")
+        if str(residue_name) != _ONE_TO_THREE[entity.target.sequence[position]]:
+            raise ValueError("Protenix context sequence changed during featurization")
+        residue = entity.residues[position]
+        identities.append(AtomIdentity(residue.chain, residue.residue_number, residue.insertion_code, str(name)))
+        names.append(str(residue_name))
+        elements.append(str(element).strip().upper())
+    axis = tuple(identities)
+    required = {item.atom for item in request.protein_context.fixed_conditioning} | set(request.generated_atoms)
+    if len(set(axis)) != len(axis) or not required <= set(axis):
+        raise ValueError("Protenix context mapping is duplicate or incomplete")
+    return axis, tuple(names), tuple(elements)
+
+
 def _read_fixed_coordinates(
     pdb_path: Path,
     fixed_atoms: tuple[AtomIdentity, ...],
@@ -175,8 +208,9 @@ class _TracingCallback:
         self,
         atom_axis: tuple[AtomIdentity, ...],
         fixed_coordinates: dict[AtomIdentity, np.ndarray],
+        alignment_atoms: tuple[AtomIdentity, ...] | None = None,
     ) -> None:
-        self._reinject = FixedAtomReinjector(atom_axis, fixed_coordinates)
+        self._reinject = FixedAtomReinjector(atom_axis, fixed_coordinates, alignment_atoms=alignment_atoms)
         index_by_identity = {identity: index for index, identity in enumerate(atom_axis)}
         ordered = tuple(sorted(fixed_coordinates))
         self._indices = tuple(index_by_identity[identity] for identity in ordered)
@@ -221,7 +255,8 @@ def _requested_atom_indices(
     atom_axis: tuple[AtomIdentity, ...],
     request: DiffusionRequest,
 ) -> tuple[int, ...]:
-    included = set(request.fixed_atoms) | set(request.generated_atoms)
+    included = ({item.atom for item in request.protein_context.fixed_conditioning}
+                if request.protein_context else set(request.fixed_atoms)) | set(request.generated_atoms)
     selected = tuple(
         index for index, identity in enumerate(atom_axis) if identity in included
     )
@@ -277,6 +312,58 @@ def _relative_artifact(workspace: Path, path: Path) -> ArtifactReference:
     return ArtifactReference(relative.as_posix(), _sha256(path))
 
 
+class _DenoiserContextProbe:
+    """Same state/features/sigma; perturb only partner XYZ before denoising.
+
+    Target output is measured before projection, preventing frame-fit and RNG
+    shape changes from masquerading as learned context dependence.
+    """
+
+    def __init__(self, axis, request):
+        if request.protein_context is None:
+            raise ValueError("denoiser probe requires an explicit protein context plan")
+        target_chains = {gap.chain for gap in request.gaps}
+        partner_atoms = {item.atom for item in request.protein_context.fixed_conditioning if item.atom.chain not in target_chains}
+        if not partner_atoms:
+            raise ValueError("denoiser probe requires selected partner atoms")
+        self.partner_indices = tuple(index for index, atom in enumerate(axis) if atom in partner_atoms)
+        self.generated_indices = tuple(index for index, atom in enumerate(axis) if atom in request.generated_atoms)
+        self.calls = 0
+        self.result = None
+
+    def __call__(self, module, args, kwargs):
+        step = self.calls
+        self.calls += 1
+        if step != 100:
+            return
+        if args:
+            raise RuntimeError("denoiser probe encountered unsupported positional inputs")
+        cpu_state = torch.random.get_rng_state()
+        cuda_state = torch.cuda.get_rng_state()
+        try:
+            inputs = dict(kwargs)
+            inputs["inplace_safe"] = False
+            x = kwargs["x_noisy"].clone()
+            inputs["x_noisy"] = x
+            base = module.forward(**inputs).clone()
+            repeat = module.forward(**inputs).clone()
+            shifted = x.clone()
+            shifted[..., self.partner_indices, :] += torch.as_tensor((25.0, 0.0, 0.0), device=x.device, dtype=x.dtype)
+            inputs["x_noisy"] = shifted
+            changed = module.forward(**inputs)
+            delta = changed[..., self.generated_indices, :] - base[..., self.generated_indices, :]
+            self.result = {
+                "step_index": step, "partner_translation_angstrom": [25.0, 0.0, 0.0],
+                "state_shape": list(x.shape), "same_features_and_sigma": True,
+                "repeat_max_abs_delta_angstrom": float((repeat - base).abs().max().item()),
+                "generated_response_rmsd_angstrom": float(torch.sqrt(torch.mean(torch.sum(delta * delta, dim=-1))).item()),
+                "generated_response_max_displacement_angstrom": float(torch.linalg.vector_norm(delta, dim=-1).max().item()),
+            }
+        finally:
+            torch.random.set_rng_state(cpu_state)
+            torch.cuda.set_rng_state(cuda_state)
+
+
 def run(
     request_path: Path,
     input_json: Path,
@@ -287,6 +374,7 @@ def run(
     cycles: int,
     steps: int,
     ablation_mode: SamplingAblationMode,
+    context_probe: bool = False,
 ) -> tuple[RunnerResult, Path]:
     os.environ.setdefault("CUBLAS_WORKSPACE_CONFIG", ":4096:8")
     from configs.configs_inference import inference_configs
@@ -346,14 +434,26 @@ def run(
     source_path = workspace.joinpath(*Path(request.normalized_pdb.path).parts)
     if _sha256(source_path) != request.normalized_pdb.sha256:
         raise ValueError("normalized PDB digest mismatch")
-    fixed_coordinates = _read_fixed_coordinates(source_path, request.fixed_atoms)
+    selected_fixed = (tuple(item.atom for item in request.protein_context.fixed_conditioning)
+                      if request.protein_context else request.fixed_atoms)
+    fixed_coordinates = _read_fixed_coordinates(source_path, selected_fixed)
     callback = None
+    from dvbfixer.model.diffusion.protein_context import context_evidence
+
+    represented_atom_axis = tuple(atom_axis[index] for index in _requested_atom_indices(atom_axis, request))
+    evidence = context_evidence(request, represented_atom_axis) if request.protein_context else None
     if ablation_mode is SamplingAblationMode.REINJECTION:
-        callback = _TracingCallback(atom_axis, fixed_coordinates)
+        callback = _TracingCallback(atom_axis, fixed_coordinates, evidence.alignment_atoms if evidence else None)
         runner.model.dvbfixer_step_callback = callback
 
     runner.update_model_configs(update_inference_configs(runner.configs, data["N_token"].item()))
-    prediction = runner.predict(data)
+    probe = _DenoiserContextProbe(atom_axis, request) if context_probe else None
+    hook = runner.model.diffusion_module.register_forward_pre_hook(probe, with_kwargs=True) if probe else None
+    try:
+        prediction = runner.predict(data)
+    finally:
+        if hook:
+            hook.remove()
     coordinates = prediction["coordinate"]
     _assert_model_on_device(runner.model, device)
     if coordinates.device != device or not coordinates.is_floating_point():
@@ -416,6 +516,8 @@ def run(
             patch_identity=f"sha256:{_PATCH_SHA256}",
             atom_order=represented_atom_axis,
             fixed_atoms=request.fixed_atoms,
+            represented_fixed_atoms=selected_fixed,
+            protein_context_evidence=evidence,
             device=str(runner.device),
             fallback_disabled=True,
             denoising_update_count=steps,
@@ -473,6 +575,7 @@ def run(
         "sampler_dtype": str(callback.dtype) if callback is not None else str(coordinates.dtype),
         "callback_count": len(callback_steps),
         "callback_steps": callback_steps,
+        **({"denoiser_context_probe": probe.result} if probe else {}),
         "final_frame_synchronization": final_frame_synchronization,
         "validation": asdict(validation.summary),
         "ranking_metrics": [asdict(metric) for metric in validation.ranking_metrics],

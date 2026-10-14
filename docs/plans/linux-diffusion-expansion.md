@@ -276,6 +276,11 @@ a reviewed global-alignment engine; they are not reported for short-loop cases.
 
 ## WP5: Backend-Neutral Context Contract Expansion
 
+Implemented Protenix context-v1 slice and bounded causal pilot:
+[implementation and evidence](../research/protein-context-pilot.md). Schema-4
+optional fields preserve legacy serialization. The tasks below remain the full
+cross-backend acceptance target, not a claim that the pilot completes WP5–WP8.
+
 - Suggested owner: contract coordinator; this package lands before any adapter.
 - Owned surfaces:
   - `src/dvbfixer/model/diffusion/contract.py`;
@@ -313,6 +318,11 @@ a reviewed global-alignment engine; they are not reported for short-loop cases.
 
 ## WP6: Deterministic Context Selection Expansion
 
+The shared source-only selector now supports sequence flanks, 6/10 Å
+observed-anchor shells, complete selected residues, discontiguous spans, and
+fail-closed budgets for Protenix context-v1. The existing Protpardelle selector
+and trajectory-adaptive selection remain separate follow-ups.
+
 - Suggested owner: context-selection agent.
 - Owned surfaces:
   - a new backend-neutral context-selection module under
@@ -348,6 +358,12 @@ a reviewed global-alignment engine; they are not reported for short-loop cases.
 ## WP7: Engine Context Adapters
 
 ### WP7A: Protenix
+
+The context-v1 adapter maps selected entities and exact atom identities,
+projects represented fixed coordinates at every update, and limits alignment
+to the gap-bearing primary span. Six frozen local/full pilot probes demonstrated
+pre-projection denoiser dependence on partner coordinates; see the linked
+WP5 evidence. This is a bounded implementation and mechanistic result.
 
 - Suggested owner: Protenix adapter agent.
 - Owned surfaces:
@@ -404,6 +420,11 @@ a reviewed global-alignment engine; they are not reported for short-loop cases.
   - [ ] Keep weights and runtime dependencies outside core DVBFixer.
 
 ## WP8: Surrounding-Aware Ablation And Acceptance
+
+Eight arms have completed on three eligible frozen pilot cases, with one
+unsupported source retained in the denominator. Independent current-policy
+revalidation reproduces all 24 outcomes. Broader strata, negative controls,
+sensitivity studies, and independent scientific review below remain pending.
 
 - Suggested owner: scientific evaluation agent who did not implement the engine
   adapter being evaluated.

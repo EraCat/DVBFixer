@@ -98,6 +98,7 @@ function resolveArtifact(root: string, relative: string): string {
 const MD_LEVELS = new Set(['none', 'fast', 'slow', 'very_slow', 'slow_large'])
 const MODEL_OPTION_FLAGS = new Set([
   '--num-models', '--md-level', '--backend', '--diffusion-model', '--diffusion-seed',
+  '--diffusion-context',
 ])
 
 export function validatedModelArgs(options: Record<string, unknown> | null | undefined): string[] {
@@ -120,7 +121,11 @@ export function validatedModelArgs(options: Record<string, unknown> | null | und
     }
     args.push('--backend', 'diffusion', '--diffusion-seed', String(seed))
     if (values['--diffusion-model']) args.push('--diffusion-model', String(values['--diffusion-model']))
-  } else if (values['--diffusion-model'] !== undefined || values['--diffusion-seed'] !== undefined) {
+    if (values['--diffusion-context'] !== undefined && values['--diffusion-context'] !== 'none') {
+      if (!['local', 'full'].includes(String(values['--diffusion-context']))) throw new Error('--diffusion-context has an unsupported value')
+      args.push('--diffusion-context', String(values['--diffusion-context']))
+    }
+  } else if (values['--diffusion-model'] !== undefined || values['--diffusion-seed'] !== undefined || values['--diffusion-context'] !== undefined) {
     throw new Error('diffusion model options require --backend diffusion')
   }
   if (backend === 'modeller' && values['--num-models'] !== undefined && values['--num-models'] !== '') {

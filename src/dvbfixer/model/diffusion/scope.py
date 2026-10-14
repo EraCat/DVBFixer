@@ -139,6 +139,16 @@ def assess_diffusion_scope(
     digest = hashlib.sha256(normalized_pdb).hexdigest()
     if digest != request.normalized_pdb.sha256.lower():
         raise DiffusionScopeError("normalized PDB SHA-256 does not match the request")
+    if request.protein_context is not None:
+        from dvbfixer.model.diffusion.protein_context import (
+            ProteinContextError,
+            validate_context_source,
+        )
+
+        try:
+            validate_context_source(request, normalized_pdb)
+        except ProteinContextError as exc:
+            raise DiffusionScopeError(str(exc)) from exc
     try:
         text = normalized_pdb.decode("utf-8")
     except UnicodeDecodeError as exc:

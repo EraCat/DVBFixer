@@ -440,6 +440,23 @@ export const GENERATED_COMMANDS = [
         "default": 900.0
       },
       {
+        "flag": "--diffusion-context",
+        "dest": "diffusion_context",
+        "label": "Diffusion Context",
+        "type": "select",
+        "group": "Diffusion options",
+        "help": "Experimental explicit Protenix protein context selection (default: none/legacy path)",
+        "required": false,
+        "repeatable": false,
+        "multi": false,
+        "default": "none",
+        "options": [
+          "none",
+          "local",
+          "full"
+        ]
+      },
+      {
         "flag": "--diffusion-heterogen-smiles",
         "dest": "diffusion_heterogen_smiles",
         "label": "Diffusion Heterogen Smiles",
@@ -623,6 +640,7 @@ export const GENERATED_COMMANDS = [
           "--diffusion-model",
           "--diffusion-seed",
           "--diffusion-timeout",
+          "--diffusion-context",
           "--diffusion-heterogen-smiles"
         ]
       },
@@ -3523,6 +3541,23 @@ export const GENERATED_COMMANDS = [
         "default": 900.0
       },
       {
+        "flag": "--diffusion-context",
+        "dest": "diffusion_context",
+        "label": "Diffusion Context",
+        "type": "select",
+        "group": "Backend",
+        "help": "Experimental Protenix protein conditioning policy (default: none)",
+        "required": false,
+        "repeatable": false,
+        "multi": false,
+        "default": "none",
+        "options": [
+          "none",
+          "local",
+          "full"
+        ]
+      },
+      {
         "flag": "--alignment",
         "dest": "alignment",
         "label": "Alignment",
@@ -3687,7 +3722,8 @@ export const GENERATED_COMMANDS = [
           "--backend",
           "--diffusion-model",
           "--diffusion-seed",
-          "--diffusion-timeout"
+          "--diffusion-timeout",
+          "--diffusion-context"
         ]
       },
       {
@@ -4411,6 +4447,23 @@ export const GENERATED_COMMANDS = [
         "default": 900.0
       },
       {
+        "flag": "--diffusion-context",
+        "dest": "diffusion_context",
+        "label": "Diffusion Context",
+        "type": "select",
+        "group": "Model step",
+        "help": "Experimental Protenix protein conditioning policy (default: none)",
+        "required": false,
+        "repeatable": false,
+        "multi": false,
+        "default": "none",
+        "options": [
+          "none",
+          "local",
+          "full"
+        ]
+      },
+      {
         "flag": "--fasta",
         "dest": "fasta",
         "label": "Fasta",
@@ -4883,6 +4936,7 @@ export const GENERATED_COMMANDS = [
           "--diffusion-model",
           "--diffusion-seed",
           "--diffusion-timeout",
+          "--diffusion-context",
           "--fasta",
           "--no-terminal",
           "--num-loops",

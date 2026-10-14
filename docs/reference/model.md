@@ -13,6 +13,7 @@ usage: dvbfixer model [-h] [-o OUTPUT] [--fasta FASTA]
                       [--diffusion-timeout DIFFUSION_TIMEOUT]
                       [--diffusion-work-parent DIFFUSION_WORK_PARENT]
                       [--diffusion-resume]
+                      [--diffusion-context {none,local,full}]
                       [--diffusion-heterogen-smiles RESNAME=SMILES]
                       [-n NUM_MODELS] [--num-loops NUM_LOOPS]
                       [--num-output NUM_OUTPUT]
@@ -66,6 +67,9 @@ Diffusion options:
                         Parent directory for the private runner workspace
   --diffusion-resume    Reuse an existing digest-verified bundle only when its
                         scientific request matches
+  --diffusion-context {none,local,full}
+                        Experimental explicit Protenix protein context
+                        selection (default: none/legacy path)
   --diffusion-heterogen-smiles RESNAME=SMILES
                         Authoritative SMILES for a retained isolated HETATM
                         residue; repeat for multiple residue names

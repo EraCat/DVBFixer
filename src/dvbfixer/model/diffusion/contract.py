@@ -5,6 +5,7 @@ from __future__ import annotations
 import json
 import math
 from dataclasses import MISSING, dataclass, fields, is_dataclass
+from dataclasses import field as dataclass_field
 from enum import StrEnum
 from pathlib import Path
 from types import UnionType
@@ -405,6 +406,97 @@ def fixed_mask_digest(
 
 
 @dataclass(frozen=True, slots=True)
+class ProteinContextPolicy:
+    name: str = "anchor-shell-v1"
+    target_flanks: int | None = None
+    same_chain_spatial: bool = False
+    partner_mode: str = "local"
+    direct_radius_angstrom: float = 6.0
+    secondary_radius_angstrom: float = 10.0
+    sequence_padding: int = 2
+    residue_budget: int = 512
+
+    def __post_init__(self) -> None:
+        if self.partner_mode not in {"none", "local", "full"}:
+            raise DiffusionContractError("unknown protein partner selection mode")
+        if self.target_flanks is not None and self.target_flanks < 1:
+            raise DiffusionContractError("target flanks must retain both anchors")
+        if self.sequence_padding < 0 or self.residue_budget < 1:
+            raise DiffusionContractError("context padding/budget must be non-negative/positive")
+        if not 0 < self.direct_radius_angstrom <= self.secondary_radius_angstrom or not math.isfinite(self.secondary_radius_angstrom):
+            raise DiffusionContractError("context shell radii must be positive ordered finite distances")
+
+
+@dataclass(frozen=True, slots=True)
+class ProteinContextSpan:
+    chain: str
+    start: int
+    stop: int
+
+    def __post_init__(self) -> None:
+        _single_character(self.chain, "context chain")
+        if self.start < 0 or self.stop <= self.start:
+            raise DiffusionContractError("context spans must be zero-based half-open")
+
+
+@dataclass(frozen=True, slots=True)
+class ContextCoordinate:
+    atom: AtomIdentity
+    coordinate_angstrom: tuple[float, float, float]
+
+    def __post_init__(self) -> None:
+        if len(self.coordinate_angstrom) != 3 or any(not math.isfinite(x) for x in self.coordinate_angstrom):
+            raise DiffusionContractError("context coordinates must be finite three-vectors")
+
+
+@dataclass(frozen=True, slots=True)
+class ProteinContextPlan:
+    policy: ProteinContextPolicy
+    source_sha256: str
+    spans: tuple[ProteinContextSpan, ...]
+    generated: tuple[AtomIdentity, ...]
+    movable_junction: tuple[AtomIdentity, ...]
+    fixed_conditioning: tuple[ContextCoordinate, ...]
+    preserved_only: tuple[AtomIdentity, ...]
+
+    def __post_init__(self) -> None:
+        ArtifactReference("context-source", self.source_sha256)
+        roles = (self.generated, self.movable_junction, tuple(item.atom for item in self.fixed_conditioning), self.preserved_only)
+        combined = tuple(atom for role in roles for atom in role)
+        if len(set(combined)) != len(combined):
+            raise DiffusionContractError("protein context atom roles must be disjoint and unique")
+        if not self.spans or sum(span.stop - span.start for span in self.spans) > self.policy.residue_budget:
+            raise DiffusionContractError("protein context axis is empty or exceeds budget")
+        for i, span in enumerate(self.spans):
+            if any(span.chain == other.chain and max(span.start, other.start) < min(span.stop, other.stop) for other in self.spans[:i]):
+                raise DiffusionContractError("protein context spans must not overlap")
+
+
+def protein_context_digest(plan: ProteinContextPlan) -> str:
+    import hashlib
+    return hashlib.sha256(json.dumps(_encode(plan), sort_keys=True, separators=(",", ":")).encode()).hexdigest()
+
+
+@dataclass(frozen=True, slots=True)
+class ProteinContextEvidence:
+    plan_sha256: str
+    mapping_sha256: str
+    selected_coordinate_sha256: str
+    selected_atoms: tuple[AtomIdentity, ...]
+    preserved_atoms: tuple[AtomIdentity, ...]
+    alignment_atoms: tuple[AtomIdentity, ...]
+    capability: str
+
+    def __post_init__(self) -> None:
+        for digest in (self.plan_sha256, self.mapping_sha256, self.selected_coordinate_sha256):
+            ArtifactReference("context-evidence", digest)
+        if self.capability not in {"gap-only", "same-chain-conditioned", "multichain-conditioned"}:
+            raise DiffusionContractError("unknown protein context capability")
+        if not self.alignment_atoms or not set(self.alignment_atoms) <= set(self.selected_atoms):
+            raise DiffusionContractError("context frame alignment must use selected fixed atoms")
+
+
+@dataclass(frozen=True, slots=True)
 class SamplerStepTrace:
     step_index: int
     atom_identity_sha256: str
@@ -481,6 +573,7 @@ class SamplerTrace:
     final_heavy_coordinate_operations: tuple[str, ...] = ()
     conditioning_contexts: tuple[SamplerConditioningContext, ...] = ()
     conditioned_heterogen_atoms: tuple[AtomIdentity, ...] = ()
+    protein_context_evidence: ProteinContextEvidence | None = dataclass_field(default=None, metadata={"omit_if_none": True})
 
     def __post_init__(self) -> None:
         if self.schema_version != DIFFUSION_SCHEMA_VERSION:
@@ -533,6 +626,12 @@ class SamplerTrace:
             raise DiffusionContractError(
                 "sampler trace represented_fixed_atoms must not contain duplicates"
             )
+        if self.protein_context_evidence is not None:
+            evidence = self.protein_context_evidence
+            if self.represented_fixed_atoms != evidence.selected_atoms:
+                raise DiffusionContractError("context evidence changed represented fixed atoms")
+            if set(evidence.selected_atoms) & set(evidence.preserved_atoms) or set(evidence.selected_atoms) | set(evidence.preserved_atoms) != set(self.fixed_atoms):
+                raise DiffusionContractError("context evidence must partition the fixed atom mask")
         if not math.isfinite(self.fixed_tolerance_angstrom) or self.fixed_tolerance_angstrom < 0:
             raise DiffusionContractError(
                 "sampler trace fixed tolerance must be finite and non-negative"
@@ -682,7 +781,7 @@ class SamplerTrace:
                 raise DiffusionContractError(
                     "Protenix production profile requires complete sampler evidence"
                 )
-            if self.represented_fixed_atoms != self.fixed_atoms:
+            if self.protein_context_evidence is None and self.represented_fixed_atoms != self.fixed_atoms:
                 raise DiffusionContractError(
                     "Protenix profile requires every fixed atom on the sampler axis"
                 )
@@ -856,6 +955,7 @@ class DiffusionRequest(_JsonContract):
     backend_options: tuple[BackendOption, ...] = ()
     heterogen_contexts: tuple[HeterogenContext, ...] = ()
     template_ownership: tuple[TemplateOwnership, ...] = ()
+    protein_context: ProteinContextPlan | None = dataclass_field(default=None, metadata={"omit_if_none": True})
 
     def __post_init__(self) -> None:
         super(DiffusionRequest, self).__post_init__()
@@ -895,6 +995,17 @@ class DiffusionRequest(_JsonContract):
         overlap = set(self.fixed_atoms) & set(self.generated_atoms)
         if overlap:
             raise DiffusionContractError("fixed_atoms and generated_atoms must be disjoint")
+        if self.protein_context is not None:
+            context = self.protein_context
+            if context.source_sha256 != self.normalized_pdb.sha256:
+                raise DiffusionContractError("protein context source digest does not match request")
+            if set(context.generated) | set(context.movable_junction) != set(self.generated_atoms):
+                raise DiffusionContractError("mutable context roles must cover requested generated atoms")
+            if {item.atom for item in context.fixed_conditioning} | set(context.preserved_only) != set(self.fixed_atoms):
+                raise DiffusionContractError("fixed context roles must cover requested fixed atoms")
+            for span in context.spans:
+                if span.chain not in lengths or span.stop > lengths[span.chain]:
+                    raise DiffusionContractError("context span exceeds target chain sequence")
         context_residues = [context.residue for context in self.heterogen_contexts]
         if len(context_residues) != len(set(context_residues)):
             raise DiffusionContractError("heterogen context residues must be unique")
@@ -1018,7 +1129,8 @@ def _encode(value: Any) -> Any:
     if isinstance(value, StrEnum):
         return value.value
     if is_dataclass(value):
-        return {field.name: _encode(getattr(value, field.name)) for field in fields(value)}
+        return {item.name: _encode(getattr(value, item.name)) for item in fields(value)
+                if not (item.metadata.get("omit_if_none") and getattr(value, item.name) is None)}
     if isinstance(value, tuple):
         return [_encode(item) for item in value]
     if isinstance(value, (str, int, float, bool)) or value is None:

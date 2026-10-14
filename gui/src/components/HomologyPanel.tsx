@@ -645,6 +645,7 @@ export function HomologyPanel() {
     if (backend === 'modeller') {
       delete options['--diffusion-model']
       delete options['--diffusion-seed']
+      delete options['--diffusion-context']
     }
     update({ modelOptions: options })
   }
@@ -872,6 +873,12 @@ export function HomologyPanel() {
                 </FormControl>
                 <TextField sx={toolbarControlSx} size="small" type="number" label="Seed" value={project.modelOptions['--diffusion-seed'] ?? 7}
                   onChange={event => update({ modelOptions: { ...project.modelOptions, '--diffusion-seed': Number(event.target.value) } })} />
+                <FormControl size="small" sx={toolbarControlSx}><InputLabel>Protein context</InputLabel>
+                  <Select label="Protein context" value={project.modelOptions['--diffusion-context'] ?? 'none'}
+                    onChange={event => update({ modelOptions: { ...project.modelOptions, '--diffusion-context': event.target.value } })}>
+                    <MenuItem value="none">Legacy / none</MenuItem><MenuItem value="local">Local (experimental)</MenuItem><MenuItem value="full">Full (experimental)</MenuItem>
+                  </Select>
+                </FormControl>
               </>}
               <Button sx={primaryActionSx} variant="contained"
                 onClick={runModel} disabled={busy !== '' || !project.alignmentGroups.length}>Run {(project.modelOptions['--backend'] ?? 'modeller') === 'diffusion' ? 'Diffusion' : 'Modeller'}</Button>

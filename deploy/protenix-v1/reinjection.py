@@ -18,6 +18,7 @@ class FixedAtomReinjector:
         atom_identities: tuple[AtomIdentity, ...],
         fixed_coordinates: Mapping[AtomIdentity, np.ndarray],
         anchor_weights: Mapping[AtomIdentity, float] | None = None,
+        alignment_atoms: tuple[AtomIdentity, ...] | None = None,
     ) -> None:
         if len(set(atom_identities)) != len(atom_identities):
             raise ValueError("atom identities must be unique")
@@ -32,7 +33,10 @@ class FixedAtomReinjector:
         if anchor_weights is not None and set(anchor_weights) != set(fixed_coordinates):
             raise ValueError("anchor weights must cover exactly the fixed identities")
 
-        ordered = tuple(sorted(fixed_coordinates))
+        selected_alignment = set(fixed_coordinates) if alignment_atoms is None else set(alignment_atoms)
+        if not selected_alignment <= set(fixed_coordinates) or len(selected_alignment) < 3:
+            raise ValueError("alignment atoms must contain at least three selected fixed atoms")
+        ordered = tuple(sorted(selected_alignment))
         coordinates = np.asarray(
             [fixed_coordinates[identity] for identity in ordered], dtype=np.float64
         )
@@ -52,6 +56,8 @@ class FixedAtomReinjector:
         self._fixed_indices = tuple(index_by_identity[identity] for identity in ordered)
         self._fixed_coordinates = coordinates
         self._weights = weights
+        self._overwrite_indices = tuple(index_by_identity[identity] for identity in sorted(fixed_coordinates))
+        self._overwrite_coordinates = np.asarray([fixed_coordinates[identity] for identity in sorted(fixed_coordinates)])
 
     def __call__(
         self, coordinates: torch.Tensor, step_index: int, step_count: int
@@ -101,5 +107,7 @@ class FixedAtomReinjector:
         synchronized = torch.einsum(
             "...ni,...ji->...nj", coordinates, rotation
         ) + translation[..., None, :]
-        synchronized[..., indices, :] = target
+        overwrite = torch.as_tensor(self._overwrite_indices, device=device)
+        overwrite_target = torch.as_tensor(self._overwrite_coordinates, device=device, dtype=dtype)
+        synchronized[..., overwrite, :] = overwrite_target
         return synchronized

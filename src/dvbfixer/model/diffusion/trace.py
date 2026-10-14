@@ -12,6 +12,7 @@ from dvbfixer.model.diffusion.contract import (
     BackendProvenance,
     DiffusionContractError,
     DiffusionRequest,
+    ProteinContextEvidence,
     RunnerResourceMetrics,
     SamplerConditioningContext,
     SamplerStepTrace,
@@ -41,6 +42,7 @@ def build_sampler_trace(
     sampler_evidence_complete: bool = True,
     conditioning_contexts: tuple[SamplerConditioningContext, ...] = (),
     conditioned_heterogen_atoms: tuple[AtomIdentity, ...] = (),
+    protein_context_evidence: ProteinContextEvidence | None = None,
 ) -> SamplerTrace:
     """Build the common no-refinement trace from observed sampler evidence."""
     reinjection = bool(projection_errors_angstrom)
@@ -98,6 +100,7 @@ def build_sampler_trace(
         ),
         conditioning_contexts=conditioning_contexts,
         conditioned_heterogen_atoms=conditioned_heterogen_atoms,
+        protein_context_evidence=protein_context_evidence,
     )
 
 
@@ -120,6 +123,14 @@ def validate_sampler_trace_context(
     """Match standalone trace evidence to its request and backend identity."""
     if trace.fixed_atoms != request.fixed_atoms:
         raise DiffusionContractError("sampler trace changed the fixed atom mask")
+    if request.protein_context is not None:
+        from dvbfixer.model.diffusion.protein_context import context_evidence
+
+        expected = context_evidence(request, trace.atom_order)
+        if trace.protein_context_evidence != expected:
+            raise DiffusionContractError("sampler trace did not prove the declared protein conditioning plan")
+    elif trace.protein_context_evidence is not None:
+        raise DiffusionContractError("sampler trace claims undeclared protein context")
     expected_heterogen_atoms = {
         atom for context in request.heterogen_contexts for atom in context.atoms
     }

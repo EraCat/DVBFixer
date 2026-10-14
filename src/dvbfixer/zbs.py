@@ -87,6 +87,8 @@ def parse_args(argv=None):
     model_grp.add_argument("--diffusion-timeout", type=float, default=900.0,
                            help="Diffusion runner timeout in seconds (default: 900)")
     model_grp.add_argument("--diffusion-work-parent", help="Existing parent for private diffusion workspaces")
+    model_grp.add_argument("--diffusion-context", choices=["none", "local", "full"], default="none",
+                           help="Experimental Protenix protein conditioning policy (default: none)")
     model_grp.add_argument("--diffusion-resume", action="store_true",
                            help="Reuse a verified model bundle matching the current scientific request")
     model_grp.add_argument("--fasta", help="FASTA file with complete sequence(s) for model step")
@@ -233,7 +235,7 @@ def parse_args(argv=None):
     add_runtime_help(p, batch=True)
     args = p.parse_args(argv)
     provided = {token.split("=", 1)[0] for token in (sys.argv[1:] if argv is None else argv) if token.startswith("-")}
-    diffusion_flags = {"--diffusion-model", "--diffusion-seed", "--diffusion-timeout", "--diffusion-work-parent", "--diffusion-resume"}
+    diffusion_flags = {"--diffusion-model", "--diffusion-seed", "--diffusion-timeout", "--diffusion-work-parent", "--diffusion-resume", "--diffusion-context"}
     if args.model_backend == "modeller" and provided & diffusion_flags:
         p.error("diffusion options require --model-backend diffusion")
     if args.model_backend == "diffusion":
@@ -437,6 +439,8 @@ def _run_pipeline(args, input_path):
             bundle = artifact_base.with_name(artifact_base.name + "_model_diffusion")
             model_argv = [current, "-o", str(bundle), "--backend", "diffusion",
                           "--diffusion-timeout", str(args.diffusion_timeout)]
+            if args.diffusion_context != "none":
+                model_argv.extend(["--diffusion-context", args.diffusion_context])
             if args.diffusion_model:
                 model_argv.extend(["--diffusion-model", args.diffusion_model])
             for seed in args.diffusion_seeds:

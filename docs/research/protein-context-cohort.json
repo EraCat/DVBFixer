@@ -1,0 +1,180 @@
+{
+  "arms": [
+    "anchors-gap",
+    "sequence-8",
+    "sequence-16",
+    "same-chain-spatial",
+    "local-partner",
+    "full-protein",
+    "template-only",
+    "local-partner-refined"
+  ],
+  "cases": [
+    {
+      "case_id": "8xj0-fab",
+      "partner_chain": "A",
+      "reason": "source heavy-atom-incomplete residue: ResidueIdentity(chain='B', residue_number='1', insertion_code='')",
+      "source": "tests/fixtures/assemblies/8XJ0.pdb",
+      "source_sha256": "fe6030df5c3f5c12998082efec96b7f0c9fd91f51d63ee78662470760febe865",
+      "status": "unsupported",
+      "stratum": "fab-interface",
+      "target_chain": "B"
+    },
+    {
+      "artifacts": {
+        "input/normalized.pdb": "5491b9bc2f51044693b03133b2125bd5375e5efee2419db40370fd415b8eab90",
+        "reference.pdb": "08295c35a42ae73e91d278ce0b42af230dbb97edaf945e73baf1ecbae51e451e",
+        "request.json": "e8553a11bca9f9e8b6ffbfe16e7fac31e460204d39dae187356c5c97163347a0"
+      },
+      "case_id": "7k8s-fv",
+      "gap_length": 5,
+      "gap_start": 29,
+      "gap_stop": 34,
+      "generated_residues": [
+        {
+          "chain": "H",
+          "insertion_code": "",
+          "residue_number": "31"
+        },
+        {
+          "chain": "H",
+          "insertion_code": "",
+          "residue_number": "32"
+        },
+        {
+          "chain": "H",
+          "insertion_code": "",
+          "residue_number": "33"
+        },
+        {
+          "chain": "H",
+          "insertion_code": "",
+          "residue_number": "34"
+        },
+        {
+          "chain": "H",
+          "insertion_code": "",
+          "residue_number": "35"
+        }
+      ],
+      "partner_chain": "L",
+      "reference_interface_minimum_distance_angstrom": 3.6976383003209055,
+      "source": "tests/fixtures/insertion_codes/7K8S.pdb",
+      "source_sha256": "8b996736b9a1e157b044f9004aa160ffd5167abfa38f555f3b78e0e592643910",
+      "status": "eligible",
+      "stratum": "insertion-code-antibody",
+      "target_chain": "H"
+    },
+    {
+      "artifacts": {
+        "input/normalized.pdb": "9cc83cb959000ff35730feb8e12f6392ae3678feb06572368ca8a558e29f50f2",
+        "reference.pdb": "8988cf76e4fed328b9dda9a195a8fc299cdc3ee88c7a4155454537863226bcfe",
+        "request.json": "513c5e6d408419ee69b7fb50273850bc52d5faf898f8b642034c1c30691390ee"
+      },
+      "case_id": "1emv-complex",
+      "gap_length": 5,
+      "gap_start": 21,
+      "gap_stop": 26,
+      "generated_residues": [
+        {
+          "chain": "A",
+          "insertion_code": "",
+          "residue_number": "24"
+        },
+        {
+          "chain": "A",
+          "insertion_code": "",
+          "residue_number": "25"
+        },
+        {
+          "chain": "A",
+          "insertion_code": "",
+          "residue_number": "26"
+        },
+        {
+          "chain": "A",
+          "insertion_code": "",
+          "residue_number": "27"
+        },
+        {
+          "chain": "A",
+          "insertion_code": "",
+          "residue_number": "28"
+        }
+      ],
+      "partner_chain": "B",
+      "reference_interface_minimum_distance_angstrom": 2.979717100665767,
+      "source": "tests/fixtures/regressions/1EMV.pdb",
+      "source_sha256": "b464fafe9c5c240e245328c3d348e545279b95573d8ad5334d00aaf65ee3f5e3",
+      "status": "eligible",
+      "stratum": "buried-protein-complex",
+      "target_chain": "A"
+    },
+    {
+      "artifacts": {
+        "input/normalized.pdb": "4c9f87b0edd5f192414c913955e4118681d9f6046a77a2d1554de8726f2009d6",
+        "reference.pdb": "d800fcbe3d3d2d2585ff3f1cf8d31598c3bcc95f463c1e9d3977f9019a06c87e",
+        "request.json": "b4c75de3a6f6bd1e0216eda255561d12c8eb5af377878d7ddfe570bd2f4a78af"
+      },
+      "case_id": "1dqj-antigen",
+      "gap_length": 5,
+      "gap_start": 25,
+      "gap_stop": 30,
+      "generated_residues": [
+        {
+          "chain": "B",
+          "insertion_code": "",
+          "residue_number": "26"
+        },
+        {
+          "chain": "B",
+          "insertion_code": "",
+          "residue_number": "27"
+        },
+        {
+          "chain": "B",
+          "insertion_code": "",
+          "residue_number": "28"
+        },
+        {
+          "chain": "B",
+          "insertion_code": "",
+          "residue_number": "29"
+        },
+        {
+          "chain": "B",
+          "insertion_code": "",
+          "residue_number": "30"
+        }
+      ],
+      "partner_chain": "C",
+      "reference_interface_minimum_distance_angstrom": 2.474806457079015,
+      "source": "tests/fixtures/regressions/1DQJ.pdb",
+      "source_sha256": "9eba9510d5129e63f55c9c1a1ff76ca5759250a118994f209cad4177271ae7cc",
+      "status": "eligible",
+      "stratum": "antibody-antigen",
+      "target_chain": "B"
+    }
+  ],
+  "no_replacement": true,
+  "primary_causal_gate": {
+    "minimum_generated_response_angstrom": 0.0001,
+    "partner_translation_angstrom": [
+      25.0,
+      0.0,
+      0.0
+    ],
+    "probe_step_index": 100,
+    "repeat_max_abs_delta_angstrom": 0.0
+  },
+  "schema_version": 1,
+  "screening_order_locked": true,
+  "seed": 7,
+  "selection": "first-complete-non-CYS-internal-gap5-reference-contact<=5A-in-file-order",
+  "status": "frozen-before-context-inference",
+  "stop_rules": [
+    "stop on mapping/projection/callback or source digest failure",
+    "geometry rejects remain terminal outcomes without replacement",
+    "no outcome-based policy or threshold changes"
+  ]
+}

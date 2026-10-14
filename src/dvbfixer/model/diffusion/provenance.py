@@ -19,6 +19,7 @@ from dvbfixer.model.diffusion.contract import (
     DiffusionContractError,
     DiffusionRequest,
     HeterogenContext,
+    ProteinContextPlan,
     RunnerDiagnostics,
     RunnerResourceMetrics,
     TargetSequence,
@@ -78,6 +79,7 @@ class DiffusionProvenanceManifest:
     runner_diagnostics: DiagnosticSummary
     resource_metrics: RunnerResourceMetrics
     artifacts: tuple[PublicationArtifact, ...]
+    protein_context: ProteinContextPlan | None = None
 
     def __post_init__(self) -> None:
         if self.schema_version != DIFFUSION_PROVENANCE_SCHEMA_VERSION:
@@ -119,6 +121,7 @@ class DiffusionProvenanceManifest:
             "generated_atoms": _encode(self.generated_atoms),
             "heterogen_contexts": _encode(self.heterogen_contexts),
             "template_ownership": _encode(self.template_ownership),
+            **({"protein_context": _encode(self.protein_context)} if self.protein_context is not None else {}),
             "requested_profile": self.requested_profile,
             "profile_status": self.profile_status,
             "profile_evidence_labels": list(self.profile_evidence_labels),
@@ -174,6 +177,7 @@ def build_provenance_manifest(
         generated_atoms=request.generated_atoms,
         heterogen_contexts=request.heterogen_contexts,
         template_ownership=request.template_ownership,
+        protein_context=request.protein_context,
         requested_profile=requested_profile,
         profile_status=profile.status if profile is not None else "unregistered",
         profile_evidence_labels=profile.evidence_labels if profile is not None else (),

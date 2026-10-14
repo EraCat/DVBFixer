@@ -198,7 +198,7 @@ def test_checkpoint_writer_projects_out_unrequested_model_atoms(
         (requested, model_only),
         ("ALA", "ALA"),
         ("C", "O"),
-        SimpleNamespace(fixed_atoms=(requested,), generated_atoms=()),
+        SimpleNamespace(fixed_atoms=(requested,), generated_atoms=(), protein_context=None),
     )
 
     assert observed["atom_axis"] == (requested,)

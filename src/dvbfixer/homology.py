@@ -651,6 +651,8 @@ def parse_args(argv=None):
                          help='Parent directory for the private runner workspace')
     backend.add_argument('--diffusion-resume', action='store_true',
                          help='Reuse a verified bundle matching the current mosaic request')
+    backend.add_argument('--diffusion-context', choices=['none', 'local', 'full'], default='none',
+                         help='Experimental Protenix protein conditioning policy (default: none)')
 
     alignment = p.add_argument_group('Alignment')
     alignment.add_argument('--alignment', default=None,
@@ -693,7 +695,7 @@ def parse_args(argv=None):
     provided = {token.split('=', 1)[0] for token in raw_args if token.startswith('-')}
     diffusion_flags = {
         '--diffusion-model', '--diffusion-seed', '--diffusion-timeout',
-        '--diffusion-work-parent', '--diffusion-resume',
+        '--diffusion-work-parent', '--diffusion-resume', '--diffusion-context',
     }
     modeller_flags = {'--num-models', '-n', '--md-level', '--no-loop-refine', '--salign'}
     invalid = (
@@ -780,6 +782,7 @@ def main(argv=None):
                 diffusion_heterogen_smiles=[],
                 diffusion_template_ownership=ownership,
                 diffusion_resume=args.diffusion_resume,
+                diffusion_context=args.diffusion_context,
                 keep_heterogens=True,
                 no_terminal=False,
                 verbose=args.verbose,

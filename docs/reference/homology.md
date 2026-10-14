@@ -12,8 +12,9 @@ usage: dvbfixer homology [-h] [--template TEMPLATE]
                          [--diffusion-seed DIFFUSION_SEEDS]
                          [--diffusion-timeout DIFFUSION_TIMEOUT]
                          [--diffusion-work-parent DIFFUSION_WORK_PARENT]
-                         [--diffusion-resume] [--alignment ALIGNMENT]
-                         [--salign] [-n NUM_MODELS]
+                         [--diffusion-resume]
+                         [--diffusion-context {none,local,full}]
+                         [--alignment ALIGNMENT] [--salign] [-n NUM_MODELS]
                          [--md-level {none,fast,slow,very_slow,slow_large}]
                          [--no-loop-refine] [--antibody] [--prepare]
                          [--minimize] [--ph PH] [--no-solvent]
@@ -53,6 +54,9 @@ Backend:
                         Parent directory for the private runner workspace
   --diffusion-resume    Reuse a verified bundle matching the current mosaic
                         request
+  --diffusion-context {none,local,full}
+                        Experimental Protenix protein conditioning policy
+                        (default: none)
 
 Alignment:
   --alignment ALIGNMENT

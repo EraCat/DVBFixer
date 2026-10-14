@@ -461,6 +461,22 @@ def run_diffusion_model(args: argparse.Namespace) -> None:
             )
         else:
             request = frozen_request
+        context_mode = getattr(args, "diffusion_context", "none")
+        if context_mode != "none":
+            if runtime.model != "protenix":
+                raise DiffusionCliError("explicit protein context-v1 is currently supported by Protenix only")
+            from dvbfixer.model.diffusion.contract import ProteinContextPolicy
+            from dvbfixer.model.diffusion.protein_context import (
+                ProteinContextError,
+                select_protein_context,
+            )
+
+            policy = (ProteinContextPolicy(target_flanks=8, same_chain_spatial=True) if context_mode == "local"
+                      else ProteinContextPolicy(partner_mode="full"))
+            try:
+                request = select_protein_context(request, model_input.read_bytes(), policy)
+            except ProteinContextError as exc:
+                raise DiffusionCliError(f"unsupported protein context: {exc}") from exc
         try:
             admission = assess_diffusion_scope(request, model_input.read_bytes())
         except DiffusionScopeError as exc:

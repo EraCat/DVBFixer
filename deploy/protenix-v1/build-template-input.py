@@ -1,4 +1,4 @@
-"""Build a single-chain Protenix template input from a DiffusionRequest."""
+"""Build exact single-chain or selected-context Protenix template inputs."""
 
 from __future__ import annotations
 
@@ -10,6 +10,7 @@ from pathlib import Path
 import gemmi
 
 from dvbfixer.model.diffusion.contract import DiffusionRequest
+from dvbfixer.model.diffusion.protein_context import sampling_entities, validate_context_source
 
 
 def _sha256(path: Path) -> str:
@@ -19,6 +20,8 @@ def _sha256(path: Path) -> str:
 def build_input(request_path: Path, output_dir: Path) -> Path:
     request_path = request_path.resolve()
     request = DiffusionRequest.from_json(request_path.read_text(encoding="utf-8"))
+    if request.protein_context is not None:
+        return _build_context_input(request_path, request, output_dir)
     if len(request.target_sequences) != 1 or len(request.gaps) != 1:
         raise ValueError("Protenix hook smoke requires one target chain and one gap")
     target = request.target_sequences[0]
@@ -73,6 +76,39 @@ def build_input(request_path: Path, output_dir: Path) -> Path:
         ),
         encoding="utf-8",
     )
+    return input_path
+
+
+def _build_context_input(request_path: Path, request: DiffusionRequest, output_dir: Path) -> Path:
+    source = request_path.parent / request.normalized_pdb.path
+    validate_context_source(request, source.read_bytes())
+    structure = gemmi.read_structure(str(source))
+    output_dir = output_dir.resolve()
+    output_dir.mkdir(parents=True, exist_ok=False)
+    sequences = []
+    for index, entity in enumerate(sampling_entities(request)):
+        selected = {(residue.residue_number, residue.insertion_code) for residue in entity.placement.observed_residues}
+        template = gemmi.Structure()
+        model = gemmi.Model("1")
+        chain = gemmi.Chain(entity.engine_chain)
+        for residue in structure[0][entity.target.chain]:
+            key = (str(residue.seqid.num), residue.seqid.icode.strip())
+            if key in selected:
+                chain.add_residue(residue.clone())
+        model.add_chain(chain)
+        template.add_model(model)
+        template.setup_entities()
+        path = output_dir / f"template-{index}.json"
+        path.write_text(json.dumps([{
+            "mmcif": template.make_mmcif_document().as_string(),
+            "queryIndices": list(entity.placement.observed_target_indices),
+            "templateIndices": list(range(len(entity.placement.observed_residues))),
+        }], separators=(",", ":")))
+        sequences.append({"proteinChain": {"sequence": entity.target.sequence, "count": 1,
+                                           "id": [entity.engine_chain], "templatesPath": str(path)}})
+    input_path = output_dir / "input.json"
+    input_path.write_text(json.dumps([{"name": "dvbfixer_protenix_context", "sequences": sequences,
+                                       "modelSeeds": list(request.seeds)}], separators=(",", ":")))
     return input_path
 
 

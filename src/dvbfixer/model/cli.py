@@ -90,6 +90,10 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         help="Reuse an existing digest-verified bundle only when its scientific request matches",
     )
     diffusion.add_argument(
+        "--diffusion-context", choices=("none", "local", "full"), default="none",
+        help="Experimental explicit Protenix protein context selection (default: none/legacy path)",
+    )
+    diffusion.add_argument(
         "--diffusion-heterogen-smiles",
         action="append",
         default=[],
@@ -199,6 +203,7 @@ def _validate_backend_options(
         "--diffusion-timeout",
         "--diffusion-work-parent",
         "--diffusion-resume",
+        "--diffusion-context",
         "--diffusion-heterogen-smiles",
     }
     provided = {token.split("=", 1)[0] for token in argv if token.startswith("-")}
@@ -224,6 +229,7 @@ def _validate_backend_options(
             "--diffusion-heterogen-smiles",
             "--no-terminal",
             "--strip-heterogens",
+            "--diffusion-context",
         }
         invalid = sorted(provided & construction_options)
         if invalid:

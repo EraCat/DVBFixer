@@ -306,6 +306,26 @@ these checked workflow-state items cover one-host multi-process operation.
 Detailed requirements and acceptance gates are in the
 [diffusion gap-reconstruction plan](diffusion-gap-reconstruction.md).
 
+### CUDA expansion follow-up (2026-10-19)
+
+- [x] Share profile-specific gap-length admission across CLI, mosaic construction,
+  and scientific scope; preserve separate public and research capabilities.
+- [x] Independently audit withheld accuracy of all 50 full-input clean-protein
+  CUDA outcomes, including rejected candidates and native-quality exclusions.
+- [x] Validate adaptive queries and previous source context; do not report a
+  context expansion when the policy selects no additional atoms.
+- [x] Exercise deletion flanks 1–5 and reject invalid Homology requests before
+  writing the normalized candidate input.
+- [x] Freeze and execute generated-only CUDA refinement for all six rich cc89
+  frontier outputs; retain 0/6 acceptance and two guarded chirality exceptions.
+- [ ] Complete prospective long-gap noninferiority and independent review.
+- [ ] Achieve scientifically acceptable rich cc89 CUDA context reconstruction;
+  representation and projection alone do not close this gate.
+- [ ] Complete larger independently reviewed context/CDR and Homology edit cohorts.
+
+Evidence: [CUDA expansion completion audit](../research/cuda-expansion-completion.md).
+Apple MPS follow-up is deferred until CUDA implementation completes.
+
 ## DDD Documentation Roadmap
 
 ### Phases 0-2: Foundation And Domain Contexts

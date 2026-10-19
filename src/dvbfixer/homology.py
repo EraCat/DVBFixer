@@ -655,6 +655,8 @@ def parse_args(argv=None):
                          help='Experimental shared protein conditioning policy; engine capabilities are checked (default: none)')
     backend.add_argument('--diffusion-regenerate-covered', action='store_true',
                          help='Opt in to bounded regeneration of covered substitutions and short uncovered windows')
+    backend.add_argument('--diffusion-edit-flanks', type=int, choices=range(1, 6), default=1,
+                         help='Covered-edit sequence flanks per side, requires --diffusion-regenerate-covered (default: 1)')
 
     alignment = p.add_argument_group('Alignment')
     alignment.add_argument('--alignment', default=None,
@@ -697,7 +699,7 @@ def parse_args(argv=None):
     provided = {token.split('=', 1)[0] for token in raw_args if token.startswith('-')}
     diffusion_flags = {
         '--diffusion-model', '--diffusion-seed', '--diffusion-timeout',
-        '--diffusion-work-parent', '--diffusion-resume', '--diffusion-context', '--diffusion-regenerate-covered',
+        '--diffusion-work-parent', '--diffusion-resume', '--diffusion-context', '--diffusion-regenerate-covered', '--diffusion-edit-flanks',
     }
     modeller_flags = {'--num-models', '-n', '--md-level', '--no-loop-refine', '--salign'}
     invalid = (
@@ -708,6 +710,8 @@ def parse_args(argv=None):
     if invalid:
         required = '--backend diffusion' if args.backend == 'modeller' else '--backend modeller'
         p.error(f"{', '.join(sorted(invalid))} require {required}")
+    if '--diffusion-edit-flanks' in provided and not args.diffusion_regenerate_covered:
+        p.error('--diffusion-edit-flanks requires --diffusion-regenerate-covered')
     return args
 
 
@@ -787,6 +791,7 @@ def main(argv=None):
                 seeds=tuple(args.diffusion_seeds),
                 regenerate_covered=args.diffusion_regenerate_covered,
                 profile=runtime.profile,
+                edit_flanks=args.diffusion_edit_flanks,
             )
             output_bundle = f"{output_prefix}_homology_diffusion"
             run_diffusion_model(argparse.Namespace(

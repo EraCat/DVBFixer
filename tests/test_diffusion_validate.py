@@ -7,6 +7,7 @@ from dataclasses import replace
 from io import StringIO
 from pathlib import Path
 
+import pytest
 from openmm.app import PDBFile
 
 import dvbfixer.model.diffusion.validate as diffusion_validate
@@ -484,6 +485,28 @@ def test_validation_rejects_missing_generated_heavy_atom_and_bad_junction(tmp_pa
     assert validation.passed is False
     assert "generated-heavy-atom-completeness" in validation.hard_gate_failures
     assert "junction-peptide-connectivity" in validation.hard_gate_failures
+
+
+@pytest.mark.parametrize("distance,passes", [(1.19, False), (1.21, True), (1.33, True), (1.44, True), (1.46, False), (1.80, False)])
+def test_junction_gate_measures_carbonyl_c_to_next_n_in_angstroms(tmp_path: Path, distance: float, passes: bool) -> None:
+    workspace, request, candidate_bytes, generated_atoms = _workspace(tmp_path)
+    lines = candidate_bytes.decode().splitlines(keepends=True)
+    carbon = next(line for line in lines if line.startswith("ATOM  ") and _atom_identity(line) == AtomIdentity("C", "64", "", "C"))
+    position = (float(carbon[30:38]) + distance, float(carbon[38:46]), float(carbon[46:54]))
+    # Other geometry may intentionally fail: this test isolates the junction
+    # decision and its metric using a precisely controlled physical C-N length.
+    candidate_bytes = "".join(
+        line[:30] + "".join(f"{value:8.3f}" for value in position) + line[54:]
+        if line.startswith("ATOM  ") and _atom_identity(line) == AtomIdentity("C", "65", "", "N") else line
+        for line in lines
+    ).encode()
+    (workspace / "candidates" / "controlled-cn.pdb").write_bytes(candidate_bytes)
+    result = _runner_result((_candidate("controlled", "candidates/controlled-cn.pdb", candidate_bytes, generated_atoms, score=1.0),))
+    validation = validate_runner_result(request, result, workspace=workspace)[0].summary
+    assert ("junction-peptide-connectivity" not in validation.hard_gate_failures) is passes
+    metrics = {metric.name: metric.value for metric in validation.metrics}
+    assert metrics["junction-cn-distance-min"] <= distance + 1e-12
+    assert metrics["junction-cn-distance-max"] >= distance - 1e-12
 
 
 def test_validation_preserves_requested_explicit_links_canonically(tmp_path: Path) -> None:

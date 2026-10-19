@@ -25,6 +25,10 @@ from dvbfixer.model.diffusion.contract import (
     TargetSequence,
     TemplateOwnership,
 )
+from dvbfixer.model.diffusion.gap_capabilities import (
+    accepted_gap_range_label,
+    gap_capability,
+)
 from dvbfixer.model.diffusion.heterogen_context import (
     HeterogenContextError,
     build_smiles_heterogen_contexts,
@@ -42,8 +46,6 @@ from dvbfixer.model.diffusion.runtime import (
     resolve_diffusion_runtime,
 )
 from dvbfixer.model.diffusion.scope import (
-    MAXIMUM_GAP_LENGTH,
-    MINIMUM_GAP_LENGTH,
     DiffusionScopeError,
     _parse_coordinate_records,
     _parse_explicit_links,
@@ -164,7 +166,7 @@ def build_cli_diffusion_request(
             intervals.append((last_observed + 1, len(target), GapKind.C_TERMINAL))
         for start, stop, gap_kind in intervals:
             gap_length = stop - start
-            if not MINIMUM_GAP_LENGTH <= gap_length <= MAXIMUM_GAP_LENGTH:
+            if not gap_capability(profile, gap_length).accepted:
                 region = {
                     GapKind.INTERNAL: "internal gap",
                     GapKind.N_TERMINAL: "N-terminal missing region",
@@ -177,7 +179,7 @@ def build_cli_diffusion_request(
                 )
                 raise DiffusionCliError(
                     f"{region} length {gap_length} on chain {chain} is outside "
-                    f"the accepted range {MINIMUM_GAP_LENGTH}-{MAXIMUM_GAP_LENGTH}"
+                    f"the accepted range {accepted_gap_range_label(profile)}"
                     f"{remedy}"
                 )
             left_anchor = by_target[start - 1] if start > 0 else None

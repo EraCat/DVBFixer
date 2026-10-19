@@ -19,6 +19,7 @@ from dvbfixer.model.diffusion.contract import (
     GapKind,
     ResidueIdentity,
 )
+from dvbfixer.model.diffusion.gap_capabilities import gap_capability
 
 MINIMUM_GAP_LENGTH = 3
 MAXIMUM_GAP_LENGTH = 12
@@ -155,6 +156,10 @@ def assess_diffusion_scope(
         raise DiffusionScopeError("normalized PDB is not valid UTF-8") from exc
 
     reasons: list[str] = []
+    if request.protein_context is not None and request.protein_context.policy.name == "intact-native-segments-v1":
+        reasons.append("intact-native-segments-research-only")
+    if request.protein_context is not None and request.protein_context.trajectory_queries is not None:
+        reasons.append("trajectory-adaptive-context-research-only")
     requested_profile = next(
         (
             option.value
@@ -330,7 +335,7 @@ def assess_diffusion_scope(
 
     for gap in request.gaps:
         gap_length = gap.target_interval.stop - gap.target_interval.start
-        if not MINIMUM_GAP_LENGTH <= gap_length <= MAXIMUM_GAP_LENGTH:
+        if not gap_capability(requested_profile, gap_length).accepted:
             reasons.append("unsupported-gap-length")
         left_matches = (
             gap.left_anchor is not None

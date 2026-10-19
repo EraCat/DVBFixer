@@ -38,6 +38,14 @@ residues is recorded separately from fixed template ownership. Atoms outside the
 declared windows remain fixed. Positions come directly from coverage, without
 FASTA re-alignment, so repeated sequence blocks cannot move the masks.
 
+`--diffusion-edit-flanks 1..5` sets the covered-edit window explicitly and requires
+`--diffusion-regenerate-covered`. A single internal deletion boundary produces
+windows of 3, 5, 7, 9, or 11 residues before overlaps are merged. For example,
+`--diffusion-edit-flanks 3` uses three flanking target residues on either side
+of the boundary residue. Window size is not retried automatically after a
+geometry rejection. The frozen CUDA example passed with three flanks; this does
+not guarantee closure for another deletion or scaffold.
+
 Protenix `--diffusion-context local|full` supports multiple uncovered spans and
 jointly sampled gap-bearing chains, including distinct logical `VH`/`VL` mappings.
 Every group still requires a chain from the common reference structure. Multiple
@@ -110,6 +118,7 @@ dvbfixer homology target.fasta --template-plan template-plan.json \
 | `--diffusion-resume` | off | Reuse only a verified bundle matching the current mosaic request. |
 | `--diffusion-context` | `none` | Shared `local`/`full` protein context; checked against engine capabilities. Required for Protenix multi-chain or multi-gap plans. |
 | `--diffusion-regenerate-covered` | off | Opt in to bounded covered-substitution, deletion-boundary, and short-window regeneration. |
+| `--diffusion-edit-flanks` | `1` | Explicit covered-edit flanks per side, 1–5; requires covered regeneration and retains the maximum 12-residue window. |
 | `--alignment PIR` | auto | Use a pre-built PIR alignment instead of automatic alignment. |
 | `--salign` | off | Use Modeller structure-based SALIGN rather than pairwise `align2d`. |
 | `-n`, `--num-models N` | `5` | Number of candidate models to generate. |

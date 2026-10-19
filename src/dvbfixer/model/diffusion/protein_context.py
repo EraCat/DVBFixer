@@ -11,6 +11,7 @@ import numpy as np
 
 from dvbfixer.domain.structure_identity import allocate_chain_ids
 from dvbfixer.model.diffusion.contract import (
+    ArtifactReference,
     AtomIdentity,
     ContextCoordinate,
     DiffusionRequest,
@@ -21,6 +22,7 @@ from dvbfixer.model.diffusion.contract import (
     ResidueIdentity,
     SequencePlacement,
     TargetSequence,
+    TemplateOwnership,
     atom_identity_digest,
     protein_context_digest,
 )
@@ -71,7 +73,13 @@ def _residue(atom: AtomIdentity) -> ResidueIdentity:
     return ResidueIdentity(atom.chain, atom.residue_number, atom.insertion_code)
 
 
-def select_protein_context(request: DiffusionRequest, pdb: bytes, policy: ProteinContextPolicy) -> DiffusionRequest:
+def select_protein_context(
+    request: DiffusionRequest, pdb: bytes, policy: ProteinContextPolicy, *,
+    trajectory_queries: tuple[ContextCoordinate, ...] | None = None,
+    retained_conditioning: tuple[AtomIdentity, ...] | None = None,
+    previous_plan_sha256: str | None = None,
+    adaptation_source: ArtifactReference | None = None,
+) -> DiffusionRequest:
     """Select complete spans from observed anchor atoms; never inspect withheld positions."""
     targets = {target.chain: target for target in request.target_sequences}
     placements = {placement.chain: placement for placement in request.sequence_placements}
@@ -86,11 +94,22 @@ def select_protein_context(request: DiffusionRequest, pdb: bytes, policy: Protei
     anchor_points = np.asarray([points[atom] for residue in sorted(anchors) for atom in atoms_by_residue.get(residue, [])])
     if len(anchor_points) < 3:
         raise ProteinContextError("context requires complete observed anchor geometry")
+    if trajectory_queries is not None:
+        expected = {atom for atom in request.generated_atoms if atom.atom_name in {"N", "CA", "C", "O"}}
+        if {query.atom for query in trajectory_queries} != expected:
+            raise ProteinContextError("adaptive selection requires the complete generated backbone, not reference positions")
+        anchor_points = np.concatenate((anchor_points, np.asarray([query.coordinate_angstrom for query in trajectory_queries])))
     selected: set[tuple[str, int]] = set()
     for gap in request.gaps:
         start = 0 if policy.target_flanks is None else max(0, gap.target_interval.start - policy.target_flanks)
         stop = len(targets[gap.chain].sequence) if policy.target_flanks is None else min(len(targets[gap.chain].sequence), gap.target_interval.stop + policy.target_flanks)
         selected.update((gap.chain, index) for index in range(start, stop))
+    if retained_conditioning is not None:
+        if not set(retained_conditioning) <= set(request.fixed_atoms):
+            raise ProteinContextError("adaptive retained identities must belong to the immutable fixed source")
+        retained_residues = {_residue(atom) for atom in retained_conditioning}
+        selected.update((placement.chain, index) for placement in request.sequence_placements
+                        for index, residue in zip(placement.observed_target_indices, placement.observed_residues) if residue in retained_residues)
     priorities = []
     for chain, placement in placements.items():
         if chain not in gap_chains and policy.partner_mode == "none":
@@ -134,6 +153,8 @@ def select_protein_context(request: DiffusionRequest, pdb: bytes, policy: Protei
                 spans[-1] = ProteinContextSpan(chain, spans[-1].start, index + 1)
             else:
                 spans.append(ProteinContextSpan(chain, index, index + 1))
+    if policy.name == "intact-native-segments-v1":
+        spans = _split_native_segments(request, pdb, points, spans)
     if sum(span.stop - span.start for span in spans) > policy.residue_budget:
         raise ProteinContextError("required protein context exceeds residue budget; no neighbors were silently dropped")
     selected_residues = set()
@@ -153,8 +174,55 @@ def select_protein_context(request: DiffusionRequest, pdb: bytes, policy: Protei
         tuple(atom for atom in request.generated_atoms if _residue(atom) in junction),
         tuple(ContextCoordinate(atom, (float(points[atom][0]), float(points[atom][1]), float(points[atom][2]))) for atom in selected_fixed),
         tuple(atom for atom in request.fixed_atoms if atom not in selected_fixed),
+        trajectory_queries, retained_conditioning, previous_plan_sha256, adaptation_source,
     )
     return replace(request, protein_context=plan)
+
+
+def _split_native_segments(
+    request: DiffusionRequest,
+    pdb: bytes,
+    points: dict[AtomIdentity, np.ndarray],
+    spans: list[ProteinContextSpan],
+) -> list[ProteinContextSpan]:
+    """Keep observed native breaks as separate engine entities, not deletions.
+
+    The intact-input research policy uses an observed-residue sequence axis.
+    Consecutive axis indices do not imply a peptide bond across a native break.
+    Artificial gaps are distinguished by their intervening generated indices.
+    """
+    indices = {residue: (placement.chain, index) for placement in request.sequence_placements
+               for index, residue in zip(placement.observed_target_indices, placement.observed_residues)}
+    boundaries: set[tuple[str, int]] = set()
+    for placement in request.sequence_placements:
+        observed = tuple(zip(placement.observed_target_indices, placement.observed_residues))
+        for (left_index, left), (right_index, right) in zip(observed, observed[1:]):
+            if right_index != left_index + 1:
+                continue
+            carbon = points.get(AtomIdentity(left.chain, left.residue_number, left.insertion_code, "C"))
+            nitrogen = points.get(AtomIdentity(right.chain, right.residue_number, right.insertion_code, "N"))
+            if carbon is None or nitrogen is None or not 1.0 <= float(np.linalg.norm(carbon - nitrogen)) <= 1.8:
+                boundaries.add((placement.chain, right_index))
+    previous = None
+    terminated = False
+    for line in pdb.decode().splitlines():
+        if line.startswith("TER"):
+            terminated = True
+        elif line.startswith("ATOM  "):
+            residue = ResidueIdentity(line[21], line[22:26].strip(), line[26].strip())
+            if residue != previous:
+                if terminated and previous in indices and residue in indices:
+                    left_chain, left_index = indices[previous]
+                    right_chain, right_index = indices[residue]
+                    if left_chain == right_chain and right_index == left_index + 1:
+                        boundaries.add((right_chain, right_index))
+                previous = residue
+                terminated = False
+    separated = []
+    for span in spans:
+        cuts = [span.start, *(index for chain, index in sorted(boundaries) if chain == span.chain and span.start < index < span.stop), span.stop]
+        separated.extend(ProteinContextSpan(span.chain, left, right) for left, right in zip(cuts, cuts[1:]))
+    return separated
 
 
 @dataclass(frozen=True)
@@ -163,6 +231,22 @@ class SamplingEntity:
     target: TargetSequence
     placement: SequencePlacement
     residues: tuple[ResidueIdentity, ...]
+
+
+@dataclass(frozen=True)
+class EngineContextView:
+    """Private engine identities plus an exact inverse to the scientific request."""
+
+    request: DiffusionRequest
+    atom_to_source: tuple[tuple[AtomIdentity, AtomIdentity], ...]
+
+    def __post_init__(self) -> None:
+        engine = [pair[0] for pair in self.atom_to_source]
+        source = [pair[1] for pair in self.atom_to_source]
+        if len(set(engine)) != len(engine) or len(set(source)) != len(source):
+            raise ProteinContextError("engine context mapping must be bijective")
+        if set(engine) != set(self.request.fixed_atoms) | set(self.request.generated_atoms):
+            raise ProteinContextError("engine context mapping must cover every represented atom")
 
 
 def sampling_entities(request: DiffusionRequest) -> tuple[SamplingEntity, ...]:
@@ -191,6 +275,56 @@ def sampling_entities(request: DiffusionRequest) -> tuple[SamplingEntity, ...]:
             tuple(mapped[index] for index in range(span.start, span.stop)),
         ))
     return tuple(entities)
+
+
+def engine_context_view(request: DiffusionRequest) -> EngineContextView:
+    """Represent discontiguous spans as separate real chains, never concatenations.
+
+    Only this internal view uses proxy chain IDs. Scientific source identities,
+    including insertion codes and case-distinct chains, round trip through the map.
+    """
+    if request.protein_context is None:
+        raise ProteinContextError("engine context view requires an explicit plan")
+    entities = sampling_entities(request)
+    selected = {item.atom for item in request.protein_context.fixed_conditioning}
+    residue_map = {}
+    position_map = {}
+    for entity, span in zip(entities, request.protein_context.spans, strict=True):
+        for index, residue in enumerate(entity.residues):
+            residue_map[residue] = ResidueIdentity(entity.engine_chain, residue.residue_number, residue.insertion_code)
+            position_map[(span.chain, span.start + index)] = (entity.engine_chain, index)
+
+    def atom_map(atom: AtomIdentity) -> AtomIdentity:
+        residue = residue_map[_residue(atom)]
+        return AtomIdentity(residue.chain, residue.residue_number, residue.insertion_code, atom.atom_name)
+
+    gaps = []
+    for gap in request.gaps:
+        chain, start = position_map[(gap.chain, gap.target_interval.start)]
+        if any(position_map[(gap.chain, index)] != (chain, start + index - gap.target_interval.start)
+               for index in range(gap.target_interval.start, gap.target_interval.stop)):
+            raise ProteinContextError("one generated gap must fit completely within one engine entity")
+        gaps.append(replace(gap, chain=chain, target_interval=type(gap.target_interval)(start, start + len(gap.generated_residues)),
+                            left_anchor=residue_map[gap.left_anchor] if gap.left_anchor else None,
+                            right_anchor=residue_map[gap.right_anchor] if gap.right_anchor else None,
+                            generated_residues=tuple(residue_map[residue] for residue in gap.generated_residues),
+                            movable_junction_residues=tuple(residue_map[residue] for residue in gap.movable_junction_residues)))
+
+    def owner_map(owner: TemplateOwnership) -> TemplateOwnership:
+        chain, index = position_map[(owner.chain, owner.target_index)]
+        return replace(owner, chain=chain, target_index=index, residue=residue_map[owner.residue])
+
+    represented = tuple(atom for atom in request.fixed_atoms if atom in selected) + request.generated_atoms
+    internal = replace(request, protein_context=None,
+        target_sequences=tuple(TargetSequence(entity.engine_chain, entity.target.sequence) for entity in entities),
+        sequence_placements=tuple(SequencePlacement(entity.engine_chain, entity.placement.target_length,
+            entity.placement.observed_target_indices, tuple(residue_map[residue] for residue in entity.placement.observed_residues)) for entity in entities),
+        gaps=tuple(gaps), fixed_atoms=tuple(atom_map(atom) for atom in request.fixed_atoms if atom in selected),
+        generated_atoms=tuple(atom_map(atom) for atom in request.generated_atoms), retained_explicit_links=(),
+        template_ownership=tuple(owner_map(owner) for owner in request.template_ownership if owner.residue in {_residue(atom) for atom in selected}),
+        regenerated_template_ownership=tuple(owner_map(owner) for owner in request.regenerated_template_ownership)
+            if request.regenerated_template_ownership is not None else None)
+    return EngineContextView(internal, tuple((atom_map(atom), atom) for atom in represented))
 
 
 def selected_coordinate_digest(plan: ProteinContextPlan) -> str:
@@ -224,7 +358,10 @@ def validate_context_source(request: DiffusionRequest, pdb: bytes) -> None:
         if not np.array_equal(points[item.atom], item.coordinate_angstrom):
             raise ProteinContextError("declared conditioning coordinates do not match normalized source")
     # Recompute the complete deterministic selection, not merely its supplied hash.
-    expected = select_protein_context(replace(request, protein_context=None), pdb, request.protein_context.policy)
+    plan = request.protein_context
+    expected = select_protein_context(replace(request, protein_context=None), pdb, plan.policy,
+        trajectory_queries=plan.trajectory_queries, retained_conditioning=plan.retained_conditioning,
+        previous_plan_sha256=plan.previous_plan_sha256, adaptation_source=plan.adaptation_source)
     if expected.protein_context != request.protein_context:
         raise ProteinContextError("protein context plan differs from deterministic source selection")
 

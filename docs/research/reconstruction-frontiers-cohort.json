@@ -1,0 +1,579 @@
+{
+  "cases": [
+    {
+      "arms": [
+        "full-raw"
+      ],
+      "artifacts": {
+        "input/normalized.pdb": "d3e2c86c74d3102a01f8310dbedea046206a538050a95e237132b29c2429c9da",
+        "reference.pdb": "b3dd4103f338f741fbfcee70f3b01c245ed79b385109e920be1fcc2599634768",
+        "request.json": "182f1d86d7700c87653a5c7365245645131282fb59d5914b0b5a9b83254b0a53"
+      },
+      "capability": {
+        "accepted": false,
+        "reason": "long-gap-stratum-not-promoted",
+        "research_eligible": true,
+        "stratum": "research-13-25"
+      },
+      "case_id": "long-1ubq-13-seed7",
+      "kind": "long-gap",
+      "length": 13,
+      "refinement": "none",
+      "source": "tests/fixtures/protein_context/1UBQ.pdb",
+      "source_sha256": "d4a6812d8951cf6594e6a0763f089e35f5a80b62acb3c117b2c5565228a7b161"
+    },
+    {
+      "arms": [
+        "full-raw"
+      ],
+      "artifacts": {
+        "input/normalized.pdb": "d3e2c86c74d3102a01f8310dbedea046206a538050a95e237132b29c2429c9da",
+        "reference.pdb": "b3dd4103f338f741fbfcee70f3b01c245ed79b385109e920be1fcc2599634768",
+        "request.json": "7a0d3271942b1746da7d72b4cf03020cde598e1ce73c940e3048349f18463df1"
+      },
+      "capability": {
+        "accepted": false,
+        "reason": "long-gap-stratum-not-promoted",
+        "research_eligible": true,
+        "stratum": "research-13-25"
+      },
+      "case_id": "long-1ubq-13-seed19",
+      "kind": "long-gap",
+      "length": 13,
+      "refinement": "none",
+      "source": "tests/fixtures/protein_context/1UBQ.pdb",
+      "source_sha256": "d4a6812d8951cf6594e6a0763f089e35f5a80b62acb3c117b2c5565228a7b161"
+    },
+    {
+      "arms": [
+        "full-raw"
+      ],
+      "artifacts": {
+        "input/normalized.pdb": "7844cdbbe8deed9e57c0cf03d813083d90140419d96608f40fb9b1a126fdd5b1",
+        "reference.pdb": "b3dd4103f338f741fbfcee70f3b01c245ed79b385109e920be1fcc2599634768",
+        "request.json": "151fc9c75c2c1d95ecb34f3cae6dfaed44bebee66a073a7091d8582643797e26"
+      },
+      "capability": {
+        "accepted": false,
+        "reason": "long-gap-stratum-not-promoted",
+        "research_eligible": true,
+        "stratum": "research-13-25"
+      },
+      "case_id": "long-1ubq-25-seed7",
+      "kind": "long-gap",
+      "length": 25,
+      "refinement": "none",
+      "source": "tests/fixtures/protein_context/1UBQ.pdb",
+      "source_sha256": "d4a6812d8951cf6594e6a0763f089e35f5a80b62acb3c117b2c5565228a7b161"
+    },
+    {
+      "arms": [
+        "full-raw"
+      ],
+      "artifacts": {
+        "input/normalized.pdb": "7844cdbbe8deed9e57c0cf03d813083d90140419d96608f40fb9b1a126fdd5b1",
+        "reference.pdb": "b3dd4103f338f741fbfcee70f3b01c245ed79b385109e920be1fcc2599634768",
+        "request.json": "54887cc7e52cd340c81e02f167c6ab3dd2cc4cc63a68ded5da5d223a8f8c2ad6"
+      },
+      "capability": {
+        "accepted": false,
+        "reason": "long-gap-stratum-not-promoted",
+        "research_eligible": true,
+        "stratum": "research-13-25"
+      },
+      "case_id": "long-1ubq-25-seed19",
+      "kind": "long-gap",
+      "length": 25,
+      "refinement": "none",
+      "source": "tests/fixtures/protein_context/1UBQ.pdb",
+      "source_sha256": "d4a6812d8951cf6594e6a0763f089e35f5a80b62acb3c117b2c5565228a7b161"
+    },
+    {
+      "arms": [
+        "full-raw"
+      ],
+      "artifacts": {
+        "input/normalized.pdb": "a1e33fa2b6045c3a8be230ae27260247012f9fb279c59c91dc398150b91014a7",
+        "reference.pdb": "b3dd4103f338f741fbfcee70f3b01c245ed79b385109e920be1fcc2599634768",
+        "request.json": "863fc59d0d5fbce78eb87898f507fc4a7f0c96b0393d16a4e9a20b44424e762d"
+      },
+      "capability": {
+        "accepted": false,
+        "reason": "high-cost-long-gap-stratum-not-promoted",
+        "research_eligible": true,
+        "stratum": "research-26-50"
+      },
+      "case_id": "long-1ubq-26-seed7",
+      "kind": "long-gap",
+      "length": 26,
+      "refinement": "none",
+      "source": "tests/fixtures/protein_context/1UBQ.pdb",
+      "source_sha256": "d4a6812d8951cf6594e6a0763f089e35f5a80b62acb3c117b2c5565228a7b161"
+    },
+    {
+      "arms": [
+        "full-raw"
+      ],
+      "artifacts": {
+        "input/normalized.pdb": "a1e33fa2b6045c3a8be230ae27260247012f9fb279c59c91dc398150b91014a7",
+        "reference.pdb": "b3dd4103f338f741fbfcee70f3b01c245ed79b385109e920be1fcc2599634768",
+        "request.json": "415a7d22577e6315988de37e0914b6468ac9166690af0d24a4753ed9b44eeba4"
+      },
+      "capability": {
+        "accepted": false,
+        "reason": "high-cost-long-gap-stratum-not-promoted",
+        "research_eligible": true,
+        "stratum": "research-26-50"
+      },
+      "case_id": "long-1ubq-26-seed19",
+      "kind": "long-gap",
+      "length": 26,
+      "refinement": "none",
+      "source": "tests/fixtures/protein_context/1UBQ.pdb",
+      "source_sha256": "d4a6812d8951cf6594e6a0763f089e35f5a80b62acb3c117b2c5565228a7b161"
+    },
+    {
+      "arms": [
+        "full-raw"
+      ],
+      "artifacts": {
+        "input/normalized.pdb": "5296c37dd52cbfedad474ac852cce2db5c4b418251d02d1161db88cb44f9e187",
+        "reference.pdb": "b3dd4103f338f741fbfcee70f3b01c245ed79b385109e920be1fcc2599634768",
+        "request.json": "14e1d7cbbc26e9b2d068955309824721ebc230a0bb8e27321fa4c992cd080577"
+      },
+      "capability": {
+        "accepted": false,
+        "reason": "high-cost-long-gap-stratum-not-promoted",
+        "research_eligible": true,
+        "stratum": "research-26-50"
+      },
+      "case_id": "long-1ubq-50-seed7",
+      "kind": "long-gap",
+      "length": 50,
+      "refinement": "none",
+      "source": "tests/fixtures/protein_context/1UBQ.pdb",
+      "source_sha256": "d4a6812d8951cf6594e6a0763f089e35f5a80b62acb3c117b2c5565228a7b161"
+    },
+    {
+      "arms": [
+        "full-raw"
+      ],
+      "artifacts": {
+        "input/normalized.pdb": "5296c37dd52cbfedad474ac852cce2db5c4b418251d02d1161db88cb44f9e187",
+        "reference.pdb": "b3dd4103f338f741fbfcee70f3b01c245ed79b385109e920be1fcc2599634768",
+        "request.json": "cd79ff6413b67567adce3bff54c9f327c06bad09c75e2887e0ba4ffa7da38e6b"
+      },
+      "capability": {
+        "accepted": false,
+        "reason": "high-cost-long-gap-stratum-not-promoted",
+        "research_eligible": true,
+        "stratum": "research-26-50"
+      },
+      "case_id": "long-1ubq-50-seed19",
+      "kind": "long-gap",
+      "length": 50,
+      "refinement": "none",
+      "source": "tests/fixtures/protein_context/1UBQ.pdb",
+      "source_sha256": "d4a6812d8951cf6594e6a0763f089e35f5a80b62acb3c117b2c5565228a7b161"
+    },
+    {
+      "arms": [
+        "full-raw"
+      ],
+      "artifacts": {
+        "input/normalized.pdb": "8aae42d3fecefb55d3358a4037642b4aad6caf0c11ba7eababd78b8661f7648c",
+        "reference.pdb": "8988cf76e4fed328b9dda9a195a8fc299cdc3ee88c7a4155454537863226bcfe",
+        "request.json": "9a75d05909587294a50bc2005eb5d54ca8bc46984ab3ec70268f1f096b8f30e6"
+      },
+      "capability": {
+        "accepted": false,
+        "reason": "long-gap-stratum-not-promoted",
+        "research_eligible": true,
+        "stratum": "research-13-25"
+      },
+      "case_id": "long-1emv-13-seed7",
+      "kind": "long-gap",
+      "length": 13,
+      "refinement": "none",
+      "source": "tests/fixtures/regressions/1EMV.pdb",
+      "source_sha256": "b464fafe9c5c240e245328c3d348e545279b95573d8ad5334d00aaf65ee3f5e3"
+    },
+    {
+      "arms": [
+        "full-raw"
+      ],
+      "artifacts": {
+        "input/normalized.pdb": "8aae42d3fecefb55d3358a4037642b4aad6caf0c11ba7eababd78b8661f7648c",
+        "reference.pdb": "8988cf76e4fed328b9dda9a195a8fc299cdc3ee88c7a4155454537863226bcfe",
+        "request.json": "e65e99144cf80e51216bddf9a1d13e503a2de822ab6e9359f076fcc554175ec6"
+      },
+      "capability": {
+        "accepted": false,
+        "reason": "long-gap-stratum-not-promoted",
+        "research_eligible": true,
+        "stratum": "research-13-25"
+      },
+      "case_id": "long-1emv-13-seed19",
+      "kind": "long-gap",
+      "length": 13,
+      "refinement": "none",
+      "source": "tests/fixtures/regressions/1EMV.pdb",
+      "source_sha256": "b464fafe9c5c240e245328c3d348e545279b95573d8ad5334d00aaf65ee3f5e3"
+    },
+    {
+      "arms": [
+        "full-raw"
+      ],
+      "artifacts": {
+        "input/normalized.pdb": "ce94ec1d63653151ca258060c34e586aaef6b21c282c8f1e7b94fd23567fc2e4",
+        "reference.pdb": "8988cf76e4fed328b9dda9a195a8fc299cdc3ee88c7a4155454537863226bcfe",
+        "request.json": "744bf4d2f5bf23ebfc84d20756ff17ab3356fd398c8d41917b1600f522c9eb3b"
+      },
+      "capability": {
+        "accepted": false,
+        "reason": "long-gap-stratum-not-promoted",
+        "research_eligible": true,
+        "stratum": "research-13-25"
+      },
+      "case_id": "long-1emv-25-seed7",
+      "kind": "long-gap",
+      "length": 25,
+      "refinement": "none",
+      "source": "tests/fixtures/regressions/1EMV.pdb",
+      "source_sha256": "b464fafe9c5c240e245328c3d348e545279b95573d8ad5334d00aaf65ee3f5e3"
+    },
+    {
+      "arms": [
+        "full-raw"
+      ],
+      "artifacts": {
+        "input/normalized.pdb": "ce94ec1d63653151ca258060c34e586aaef6b21c282c8f1e7b94fd23567fc2e4",
+        "reference.pdb": "8988cf76e4fed328b9dda9a195a8fc299cdc3ee88c7a4155454537863226bcfe",
+        "request.json": "959ae076b48e04729d61d63c51430eff2eef760dc818aa9ea3cbd397d16a6a93"
+      },
+      "capability": {
+        "accepted": false,
+        "reason": "long-gap-stratum-not-promoted",
+        "research_eligible": true,
+        "stratum": "research-13-25"
+      },
+      "case_id": "long-1emv-25-seed19",
+      "kind": "long-gap",
+      "length": 25,
+      "refinement": "none",
+      "source": "tests/fixtures/regressions/1EMV.pdb",
+      "source_sha256": "b464fafe9c5c240e245328c3d348e545279b95573d8ad5334d00aaf65ee3f5e3"
+    },
+    {
+      "arms": [
+        "full-raw"
+      ],
+      "artifacts": {
+        "input/normalized.pdb": "b11054a94e8bbd4974e0e4295014325386e5a27fb6beff576574b7f3e391ae13",
+        "reference.pdb": "8988cf76e4fed328b9dda9a195a8fc299cdc3ee88c7a4155454537863226bcfe",
+        "request.json": "0549ef9e7ca8e59fcb4a47a67cac44bb1f46a5f1b810d7ce0a227d817c6e7cd8"
+      },
+      "capability": {
+        "accepted": false,
+        "reason": "high-cost-long-gap-stratum-not-promoted",
+        "research_eligible": true,
+        "stratum": "research-26-50"
+      },
+      "case_id": "long-1emv-26-seed7",
+      "kind": "long-gap",
+      "length": 26,
+      "refinement": "none",
+      "source": "tests/fixtures/regressions/1EMV.pdb",
+      "source_sha256": "b464fafe9c5c240e245328c3d348e545279b95573d8ad5334d00aaf65ee3f5e3"
+    },
+    {
+      "arms": [
+        "full-raw"
+      ],
+      "artifacts": {
+        "input/normalized.pdb": "b11054a94e8bbd4974e0e4295014325386e5a27fb6beff576574b7f3e391ae13",
+        "reference.pdb": "8988cf76e4fed328b9dda9a195a8fc299cdc3ee88c7a4155454537863226bcfe",
+        "request.json": "555cc8cc01d5fefbcd50a3cddafa414bdfb1c6593b149311632b9777c2143474"
+      },
+      "capability": {
+        "accepted": false,
+        "reason": "high-cost-long-gap-stratum-not-promoted",
+        "research_eligible": true,
+        "stratum": "research-26-50"
+      },
+      "case_id": "long-1emv-26-seed19",
+      "kind": "long-gap",
+      "length": 26,
+      "refinement": "none",
+      "source": "tests/fixtures/regressions/1EMV.pdb",
+      "source_sha256": "b464fafe9c5c240e245328c3d348e545279b95573d8ad5334d00aaf65ee3f5e3"
+    },
+    {
+      "arms": [
+        "full-raw"
+      ],
+      "artifacts": {
+        "input/normalized.pdb": "08529ee9b11223728f6022b03ba06124ed2245f8d4dce41337a08e822e0962fe",
+        "reference.pdb": "8988cf76e4fed328b9dda9a195a8fc299cdc3ee88c7a4155454537863226bcfe",
+        "request.json": "efaff0c976b6c16d894d954c8a50d0216f8657b640cbe9ba97325049087508f8"
+      },
+      "capability": {
+        "accepted": false,
+        "reason": "high-cost-long-gap-stratum-not-promoted",
+        "research_eligible": true,
+        "stratum": "research-26-50"
+      },
+      "case_id": "long-1emv-50-seed7",
+      "kind": "long-gap",
+      "length": 50,
+      "refinement": "none",
+      "source": "tests/fixtures/regressions/1EMV.pdb",
+      "source_sha256": "b464fafe9c5c240e245328c3d348e545279b95573d8ad5334d00aaf65ee3f5e3"
+    },
+    {
+      "arms": [
+        "full-raw"
+      ],
+      "artifacts": {
+        "input/normalized.pdb": "08529ee9b11223728f6022b03ba06124ed2245f8d4dce41337a08e822e0962fe",
+        "reference.pdb": "8988cf76e4fed328b9dda9a195a8fc299cdc3ee88c7a4155454537863226bcfe",
+        "request.json": "420e5e1a2d00d60b28e05ecd5cb390e961f927a8c7bf06d99a93594c0c545ca4"
+      },
+      "capability": {
+        "accepted": false,
+        "reason": "high-cost-long-gap-stratum-not-promoted",
+        "research_eligible": true,
+        "stratum": "research-26-50"
+      },
+      "case_id": "long-1emv-50-seed19",
+      "kind": "long-gap",
+      "length": 50,
+      "refinement": "none",
+      "source": "tests/fixtures/regressions/1EMV.pdb",
+      "source_sha256": "b464fafe9c5c240e245328c3d348e545279b95573d8ad5334d00aaf65ee3f5e3"
+    },
+    {
+      "arms": [
+        "native-500",
+        "projection-500"
+      ],
+      "artifacts": {
+        "input/normalized.pdb": "94b7f2daaf938b9f25dc0ffe95ef957372866664ac7cf04f16b7928d0bd7cfba",
+        "reference.pdb": "8988cf76e4fed328b9dda9a195a8fc299cdc3ee88c7a4155454537863226bcfe",
+        "request.json": "d43f94838c2d897d80b5af3102d864800bb3cd5b2b382073697d4e59ec4cf641"
+      },
+      "case_id": "cc89-joint",
+      "kind": "cc89-rich",
+      "refinement": "none"
+    },
+    {
+      "arms": [
+        "native-500",
+        "projection-500"
+      ],
+      "artifacts": {
+        "input/normalized.pdb": "9cc83cb959000ff35730feb8e12f6392ae3678feb06572368ca8a558e29f50f2",
+        "reference.pdb": "8988cf76e4fed328b9dda9a195a8fc299cdc3ee88c7a4155454537863226bcfe",
+        "request.json": "0cc2466fb01eecd6a2d62af1204b98fab62b5e7c383e8a221c6230b813d63696"
+      },
+      "case_id": "cc89-discontiguous",
+      "kind": "cc89-rich",
+      "refinement": "none"
+    },
+    {
+      "arms": [
+        "native-500",
+        "projection-500"
+      ],
+      "artifacts": {
+        "input/normalized.pdb": "693ab15258e565c13bf511352e1d6e6c56ff04376eb8b535595da4f0ce28b815",
+        "reference.pdb": "08295c35a42ae73e91d278ce0b42af230dbb97edaf945e73baf1ecbae51e451e",
+        "request.json": "2e00495f40c05aca1529d89b510952a9ec337c5d4e089302ac1b81aa63d3792d"
+      },
+      "case_id": "cc89-case-insertion",
+      "kind": "cc89-rich",
+      "refinement": "none"
+    },
+    {
+      "arms": [
+        "static-repeat",
+        "adaptive-two-rounds"
+      ],
+      "artifacts": {
+        "input/normalized.pdb": "9cc83cb959000ff35730feb8e12f6392ae3678feb06572368ca8a558e29f50f2",
+        "reference.pdb": "8988cf76e4fed328b9dda9a195a8fc299cdc3ee88c7a4155454537863226bcfe",
+        "request.json": "030b4d36873bd6f80eb507762d678ddf15378326b75103b1fafb041c0dfc295b"
+      },
+      "axis_changes": "between-rounds-only",
+      "case_id": "adaptive-1emv",
+      "kind": "adaptive",
+      "refinement": "none",
+      "rounds": 2,
+      "selection": "monotonic-source-plus-sampled-backbone"
+    },
+    {
+      "arms": [
+        "static-repeat",
+        "adaptive-two-rounds"
+      ],
+      "artifacts": {
+        "input/normalized.pdb": "693ab15258e565c13bf511352e1d6e6c56ff04376eb8b535595da4f0ce28b815",
+        "reference.pdb": "08295c35a42ae73e91d278ce0b42af230dbb97edaf945e73baf1ecbae51e451e",
+        "request.json": "36f358949cc8b77be3eb457e96c00b8ee251f36fde6cbcd85e63de1239fdae8b"
+      },
+      "axis_changes": "between-rounds-only",
+      "case_id": "adaptive-7k8s",
+      "kind": "adaptive",
+      "refinement": "none",
+      "rounds": 2,
+      "selection": "monotonic-source-plus-sampled-backbone"
+    },
+    {
+      "arms": [
+        "full-refined"
+      ],
+      "artifacts": {
+        "input/normalized.pdb": "10532c3e6e817afc01971eb7a643d746e03386c16ed60b2d33caa7df11d2e323",
+        "materialized/mosaic_diffusion_input.pdb": "10532c3e6e817afc01971eb7a643d746e03386c16ed60b2d33caa7df11d2e323",
+        "materialized/mosaic_diffusion_request.json": "2666be771b1e5cdad2aaa6e503a62a2398dff45d3c5521855b2dccf5b9615931",
+        "materialized/selected_template_mosaic.coverage.json": "c23914ec9886af90208e91fc6f14592555c81e507757c9d16373651955b3b7b4",
+        "materialized/selected_template_mosaic.pdb": "74ad8f32db00d3c0191d3e3ef826a3b400fb2da2afd6be155c4bad4bd2175d44",
+        "materialized/selected_template_mosaic.pir": "1980ba77369a6721539d22cab3ba364c2ec7aff365beeda59aa080a5f92ae2db",
+        "materialized/selected_template_mosaic.target.fasta": "27505ab944f91681b2ca6ab3b628b7f327efab470091e9fa8bc7a93623acf333",
+        "request.json": "c091b32d3f44bd7ccdc1bf6ce81ae17c50df9be4559c6eecfb2a8fadc41ec24c",
+        "target.fasta": "27505ab944f91681b2ca6ab3b628b7f327efab470091e9fa8bc7a93623acf333",
+        "template-plan.json": "882cf5a42cecf96c6aed4bf81a415b9364514dfc4f3b4328e3ce9f3d34173478"
+      },
+      "case_id": "deletion-flanks1",
+      "edit_flanks": 1,
+      "kind": "deletion",
+      "reference_quality": "undefined-no-solved-deletion-reference",
+      "refinement": "Reference",
+      "window_lengths": [
+        3
+      ]
+    },
+    {
+      "arms": [
+        "full-refined"
+      ],
+      "artifacts": {
+        "input/normalized.pdb": "ee2f10a11150abd5bafe230b52f95c21d82eaeca44c5e7393ddfe695276349d1",
+        "materialized/mosaic_diffusion_input.pdb": "ee2f10a11150abd5bafe230b52f95c21d82eaeca44c5e7393ddfe695276349d1",
+        "materialized/mosaic_diffusion_request.json": "5c645e3198d4b0af6f3d572172c6c0b46a6899a513e930f879224a5930d99a9f",
+        "materialized/selected_template_mosaic.coverage.json": "ca4a550d44d72a1c68fc198d2af3adc53175461c632d3a438ed04c07a02b5484",
+        "materialized/selected_template_mosaic.pdb": "74ad8f32db00d3c0191d3e3ef826a3b400fb2da2afd6be155c4bad4bd2175d44",
+        "materialized/selected_template_mosaic.pir": "1980ba77369a6721539d22cab3ba364c2ec7aff365beeda59aa080a5f92ae2db",
+        "materialized/selected_template_mosaic.target.fasta": "27505ab944f91681b2ca6ab3b628b7f327efab470091e9fa8bc7a93623acf333",
+        "request.json": "b8f21fa7590749ba56295487bd3c56db2e7571a1de72fc837b2d5b0d6603ad9b",
+        "target.fasta": "27505ab944f91681b2ca6ab3b628b7f327efab470091e9fa8bc7a93623acf333",
+        "template-plan.json": "882cf5a42cecf96c6aed4bf81a415b9364514dfc4f3b4328e3ce9f3d34173478"
+      },
+      "case_id": "deletion-flanks2",
+      "edit_flanks": 2,
+      "kind": "deletion",
+      "reference_quality": "undefined-no-solved-deletion-reference",
+      "refinement": "Reference",
+      "window_lengths": [
+        5
+      ]
+    },
+    {
+      "arms": [
+        "full-refined"
+      ],
+      "artifacts": {
+        "input/normalized.pdb": "49c8210a89f4911677fe49dd4bf1ec536a9f00b5df09f8a0b100476fb2347406",
+        "materialized/mosaic_diffusion_input.pdb": "49c8210a89f4911677fe49dd4bf1ec536a9f00b5df09f8a0b100476fb2347406",
+        "materialized/mosaic_diffusion_request.json": "b8f00775cebedb5126e30e35fdcea4fdeeb79da3d508a488045b9319ba8134ed",
+        "materialized/selected_template_mosaic.coverage.json": "28e0c77614bff538e55bdfd443c97913ed2bca357dface1900e2cbb813459e7b",
+        "materialized/selected_template_mosaic.pdb": "74ad8f32db00d3c0191d3e3ef826a3b400fb2da2afd6be155c4bad4bd2175d44",
+        "materialized/selected_template_mosaic.pir": "1980ba77369a6721539d22cab3ba364c2ec7aff365beeda59aa080a5f92ae2db",
+        "materialized/selected_template_mosaic.target.fasta": "27505ab944f91681b2ca6ab3b628b7f327efab470091e9fa8bc7a93623acf333",
+        "request.json": "02554e571a4adf24ee5d8abf28418bc6b39979af154bd1695c497d89f799ff2c",
+        "target.fasta": "27505ab944f91681b2ca6ab3b628b7f327efab470091e9fa8bc7a93623acf333",
+        "template-plan.json": "882cf5a42cecf96c6aed4bf81a415b9364514dfc4f3b4328e3ce9f3d34173478"
+      },
+      "case_id": "deletion-flanks3",
+      "edit_flanks": 3,
+      "kind": "deletion",
+      "reference_quality": "undefined-no-solved-deletion-reference",
+      "refinement": "Reference",
+      "window_lengths": [
+        7
+      ]
+    },
+    {
+      "arms": [
+        "full-refined"
+      ],
+      "artifacts": {
+        "input/normalized.pdb": "77ca237fe0d5a526533469901418bba1efc5284ae293f1001f089a061e11ff0a",
+        "materialized/mosaic_diffusion_input.pdb": "77ca237fe0d5a526533469901418bba1efc5284ae293f1001f089a061e11ff0a",
+        "materialized/mosaic_diffusion_request.json": "f5d7feef6d813520d934d56213dea175303d318d80e3f800018c5e1a5ca5302c",
+        "materialized/selected_template_mosaic.coverage.json": "acf8733312748dcb021f42c5eb1bd1d4811d15a4894b65d3f28a4807c3a8098d",
+        "materialized/selected_template_mosaic.pdb": "74ad8f32db00d3c0191d3e3ef826a3b400fb2da2afd6be155c4bad4bd2175d44",
+        "materialized/selected_template_mosaic.pir": "1980ba77369a6721539d22cab3ba364c2ec7aff365beeda59aa080a5f92ae2db",
+        "materialized/selected_template_mosaic.target.fasta": "27505ab944f91681b2ca6ab3b628b7f327efab470091e9fa8bc7a93623acf333",
+        "request.json": "f3f759024fc6a1d396cef56a317bd5e05362d7e354f8208e94eb695dd796e1db",
+        "target.fasta": "27505ab944f91681b2ca6ab3b628b7f327efab470091e9fa8bc7a93623acf333",
+        "template-plan.json": "882cf5a42cecf96c6aed4bf81a415b9364514dfc4f3b4328e3ce9f3d34173478"
+      },
+      "case_id": "deletion-flanks4",
+      "edit_flanks": 4,
+      "kind": "deletion",
+      "reference_quality": "undefined-no-solved-deletion-reference",
+      "refinement": "Reference",
+      "window_lengths": [
+        9
+      ]
+    },
+    {
+      "arms": [
+        "full-refined"
+      ],
+      "artifacts": {
+        "input/normalized.pdb": "aacf9cacf19d1c463913cf7aa8214139097f8945a1fae314150d28e2844e9514",
+        "materialized/mosaic_diffusion_input.pdb": "aacf9cacf19d1c463913cf7aa8214139097f8945a1fae314150d28e2844e9514",
+        "materialized/mosaic_diffusion_request.json": "197aa69df1ca37f02ed9572c44fb9df28736044d9f4d55469ed52318f55be2fe",
+        "materialized/selected_template_mosaic.coverage.json": "c7f218af75d5bcb67831748e35db7221dda65602d9b54a9707d5081f9621d2d4",
+        "materialized/selected_template_mosaic.pdb": "74ad8f32db00d3c0191d3e3ef826a3b400fb2da2afd6be155c4bad4bd2175d44",
+        "materialized/selected_template_mosaic.pir": "1980ba77369a6721539d22cab3ba364c2ec7aff365beeda59aa080a5f92ae2db",
+        "materialized/selected_template_mosaic.target.fasta": "27505ab944f91681b2ca6ab3b628b7f327efab470091e9fa8bc7a93623acf333",
+        "request.json": "b9623250f3f8fed35f02157948986e82b834dbed327fcbf45cb5bab6f211f919",
+        "target.fasta": "27505ab944f91681b2ca6ab3b628b7f327efab470091e9fa8bc7a93623acf333",
+        "template-plan.json": "882cf5a42cecf96c6aed4bf81a415b9364514dfc4f3b4328e3ce9f3d34173478"
+      },
+      "case_id": "deletion-flanks5",
+      "edit_flanks": 5,
+      "kind": "deletion",
+      "reference_quality": "undefined-no-solved-deletion-reference",
+      "refinement": "Reference",
+      "window_lengths": [
+        11
+      ]
+    }
+  ],
+  "limits": {
+    "cc89_s_churn": 200.0,
+    "cc89_step_scale": 1.2,
+    "cc89_steps": 500,
+    "maximum_adaptive_rounds": 2,
+    "protenix_steps": 200,
+    "residue_budget": 512,
+    "timeout_seconds": 3600
+  },
+  "no_replacement": true,
+  "promotion": "requires-larger-independent-cohort-and-separate-evidence-backed-decision",
+  "public_acceptance": "existing-profile-3-12-only; richer-cc89-and-adaptive-remain-research",
+  "sampling_environment": {
+    "cc89_revision": "ee378400f25b801fa481028000f9060183d7fb4c",
+    "protenix_revision": "85767b811c40ed46e73a9b39519cf6bfca8701ba"
+  },
+  "schema_version": 1,
+  "status": "frozen-before-frontier-inference",
+  "stop_rules": [
+    "mapping/projection/source mismatch stops inference",
+    "geometry rejection retained without replacement"
+  ]
+}

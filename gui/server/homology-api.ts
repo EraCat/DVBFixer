@@ -100,6 +100,7 @@ const MODEL_OPTION_FLAGS = new Set([
   '--num-models', '--md-level', '--backend', '--diffusion-model', '--diffusion-seed',
   '--diffusion-context',
   '--diffusion-regenerate-covered',
+  '--diffusion-edit-flanks',
 ])
 
 export function validatedModelArgs(options: Record<string, unknown> | null | undefined): string[] {
@@ -130,7 +131,12 @@ export function validatedModelArgs(options: Record<string, unknown> | null | und
       if (typeof values['--diffusion-regenerate-covered'] !== 'boolean') throw new Error('--diffusion-regenerate-covered must be boolean')
       if (values['--diffusion-regenerate-covered']) args.push('--diffusion-regenerate-covered')
     }
-  } else if (values['--diffusion-model'] !== undefined || values['--diffusion-seed'] !== undefined || values['--diffusion-context'] !== undefined || values['--diffusion-regenerate-covered'] !== undefined) {
+    if (values['--diffusion-edit-flanks'] !== undefined) {
+      const flanks = Number(values['--diffusion-edit-flanks'])
+      if (values['--diffusion-regenerate-covered'] !== true || !Number.isInteger(flanks) || flanks < 1 || flanks > 5) throw new Error('--diffusion-edit-flanks requires covered regeneration and an integer from 1 to 5')
+      args.push('--diffusion-edit-flanks', String(flanks))
+    }
+  } else if (values['--diffusion-model'] !== undefined || values['--diffusion-seed'] !== undefined || values['--diffusion-context'] !== undefined || values['--diffusion-regenerate-covered'] !== undefined || values['--diffusion-edit-flanks'] !== undefined) {
     throw new Error('diffusion model options require --backend diffusion')
   }
   if (backend === 'modeller' && values['--num-models'] !== undefined && values['--num-models'] !== '') {

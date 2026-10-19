@@ -15,6 +15,7 @@ usage: dvbfixer homology [-h] [--template TEMPLATE]
                          [--diffusion-resume]
                          [--diffusion-context {none,local,full}]
                          [--diffusion-regenerate-covered]
+                         [--diffusion-edit-flanks {1,2,3,4,5}]
                          [--alignment ALIGNMENT] [--salign] [-n NUM_MODELS]
                          [--md-level {none,fast,slow,very_slow,slow_large}]
                          [--no-loop-refine] [--antibody] [--prepare]
@@ -61,6 +62,9 @@ Backend:
   --diffusion-regenerate-covered
                         Opt in to bounded regeneration of covered
                         substitutions and short uncovered windows
+  --diffusion-edit-flanks {1,2,3,4,5}
+                        Covered-edit sequence flanks per side, requires
+                        --diffusion-regenerate-covered (default: 1)
 
 Alignment:
   --alignment ALIGNMENT

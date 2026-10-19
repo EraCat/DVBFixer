@@ -358,7 +358,7 @@ test_files = [
   "tests/test_diffusion_validate.py",
 ]
 known_divergences = [
-  "Public dispatch is limited to single-input model CLI; homology, zbs, batch, and GUI do not expose diffusion.",
+  "Model, sequential batch/resume, ZBS, Homology, and GUI expose scoped experimental diffusion; wider scientific strata require separate acceptance.",
   "Atomic directory rename assumes one local filesystem; durability still depends on host filesystem semantics.",
-  "The Apple MPS public smoke passed, but evidence remains descriptive and training membership unresolved; the Linux production wrapper still requires checkpoint-backed NVIDIA acceptance.",
+  "Long gaps 13-50 and adaptive/rich cc89 context remain research-only; geometry acceptance alone does not establish withheld-coordinate accuracy. Apple MPS expansion is deferred until CUDA implementation completes.",
 ]

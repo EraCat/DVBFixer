@@ -1,0 +1,40 @@
+{
+  "context": "FULL target and ALL protein partners; no engine-axis cropping; total<=512",
+  "evaluation": "unchanged geometry and full-background preservation, no reference-RMSD ranking or acceptance",
+  "inference": "pinned Protenix CUDA, 200 exact reinjections, one cycle",
+  "mask_lengths": [
+    5,
+    13,
+    25,
+    26,
+    50
+  ],
+  "mask_selection": "one first fixed-SHA eligible non-CYS internal window per length; no secondary-structure exclusion; source-native quality checked before inference",
+  "no_outcome_replacement": true,
+  "pool_limit": 200,
+  "pool_ranking": "sha256(dvbfixer-clean-protein-expanded-v1:<entity>); first200 distinct entries",
+  "public_promotion": false,
+  "query": "protein entity80..300, resolution<=2.5A, nonpolymer entity count0, deposited polymer monomer count<=512; first400 RCSB30%-identity representatives",
+  "refinement": "existing rigid v6 CUDA generated-only; no solvent",
+  "release_window": [
+    "2026-01-01",
+    "2026-10-15"
+  ],
+  "secondary_structure": "deposited helix/sheet annotation overlap recorded; unannotated is not assumed loop",
+  "seeds": [
+    7
+  ],
+  "selected_source_limit": 20,
+  "selection": "screen the locked pool, select first20 eligible mutually nonredundant sources before inference; retain all screening exclusions",
+  "source_screening": [
+    "one model",
+    "canonical proteins only; waters allowed but explicit solvent-free preparation",
+    "no ions, cofactors, ligands, nucleic acids, glycans, caps or noncanonical residues",
+    "all deposited chains and residues retained; <=512 protein residues total",
+    "every polymer sequence coordinate-complete; no native gaps or incomplete heavy atoms",
+    "no alternate conformers; no nonprotein covalent chemistry",
+    "full-chain sequence overlap<=30% against prior reviewed proteins and other selected sources"
+  ],
+  "status": "locked-before-source-screening-and-inference",
+  "training_membership_independently_attested": false
+}

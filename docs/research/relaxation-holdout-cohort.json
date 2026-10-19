@@ -1,0 +1,660 @@
+{
+  "adaptive_contact_gate": {},
+  "cases": [
+    {
+      "arms": [
+        "static-local"
+      ],
+      "artifacts": {
+        "input/normalized.pdb": "f9363b08adcb7b716343940e5634694eb10e737ee57b9ef3b58723da2f8ecbc0",
+        "reference.pdb": "203fad0d81f37a309724d0f604c8ff77f8ea47df4970c2469cda31f5d8a673cb",
+        "request.json": "cc6163a22675751f5a628c9ea8c61febf73389a0639d1d29e23bfb664fe7fe54"
+      },
+      "case_id": "23it-gap5-seed7",
+      "kind": "adaptive-calibration",
+      "length": 5,
+      "partner_chains": [
+        "4"
+      ],
+      "release_date": "2026-09-09",
+      "source_id": "23IT",
+      "source_sha256": "3dbde195ec5c3e6388858127c5cd9d5ea8775d36baad3ba1b011accb764c1dee",
+      "split": "validation",
+      "start": 114,
+      "target_chain": "1"
+    },
+    {
+      "arms": [
+        "full-raw"
+      ],
+      "artifacts": {
+        "input/normalized.pdb": "643b7b0c3c852f0ead4148532190fb7b0999649455bac931b10cbf7f267d7897",
+        "reference.pdb": "203fad0d81f37a309724d0f604c8ff77f8ea47df4970c2469cda31f5d8a673cb",
+        "request.json": "f77f70cb6e08803d68f6b4fdc5ef784e5caad6da5845bc0967f0ead01181c686"
+      },
+      "case_id": "23it-gap13-seed7",
+      "kind": "long-gap",
+      "length": 13,
+      "partner_chains": [
+        "4"
+      ],
+      "release_date": "2026-09-09",
+      "source_id": "23IT",
+      "source_sha256": "3dbde195ec5c3e6388858127c5cd9d5ea8775d36baad3ba1b011accb764c1dee",
+      "split": "validation",
+      "start": 87,
+      "target_chain": "1"
+    },
+    {
+      "arms": [
+        "full-raw"
+      ],
+      "artifacts": {
+        "input/normalized.pdb": "974b941731df8db7102ad2d5a323afb95a68d53d5aaacc87d1e3f1cd8201c827",
+        "reference.pdb": "203fad0d81f37a309724d0f604c8ff77f8ea47df4970c2469cda31f5d8a673cb",
+        "request.json": "c013a2b116d2d8a5762fa9925002d256eba75987fbf44cadcb3c05101ffc5e85"
+      },
+      "case_id": "23it-gap25-seed7",
+      "kind": "long-gap",
+      "length": 25,
+      "partner_chains": [
+        "4"
+      ],
+      "release_date": "2026-09-09",
+      "source_id": "23IT",
+      "source_sha256": "3dbde195ec5c3e6388858127c5cd9d5ea8775d36baad3ba1b011accb764c1dee",
+      "split": "validation",
+      "start": 83,
+      "target_chain": "1"
+    },
+    {
+      "arms": [
+        "full-raw"
+      ],
+      "artifacts": {
+        "input/normalized.pdb": "ed40fe306a27399bc946bd274e7b8391a518eb4c7866db6984babd45f56de2bb",
+        "reference.pdb": "203fad0d81f37a309724d0f604c8ff77f8ea47df4970c2469cda31f5d8a673cb",
+        "request.json": "5308640c09195d50dcbeb9e3ea4bead0b9f5b7d31af9c135acecf8e2845dff32"
+      },
+      "case_id": "23it-gap26-seed7",
+      "kind": "long-gap",
+      "length": 26,
+      "partner_chains": [
+        "4"
+      ],
+      "release_date": "2026-09-09",
+      "source_id": "23IT",
+      "source_sha256": "3dbde195ec5c3e6388858127c5cd9d5ea8775d36baad3ba1b011accb764c1dee",
+      "split": "validation",
+      "start": 53,
+      "target_chain": "1"
+    },
+    {
+      "arms": [
+        "full-raw"
+      ],
+      "artifacts": {
+        "input/normalized.pdb": "72ff3a7b6564af06c40dd72cb8026e956fe25466616f68ea17dbaa4ec5ca5edb",
+        "reference.pdb": "203fad0d81f37a309724d0f604c8ff77f8ea47df4970c2469cda31f5d8a673cb",
+        "request.json": "1815b94c43aa1ad1b48851977e74a4d2a7a7ec73685ed1f2380fb039edc15d85"
+      },
+      "case_id": "23it-gap50-seed7",
+      "kind": "long-gap",
+      "length": 50,
+      "partner_chains": [
+        "4"
+      ],
+      "release_date": "2026-09-09",
+      "source_id": "23IT",
+      "source_sha256": "3dbde195ec5c3e6388858127c5cd9d5ea8775d36baad3ba1b011accb764c1dee",
+      "split": "validation",
+      "start": 80,
+      "target_chain": "1"
+    },
+    {
+      "arms": [
+        "static-local"
+      ],
+      "artifacts": {
+        "input/normalized.pdb": "2efc426a83606eaf394fa0a366e1bde9ad6506f795eed2618583ce769c803629",
+        "reference.pdb": "cf3943f9edffc7715ad986aca338cabbcd9b4a145686debf6d52cc5f810d4d66",
+        "request.json": "4df1f5463d9dbd1f44ee9dfb7e95c4c864052ec50713af0d382f256531526ee8"
+      },
+      "case_id": "29ho-gap5-seed7",
+      "kind": "adaptive-calibration",
+      "length": 5,
+      "partner_chains": [
+        "V"
+      ],
+      "release_date": "2026-09-09",
+      "source_id": "29HO",
+      "source_sha256": "a99af990413113b51fb840758f8dfcf9457671cef474804a8d185cb6fbda0e0c",
+      "split": "validation",
+      "start": 25,
+      "target_chain": "D"
+    },
+    {
+      "arms": [
+        "full-raw"
+      ],
+      "artifacts": {
+        "input/normalized.pdb": "6731fe8e85b96e65101148b3548a78879808b050004ea148d7f38435a0399db7",
+        "reference.pdb": "cf3943f9edffc7715ad986aca338cabbcd9b4a145686debf6d52cc5f810d4d66",
+        "request.json": "81ce50817ea1526148f5d487368751376e5d6acf2eea26fde7f6cf1b34a5c181"
+      },
+      "case_id": "29ho-gap13-seed7",
+      "kind": "long-gap",
+      "length": 13,
+      "partner_chains": [
+        "V"
+      ],
+      "release_date": "2026-09-09",
+      "source_id": "29HO",
+      "source_sha256": "a99af990413113b51fb840758f8dfcf9457671cef474804a8d185cb6fbda0e0c",
+      "split": "validation",
+      "start": 82,
+      "target_chain": "D"
+    },
+    {
+      "arms": [
+        "full-raw"
+      ],
+      "artifacts": {
+        "input/normalized.pdb": "ed079a3ee9d706efecf47292530e92f017f4106d92aaeeff259ce7f16b23ec59",
+        "reference.pdb": "cf3943f9edffc7715ad986aca338cabbcd9b4a145686debf6d52cc5f810d4d66",
+        "request.json": "bd16a007bc7516ce62cb754db5050aadc6bcd05ed7a8e91d1e06b602717bd24a"
+      },
+      "case_id": "29ho-gap25-seed7",
+      "kind": "long-gap",
+      "length": 25,
+      "partner_chains": [
+        "V"
+      ],
+      "release_date": "2026-09-09",
+      "source_id": "29HO",
+      "source_sha256": "a99af990413113b51fb840758f8dfcf9457671cef474804a8d185cb6fbda0e0c",
+      "split": "validation",
+      "start": 34,
+      "target_chain": "D"
+    },
+    {
+      "arms": [
+        "full-raw"
+      ],
+      "artifacts": {
+        "input/normalized.pdb": "d69ede502ef61cf45c4a98577200ac88011b9b73aec5527dba2b9b604490abad",
+        "reference.pdb": "cf3943f9edffc7715ad986aca338cabbcd9b4a145686debf6d52cc5f810d4d66",
+        "request.json": "be69fcb2adccce602611c0c0d8b0a877a6d48d64d3ce7671d55f7df4f77d6991"
+      },
+      "case_id": "29ho-gap26-seed7",
+      "kind": "long-gap",
+      "length": 26,
+      "partner_chains": [
+        "V"
+      ],
+      "release_date": "2026-09-09",
+      "source_id": "29HO",
+      "source_sha256": "a99af990413113b51fb840758f8dfcf9457671cef474804a8d185cb6fbda0e0c",
+      "split": "validation",
+      "start": 19,
+      "target_chain": "D"
+    },
+    {
+      "arms": [
+        "full-raw"
+      ],
+      "artifacts": {
+        "input/normalized.pdb": "434c4964c151d2ac325ae40f0ad48cccffc61790c7bcf36e1f977154244faf22",
+        "reference.pdb": "cf3943f9edffc7715ad986aca338cabbcd9b4a145686debf6d52cc5f810d4d66",
+        "request.json": "225d29ca766eb25ea2f585afad3e7dd35939fc8fe3ddf9294cb376f98573a953"
+      },
+      "case_id": "29ho-gap50-seed7",
+      "kind": "long-gap",
+      "length": 50,
+      "partner_chains": [
+        "V"
+      ],
+      "release_date": "2026-09-09",
+      "source_id": "29HO",
+      "source_sha256": "a99af990413113b51fb840758f8dfcf9457671cef474804a8d185cb6fbda0e0c",
+      "split": "validation",
+      "start": 21,
+      "target_chain": "D"
+    },
+    {
+      "arms": [
+        "static-local"
+      ],
+      "artifacts": {
+        "input/normalized.pdb": "1986795db3b421eeb1361b3d98232ebdc444c88661de493733849682cff9ca9d",
+        "reference.pdb": "7577858e225f4b5902ba65e2c1e0a3ea9a6d600073a6b4dfbd0c77b6858b919a",
+        "request.json": "4b40852455b85a0832dca8c6ffa570f37837853772385647ac556830a63db378"
+      },
+      "case_id": "24bt-gap5-seed7",
+      "kind": "adaptive-calibration",
+      "length": 5,
+      "partner_chains": [
+        "B"
+      ],
+      "release_date": "2026-09-02",
+      "source_id": "24BT",
+      "source_sha256": "4748c5997b94aec98f16386da996280d6418ee89ae930e853ffec5eae0bca9b4",
+      "split": "validation",
+      "start": 1,
+      "target_chain": "A"
+    },
+    {
+      "arms": [
+        "full-raw"
+      ],
+      "artifacts": {
+        "input/normalized.pdb": "3aca6d2d60071eaf0251c060449f75c3a12b9c847e284ab35e683cb96b5bc7c7",
+        "reference.pdb": "7577858e225f4b5902ba65e2c1e0a3ea9a6d600073a6b4dfbd0c77b6858b919a",
+        "request.json": "cb64739cafc84394221386c6d6a83bfe5d2a1a190f6e6ab38360d7c626e904a8"
+      },
+      "case_id": "24bt-gap13-seed7",
+      "kind": "long-gap",
+      "length": 13,
+      "partner_chains": [
+        "B"
+      ],
+      "release_date": "2026-09-02",
+      "source_id": "24BT",
+      "source_sha256": "4748c5997b94aec98f16386da996280d6418ee89ae930e853ffec5eae0bca9b4",
+      "split": "validation",
+      "start": 93,
+      "target_chain": "A"
+    },
+    {
+      "arms": [
+        "full-raw"
+      ],
+      "artifacts": {
+        "input/normalized.pdb": "a0580dc6c5a16718c384dbfc24896a6dd404a4ab5267ca53428670c63574f526",
+        "reference.pdb": "7577858e225f4b5902ba65e2c1e0a3ea9a6d600073a6b4dfbd0c77b6858b919a",
+        "request.json": "dcfeca3d6f421de7dd12b6f3987bf83fcd6efec11f90cf97d7bc83d371982efe"
+      },
+      "case_id": "24bt-gap25-seed7",
+      "kind": "long-gap",
+      "length": 25,
+      "partner_chains": [
+        "B"
+      ],
+      "release_date": "2026-09-02",
+      "source_id": "24BT",
+      "source_sha256": "4748c5997b94aec98f16386da996280d6418ee89ae930e853ffec5eae0bca9b4",
+      "split": "validation",
+      "start": 40,
+      "target_chain": "A"
+    },
+    {
+      "arms": [
+        "full-raw"
+      ],
+      "artifacts": {
+        "input/normalized.pdb": "2a68bea22d7523e026f48c8b7c9bf910ff37ea33a7940426fd156c47e1c11532",
+        "reference.pdb": "7577858e225f4b5902ba65e2c1e0a3ea9a6d600073a6b4dfbd0c77b6858b919a",
+        "request.json": "aa9452e656c3d91840b503aae9f6117e5bba1eb11e799b44df007f95a5328be6"
+      },
+      "case_id": "24bt-gap26-seed7",
+      "kind": "long-gap",
+      "length": 26,
+      "partner_chains": [
+        "B"
+      ],
+      "release_date": "2026-09-02",
+      "source_id": "24BT",
+      "source_sha256": "4748c5997b94aec98f16386da996280d6418ee89ae930e853ffec5eae0bca9b4",
+      "split": "validation",
+      "start": 61,
+      "target_chain": "A"
+    },
+    {
+      "arms": [
+        "full-raw"
+      ],
+      "artifacts": {
+        "input/normalized.pdb": "253feaa62de14170d1171e560300e6a0decb8181d5866e5e5e0f9a4ec425ddcf",
+        "reference.pdb": "7577858e225f4b5902ba65e2c1e0a3ea9a6d600073a6b4dfbd0c77b6858b919a",
+        "request.json": "f2520b427a1176f6d9446c6cab1b856b55c83b188cfa9093b40a1c4d2ca8dc21"
+      },
+      "case_id": "24bt-gap50-seed7",
+      "kind": "long-gap",
+      "length": 50,
+      "partner_chains": [
+        "B"
+      ],
+      "release_date": "2026-09-02",
+      "source_id": "24BT",
+      "source_sha256": "4748c5997b94aec98f16386da996280d6418ee89ae930e853ffec5eae0bca9b4",
+      "split": "validation",
+      "start": 33,
+      "target_chain": "A"
+    }
+  ],
+  "geometry_policy": "unchanged-current-independent-validator",
+  "leakage": {
+    "temporal_holdout": "post-August 2026 releases; disjoint entries and <=30% sequence identity to development24",
+    "training_membership": "not-independently-attested"
+  },
+  "limits": {
+    "residue_budget": 512,
+    "steps": 200,
+    "timeout_seconds": 3600
+  },
+  "no_replacement": true,
+  "promotion": "research validation only; no public promotion",
+  "schema_version": 1,
+  "scope": "complete-contiguous-protein-fragments-not-full-ASU-or-complete-biological-assemblies",
+  "screening": [
+    {
+      "entity_id": "12NZ_1",
+      "max_development_sequence_identity_over_shorter_length": 0.3287671232876712,
+      "pdb_id": "12NZ",
+      "rank": 0,
+      "reason": "development-entry-or-sequence-overlap",
+      "release_date": "2026-09-09",
+      "sequence": "MGSSHHHHHHSSGLVPRGSHMASDTVYTAHLHGTGNATLATEEISVGTETTYTVSFLWKSVQGNARVRLSGSAVGSKNVDLIVDGSYPMPGINYNWQTGRVTYTFTANGDALFFSALQYSAEETEFYIGDVKIFESDANGVAVEGGEVIDLSFVNGAYAWTAPDAAYIDYAEQETGFFALES",
+      "split": "validation",
+      "status": "unsupported"
+    },
+    {
+      "entity_id": "21TS_1",
+      "max_development_sequence_identity_over_shorter_length": 0.2994011976047904,
+      "pdb_id": "21TS",
+      "rank": 1,
+      "reason": "Atom not found.",
+      "release_date": "2026-10-14",
+      "sequence": "MGSSHHHHHHSSGLVPRGSHMEIIVGISGASGVQYGIRLLEVLANKGIKTHLVLTEAAKQIIEIETDYLPVEVEKLATWNYSQKNFSAPIASGSYKTSGMIIAPCSMKTLGAVANGISDSLITRAADVCLKEERKLILMTRETPLNLIHLENMLKARKAGASILPACPGFYSRPKTLDDIIDTMAGRALDLLGIENDIYQRWRQEKTEDLENNG",
+      "source_sha256": "a051398f669d5482a6ffdd9f400dc9851160509c45d59d0d09ef4c6ef54f8b3c",
+      "split": "validation",
+      "status": "unsupported",
+      "target_auth_chain": "D"
+    },
+    {
+      "entity_id": "29IW_6",
+      "max_development_sequence_identity_over_shorter_length": 0.2966101694915254,
+      "pdb_id": "29IW",
+      "rank": 2,
+      "reason": "Atom not found.",
+      "release_date": "2026-09-30",
+      "sequence": "MAPSRNGMVLKPHFHKDWQRRVATWFNQPARKIRRRKARQAKARRIAPRPASGPIRPIVRCPTVRYHTKVRAGRGFSLEELRVAGIHKKVARTIGISVDPRRRNKSTESLQANVQRLKEYRSKLILFPRKPSAPKKGDSSAEELKLATQLTGPVMPVRNVYKKEKARVITEEEKNFKAFASLRMARANARLFGIRAKRAKEAAEQDVEKKK",
+      "source_sha256": "88c0a0854c95a235c51d8bf4771886144c1eaf9229127a13c9cf9f7a04bbd90b",
+      "split": "validation",
+      "status": "unsupported",
+      "target_auth_chain": "AF"
+    },
+    {
+      "entity_id": "24PU_2",
+      "max_development_sequence_identity_over_shorter_length": 0.32558139534883723,
+      "pdb_id": "24PU",
+      "rank": 3,
+      "reason": "development-entry-or-sequence-overlap",
+      "release_date": "2026-09-23",
+      "sequence": "GRAHENWSLSPEEFEIWDRLYRLKENDGVKEPILPHTRFETLENLDKTSKPEEEAAHKLSLSEWSIWQSRPFPTSMVDHSDRCYHFISVMELIEVMRQEQGDCSYELELQPHLRIEDIHVRRNKGHLSP",
+      "split": "validation",
+      "status": "unsupported"
+    },
+    {
+      "declared_chains": [
+        "1",
+        "4"
+      ],
+      "derived_source_sha256": "9c6e36018a0d471b9b71dd4c88aba969e5e3c95a9833af11a05e82e83556ebb4",
+      "entity_id": "23IT_1",
+      "fragment_residue_counts": [
+        133,
+        21
+      ],
+      "mask_count": 5,
+      "max_development_sequence_identity_over_shorter_length": 0.27472527472527475,
+      "pdb_id": "23IT",
+      "rank": 4,
+      "release_date": "2026-09-09",
+      "sequence": "TTSAGESADPVTATVENYGGETQVQRRQHTDISFILDRFVKVTPKDQINVLDLMQIPAHTLVGALLRTATYYFSDLELAVKHKGDLTWVPNGAPETALDNTTNPTAYHKAPLTRLALPYTAPHRVLATVYNGRCKYSDARVSNVRGDLQVLAQKAERALPTSFNYGAIKATRVTELLYRMKRAETYCPRPLLAIQPSDARHKQKIVAPAKQLL",
+      "source_sha256": "3dbde195ec5c3e6388858127c5cd9d5ea8775d36baad3ba1b011accb764c1dee",
+      "split": "validation",
+      "status": "eligible",
+      "target_auth_chain": "1"
+    },
+    {
+      "declared_chains": [
+        "D",
+        "V"
+      ],
+      "derived_source_sha256": "8225bd164c5f4436b87be053c34407c9edbda83f75fb9b964f792b132247f986",
+      "entity_id": "29HO_3",
+      "fragment_residue_counts": [
+        111,
+        120
+      ],
+      "mask_count": 5,
+      "max_development_sequence_identity_over_shorter_length": 0.29914529914529914,
+      "pdb_id": "29HO",
+      "rank": 5,
+      "release_date": "2026-09-09",
+      "sequence": "SMSVKKPKRDDSKDLALCSMILTEMETHEDAWPFLLPVNLKLVPGYKKVIKKPMDFSTIREKLSSGQYPNLETFALDVRLVFDNCETFNEDDSDIGRAGHNMRKYFEKKWTDTFKVS",
+      "source_sha256": "a99af990413113b51fb840758f8dfcf9457671cef474804a8d185cb6fbda0e0c",
+      "split": "validation",
+      "status": "eligible",
+      "target_auth_chain": "D"
+    },
+    {
+      "entity_id": "13JM_1",
+      "max_development_sequence_identity_over_shorter_length": 0.35714285714285715,
+      "pdb_id": "13JM",
+      "rank": 6,
+      "reason": "development-entry-or-sequence-overlap",
+      "release_date": "2026-09-23",
+      "sequence": "GPGSWSLEKELLELTREIIRMYEELLSTPHREVMLEQKEEEEKELETLEKKPLSELTPEELEEMIALNRRQLETAERLGCPERLLELLRRRIELLEKA",
+      "split": "validation",
+      "status": "unsupported"
+    },
+    {
+      "entity_id": "10XN_1",
+      "max_development_sequence_identity_over_shorter_length": 0.30927835051546393,
+      "pdb_id": "10XN",
+      "rank": 7,
+      "reason": "development-entry-or-sequence-overlap",
+      "release_date": "2026-09-02",
+      "sequence": "GPHMDRHSIMTSFGNLSYLERPGSYPLVFLHGLGGSGNNWIRLDRFLDGRFRMICFDLLGHGRSDKPRVEYTVEVQASAIVEALSKLGVNRFTLVGNSYGGWISLYIALKKKVPDYLVLVDSAGLNPTIAELGDEKLNEFVKKVMSVEEGNDEYVIRNISINNSKEEWKIKDEDLRSIKTKTLIIWGTADNVLSIEYGRKFHELIPNSLLFEIPYAKHTPQITHPQIVARIINDNVRI",
+      "split": "validation",
+      "status": "unsupported"
+    },
+    {
+      "entity_id": "11IQ_64",
+      "max_development_sequence_identity_over_shorter_length": 0.3333333333333333,
+      "pdb_id": "11IQ",
+      "rank": 8,
+      "reason": "development-entry-or-sequence-overlap",
+      "release_date": "2026-09-02",
+      "sequence": "VVDPFSKKDWYDVKAPAMFNIRNIGKTLVTRTQGTKIASDGLKGRVFEVSLADLQNDEVAFRKFKLITEDVQGKNCLTNFHGMDLTRDKMCSMVKKWQTMIEAHVDVKTTDGYLLRLFCVGFTKKRNNQIRKTSYAQHQQVRQIRKKMMEIMTREVQTNDLKEVVNKLIPDSIGKDIEKACQSIYPLHDVFVRKVKMLKKPKFELGKLMELHG",
+      "split": "validation",
+      "status": "unsupported"
+    },
+    {
+      "entity_id": "13FC_1",
+      "max_development_sequence_identity_over_shorter_length": 0.3263157894736842,
+      "pdb_id": "13FC",
+      "rank": 9,
+      "reason": "development-entry-or-sequence-overlap",
+      "release_date": "2026-10-07",
+      "sequence": "GPSEEEELVKKLIEEFKELLYKKKISLKEAVEKLKKYLDELVEKGVSLELISLFFSEGLEELTEKMIENEVTKEELELLKEAIEYHTKILKEKLK",
+      "split": "validation",
+      "status": "unsupported"
+    },
+    {
+      "entity_id": "28TF_1",
+      "max_development_sequence_identity_over_shorter_length": 0.3135593220338983,
+      "pdb_id": "28TF",
+      "rank": 10,
+      "reason": "development-entry-or-sequence-overlap",
+      "release_date": "2026-10-07",
+      "sequence": "QQEYLNNNQLDCDNTHNSTYGNVCNSVTSCQSYLTFKSSSPEYNTPSSISYLLNSTPSLVAKSNNITDVTPIITDTMVTVPVTCSCSGGRYQHNATYNLKKTGETYFSIANNTYQSLTTCQALMAQNPYDAKNLFAGDDLHVPLRCACPTKKQSDAGFKYLLTYLVSQGESPDSIAEIFGVDTQSVLDANELDSKSVVFYFTPLLVPLKTEPPARLQIAASHHHHHH",
+      "split": "validation",
+      "status": "unsupported"
+    },
+    {
+      "entity_id": "11GH_2",
+      "max_development_sequence_identity_over_shorter_length": 0.30434782608695654,
+      "pdb_id": "11GH",
+      "rank": 11,
+      "reason": "development-entry-or-sequence-overlap",
+      "release_date": "2026-10-07",
+      "sequence": "GSKTSNTIRVFLPNKQRTVVNVRNGMSLHDCLMKALKVRGLQPECCAVFRLLHEHKGKKARLDWNTDAASLIGEELQVDFLDHVPLTTHNFARKTFLKLAFCDICQKFLLNGFRCQTCGYKFHEHCSTKVPTMCVDWS",
+      "split": "validation",
+      "status": "unsupported"
+    },
+    {
+      "entity_id": "29IZ_55",
+      "max_development_sequence_identity_over_shorter_length": 0.25925925925925924,
+      "pdb_id": "29IZ",
+      "rank": 12,
+      "reason": "Atom not found.",
+      "release_date": "2026-09-30",
+      "sequence": "MGRVRTKTVKKAARVIIEKYYTRLGNDFHTNKRVCEEIAIIPSKKLRNKIAGYVTHLMKRIQRGPVRGISIKLQEEERERRDNYVPEVSALDQEIIEVDPDTKEMLKLLDFGSLSNLQVTQPTVGMNFKTPRGPV",
+      "source_sha256": "9fc4a5c5f576f10a7fbfdeed7f740fa1d8bcfba7d7c33cbcee3f1683592fc2b4",
+      "split": "validation",
+      "status": "unsupported",
+      "target_auth_chain": "HS"
+    },
+    {
+      "entity_id": "27WO_1",
+      "max_development_sequence_identity_over_shorter_length": 0.345679012345679,
+      "pdb_id": "27WO",
+      "rank": 13,
+      "reason": "development-entry-or-sequence-overlap",
+      "release_date": "2026-09-23",
+      "sequence": "MADKDQILADVADIVNDITGVDQSEVTFEKSFVDDLDVDSLSMVEIIYALDEKFGVEIPDEESKNIKIVGDAVNYIIEHQS",
+      "split": "validation",
+      "status": "unsupported"
+    },
+    {
+      "entity_id": "22GF_1",
+      "max_development_sequence_identity_over_shorter_length": 0.3305084745762712,
+      "pdb_id": "22GF",
+      "rank": 14,
+      "reason": "development-entry-or-sequence-overlap",
+      "release_date": "2026-09-30",
+      "sequence": "MKTYPKQVLEGNVTVQDKVKGDGPAAKRKKRVSMRYIGRLTNGKVFDKNITGKPFTFNLGLEEVIKGWDVGIVGMQVGGERTIHIPAAMAYGSKRLPGIPANSDLVFDVKLLAVNLEH",
+      "split": "validation",
+      "status": "unsupported"
+    },
+    {
+      "entity_id": "28UW_1",
+      "max_development_sequence_identity_over_shorter_length": 0.32989690721649484,
+      "pdb_id": "28UW",
+      "rank": 15,
+      "reason": "development-entry-or-sequence-overlap",
+      "release_date": "2026-09-02",
+      "sequence": "GAMGSMERASLIQKAKLAEQAERYEDMAAFMKGAVEKGEELSCEERNLLSVAYKNVVGGQRAAWRVLSSIEQKSNEEGSEEKGPEVREYREKVETELQGVCDTVLGLLDSHLIKEAGDAESRVFYLKMKGDYYRYLAEVATGDDKKRIIDSARSAYQEAMDISKKEMPPTNPIRLGLALNFSVFHYEIANSPEEAISLAKTTFDEAMADLHTLSEDSYKDSTLIMQLLRDNLTLWT",
+      "split": "validation",
+      "status": "unsupported"
+    },
+    {
+      "entity_id": "28JI_1",
+      "max_development_sequence_identity_over_shorter_length": 0.3010752688172043,
+      "pdb_id": "28JI",
+      "rank": 16,
+      "reason": "development-entry-or-sequence-overlap",
+      "release_date": "2026-10-07",
+      "sequence": "MEEDIACVKDLVSKYLVDNERLSRQKLAFLVQTEPRMLLMEGLKLLSLCIEVDSCNANGCEHNSEDKSVERILHDHGILTPSLCFVVPDGYKLTGNVLILLECFVRSSPANFEQKYIEDFKKLEQLKEDLKSVDINLIPLIDGRTSFYNEQIPDWVNDKLRDTLFSLLKYAQESNSLFEESEYSRLCESLSMTSGRLSGV",
+      "split": "validation",
+      "status": "unsupported"
+    },
+    {
+      "entity_id": "26RW_1",
+      "max_development_sequence_identity_over_shorter_length": 0.31958762886597936,
+      "pdb_id": "26RW",
+      "rank": 17,
+      "reason": "development-entry-or-sequence-overlap",
+      "release_date": "2026-09-16",
+      "sequence": "GSAPEAQVSVQPNFQQDKFLGRWFSAGLASNSSWLREKKAALSMAKSVVAPATDGGLNLTSTFLRKNQCETRTWLLQPAGSLGSYSYRSPHWGSTYSVSVVETDYDQYALLYSQGSKGPGEDFRWATLYSRTQTPRAELKEKFTAFAKAQGFTEDTIVFLPQTDKCMTEQ",
+      "split": "validation",
+      "status": "unsupported"
+    },
+    {
+      "declared_chains": [
+        "A",
+        "B"
+      ],
+      "derived_source_sha256": "3dad7fa7e64556a5d72f2a40f1a8c968497df9d717a802c0e557d815a9b7d86e",
+      "entity_id": "24BT_1",
+      "fragment_residue_counts": [
+        119,
+        119
+      ],
+      "mask_count": 5,
+      "max_development_sequence_identity_over_shorter_length": 0.29133858267716534,
+      "pdb_id": "24BT",
+      "rank": 18,
+      "release_date": "2026-09-02",
+      "sequence": "MEEYKQVILIRTDLKMSTGKKCVQSCHASVSASDLVRVQNKSIWKNWKNTGQKKVVLKVKDIEHLKEMVKLIEANKFHYFVVKDAGLTQLTPGTITAVGIGPLSSGEIDKITRELKLLGSSHHHHHH",
+      "source_sha256": "4748c5997b94aec98f16386da996280d6418ee89ae930e853ffec5eae0bca9b4",
+      "split": "validation",
+      "status": "eligible",
+      "target_auth_chain": "A"
+    },
+    {
+      "entity_id": "11UZ_1",
+      "max_development_sequence_identity_over_shorter_length": 0.2716049382716049,
+      "pdb_id": "11UZ",
+      "rank": 19,
+      "reason": "Atom not found.",
+      "release_date": "2026-09-30",
+      "sequence": "MEFNYKTKFDSEEFARQLKDQEKGMNELTVHEYRENRNRFIDKGRAIEGNAYQQAARERALRDKIDELFEQGLTLKEAKTQANEWMKTQAALHNPDQVAGGRPEIIGGMGDKRVNFSIGSQWRTRIKIVDKQIEEIAKNMTSEQLKNTYLNVKLTHHHHHHH",
+      "source_sha256": "b0a277ab0dec385106bbd4c71917e0b427d9a9feb0f9e1df8deb98a9662096b3",
+      "split": "validation",
+      "status": "unsupported",
+      "target_auth_chain": "A"
+    },
+    {
+      "entity_id": "10YM_1",
+      "max_development_sequence_identity_over_shorter_length": 0.34408602150537637,
+      "pdb_id": "10YM",
+      "rank": 20,
+      "reason": "development-entry-or-sequence-overlap",
+      "release_date": "2026-09-30",
+      "sequence": "MVSLDQAVLILIVAASLGTTVEEAVQRALWLKTKLGVSLDQALRILWAAAKTGTTVEEAVQEALQLKTKLGVSLEAALLILAAAAQLGTTVEEAVNRALNLKTKLGVDLETAALALFTAAQLGTTVEEAVQEALQLKTKLGVSLIEALHILITAAVLGTTVEEAVYRALKLKTKLGVSLLQAAAILLLAAYLGTTVEEAVQEALKLKTKLGGGSGGSHHWGSGSLEHHHHHH",
+      "split": "validation",
+      "status": "unsupported"
+    },
+    {
+      "entity_id": "11VF_1",
+      "max_development_sequence_identity_over_shorter_length": 0.3010752688172043,
+      "pdb_id": "11VF",
+      "rank": 21,
+      "reason": "development-entry-or-sequence-overlap",
+      "release_date": "2026-09-30",
+      "sequence": "MEKVLNDFKLEKKVPSELIDKYVNLVPEEIIVMWKNYGFGTFMNGYFKSINPDDFKDILLETSQRYQDAIVLFATSMGDLIVWSDDYVRLLNYRYGKVTTILHTFDFFFSNISDLEFKIEDLHWLPYPDAIARYGEPSYDECFGYVGILGMGGMEKVENLQKVKLREHILIITHFMGPIK",
+      "split": "validation",
+      "status": "unsupported"
+    },
+    {
+      "entity_id": "10OK_1",
+      "max_development_sequence_identity_over_shorter_length": 0.37209302325581395,
+      "pdb_id": "10OK",
+      "rank": 22,
+      "reason": "development-entry-or-sequence-overlap",
+      "release_date": "2026-09-30",
+      "sequence": "GSHMNVNRDYDQLRAYLSLLVELECQIDEINEAKGQAFREAKACGFPRDVVRDLLRMKQDGRLDDKDVPSAFEGILDARGIAQKPD",
+      "split": "validation",
+      "status": "unsupported"
+    },
+    {
+      "entity_id": "28FU_1",
+      "max_development_sequence_identity_over_shorter_length": 0.4268292682926829,
+      "pdb_id": "28FU",
+      "rank": 23,
+      "reason": "development-entry-or-sequence-overlap",
+      "release_date": "2026-10-14",
+      "sequence": "MHHHHHHSPYRDAAVQAALDAAAAAPSTADIINAAAEAIRKGEVGLALLRLGVAAARDPANAATINAAADTVYALSQKEKAA",
+      "split": "validation",
+      "status": "unsupported"
+    }
+  ],
+  "selection": "longest complete target run >=70, capped250; nearest complete partner run >=12, capped120; original-24-source-membership-no-replacement",
+  "source_manifest_sha256": "3afd3a01de890ec93aa81f5d4a3f0fbb101e6160be97519dc4ba37203c33cab2",
+  "status": "frozen-before-a100-calibration-inference",
+  "version_note": "separate fragment-screening protocol after low complete-chain eligibility; before any calibration inference"
+}

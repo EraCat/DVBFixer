@@ -647,6 +647,7 @@ export function HomologyPanel() {
       delete options['--diffusion-seed']
       delete options['--diffusion-context']
       delete options['--diffusion-regenerate-covered']
+      delete options['--diffusion-edit-flanks']
     }
     update({ modelOptions: options })
   }
@@ -882,10 +883,20 @@ export function HomologyPanel() {
                 </FormControl>
                 <FormControl size="small" sx={toolbarControlSx}><InputLabel>Covered edits</InputLabel>
                   <Select label="Covered edits" value={project.modelOptions['--diffusion-regenerate-covered'] ? 'regenerate' : 'reject'}
-                    onChange={event => update({ modelOptions: { ...project.modelOptions, '--diffusion-regenerate-covered': event.target.value === 'regenerate' } })}>
+                    onChange={event => {
+                      const options: Record<string, string | number | boolean> = { ...project.modelOptions, '--diffusion-regenerate-covered': event.target.value === 'regenerate' }
+                      if (event.target.value !== 'regenerate') delete options['--diffusion-edit-flanks']
+                      update({ modelOptions: options })
+                    }}>
                     <MenuItem value="reject">Reject edits</MenuItem><MenuItem value="regenerate">Regenerate (experimental)</MenuItem>
                   </Select>
                 </FormControl>
+                {project.modelOptions['--diffusion-regenerate-covered'] === true && <FormControl size="small" sx={toolbarControlSx}><InputLabel>Edit flanks</InputLabel>
+                  <Select label="Edit flanks" value={project.modelOptions['--diffusion-edit-flanks'] ?? 1}
+                    onChange={event => update({ modelOptions: { ...project.modelOptions, '--diffusion-edit-flanks': Number(event.target.value) } })}>
+                    {[1, 2, 3, 4, 5].map(value => <MenuItem key={value} value={value}>{value} per side</MenuItem>)}
+                  </Select>
+                </FormControl>}
               </>}
               <Button sx={primaryActionSx} variant="contained"
                 onClick={runModel} disabled={busy !== '' || !project.alignmentGroups.length}>Run {(project.modelOptions['--backend'] ?? 'modeller') === 'diffusion' ? 'Diffusion' : 'Modeller'}</Button>

@@ -1,0 +1,563 @@
+{
+  "adaptive_contact_gate": {
+    "distance_angstrom": 4.0,
+    "minimum_new_contact_residues": 2,
+    "minimum_supporting_backbone_atoms": 2
+  },
+  "cases": [
+    {
+      "arms": [
+        "static-local",
+        "adaptive-monotonic",
+        "adaptive-contact-gated"
+      ],
+      "artifacts": {
+        "input/normalized.pdb": "68aac054f2b342ead5828268a9e33c5a4faa4021550686f6375224cac3ab5c46",
+        "reference.pdb": "b2a2674208d6f149106067e3a4a3ea822d65425bbe19c16bbcede7a5b26553b0",
+        "request.json": "8724ed08cd81bd85b27fdad87ab5a3fc08644f248027366b354724e63fb52d23"
+      },
+      "case_id": "11gz-gap5-seed7",
+      "kind": "adaptive-calibration",
+      "length": 5,
+      "partner_chains": [],
+      "reference_interface_minimum_distance_angstrom": null,
+      "release_date": "2026-05-20",
+      "source_id": "11GZ",
+      "source_sha256": "f47cb6e52099628f56b051f53bfc5ada30ad661765f3102cdeeb779303d443df",
+      "split": "calibration",
+      "start": 198,
+      "target_chain": "A"
+    },
+    {
+      "arms": [
+        "static-local",
+        "adaptive-monotonic",
+        "adaptive-contact-gated"
+      ],
+      "artifacts": {
+        "input/normalized.pdb": "68aac054f2b342ead5828268a9e33c5a4faa4021550686f6375224cac3ab5c46",
+        "reference.pdb": "b2a2674208d6f149106067e3a4a3ea822d65425bbe19c16bbcede7a5b26553b0",
+        "request.json": "099f900beb50aa4196a49e6be0e4bda5dd732d632fed0e27968ac6d20009b69f"
+      },
+      "case_id": "11gz-gap5-seed19",
+      "kind": "adaptive-calibration",
+      "length": 5,
+      "partner_chains": [],
+      "reference_interface_minimum_distance_angstrom": null,
+      "release_date": "2026-05-20",
+      "source_id": "11GZ",
+      "source_sha256": "f47cb6e52099628f56b051f53bfc5ada30ad661765f3102cdeeb779303d443df",
+      "split": "calibration",
+      "start": 198,
+      "target_chain": "A"
+    },
+    {
+      "arms": [
+        "full-raw"
+      ],
+      "artifacts": {
+        "input/normalized.pdb": "9c87e73243f03b0002f4dbaa0cef100b93ce12cc51fb5597dfe1a2c104db2362",
+        "reference.pdb": "b2a2674208d6f149106067e3a4a3ea822d65425bbe19c16bbcede7a5b26553b0",
+        "request.json": "beed4913549b79dd21ca71120c8cb71b4cdf46b35425eed9a51593ae96bebbca"
+      },
+      "case_id": "11gz-gap13-seed7",
+      "kind": "long-gap",
+      "length": 13,
+      "partner_chains": [],
+      "reference_interface_minimum_distance_angstrom": null,
+      "release_date": "2026-05-20",
+      "source_id": "11GZ",
+      "source_sha256": "f47cb6e52099628f56b051f53bfc5ada30ad661765f3102cdeeb779303d443df",
+      "split": "calibration",
+      "start": 28,
+      "target_chain": "A"
+    },
+    {
+      "arms": [
+        "full-raw"
+      ],
+      "artifacts": {
+        "input/normalized.pdb": "9c87e73243f03b0002f4dbaa0cef100b93ce12cc51fb5597dfe1a2c104db2362",
+        "reference.pdb": "b2a2674208d6f149106067e3a4a3ea822d65425bbe19c16bbcede7a5b26553b0",
+        "request.json": "9b6644ee4c793f76b7008ee9c218df974a7a6074d5af17dbf4f65eb295b772a5"
+      },
+      "case_id": "11gz-gap13-seed19",
+      "kind": "long-gap",
+      "length": 13,
+      "partner_chains": [],
+      "reference_interface_minimum_distance_angstrom": null,
+      "release_date": "2026-05-20",
+      "source_id": "11GZ",
+      "source_sha256": "f47cb6e52099628f56b051f53bfc5ada30ad661765f3102cdeeb779303d443df",
+      "split": "calibration",
+      "start": 28,
+      "target_chain": "A"
+    },
+    {
+      "arms": [
+        "full-raw"
+      ],
+      "artifacts": {
+        "input/normalized.pdb": "61faa71834836b5205b314fc30850225832aa8f0c0e73f4fd9c2051231057991",
+        "reference.pdb": "b2a2674208d6f149106067e3a4a3ea822d65425bbe19c16bbcede7a5b26553b0",
+        "request.json": "3a23182d3c631031a12ac2eea349348115fa2fcb93f1ee48320ec29a0326ec35"
+      },
+      "case_id": "11gz-gap25-seed7",
+      "kind": "long-gap",
+      "length": 25,
+      "partner_chains": [],
+      "reference_interface_minimum_distance_angstrom": null,
+      "release_date": "2026-05-20",
+      "source_id": "11GZ",
+      "source_sha256": "f47cb6e52099628f56b051f53bfc5ada30ad661765f3102cdeeb779303d443df",
+      "split": "calibration",
+      "start": 117,
+      "target_chain": "A"
+    },
+    {
+      "arms": [
+        "full-raw"
+      ],
+      "artifacts": {
+        "input/normalized.pdb": "61faa71834836b5205b314fc30850225832aa8f0c0e73f4fd9c2051231057991",
+        "reference.pdb": "b2a2674208d6f149106067e3a4a3ea822d65425bbe19c16bbcede7a5b26553b0",
+        "request.json": "ece7c188c479328f971b6c377fbe6e24f3c6c2d8cad165563583eeed25c00aa5"
+      },
+      "case_id": "11gz-gap25-seed19",
+      "kind": "long-gap",
+      "length": 25,
+      "partner_chains": [],
+      "reference_interface_minimum_distance_angstrom": null,
+      "release_date": "2026-05-20",
+      "source_id": "11GZ",
+      "source_sha256": "f47cb6e52099628f56b051f53bfc5ada30ad661765f3102cdeeb779303d443df",
+      "split": "calibration",
+      "start": 117,
+      "target_chain": "A"
+    },
+    {
+      "arms": [
+        "full-raw"
+      ],
+      "artifacts": {
+        "input/normalized.pdb": "2371edb1d03925b97109fa672b3c796ec1b396fcf359f0ed37cfbcaac759567c",
+        "reference.pdb": "b2a2674208d6f149106067e3a4a3ea822d65425bbe19c16bbcede7a5b26553b0",
+        "request.json": "b23e0eed5b53767d59d58c9b21b5aec5a57edde1bc4d68c7ff847660b3327553"
+      },
+      "case_id": "11gz-gap26-seed7",
+      "kind": "long-gap",
+      "length": 26,
+      "partner_chains": [],
+      "reference_interface_minimum_distance_angstrom": null,
+      "release_date": "2026-05-20",
+      "source_id": "11GZ",
+      "source_sha256": "f47cb6e52099628f56b051f53bfc5ada30ad661765f3102cdeeb779303d443df",
+      "split": "calibration",
+      "start": 151,
+      "target_chain": "A"
+    },
+    {
+      "arms": [
+        "full-raw"
+      ],
+      "artifacts": {
+        "input/normalized.pdb": "2371edb1d03925b97109fa672b3c796ec1b396fcf359f0ed37cfbcaac759567c",
+        "reference.pdb": "b2a2674208d6f149106067e3a4a3ea822d65425bbe19c16bbcede7a5b26553b0",
+        "request.json": "610d1af0d556286173ee63d641086efb056fc1bdb0322959cc44dcaf8736d897"
+      },
+      "case_id": "11gz-gap26-seed19",
+      "kind": "long-gap",
+      "length": 26,
+      "partner_chains": [],
+      "reference_interface_minimum_distance_angstrom": null,
+      "release_date": "2026-05-20",
+      "source_id": "11GZ",
+      "source_sha256": "f47cb6e52099628f56b051f53bfc5ada30ad661765f3102cdeeb779303d443df",
+      "split": "calibration",
+      "start": 151,
+      "target_chain": "A"
+    },
+    {
+      "arms": [
+        "full-raw"
+      ],
+      "artifacts": {
+        "input/normalized.pdb": "46fa6432fa9579c2dc161ce3d799d21a9d080a20ede6de8dfc3ddf7a66786553",
+        "reference.pdb": "b2a2674208d6f149106067e3a4a3ea822d65425bbe19c16bbcede7a5b26553b0",
+        "request.json": "bba893b554594677150edff1ea13136b81c558cf99bb32b2aab075124a8dee42"
+      },
+      "case_id": "11gz-gap50-seed7",
+      "kind": "long-gap",
+      "length": 50,
+      "partner_chains": [],
+      "reference_interface_minimum_distance_angstrom": null,
+      "release_date": "2026-05-20",
+      "source_id": "11GZ",
+      "source_sha256": "f47cb6e52099628f56b051f53bfc5ada30ad661765f3102cdeeb779303d443df",
+      "split": "calibration",
+      "start": 116,
+      "target_chain": "A"
+    },
+    {
+      "arms": [
+        "full-raw"
+      ],
+      "artifacts": {
+        "input/normalized.pdb": "46fa6432fa9579c2dc161ce3d799d21a9d080a20ede6de8dfc3ddf7a66786553",
+        "reference.pdb": "b2a2674208d6f149106067e3a4a3ea822d65425bbe19c16bbcede7a5b26553b0",
+        "request.json": "eaa4180bd311531857a527a9a68d094b2d6427add47dfa63a822576fce89f097"
+      },
+      "case_id": "11gz-gap50-seed19",
+      "kind": "long-gap",
+      "length": 50,
+      "partner_chains": [],
+      "reference_interface_minimum_distance_angstrom": null,
+      "release_date": "2026-05-20",
+      "source_id": "11GZ",
+      "source_sha256": "f47cb6e52099628f56b051f53bfc5ada30ad661765f3102cdeeb779303d443df",
+      "split": "calibration",
+      "start": 116,
+      "target_chain": "A"
+    }
+  ],
+  "geometry_policy": "unchanged-current-independent-validator",
+  "leakage": {
+    "temporal_holdout": "2026 sources newer than frozen 2025 source/checkpoint releases",
+    "training_membership": "not-independently-attested"
+  },
+  "limits": {
+    "adaptive_rounds": 2,
+    "residue_budget": 512,
+    "steps": 200,
+    "timeout_seconds": 3600
+  },
+  "no_replacement": true,
+  "promotion": "no public scope change from this bounded study; larger independent review required",
+  "schema_version": 1,
+  "screening": [
+    {
+      "entity_id": "11GN_1",
+      "pdb_id": "11GN",
+      "rank": 0,
+      "reason": "target observed sequence is not the complete locked polymer sequence",
+      "release_date": "2026-07-29",
+      "sequence": "GSNVAHGLAWSYYIGYLRLILPGLQARIRMFNQLHNNMLSGAGSRRLYILFPLDCGVPDNLSVVDPNIRFRDMLPQQNIDRAGIKNRVYSNSVYEILENGQPAGVCILEYATPLQTLFAMSQDAKAGFSREDRLEQAKLFCRTLEEILEDVPESRNNCRLIVYQEPTDGNSFSLSQEVLRHIRQEE",
+      "source_sha256": "c2c7a1465cf0950ceae4262da3ae452246f017b3ba063363751cb6cf55ca3609",
+      "split": "calibration",
+      "status": "unsupported",
+      "target_auth_chain": "A"
+    },
+    {
+      "entity_id": "10UX_1",
+      "pdb_id": "10UX",
+      "rank": 1,
+      "reason": "target observed sequence is not the complete locked polymer sequence",
+      "release_date": "2026-08-05",
+      "sequence": "MGSDKIHHHHHHENLYFQGSVVPEVKLQIGEVRPSMRDLDENDYMVEVPVTAEANNGFSDMVFGFRWDASKVTAEPPSGNIPEGLSLIPTIDNQNGVGWIHVIADSTYTGSDICTLRFTVPDNTKPGSIYDITGCSSDGDKEASVANHSGTAGTLTINNGRIFATST",
+      "source_sha256": "ae3fda3d9caf65d4aba0f2a02c053fbf5bd93a9715cbccbab10519ba76f45b3a",
+      "split": "validation",
+      "status": "unsupported",
+      "target_auth_chain": "A"
+    },
+    {
+      "entity_id": "25VF_1",
+      "pdb_id": "25VF",
+      "rank": 2,
+      "reason": "target observed sequence is not the complete locked polymer sequence",
+      "release_date": "2026-08-12",
+      "sequence": "MSILTQGTQIYALVPPVSGTGAATVLEIEGVTSFNPGGNPADQIEDPCLSDTSRKYKKGLRTPGQATLGINADPRLASHVRLFQLSEKDGETSVKWAIGWSDGIDVKPTVSTEGDDFVLPPARTWFTFEGYVSDFPFDFASNTLVATQATIQRSGAGKWTPKSA",
+      "source_sha256": "a6a18ba8205d8450fa0f2672c936fb578c5a1dfe9283b3ffb0f5dbdbf8d610f5",
+      "split": "calibration",
+      "status": "unsupported",
+      "target_auth_chain": "b"
+    },
+    {
+      "entity_id": "10US_1",
+      "pdb_id": "10US",
+      "rank": 3,
+      "reason": "source heavy-atom-incomplete residue: ResidueIdentity(chain='A', residue_number='889', insertion_code='')",
+      "release_date": "2026-08-05",
+      "sequence": "MGSDKIHHHHHHENLYFQGTTTTEAPKGKGIIFKVDEAQVKTASNYAKIPLSVLVENYVDAQGFNFALEVPEVTSKILTIYKNPKNKKDYGYRDVYVSGDLAPSPQNLKGYEANGQDMSVEPSKRWMYFQWTSSTSTITISGDKVIDINCTIAENAVDIAKEYGLELQTDENGDSYYLFPVNFAEYQKVNWDFEGTHGDGYLAPNRQYIDENGTDIATTDVVYYNGGIRVYTDA",
+      "source_sha256": "cbe0511b2365245de5ec352f01f103135261b1e231803dd2e9c7d170d8d4726f",
+      "split": "validation",
+      "status": "unsupported",
+      "target_auth_chain": "A"
+    },
+    {
+      "declared_chains": [
+        "A"
+      ],
+      "entity_id": "11GZ_1",
+      "masks": [
+        {
+          "contact_distance_angstrom": null,
+          "length": 5,
+          "start": 198,
+          "status": "eligible"
+        },
+        {
+          "contact_distance_angstrom": null,
+          "length": 13,
+          "start": 28,
+          "status": "eligible"
+        },
+        {
+          "contact_distance_angstrom": null,
+          "length": 25,
+          "start": 117,
+          "status": "eligible"
+        },
+        {
+          "contact_distance_angstrom": null,
+          "length": 26,
+          "start": 151,
+          "status": "eligible"
+        },
+        {
+          "contact_distance_angstrom": null,
+          "length": 50,
+          "start": 116,
+          "status": "eligible"
+        }
+      ],
+      "pdb_id": "11GZ",
+      "rank": 4,
+      "release_date": "2026-05-20",
+      "sequence": "SGWRSIRLFISSTFRDMHGERDLLLRSVLPALQARAAPHRISLHGIDLRWGVTEEETRRNRQLEVCLGEVENAQLFVGILGSRYGYIPPSYNLPDHPHFHWAQQYPSGRSVTEMEVMQFLNRNQRLQPSAQALIYFRDSSFLSSVPDAWKSDFVSESEEAARRISELKSYLSRQKGITCRRYPCEWGGVAAGRPYVGGLEEFGQLVLQDVWNMIQKLYLQ",
+      "source_sha256": "f47cb6e52099628f56b051f53bfc5ada30ad661765f3102cdeeb779303d443df",
+      "split": "calibration",
+      "status": "eligible",
+      "target_auth_chain": "A"
+    },
+    {
+      "entity_id": "25II_2",
+      "pdb_id": "25II",
+      "rank": 5,
+      "reason": "source heavy-atom-incomplete residue: ResidueIdentity(chain='A', residue_number='996', insertion_code='')",
+      "release_date": "2026-05-20",
+      "sequence": "MGRLLALVVGAALVSSACGGCVEVDSETEAVYGMTFKILCISCKRRSETNAETFTEWTFRQKGTEEFVKILRYENEVLQLEEDERFEGRVVWNGSRGTKDLQDLSIFITNVTYNHSGDYECHVYRLLFFENYEHNTSVVKKIHIEVVDKANRDMASIVSEIMMYVLIVVLTIWLVAEMIYCYKKIAAATETAAQENASEYLAITSESKENCTGVQVAE",
+      "source_sha256": "77ce8030eac0e184d868345f5c482fe662d483feddc4a20e0a025ef5a7405461",
+      "split": "validation",
+      "status": "unsupported",
+      "target_auth_chain": "C"
+    },
+    {
+      "entity_id": "12NP_1",
+      "pdb_id": "12NP",
+      "rank": 6,
+      "reason": "target observed sequence is not the complete locked polymer sequence",
+      "release_date": "2026-05-06",
+      "sequence": "QNEGWDSPICTEGVVSVSWGENTVMSCNISNAFSHVNIKLRAHGQESAIFNEVAPGYFSRDGWQLQVQGGVAQLVIKGARDSHAGLYMWHLVGHQRNNRQVTLEVSGAE",
+      "source_sha256": "fff5fd24533eb7fad11e4c91a5a603b164a0f1f4e05cc9d00a6beab1ef3711ff",
+      "split": "calibration",
+      "status": "unsupported",
+      "target_auth_chain": "B"
+    },
+    {
+      "entity_id": "13RS_1",
+      "pdb_id": "13RS",
+      "rank": 7,
+      "reason": "residue name 'A1CX1' in chain 'A' exceeds 3 PDB characters",
+      "release_date": "2026-01-28",
+      "sequence": "SMVNSFSGYLKLTDNVYIKNADIVEEAKKVKPTVVVNAANVYLKHGGGVAGALNKATNNAMQVESDDYIATNGPLKVGGSCVLSGHNLAKHCLHVVGPNVNKGEDIQLLKSAYENFNQHEVLLAPLLSAGIFGADPIHSLRVCVDTVRTNVYLAVFDKNLYDKLVSSFL",
+      "source_sha256": "21ba8c7a724cff9636ad0114ba6a47d2142b0c9c8275d0e5c1d9db1710b155b2",
+      "split": "validation",
+      "status": "unsupported",
+      "target_auth_chain": "A"
+    },
+    {
+      "entity_id": "10PX_34",
+      "pdb_id": "10PX",
+      "rank": 8,
+      "reason": "residue name 'A1C9N' in chain '1A' exceeds 3 PDB characters",
+      "release_date": "2026-03-11",
+      "sequence": "MGNKIHPIGFRLGITRDWESRWYAGKKQYRHLLLEDQRIRGLLEKELYSAGLARVDIERAADNVAVTVHVAKPGVVIGRGGERIRVLREELAKLTGKNVALNVQEVQNPNLSAPLVAQRVAEQIERRFAVRRAIKQAVQRVMESGAKGAKVIVSGRIGGAEQARTEWAAQGRVPLHTLRANIDYGFALARTTYGVLGVKAYIFLGEVIGGQKPKARPELPKAEERPRRRRPAVRVKKEE",
+      "source_sha256": "65c802be9da8b16c88425e32fe1bfec560b2d33d8af6dfbfcb65c0eb1d4b9e85",
+      "split": "calibration",
+      "status": "unsupported",
+      "target_auth_chain": "1c"
+    },
+    {
+      "entity_id": "10XG_1",
+      "pdb_id": "10XG",
+      "rank": 9,
+      "reason": "source heavy-atom-incomplete residue: ResidueIdentity(chain='A', residue_number='41', insertion_code='')",
+      "release_date": "2026-06-03",
+      "sequence": "GSHMTAPDADFPAVWAQLISRWLDADPGDPEYPALAPRARSVLRQITPVVLVNGIAVLTTPNQMAKSTVESRLATDIKTVLGRVVGTPVTLCLSVHQ",
+      "source_sha256": "2139feadec27464df906864884135a61b824e2772075e7ee6506e4598dbe0eb7",
+      "split": "validation",
+      "status": "unsupported",
+      "target_auth_chain": "A"
+    },
+    {
+      "entity_id": "13EE_1",
+      "pdb_id": "13EE",
+      "rank": 10,
+      "reason": "target observed sequence is not the complete locked polymer sequence",
+      "release_date": "2026-05-13",
+      "sequence": "MASGQPISLMDGKLSFSLPADMTDQSGKLGTQANNMHVYSDPTGQKAVIVIVGDNTDEALPVLANRLLEQQRSRDPQLQVVTNKSIELKGHTLQQLDSIISAKGQTAYSSIVLGKVDNQLLTIQVTLPADNQQKAQTTAENIINTLVIKGSSAWSHPQFEK",
+      "source_sha256": "e95b4b5216f350b359f7e3ca6cc1e166a775f74e9f2ef6e2579177fc8fa4a69e",
+      "split": "calibration",
+      "status": "unsupported",
+      "target_auth_chain": "A"
+    },
+    {
+      "entity_id": "21EJ_1",
+      "pdb_id": "21EJ",
+      "rank": 11,
+      "reason": "source heavy-atom-incomplete residue: ResidueIdentity(chain='A', residue_number='10', insertion_code='')",
+      "release_date": "2026-06-17",
+      "sequence": "GPSGMILKRAYDVTPQKISTDKVRGVRKRVLIGLKDAPNFVMRLFTVEPGGLIDRASHPWEHEIFVLKGKLTVLKEQGEETVEEGFYIFVEPNEIHGFRNDTDSEVEFLCLIPKEGGE",
+      "source_sha256": "9a895f19f12345b34b39bdff821c800587b27ae6de03ae71286d75d9010fc0b6",
+      "split": "validation",
+      "status": "unsupported",
+      "target_auth_chain": "A"
+    },
+    {
+      "entity_id": "23EO_1",
+      "pdb_id": "23EO",
+      "rank": 12,
+      "reason": "target observed sequence is not the complete locked polymer sequence",
+      "release_date": "2026-07-15",
+      "sequence": "MKLIVAIVRPEKLNEVLKALFQAEVRGLTLXRVQGHGGETERVETYRGTTVKMELHEKVRLEIGVSEPFVKPTVEAILKAARTGEVGDGKIFVLPVEKVYRIRTGEEDEAAVTPVQLVPR",
+      "source_sha256": "cd758d9b9f92996aae710f59042821389dd15eebf33b15ceb0f2af03a6310dd8",
+      "split": "calibration",
+      "status": "unsupported",
+      "target_auth_chain": "A"
+    },
+    {
+      "entity_id": "21TW_2",
+      "pdb_id": "21TW",
+      "rank": 13,
+      "reason": "target observed sequence is not the complete locked polymer sequence",
+      "release_date": "2026-04-29",
+      "sequence": "GVRSSSRTPSDKPVAHVVANPQAEGQLQWLNRRANALLANGVELRDNQLVVPSEGLYLIYSQVLFKGQGCPSTHVLLTHTISRIAVSYQTKVNLLSAIKSPCQRETPEGAEAKPWYEPIYLGGVFQLEKGDRLSAEINRPDYLDFAESGQVYFGIIAL",
+      "source_sha256": "23996a555f5013a682ee8567f704dbb642c13bdfce246b3e8bce39462b4d1ba9",
+      "split": "validation",
+      "status": "unsupported",
+      "target_auth_chain": "B"
+    },
+    {
+      "entity_id": "12IS_1",
+      "pdb_id": "12IS",
+      "rank": 14,
+      "reason": "target observed sequence is not the complete locked polymer sequence",
+      "release_date": "2026-04-15",
+      "sequence": "MAHHHHHHMGTLEAQTQGPGSMVSIALLREMFEKMVVAKNAELIGHYYDPDFVMYSDGLRQEFAEFNEGHRKIYASAISYAIEYDEDAWVQAPDRVAGRVWITTSRPGEKPTRIEVILIAAYRDCRIHRIWETTWPSWRNVAALED",
+      "source_sha256": "95399346b7964742e4f64e9553b55fe5ce67cc501fe5264cede7d99e3abe3ca4",
+      "split": "calibration",
+      "status": "unsupported",
+      "target_auth_chain": "A"
+    },
+    {
+      "entity_id": "22VH_1",
+      "pdb_id": "22VH",
+      "rank": 15,
+      "reason": "target observed sequence is not the complete locked polymer sequence",
+      "release_date": "2026-08-19",
+      "sequence": "MHHHHHHSSGLVPRGSGMKETAAAKFERQHMDSPDLMVKTPITEAIAAADTQGRFLGNTELQSARGRYERAAASLEAARGLTSNAQRLIDGATQAVYQKFPYTTQTPGPQFAADSRGKSKCARDVGHYLRIITYSLVAGGTGPLDEYLIAGLAEINSTFDLSPSWYVEALKHIKANHGLSGQAANEANTYIDYAINALS",
+      "source_sha256": "c92eaff49c3a306a54d8c9db8fd6e9570a8002d714f8f64ece845188226673df",
+      "split": "validation",
+      "status": "unsupported",
+      "target_auth_chain": "A"
+    },
+    {
+      "entity_id": "21CH_1",
+      "pdb_id": "21CH",
+      "rank": 16,
+      "reason": "target observed sequence is not the complete locked polymer sequence",
+      "release_date": "2026-08-26",
+      "sequence": "GSAHPSCQVDQCTADMADAKPYHRRHKVCEFHSKSPIVLISGLQKRFCQQCSRFHLLAEFDDAKRSCRRRLAGHNERRRKITYDSHGENLG",
+      "source_sha256": "65d68c6fd1d75dc8571adb1043842cabd8f5a0015b7568e0e506742aed5dd234",
+      "split": "calibration",
+      "status": "unsupported",
+      "target_auth_chain": "A"
+    },
+    {
+      "entity_id": "21DC_1",
+      "pdb_id": "21DC",
+      "rank": 17,
+      "reason": "source heavy-atom-incomplete residue: ResidueIdentity(chain='A', residue_number='142', insertion_code='')",
+      "release_date": "2026-04-08",
+      "sequence": "MHHHHHHSSGLVPRGSGMKETAAAKFERQHMDSPDLMADKYINYAALKAAETIGVDYRIQAAVQSDNFIIVAPHAGGIEVATTELTLATAGNDTSYYLFEGLNSSGNGDLHITSTHFDEPIALHMMQNHEFGLSYHGYADSENEMTIIGGLSDTLKEAVYKSLSSYGFNVAYATDRFTATDPNNIVNRAIRRGVQLELSTAQRKAFFEGGDWSKDNRMNRTDAFYNYVTAVRYALTLEHHHHHH",
+      "source_sha256": "761fb73fcc1cf770e693cced2f597739a2f9bfd1d79d89d9eea5dc97bab3aa05",
+      "split": "validation",
+      "status": "unsupported",
+      "target_auth_chain": "A"
+    },
+    {
+      "entity_id": "10XH_1",
+      "pdb_id": "10XH",
+      "rank": 18,
+      "reason": "source heavy-atom-incomplete residue: ResidueIdentity(chain='A', residue_number='1', insertion_code='')",
+      "release_date": "2026-06-03",
+      "sequence": "GSHMSDDLLGPAGQATRIWSDTLRLLKQNPTLSPRDKSWLEGVVPEAVYGTTIVLCVSNMATQQALQNELNAPLLNALKIISGNDMFPAFKIV",
+      "source_sha256": "b614547b07551629d91e0df4cb6fd860ac9755083c1f44c62c04bd75315bd320",
+      "split": "calibration",
+      "status": "unsupported",
+      "target_auth_chain": "A"
+    },
+    {
+      "entity_id": "10UR_1",
+      "pdb_id": "10UR",
+      "rank": 19,
+      "reason": "source heavy-atom-incomplete residue: ResidueIdentity(chain='A', residue_number='1084', insertion_code='')",
+      "release_date": "2026-08-05",
+      "sequence": "MGSDKIHHHHHHENLYFQGQKMVWALDKLTVTPGQGSTDGDNLSYAITVQNALKTGALQGTIDLPEATKKLLQWPYGTTDMQVKVFNRYYKDLRNTVYATMPTFQIDLMNFWKEEANTKIHFGLMCDANTDFVEPASANGTLYSMPIAIPDEATVQALATEYGIKYDETLGGYVFPVNWAELGTDISYSKDGNGNVVPVSIDRFALTNSSNVKYDFAETVDLQDGYICVKVP",
+      "source_sha256": "bc55cd9d130b61dc686f2f2bbaf3abd2c5b51d42a3d3dee336642b15dc16cd3b",
+      "split": "validation",
+      "status": "unsupported",
+      "target_auth_chain": "A"
+    },
+    {
+      "entity_id": "21LR_1",
+      "pdb_id": "21LR",
+      "rank": 20,
+      "reason": "source heavy-atom-incomplete residue: ResidueIdentity(chain='A', residue_number='157', insertion_code='')",
+      "release_date": "2026-06-24",
+      "sequence": "SSQIRQNYSTEVEAAVNRLVNLYGRAGYTYLSLGFYFDRDDVALEGVCHFFRELAWEKGWGAWRLLKMQNQRGGRALFQDLQKPSQDEWGTTLDAMKAAIVLEKSLNQALLDLHALGSAQADPHLCDFLESHFLDEEVKLIKKMGDHLTNIQRLVGSQAGLGEYLFERLTLKHD",
+      "source_sha256": "246f94371874f8eeac321ef557861392daf95decab7b6d83851ce0cc77425651",
+      "split": "calibration",
+      "status": "unsupported",
+      "target_auth_chain": "A"
+    },
+    {
+      "entity_id": "23EF_1",
+      "pdb_id": "23EF",
+      "rank": 21,
+      "reason": "target observed sequence is not the complete locked polymer sequence",
+      "release_date": "2026-07-15",
+      "sequence": "EFRFIKTSLDGAIIIEPEVYTDERGYFMETFNEAIFQENGLEVXFVQDNESMSVRGVLRGLHFQREKPQGKLVRVIRGEIFDVAVDLRKNSDTYGEWTGVRLSDENRREFFIPEGFAHGFLALSDECIVNYKCTELYHPEYDSGIPWDDPDIGIDWPLEMVDDLIISEKDRNWKPLRENPVYL",
+      "source_sha256": "0d3d9ea66f3da2aeec7adc8334c6c57990565a9d4eaaad7343623911507ca373",
+      "split": "validation",
+      "status": "unsupported",
+      "target_auth_chain": "A"
+    },
+    {
+      "entity_id": "13DZ_1",
+      "pdb_id": "13DZ",
+      "rank": 22,
+      "reason": "residue name 'A1DFI' in chain 'A' exceeds 3 PDB characters",
+      "release_date": "2026-08-05",
+      "sequence": "GSRTMAVKKIAIFGATGQTGLTTLAQAVQAGYEVTVLVRDSSRLPSEGPRPAHVVVGDVLQAADVDKTVAGQDAVIVLLGTRNDLSPTTVMSEGARNIVAAMKAHGVDKVVACTSAFLLWDPTKVPPRLQAVTDDHIRMHKVLRESGLKYVAVMPPHIGDQPLTGAYTVTLDGRGPSRVISKHDLGHFMLRCLTTDEYDGHSTYPSHQYQ",
+      "source_sha256": "24d266c3ba5b0338d889f331d1c523392654c6daf4ba113d440bb920ef64d694",
+      "split": "calibration",
+      "status": "unsupported",
+      "target_auth_chain": "A"
+    },
+    {
+      "entity_id": "22IY_1",
+      "pdb_id": "22IY",
+      "rank": 23,
+      "reason": "source heavy-atom-incomplete residue: ResidueIdentity(chain='A', residue_number='31', insertion_code='')",
+      "release_date": "2026-02-04",
+      "sequence": "MGSSHHHHHHSSGLEVLFQGPHIHMAPAPAKRGLTAALQQAAASAPQLSTLVAAIQASGLQIPDDAAWTIFAPTNEAFADDDVREKTGLTAQQLLKPANKDALVKLLSYHVVPAGAVRSTKLTDGQVLQTLLKGATLKVDLDEDDGRRKIEIESSAGDDDGADVVRADIVAGNSIIHVVDDVLIPAALRKSG",
+      "source_sha256": "03fc7043445ecc4a65841ababd6aa49509047bed469f92b2c9f3a4169cf1abd8",
+      "split": "validation",
+      "status": "unsupported",
+      "target_auth_chain": "A"
+    }
+  ],
+  "source_manifest_sha256": "d5b74cd8eeb4bd665e04c9ebadc9f76cfb0dba6fc71db3e954bb1a7589b494ed",
+  "status": "frozen-before-a100-calibration-inference"
+}

@@ -12,6 +12,59 @@ from dvbfixer.homology_plan import (
 from dvbfixer.model.diffusion.contract import DiffusionRequest
 
 
+def _deletion_plan(tmp_path):
+    template = tmp_path / "template.pdb"
+    template.write_text("".join(_atom(index + 1, "ALA", index + 1, index * 3.8) for index in range(25)))
+    aligned_target = "A" * 12 + "-" + "A" * 12
+    plan = tmp_path / "plan.json"
+    plan.write_text(json.dumps({"templates": [{"id": "known", "path": str(template), "chain": "A", "targetChain": "VH"}],
+        "alignmentGroups": [{"chainId": "VH", "rows": [
+            {"id": "VH", "kind": "target", "sequence": aligned_target},
+            {"id": "known", "kind": "template", "sequence": "A" * 25}], "maskModes": {"known": "all"}}]}))
+    work = tmp_path / "work"
+    materialize_template_plan(plan, work)
+    return work, work / "selected_template_mosaic.coverage.json"
+
+
+@pytest.mark.parametrize("flanks", range(1, 6))
+def test_deletion_windows_keep_exact_flanks_and_all_other_mosaic_atoms(tmp_path, flanks):
+    work, coverage = _deletion_plan(tmp_path)
+    original = (work / "selected_template_mosaic.pdb").read_bytes()
+    normalized, path = build_mosaic_diffusion_request(coverage, [("VH", "A" * 24)], work,
+        seeds=(7,), regenerate_covered=True, profile="protenix-v1-cuda", edit_flanks=flanks)
+    request = DiffusionRequest.from_json(path.read_text())
+    gap, = request.gaps
+    assert (gap.target_interval.start, gap.target_interval.stop) == (12 - flanks, 13 + flanks)
+    assert len(gap.generated_residues) == 2 * flanks + 1
+    mutable = {(residue.chain, residue.residue_number, residue.insertion_code) for residue in gap.generated_residues}
+    expected = b"".join(line for line in original.splitlines(keepends=True)
+        if not line.startswith(b"ATOM  ") or (chr(line[21]), line[22:26].decode().strip(), line[26:27].decode().strip()) not in mutable)
+    assert normalized.read_bytes() == expected
+    assert (work / "selected_template_mosaic.pdb").read_bytes() == original
+
+
+@pytest.mark.parametrize("options", [{"seeds": (-1,)}, {"seeds": (7, 7)}, {"seeds": ()},
+    {"edit_flanks": True}, {"edit_flanks": 1.5}, {"edit_flanks": 0}, {"edit_flanks": 6}])
+def test_invalid_mosaic_request_never_leaves_a_normalized_input(tmp_path, options):
+    work, coverage = _deletion_plan(tmp_path)
+    kwargs = {"seeds": (7,), "regenerate_covered": True, **options}
+    with pytest.raises(ValueError):
+        build_mosaic_diffusion_request(coverage, [("VH", "A" * 24)], work, **kwargs)
+    assert not (work / "mosaic_diffusion_input.pdb").exists()
+    assert not (work / "mosaic_diffusion_request.json").exists()
+
+
+def test_mosaic_uses_profile_specific_length_admission_before_writing(tmp_path, monkeypatch):
+    from dvbfixer.model.diffusion import gap_capabilities
+
+    work, coverage = _deletion_plan(tmp_path)
+    monkeypatch.setattr(gap_capabilities, "ACCEPTED_INTERNAL_RANGES", {"protenix-v1-cuda": ((7, 12),)})
+    with pytest.raises(ValueError, match="accepted 7-12 range"):
+        build_mosaic_diffusion_request(coverage, [("VH", "A" * 24)], work,
+            seeds=(7,), profile="protenix-v1-cuda", regenerate_covered=True)
+    assert not (work / "mosaic_diffusion_input.pdb").exists()
+
+
 def _atom(serial, residue, number, x):
     return (f"ATOM  {serial:5d}  CA  {residue} A{number:4d}    "
             f"{x:8.3f}   0.000   0.000  1.00 20.00           C  \n")

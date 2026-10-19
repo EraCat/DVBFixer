@@ -1,0 +1,75 @@
+{
+  "cases": [
+    {
+      "artifacts": {
+        "input/normalized.pdb": "94b7f2daaf938b9f25dc0ffe95ef957372866664ac7cf04f16b7928d0bd7cfba",
+        "reference.pdb": "8988cf76e4fed328b9dda9a195a8fc299cdc3ee88c7a4155454537863226bcfe",
+        "request.json": "d43f94838c2d897d80b5af3102d864800bb3cd5b2b382073697d4e59ec4cf641"
+      },
+      "case_id": "cc89-joint"
+    },
+    {
+      "artifacts": {
+        "input/normalized.pdb": "9cc83cb959000ff35730feb8e12f6392ae3678feb06572368ca8a558e29f50f2",
+        "reference.pdb": "8988cf76e4fed328b9dda9a195a8fc299cdc3ee88c7a4155454537863226bcfe",
+        "request.json": "0cc2466fb01eecd6a2d62af1204b98fab62b5e7c383e8a221c6230b813d63696"
+      },
+      "case_id": "cc89-discontiguous"
+    },
+    {
+      "artifacts": {
+        "input/normalized.pdb": "693ab15258e565c13bf511352e1d6e6c56ff04376eb8b535595da4f0ce28b815",
+        "reference.pdb": "08295c35a42ae73e91d278ce0b42af230dbb97edaf945e73baf1ecbae51e451e",
+        "request.json": "2e00495f40c05aca1529d89b510952a9ec337c5d4e089302ac1b81aa63d3792d"
+      },
+      "case_id": "cc89-case-insertion"
+    }
+  ],
+  "code_sha256": "6e0a5373e4b7f60a3f1273f839b13179c1db2fe9a4d7b10a7637cf7307d32f5f",
+  "configurations": {
+    "backbone-projected": {
+      "crop_strategy": "backbone",
+      "per_step_reinjection": true,
+      "replacement_guidance": false,
+      "s_churn": 0.0,
+      "step_scale": 1.0
+    },
+    "baseline-native": {
+      "crop_strategy": "backbone-sidechain",
+      "per_step_reinjection": false,
+      "replacement_guidance": false,
+      "s_churn": 200.0,
+      "step_scale": 1.2
+    },
+    "deterministic-native": {
+      "crop_strategy": "backbone-sidechain",
+      "per_step_reinjection": false,
+      "replacement_guidance": false,
+      "s_churn": 0.0,
+      "step_scale": 1.0
+    },
+    "deterministic-projected": {
+      "crop_strategy": "backbone-sidechain",
+      "per_step_reinjection": true,
+      "replacement_guidance": false,
+      "s_churn": 0.0,
+      "step_scale": 1.0
+    },
+    "replacement-projected": {
+      "crop_strategy": "backbone-sidechain",
+      "per_step_reinjection": true,
+      "replacement_guidance": true,
+      "s_churn": 0.0,
+      "step_scale": 1.0
+    }
+  },
+  "geometry_policy": "unchanged-current-independent-validator",
+  "no_replacement": true,
+  "patched_engine_sha256": "2ec52fee68368ba3addfa4b46eec70949c6730801f05cb309c8eb5ed22f1f810",
+  "promotion": false,
+  "rationale": "cc89 crop-conditional training limits motifs to24 residues; prior full-context native fit drifts14A; isolate churn, step scale, conditioning atoms and replacement before assuming a mapping defect",
+  "seed": 7,
+  "status": "frozen-before-cc89-cuda-control-inference",
+  "steps": 500,
+  "timeout_seconds": 600
+}

@@ -61,6 +61,19 @@ def _multichain_gap_input(tmp_path: Path) -> Path:
     return path
 
 
+def test_cli_and_scope_use_the_same_profile_specific_length_policy(tmp_path, monkeypatch):
+    from dvbfixer.model.diffusion import gap_capabilities
+
+    path = _gap_input(tmp_path)
+    request = build_cli_diffusion_request(path, {"C": "SNRFSGSKSGNTA"}, seeds=(7,), profile="protenix-v1-cuda")
+    monkeypatch.setattr(gap_capabilities, "ACCEPTED_INTERNAL_RANGES", {"protenix-v1-cuda": ((3, 4),)})
+    with pytest.raises(DiffusionCliError, match="accepted range 3-4"):
+        build_cli_diffusion_request(path, {"C": "SNRFSGSKSGNTA"}, seeds=(7,), profile="protenix-v1-cuda")
+    assert not assess_diffusion_scope(request, path.read_bytes()).supported
+    other = build_cli_diffusion_request(path, {"C": "SNRFSGSKSGNTA"}, seeds=(7,), profile="protpardelle-1c-mps")
+    assert assess_diffusion_scope(other, path.read_bytes()).supported
+
+
 def test_diffusion_parser_accepts_optional_model_selection() -> None:
     args = parse_args(
         [

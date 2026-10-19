@@ -1,0 +1,41 @@
+{
+  "code_sha256": {
+    "deploy/protenix-v1/build-template-input.py": "7fbc0e32bec8150d1ed1820829be0f4d1c01994f6cca71b5b1b7358a8c784863",
+    "deploy/protenix-v1/checkpoint_gap_smoke.py": "b16eb6e3e1d1d8d6296e23f45be39d0887b725bc513aabdb122db933c46cb6f2",
+    "deploy/protenix-v1/reinjection.py": "77fcde3cac9a205531f34683b8b28ec9e2b4b56500520e354d31be9b7d02ff9f",
+    "scripts/audit_intact_inputs.py": "17cc3471b1e06d0ae3251255e3b1c8d85efec699a6112bfd9217a0c86a87825c",
+    "scripts/run_intact_recheck.py": "8e1999f492b81f2ec3ea274d74ba64a8a3c38aeab7873211ac0f7ffb4f2bcce6",
+    "src/dvbfixer/model/diffusion/boundary_refinement.py": "7d9356fa8b4ee9c07d8a7c3850b1e595325d42c0d526e805f1d19dce6384be30",
+    "src/dvbfixer/model/diffusion/protein_context.py": "b4b0bc9b97a1ea2a9ede77fd869a88a58395d491b618278937be16c203d0c8d8",
+    "src/dvbfixer/model/diffusion/runner_refinement.py": "946204537200a0e0472d0998ecdb447cd78840c7ac641fbf27ef8ef4a9b153a3",
+    "src/dvbfixer/model/diffusion/scope.py": "e69949074a33b10feae317b8c34295a404ac149fb5c790712a16ffc672d78218"
+  },
+  "cohort_sha256": "d0d68ac0630710f70bd4fb22d0201a1ed131d9331b002e020cc95af03c5d5707",
+  "context": "6/10A heavy-atom anchor shells, all source chains, sequence padding2, no source truncation",
+  "eligible_case_count": 25,
+  "environment": {
+    "cuda_packages": {
+      "nvidia-cuda-cupti-cu12": "12.2.142",
+      "nvidia-cuda-nvcc-cu12": "12.2.140",
+      "nvidia-cuda-nvrtc-cu12": "12.2.140",
+      "nvidia-cuda-runtime-cu12": "12.2.140",
+      "nvidia-cufft-cu12": "11.0.8.103",
+      "nvidia-nvjitlink-cu12": "12.2.140",
+      "openmm-cuda-12": "8.6.1"
+    },
+    "numpy": "2.4.6",
+    "openmm": "8.6.1",
+    "python": "3.13.15",
+    "python_executable": "/data/user/skripkins/claude/DVBFixer/test/a100-relax-env/bin/python"
+  },
+  "evaluation": "geometry and full-source preservation; no reference RMSD ranking or selection",
+  "inference": "pinned Protenix CUDA, seed7, 200 per-step reinjections",
+  "input_audit_sha256": "79006769114692fc0c749a23d06f9187ae5fe65c334ac22747f928f64caeaf09",
+  "no_replacement": true,
+  "public_promotion": false,
+  "refinement": "existing rigid v6 CUDA generated-only, unchanged iteration/restart policy",
+  "solvent": false,
+  "source_count": 10,
+  "status": "frozen-before-intact-recheck-inference",
+  "unsupported_case_count": 22
+}

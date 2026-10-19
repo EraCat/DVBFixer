@@ -39,7 +39,7 @@ from dvbfixer.model.diffusion.contract import (
 )
 from dvbfixer.model.diffusion.geometry import synchronize_and_reinject, weighted_kabsch
 from dvbfixer.model.diffusion.pdb_materialize import materialize_candidate_pdb
-from dvbfixer.model.diffusion.protein_context import context_evidence, sampling_entities, select_legacy_partner_spans, validate_context_source
+from dvbfixer.model.diffusion.protein_context import context_evidence, engine_context_view, select_legacy_partner_spans, validate_context_source
 from dvbfixer.model.diffusion.runner import DIFFUSION_RUNNER_PROTOCOL_VERSION
 from dvbfixer.model.diffusion.trace import build_sampler_trace, write_sampler_trace
 from dvbfixer.model.diffusion.validate import validate_runner_result
@@ -253,31 +253,10 @@ def _chain_sampling_requests(
 ) -> tuple[DiffusionRequest, ...]:
     """Build gap-chain invocations with optional local fixed partner context."""
     if request.protein_context is not None:
-        if len({gap.chain for gap in request.gaps}) != 1:
-            raise ValueError("Protpardelle explicit context does not support joint gap-bearing chains")
-        entities = sampling_entities(request)
-        if len({entity.target.chain for entity in entities}) != len(entities):
-            raise ValueError("Protpardelle explicit context does not support discontiguous source-chain entities")
-        starts = {span.chain: span.start for span in request.protein_context.spans}
-        selected = {item.atom for item in request.protein_context.fixed_conditioning}
-        return (replace(
-            request, protein_context=None,
-            target_sequences=tuple(entity.target for entity in entities),
-            sequence_placements=tuple(entity.placement for entity in entities),
-            gaps=tuple(replace(gap, target_interval=type(gap.target_interval)(
-                gap.target_interval.start - starts[gap.chain],
-                gap.target_interval.stop - starts[gap.chain],
-            )) for gap in request.gaps),
-            fixed_atoms=tuple(atom for atom in request.fixed_atoms if atom in selected),
-            template_ownership=tuple(replace(owner, target_index=owner.target_index - starts[owner.chain])
-                                     for owner in request.template_ownership if owner.residue in {
-                                         ResidueIdentity(atom.chain, atom.residue_number, atom.insertion_code) for atom in selected
-                                     }),
-            regenerated_template_ownership=(tuple(replace(owner, target_index=owner.target_index - starts[owner.chain])
-                                                   for owner in request.regenerated_template_ownership)
-                                            if request.regenerated_template_ownership is not None else None),
-            retained_explicit_links=(),
-        ),)
+        view = engine_context_view(request)
+        if len(view.request.target_sequences) > 26:
+            raise ValueError("cc89 supports at most 26 selected engine entities")
+        return (view.request,)
     gap_chains = {gap.chain for gap in request.gaps}
     requests: list[DiffusionRequest] = []
     for target in request.target_sequences:
@@ -486,6 +465,7 @@ def _write_motif_input(
     source: Path,
     destination: Path,
     request: DiffusionRequest,
+    source_to_engine: dict[AtomIdentity, AtomIdentity] | None = None,
 ) -> None:
     fixed_atom_set = set(request.fixed_atoms)
     target_index = _local_target_indices(request)
@@ -502,6 +482,10 @@ def _write_motif_input(
         identity = AtomIdentity(
             line[21:22], line[22:26].strip(), line[26:27].strip(), line[12:16].strip()
         )
+        if source_to_engine is not None:
+            if identity not in source_to_engine:
+                continue
+            identity = source_to_engine[identity]
         residue = ResidueIdentity(identity.chain, identity.residue_number, identity.insertion_code)
         if identity not in fixed_atom_set:
             continue
@@ -569,11 +553,20 @@ def _synchronize_and_restore_fixed_atoms(
     fixed_coordinates: dict[AtomIdentity, np.ndarray],
     fixed_residue_names: dict[AtomIdentity, str],
     request: DiffusionRequest | None = None,
+    *,
+    joint_frame: bool = False,
 ) -> tuple[tuple[AtomIdentity, ...], np.ndarray, tuple[str, ...]]:
     represented = set(identities)
     synchronized = coordinates.copy()
     index_by_identity = {identity: index for index, identity in enumerate(identities)}
-    if request is None:
+    if joint_frame:
+        alignment = tuple(sorted(set(fixed_coordinates) & set(identities)))
+        transform = weighted_kabsch(np.asarray([coordinates[index_by_identity[atom]] for atom in alignment]),
+                                    np.asarray([fixed_coordinates[atom] for atom in alignment]))
+        synchronized = transform.apply(coordinates)
+        for atom in alignment:
+            synchronized[index_by_identity[atom]] = fixed_coordinates[atom]
+    elif request is None:
         for chain in dict.fromkeys(identity.chain for identity in identities):
             indices = [
                 index for index, identity in enumerate(identities) if identity.chain == chain
@@ -648,17 +641,20 @@ def _native_conditioning_fit(
     identities: tuple[AtomIdentity, ...],
     coordinates: np.ndarray,
     fixed_coordinates: dict[AtomIdentity, np.ndarray],
+    *,
+    joint_frame: bool = False,
 ) -> dict[str, float | int]:
     index_by_identity = {identity: index for index, identity in enumerate(identities)}
     represented = tuple(sorted(set(fixed_coordinates) & set(index_by_identity)))
     if len(represented) < 3:
         raise ValueError("native conditioning fit requires at least three represented fixed atoms")
     displacement_groups: list[np.ndarray] = []
-    for chain in dict.fromkeys(identity.chain for identity in represented):
-        chain_atoms = tuple(identity for identity in represented if identity.chain == chain)
+    groups = [represented] if joint_frame else [tuple(identity for identity in represented if identity.chain == chain)
+                                               for chain in dict.fromkeys(identity.chain for identity in represented)]
+    for chain_atoms in groups:
         if len(chain_atoms) < 3:
             raise ValueError(
-                f"native conditioning fit requires at least three fixed atoms on chain {chain}"
+                "native conditioning fit requires at least three fixed atoms per alignment group"
             )
         mobile = np.vstack([
             coordinates[index_by_identity[identity]] for identity in chain_atoms
@@ -861,6 +857,8 @@ def _run_staged(
     device_name: str,
     mps_profile: bool,
     context_probe: bool = False,
+    crop_strategy: str = "backbone-sidechain",
+    replacement_guidance: bool = False,
 ) -> tuple[RunnerResult, Path]:
     import torch
     from protpardelle.common import residue_constants
@@ -869,6 +867,8 @@ def _run_staged(
 
     if steps <= 0:
         raise ValueError("steps must be positive")
+    if crop_strategy not in {"backbone-sidechain", "backbone", "sidechain", "sidechain-tip"}:
+        raise ValueError("unsupported crop conditioning strategy")
     if _sha256(config_path) != _CONFIG_SHA256 or _sha256(checkpoint_path) != _CHECKPOINT_SHA256:
         raise ValueError("cc89 config or checkpoint digest mismatch")
     request_path = request_path.resolve()
@@ -890,6 +890,9 @@ def _run_staged(
     fixed_coordinates = _read_fixed_coordinates(source, request.fixed_atoms)
     fixed_residue_names = _read_fixed_residue_names(source, request.fixed_atoms)
     sampling_requests = _chain_sampling_requests(request, fixed_coordinates)
+    view = engine_context_view(request) if request.protein_context else None
+    engine_to_source = dict(view.atom_to_source) if view else None
+    source_to_engine = {original: engine for engine, original in view.atom_to_source} if view else None
 
     device = _resolve_device(torch, device_name)
     if mps_profile and device.type != "mps":
@@ -918,7 +921,7 @@ def _run_staged(
             "freq": 1,
             "freq_start": 0.0,
             "freq_end": 0.0,
-            "strategy": "backbone-sidechain",
+            "strategy": crop_strategy,
         },
         "reconstruction_guidance": {
             "enabled": False,
@@ -928,7 +931,7 @@ def _run_staged(
             "max_scale": 10.0,
             "loss_weights": {"motif": 1.0},
         },
-        "replacement_guidance": {"enabled": False, "start": 0.0, "end": 0.92},
+        "replacement_guidance": {"enabled": replacement_guidance, "start": 0.0, "end": 0.92},
     }
     callback_stats: dict[str, float | int] = {
         "callback_count": 0,
@@ -958,7 +961,7 @@ def _run_staged(
 
         target_sequence = _target_sequence(sampling_request)
         motif_path = output_dir / f"motif-{invocation_index + 1}.pdb"
-        _write_motif_input(source, motif_path, sampling_request)
+        _write_motif_input(source, motif_path, sampling_request, source_to_engine)
         seq_mask, residue_index, chain_index = model.make_seq_mask_for_sampling(
             prot_lens_per_chain=torch.tensor([[
                 len(target.sequence) for target in sampling_request.target_sequences
@@ -996,23 +999,24 @@ def _run_staged(
         if device.type == "mps":
             sample_options["record_trajectory"] = False
         chain_fixed_coordinates = {
-            atom: coordinate
+            source_to_engine[atom] if source_to_engine else atom: coordinate
             for atom, coordinate in fixed_coordinates.items()
-            if atom in set(sampling_request.fixed_atoms)
+            if (source_to_engine.get(atom) if source_to_engine else atom) in set(sampling_request.fixed_atoms)
         }
         chain_fixed_residue_names = {
-            atom: name
+            source_to_engine[atom] if source_to_engine else atom: name
             for atom, name in fixed_residue_names.items()
-            if atom in set(sampling_request.fixed_atoms)
+            if (source_to_engine.get(atom) if source_to_engine else atom) in set(sampling_request.fixed_atoms)
         }
-        primary_chain = sampling_request.gaps[0].chain
+        primary_chain = request.gaps[0].chain if view else sampling_request.gaps[0].chain
         partner_chains = tuple(
             target.chain
-            for target in sampling_request.target_sequences
+            for target in (request.target_sequences if view else sampling_request.target_sequences)
             if target.chain != primary_chain
         )
         partner_atoms = tuple(
-            atom for atom in sampling_request.fixed_atoms if atom.chain in partner_chains
+            engine_to_source[atom] if engine_to_source else atom for atom in sampling_request.fixed_atoms
+            if (engine_to_source[atom].chain if engine_to_source else atom.chain) in partner_chains
         )
         if partner_atoms:
             conditioning_contexts.append(SamplerConditioningContext(
@@ -1093,11 +1097,12 @@ def _run_staged(
             for context in sampling_request.heterogen_contexts
             for atom in context.atoms
         )
-        sampler_atom_order_parts.extend(sampler_atom_order)
+        sampler_atom_order_parts.extend(engine_to_source[atom] if engine_to_source else atom for atom in sampler_atom_order)
         fit = _native_conditioning_fit(
             identities,
             coordinates,
             chain_fixed_coordinates,
+            joint_frame=view is not None,
         )
         represented_count = int(fit["represented_fixed_atom_count"])
         fit_count += represented_count
@@ -1114,15 +1119,18 @@ def _run_staged(
             chain_fixed_coordinates,
             chain_fixed_residue_names,
             sampling_request,
+            joint_frame=view is not None,
         )
         for identity, coordinate, residue_name in zip(
             identities,
             coordinates,
             residue_names,
         ):
+            if engine_to_source:
+                identity = engine_to_source[identity]
             if (
-                identity in requested_atoms
-                and identity.chain == primary_chain
+                identity in (set(request.fixed_atoms) | set(request.generated_atoms) if view else requested_atoms)
+                and (view is not None or identity.chain == primary_chain)
                 and all(
                     identity not in context.atoms
                     for context in sampling_request.heterogen_contexts
@@ -1333,6 +1341,8 @@ def _run_staged(
             for context in request.heterogen_contexts
         ],
         "step_scale": step_scale,
+        "crop_strategy": crop_strategy,
+        "replacement_guidance": replacement_guidance,
         "s_churn": s_churn,
         "motif_placements": placements,
         **({"denoiser_context_probes": context_probes} if context_probe else {}),

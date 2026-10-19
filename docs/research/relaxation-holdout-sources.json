@@ -1,0 +1,255 @@
+{
+  "adaptive_contact_gate": {},
+  "arms": {
+    "long": [
+      "full-raw"
+    ],
+    "short": [
+      "static-local"
+    ]
+  },
+  "artifacts": {
+    "11VF.cif": "b26f54f354c7d88e8380957f5a415ff33a16b176aa34c2191b1cbbbe891e3290",
+    "entity-metadata.json": "701ccce3cbfb9c2d4d78251bdff3497f4b66e750eec2368cd78beb65bd2d56b5",
+    "search-query.json": "c4a334e9e031a053d65bcf23feab77d7dc75399882466d3f935770cc7735e270",
+    "search-response.json": "708b652d6db9c6381738c7de00d5ff924c8863042a6d21fe1c5e5e2681e2c69a"
+  },
+  "cases": [
+    {
+      "entity_id": "12NZ_1",
+      "max_development_sequence_identity_over_shorter_length": 0.3626373626373626,
+      "pdb_id": "12NZ",
+      "reason": "development-entry-or-sequence-overlap",
+      "release_date": "2026-09-09",
+      "sequence": "MGSSHHHHHHSSGLVPRGSHMASDTVYTAHLHGTGNATLATEEISVGTETTYTVSFLWKSVQGNARVRLSGSAVGSKNVDLIVDGSYPMPGINYNWQTGRVTYTFTANGDALFFSALQYSAEETEFYIGDVKIFESDANGVAVEGGEVIDLSFVNGAYAWTAPDAAYIDYAEQETGFFALES",
+      "status": "unsupported"
+    },
+    {
+      "entity_id": "21TS_1",
+      "max_development_sequence_identity_over_shorter_length": 0.3225806451612903,
+      "pdb_id": "21TS",
+      "reason": "development-entry-or-sequence-overlap",
+      "release_date": "2026-10-14",
+      "sequence": "MGSSHHHHHHSSGLVPRGSHMEIIVGISGASGVQYGIRLLEVLANKGIKTHLVLTEAAKQIIEIETDYLPVEVEKLATWNYSQKNFSAPIASGSYKTSGMIIAPCSMKTLGAVANGISDSLITRAADVCLKEERKLILMTRETPLNLIHLENMLKARKAGASILPACPGFYSRPKTLDDIIDTMAGRALDLLGIENDIYQRWRQEKTEDLENNG",
+      "status": "unsupported"
+    },
+    {
+      "entity_id": "29IW_6",
+      "max_development_sequence_identity_over_shorter_length": 0.3333333333333333,
+      "pdb_id": "29IW",
+      "reason": "development-entry-or-sequence-overlap",
+      "release_date": "2026-09-30",
+      "sequence": "MAPSRNGMVLKPHFHKDWQRRVATWFNQPARKIRRRKARQAKARRIAPRPASGPIRPIVRCPTVRYHTKVRAGRGFSLEELRVAGIHKKVARTIGISVDPRRRNKSTESLQANVQRLKEYRSKLILFPRKPSAPKKGDSSAEELKLATQLTGPVMPVRNVYKKEKARVITEEEKNFKAFASLRMARANARLFGIRAKRAKEAAEQDVEKKK",
+      "status": "unsupported"
+    },
+    {
+      "entity_id": "24PU_2",
+      "max_development_sequence_identity_over_shorter_length": 0.31007751937984496,
+      "pdb_id": "24PU",
+      "reason": "development-entry-or-sequence-overlap",
+      "release_date": "2026-09-23",
+      "sequence": "GRAHENWSLSPEEFEIWDRLYRLKENDGVKEPILPHTRFETLENLDKTSKPEEEAAHKLSLSEWSIWQSRPFPTSMVDHSDRCYHFISVMELIEVMRQEQGDCSYELELQPHLRIEDIHVRRNKGHLSP",
+      "status": "unsupported"
+    },
+    {
+      "entity_id": "23IT_1",
+      "max_development_sequence_identity_over_shorter_length": 0.3333333333333333,
+      "pdb_id": "23IT",
+      "reason": "development-entry-or-sequence-overlap",
+      "release_date": "2026-09-09",
+      "sequence": "TTSAGESADPVTATVENYGGETQVQRRQHTDISFILDRFVKVTPKDQINVLDLMQIPAHTLVGALLRTATYYFSDLELAVKHKGDLTWVPNGAPETALDNTTNPTAYHKAPLTRLALPYTAPHRVLATVYNGRCKYSDARVSNVRGDLQVLAQKAERALPTSFNYGAIKATRVTELLYRMKRAETYCPRPLLAIQPSDARHKQKIVAPAKQLL",
+      "status": "unsupported"
+    },
+    {
+      "entity_id": "29HO_3",
+      "max_development_sequence_identity_over_shorter_length": 0.3162393162393162,
+      "pdb_id": "29HO",
+      "reason": "development-entry-or-sequence-overlap",
+      "release_date": "2026-09-09",
+      "sequence": "SMSVKKPKRDDSKDLALCSMILTEMETHEDAWPFLLPVNLKLVPGYKKVIKKPMDFSTIREKLSSGQYPNLETFALDVRLVFDNCETFNEDDSDIGRAGHNMRKYFEKKWTDTFKVS",
+      "status": "unsupported"
+    },
+    {
+      "entity_id": "13JM_1",
+      "max_development_sequence_identity_over_shorter_length": 0.3469387755102041,
+      "pdb_id": "13JM",
+      "reason": "development-entry-or-sequence-overlap",
+      "release_date": "2026-09-23",
+      "sequence": "GPGSWSLEKELLELTREIIRMYEELLSTPHREVMLEQKEEEEKELETLEKKPLSELTPEELEEMIALNRRQLETAERLGCPERLLELLRRRIELLEKA",
+      "status": "unsupported"
+    },
+    {
+      "entity_id": "10XN_1",
+      "max_development_sequence_identity_over_shorter_length": 0.3333333333333333,
+      "pdb_id": "10XN",
+      "reason": "development-entry-or-sequence-overlap",
+      "release_date": "2026-09-02",
+      "sequence": "GPHMDRHSIMTSFGNLSYLERPGSYPLVFLHGLGGSGNNWIRLDRFLDGRFRMICFDLLGHGRSDKPRVEYTVEVQASAIVEALSKLGVNRFTLVGNSYGGWISLYIALKKKVPDYLVLVDSAGLNPTIAELGDEKLNEFVKKVMSVEEGNDEYVIRNISINNSKEEWKIKDEDLRSIKTKTLIIWGTADNVLSIEYGRKFHELIPNSLLFEIPYAKHTPQITHPQIVARIINDNVRI",
+      "status": "unsupported"
+    },
+    {
+      "entity_id": "11IQ_64",
+      "max_development_sequence_identity_over_shorter_length": 0.3333333333333333,
+      "pdb_id": "11IQ",
+      "reason": "development-entry-or-sequence-overlap",
+      "release_date": "2026-09-02",
+      "sequence": "VVDPFSKKDWYDVKAPAMFNIRNIGKTLVTRTQGTKIASDGLKGRVFEVSLADLQNDEVAFRKFKLITEDVQGKNCLTNFHGMDLTRDKMCSMVKKWQTMIEAHVDVKTTDGYLLRLFCVGFTKKRNNQIRKTSYAQHQQVRQIRKKMMEIMTREVQTNDLKEVVNKLIPDSIGKDIEKACQSIYPLHDVFVRKVKMLKKPKFELGKLMELHG",
+      "status": "unsupported"
+    },
+    {
+      "entity_id": "13FC_1",
+      "max_development_sequence_identity_over_shorter_length": 0.37894736842105264,
+      "pdb_id": "13FC",
+      "reason": "development-entry-or-sequence-overlap",
+      "release_date": "2026-10-07",
+      "sequence": "GPSEEEELVKKLIEEFKELLYKKKISLKEAVEKLKKYLDELVEKGVSLELISLFFSEGLEELTEKMIENEVTKEELELLKEAIEYHTKILKEKLK",
+      "status": "unsupported"
+    },
+    {
+      "entity_id": "28TF_1",
+      "max_development_sequence_identity_over_shorter_length": 0.3119266055045872,
+      "pdb_id": "28TF",
+      "reason": "development-entry-or-sequence-overlap",
+      "release_date": "2026-10-07",
+      "sequence": "QQEYLNNNQLDCDNTHNSTYGNVCNSVTSCQSYLTFKSSSPEYNTPSSISYLLNSTPSLVAKSNNITDVTPIITDTMVTVPVTCSCSGGRYQHNATYNLKKTGETYFSIANNTYQSLTTCQALMAQNPYDAKNLFAGDDLHVPLRCACPTKKQSDAGFKYLLTYLVSQGESPDSIAEIFGVDTQSVLDANELDSKSVVFYFTPLLVPLKTEPPARLQIAASHHHHHH",
+      "status": "unsupported"
+    },
+    {
+      "entity_id": "11GH_2",
+      "max_development_sequence_identity_over_shorter_length": 0.3115942028985507,
+      "pdb_id": "11GH",
+      "reason": "development-entry-or-sequence-overlap",
+      "release_date": "2026-10-07",
+      "sequence": "GSKTSNTIRVFLPNKQRTVVNVRNGMSLHDCLMKALKVRGLQPECCAVFRLLHEHKGKKARLDWNTDAASLIGEELQVDFLDHVPLTTHNFARKTFLKLAFCDICQKFLLNGFRCQTCGYKFHEHCSTKVPTMCVDWS",
+      "status": "unsupported"
+    },
+    {
+      "entity_id": "29IZ_55",
+      "max_development_sequence_identity_over_shorter_length": 0.31851851851851853,
+      "pdb_id": "29IZ",
+      "reason": "development-entry-or-sequence-overlap",
+      "release_date": "2026-09-30",
+      "sequence": "MGRVRTKTVKKAARVIIEKYYTRLGNDFHTNKRVCEEIAIIPSKKLRNKIAGYVTHLMKRIQRGPVRGISIKLQEEERERRDNYVPEVSALDQEIIEVDPDTKEMLKLLDFGSLSNLQVTQPTVGMNFKTPRGPV",
+      "status": "unsupported"
+    },
+    {
+      "entity_id": "27WO_1",
+      "max_development_sequence_identity_over_shorter_length": 0.38271604938271603,
+      "pdb_id": "27WO",
+      "reason": "development-entry-or-sequence-overlap",
+      "release_date": "2026-09-23",
+      "sequence": "MADKDQILADVADIVNDITGVDQSEVTFEKSFVDDLDVDSLSMVEIIYALDEKFGVEIPDEESKNIKIVGDAVNYIIEHQS",
+      "status": "unsupported"
+    },
+    {
+      "entity_id": "22GF_1",
+      "max_development_sequence_identity_over_shorter_length": 0.3220338983050847,
+      "pdb_id": "22GF",
+      "reason": "development-entry-or-sequence-overlap",
+      "release_date": "2026-09-30",
+      "sequence": "MKTYPKQVLEGNVTVQDKVKGDGPAAKRKKRVSMRYIGRLTNGKVFDKNITGKPFTFNLGLEEVIKGWDVGIVGMQVGGERTIHIPAAMAYGSKRLPGIPANSDLVFDVKLLAVNLEH",
+      "status": "unsupported"
+    },
+    {
+      "entity_id": "28UW_1",
+      "max_development_sequence_identity_over_shorter_length": 0.3516483516483517,
+      "pdb_id": "28UW",
+      "reason": "development-entry-or-sequence-overlap",
+      "release_date": "2026-09-02",
+      "sequence": "GAMGSMERASLIQKAKLAEQAERYEDMAAFMKGAVEKGEELSCEERNLLSVAYKNVVGGQRAAWRVLSSIEQKSNEEGSEEKGPEVREYREKVETELQGVCDTVLGLLDSHLIKEAGDAESRVFYLKMKGDYYRYLAEVATGDDKKRIIDSARSAYQEAMDISKKEMPPTNPIRLGLALNFSVFHYEIANSPEEAISLAKTTFDEAMADLHTLSEDSYKDSTLIMQLLRDNLTLWT",
+      "status": "unsupported"
+    },
+    {
+      "entity_id": "28JI_1",
+      "max_development_sequence_identity_over_shorter_length": 0.325,
+      "pdb_id": "28JI",
+      "reason": "development-entry-or-sequence-overlap",
+      "release_date": "2026-10-07",
+      "sequence": "MEEDIACVKDLVSKYLVDNERLSRQKLAFLVQTEPRMLLMEGLKLLSLCIEVDSCNANGCEHNSEDKSVERILHDHGILTPSLCFVVPDGYKLTGNVLILLECFVRSSPANFEQKYIEDFKKLEQLKEDLKSVDINLIPLIDGRTSFYNEQIPDWVNDKLRDTLFSLLKYAQESNSLFEESEYSRLCESLSMTSGRLSGV",
+      "status": "unsupported"
+    },
+    {
+      "entity_id": "26RW_1",
+      "max_development_sequence_identity_over_shorter_length": 0.31958762886597936,
+      "pdb_id": "26RW",
+      "reason": "development-entry-or-sequence-overlap",
+      "release_date": "2026-09-16",
+      "sequence": "GSAPEAQVSVQPNFQQDKFLGRWFSAGLASNSSWLREKKAALSMAKSVVAPATDGGLNLTSTFLRKNQCETRTWLLQPAGSLGSYSYRSPHWGSTYSVSVVETDYDQYALLYSQGSKGPGEDFRWATLYSRTQTPRAELKEKFTAFAKAQGFTEDTIVFLPQTDKCMTEQ",
+      "status": "unsupported"
+    },
+    {
+      "entity_id": "24BT_1",
+      "max_development_sequence_identity_over_shorter_length": 0.3228346456692913,
+      "pdb_id": "24BT",
+      "reason": "development-entry-or-sequence-overlap",
+      "release_date": "2026-09-02",
+      "sequence": "MEEYKQVILIRTDLKMSTGKKCVQSCHASVSASDLVRVQNKSIWKNWKNTGQKKVVLKVKDIEHLKEMVKLIEANKFHYFVVKDAGLTQLTPGTITAVGIGPLSSGEIDKITRELKLLGSSHHHHHH",
+      "status": "unsupported"
+    },
+    {
+      "entity_id": "11UZ_1",
+      "max_development_sequence_identity_over_shorter_length": 0.32098765432098764,
+      "pdb_id": "11UZ",
+      "reason": "development-entry-or-sequence-overlap",
+      "release_date": "2026-09-30",
+      "sequence": "MEFNYKTKFDSEEFARQLKDQEKGMNELTVHEYRENRNRFIDKGRAIEGNAYQQAARERALRDKIDELFEQGLTLKEAKTQANEWMKTQAALHNPDQVAGGRPEIIGGMGDKRVNFSIGSQWRTRIKIVDKQIEEIAKNMTSEQLKNTYLNVKLTHHHHHHH",
+      "status": "unsupported"
+    },
+    {
+      "entity_id": "10YM_1",
+      "max_development_sequence_identity_over_shorter_length": 0.32989690721649484,
+      "pdb_id": "10YM",
+      "reason": "development-entry-or-sequence-overlap",
+      "release_date": "2026-09-30",
+      "sequence": "MVSLDQAVLILIVAASLGTTVEEAVQRALWLKTKLGVSLDQALRILWAAAKTGTTVEEAVQEALQLKTKLGVSLEAALLILAAAAQLGTTVEEAVNRALNLKTKLGVDLETAALALFTAAQLGTTVEEAVQEALQLKTKLGVSLIEALHILITAAVLGTTVEEAVYRALKLKTKLGVSLLQAAAILLLAAYLGTTVEEAVQEALKLKTKLGGGSGGSHHWGSGSLEHHHHHH",
+      "status": "unsupported"
+    },
+    {
+      "entity_id": "11VF_1",
+      "max_development_sequence_identity_over_shorter_length": 0.2903225806451613,
+      "pdb_id": "11VF",
+      "release_date": "2026-09-30",
+      "sequence": "MEKVLNDFKLEKKVPSELIDKYVNLVPEEIIVMWKNYGFGTFMNGYFKSINPDDFKDILLETSQRYQDAIVLFATSMGDLIVWSDDYVRLLNYRYGKVTTILHTFDFFFSNISDLEFKIEDLHWLPYPDAIARYGEPSYDECFGYVGILGMGGMEKVENLQKVKLREHILIITHFMGPIK",
+      "source_sha256": "b26f54f354c7d88e8380957f5a415ff33a16b176aa34c2191b1cbbbe891e3290",
+      "status": "metadata-eligible",
+      "target_auth_chain": "A"
+    },
+    {
+      "entity_id": "10OK_1",
+      "max_development_sequence_identity_over_shorter_length": 0.38372093023255816,
+      "pdb_id": "10OK",
+      "reason": "development-entry-or-sequence-overlap",
+      "release_date": "2026-09-30",
+      "sequence": "GSHMNVNRDYDQLRAYLSLLVELECQIDEINEAKGQAFREAKACGFPRDVVRDLLRMKQDGRLDDKDVPSAFEGILDARGIAQKPD",
+      "status": "unsupported"
+    },
+    {
+      "entity_id": "28FU_1",
+      "max_development_sequence_identity_over_shorter_length": 0.4634146341463415,
+      "pdb_id": "28FU",
+      "reason": "development-entry-or-sequence-overlap",
+      "release_date": "2026-10-14",
+      "sequence": "MHHHHHHSPYRDAAVQAALDAAAAAPSTADIINAAAEAIRKGEVGLALLRLGVAAARDPANAATINAAADTVYALSQKEKAA",
+      "status": "unsupported"
+    }
+  ],
+  "development_sources_sha256": "d5b74cd8eeb4bd665e04c9ebadc9f76cfb0dba6fc71db3e954bb1a7589b494ed",
+  "leakage": {
+    "temporal_holdout": "post-August 2026 releases; disjoint entries and <=30% sequence identity to development24",
+    "training_membership": "not-independently-attested"
+  },
+  "limits": {
+    "residue_budget": 512,
+    "steps": 200,
+    "timeout_seconds": 3600
+  },
+  "no_replacement": true,
+  "promotion": "research validation only; no public promotion",
+  "schema_version": 1,
+  "seeds": [
+    7
+  ],
+  "selection": "first24 distinct entries by fixed SHA rank from first100 30%-grouped representatives; 2026-09-01..2026-10-15; no replacement after overlap/completeness exclusions",
+  "sequence_exclusion": "global affine alignment; identical pairs / shorter full sequence length >0.30 against all prior24 locked development-source sequences",
+  "status": "sources-locked-before-holdout-inference"
+}

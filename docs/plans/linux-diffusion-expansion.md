@@ -36,6 +36,55 @@
 
 ## Current Expansion Baseline
 
+**2026-10-19 CUDA completion audit:** shared profile-specific length admission,
+adaptive-source hardening, and Homology deletion-window/failed-request regression
+coverage are implemented. All 50 full-input clean-cohort outcomes were audited for
+withheld accuracy: 49/50 refined geometry passes include a length-50 result at
+8.69575 Å backbone RMSD. Rich cc89 CUDA refinement accepts 0/6; two cases stop at
+the chirality guard with no refined output. These are open scientific gates,
+not missing adapter wiring. See [completion evidence](../research/cuda-expansion-completion.md).
+Apple MPS work is deferred until CUDA implementation completes and does not block
+the current CUDA work packages.
+
+**Input-scope correction after manual review:** the
+[chain-truncation audit](../research/a100-input-truncation-audit.md) reproduces
+substantial removal of observed residues/chains before artificial gap creation.
+The A100 studies below concern cropped fragments; their fixed-environment checks
+do not establish preservation of the complete deposited structural context.
+
+The corrective [intact-input recheck](../research/intact-input-recheck.md) is
+complete: 47 original masks retained, 25 admitted cases attempted, 13 accepted
+after rigid local refinement, 11 returned geometry failures and one guarded
+chirality rejection with no refined output. The 22 incompatible masks remain
+explicitly unsupported with their full CIF inputs retained. This recheck uses
+local engine conditioning while preserving the complete observed source in the
+scientific files and force-field context; it does not widen public scope.
+
+The next [prospective A100 calibration and cc89 control study](../research/cuda-calibration.md)
+has frozen source membership and calibration/validation splits. The 15 cc89
+controls are complete and independently revalidated (0/15 accepted). All 92
+prospective fragment outcomes have completed and passed the offline evidence
+audit. A separate peptide-junction audit found no measurement or pairing defect;
+it distinguishes bond-length acceptance from coarse chain-break detection.
+The subsequent [paired local-relaxation study](../research/a100-failure-and-relaxation.md)
+is complete: 33/92 raw versus 86/92 relaxed accepted, 53 rescues and zero
+pass→fail pairs, with six long-gap failures retained. Reference accuracy can
+worsen despite geometry acceptance; scientific/public scope remains unchanged.
+
+The completed [relaxation follow-up](../research/relaxation-followup.md) audits
+reference accuracy on 64 nonduplicated mask/seed cases. Bounded-anchor refinement
+does not outperform rigid (57/64 versus 58/64), so the frozen rule retains rigid.
+On three disjoint September–October sources, geometry acceptance improves from
+6/15 to 12/15; three accepted long-gap candidates still have reference RMSD near
+6 Å. Public scope remains unchanged. New-source outputs did not tune the method.
+
+Further implemented research slices and 31 verified frontier outcomes are recorded
+in [reconstruction frontiers](../research/reconstruction-frontiers.md): private
+joint/discontiguous cc89 views, two-round sampled-trajectory context expansion,
+explicit Homology edit flanks, and 13–25/26–50 research capability strata. Rich cc89
+geometry and adaptive improvement are not generally accepted; the public length
+gate remains 3–12 pending a larger independently reviewed study.
+
 Blocks WP5–WP8 and WP12 now have an additional implemented slice and frozen
 expanded studies: [context/Homology expansion protocol](../research/protein-context-expansion.md).
 The shared selector handles joint Protenix gap-bearing chains; Protpardelle uses
@@ -73,7 +122,10 @@ decision to resume validation-policy work.
 - [ ] Existing local-partner evidence is a checkpoint smoke, not the required
   frozen interface cohort or causal partner-on/off ablation.
 - [ ] Multiple gap-bearing chains are not jointly sampled and the current crop
-  does not adapt to the predicted gap trajectory.
+  does not adapt to the predicted gap trajectory in the accepted Protpardelle MPS
+  profile. Private CUDA joint/discontiguous views and between-round adaptive
+  selection are implemented and tested; their broader scientific acceptance is
+  still pending.
 
 ## Non-Goals
 

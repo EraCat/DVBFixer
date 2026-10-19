@@ -3570,6 +3570,25 @@ export const GENERATED_COMMANDS = [
         "default": false
       },
       {
+        "flag": "--diffusion-edit-flanks",
+        "dest": "diffusion_edit_flanks",
+        "label": "Diffusion Edit Flanks",
+        "type": "select",
+        "group": "Backend",
+        "help": "Covered-edit sequence flanks per side, requires --diffusion-regenerate-covered (default: 1)",
+        "required": false,
+        "repeatable": false,
+        "multi": false,
+        "default": 1,
+        "options": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ]
+      },
+      {
         "flag": "--alignment",
         "dest": "alignment",
         "label": "Alignment",
@@ -3736,7 +3755,8 @@ export const GENERATED_COMMANDS = [
           "--diffusion-seed",
           "--diffusion-timeout",
           "--diffusion-context",
-          "--diffusion-regenerate-covered"
+          "--diffusion-regenerate-covered",
+          "--diffusion-edit-flanks"
         ]
       },
       {

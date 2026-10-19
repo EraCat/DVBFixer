@@ -1,0 +1,884 @@
+{
+  "cases": [
+    {
+      "arm": "static-local",
+      "case_id": "25vf-gap5-seed7",
+      "length": 5,
+      "raw_complete_sha256": "9d8944eb7fa70b9358c63407d765236c92d3e071ffe17dfac8a482ccc9227089",
+      "raw_passed": false,
+      "source_id": "25VF",
+      "split": "calibration"
+    },
+    {
+      "arm": "adaptive-monotonic",
+      "case_id": "25vf-gap5-seed7",
+      "length": 5,
+      "raw_complete_sha256": "5570e139d1f7ed2ac7b277cb1b25da76d768c323aaad6815c587409bfd2eb76b",
+      "raw_passed": false,
+      "source_id": "25VF",
+      "split": "calibration"
+    },
+    {
+      "arm": "adaptive-contact-gated",
+      "case_id": "25vf-gap5-seed7",
+      "length": 5,
+      "raw_complete_sha256": "b3124a0bd2739d5b6743ecabcde33f1714a647c731be239f9663495056d7e4a6",
+      "raw_passed": false,
+      "source_id": "25VF",
+      "split": "calibration"
+    },
+    {
+      "arm": "static-local",
+      "case_id": "25vf-gap5-seed19",
+      "length": 5,
+      "raw_complete_sha256": "d9831f72e623d2fa8dbda7fdb2deab6836a74df0d2286746d5066a4a43896fb5",
+      "raw_passed": false,
+      "source_id": "25VF",
+      "split": "calibration"
+    },
+    {
+      "arm": "adaptive-monotonic",
+      "case_id": "25vf-gap5-seed19",
+      "length": 5,
+      "raw_complete_sha256": "08ad63a92b6d54a1b3a1e58acb8bc1b05464e32ffea803de172a66fc2c35c3f2",
+      "raw_passed": false,
+      "source_id": "25VF",
+      "split": "calibration"
+    },
+    {
+      "arm": "adaptive-contact-gated",
+      "case_id": "25vf-gap5-seed19",
+      "length": 5,
+      "raw_complete_sha256": "76eec4ccd60547eba5dd28b8b9c3d15f39c0b9359244e6340d483efdd298478a",
+      "raw_passed": false,
+      "source_id": "25VF",
+      "split": "calibration"
+    },
+    {
+      "arm": "full-raw",
+      "case_id": "25vf-gap13-seed7",
+      "length": 13,
+      "raw_complete_sha256": "3686bc41be0936d782820696f74819a942043ec0e2b35afbf07bd0ca0883ab1d",
+      "raw_passed": true,
+      "source_id": "25VF",
+      "split": "calibration"
+    },
+    {
+      "arm": "full-raw",
+      "case_id": "25vf-gap13-seed19",
+      "length": 13,
+      "raw_complete_sha256": "c3c66c17b763017555e313ecc3ebe63ad7cfd84a1db8e65ef9de4f37609b565e",
+      "raw_passed": false,
+      "source_id": "25VF",
+      "split": "calibration"
+    },
+    {
+      "arm": "full-raw",
+      "case_id": "25vf-gap25-seed7",
+      "length": 25,
+      "raw_complete_sha256": "0ee96d3b26b8d034bf3ea0a80a8f40b10199d508827ffd7bc2accd04e0d792e4",
+      "raw_passed": false,
+      "source_id": "25VF",
+      "split": "calibration"
+    },
+    {
+      "arm": "full-raw",
+      "case_id": "25vf-gap25-seed19",
+      "length": 25,
+      "raw_complete_sha256": "beefc2766d37509b8a29a097e74f3f943052d78591f88a438d3c420af40f6b60",
+      "raw_passed": false,
+      "source_id": "25VF",
+      "split": "calibration"
+    },
+    {
+      "arm": "full-raw",
+      "case_id": "25vf-gap26-seed7",
+      "length": 26,
+      "raw_complete_sha256": "effd52b6dbdc0fe5ca6f2d6f4b03da98060d9345e2a4dd96dd31e9e357a3aea6",
+      "raw_passed": false,
+      "source_id": "25VF",
+      "split": "calibration"
+    },
+    {
+      "arm": "full-raw",
+      "case_id": "25vf-gap26-seed19",
+      "length": 26,
+      "raw_complete_sha256": "a3a6e4ab09dc09b5935a496edd504642bace2898a200fef6dca7277f034d6a52",
+      "raw_passed": false,
+      "source_id": "25VF",
+      "split": "calibration"
+    },
+    {
+      "arm": "full-raw",
+      "case_id": "25vf-gap50-seed7",
+      "length": 50,
+      "raw_complete_sha256": "eaf4759d71ad5d6bae7d5bc78be8f3c47ed8ca43ec491d86c9b7ec46eaf5398e",
+      "raw_passed": false,
+      "source_id": "25VF",
+      "split": "calibration"
+    },
+    {
+      "arm": "full-raw",
+      "case_id": "25vf-gap50-seed19",
+      "length": 50,
+      "raw_complete_sha256": "dfa8c8c9da06cafac7dd49a793b1336acdcc5e249e881e0c481721f42336eb42",
+      "raw_passed": false,
+      "source_id": "25VF",
+      "split": "calibration"
+    },
+    {
+      "arm": "static-local",
+      "case_id": "25ii-gap5-seed7",
+      "length": 5,
+      "raw_complete_sha256": "7cb6ccb894abf671f08630bb2d56efb260be779eca854d7546e79e647a3f5945",
+      "raw_passed": false,
+      "source_id": "25II",
+      "split": "validation"
+    },
+    {
+      "arm": "adaptive-monotonic",
+      "case_id": "25ii-gap5-seed7",
+      "length": 5,
+      "raw_complete_sha256": "e2ea3eb696964c43337a42f8265454dcce5c9d8582c354b39b82bdfd553c5be3",
+      "raw_passed": false,
+      "source_id": "25II",
+      "split": "validation"
+    },
+    {
+      "arm": "adaptive-contact-gated",
+      "case_id": "25ii-gap5-seed7",
+      "length": 5,
+      "raw_complete_sha256": "9464893518270856b2b8559f0a19d2e2c9cf76aac50672cab07b15ebd3cb795e",
+      "raw_passed": false,
+      "source_id": "25II",
+      "split": "validation"
+    },
+    {
+      "arm": "static-local",
+      "case_id": "25ii-gap5-seed19",
+      "length": 5,
+      "raw_complete_sha256": "0b5e4cbcef49a59e2d5b74ce2bebf3a3d052884248950e8cc1cbf960d2e250df",
+      "raw_passed": false,
+      "source_id": "25II",
+      "split": "validation"
+    },
+    {
+      "arm": "adaptive-monotonic",
+      "case_id": "25ii-gap5-seed19",
+      "length": 5,
+      "raw_complete_sha256": "3157ab3eafee9ab09cadb82f330b88f73e8e1adbf4d29c35a2d3249f5cb93b99",
+      "raw_passed": false,
+      "source_id": "25II",
+      "split": "validation"
+    },
+    {
+      "arm": "adaptive-contact-gated",
+      "case_id": "25ii-gap5-seed19",
+      "length": 5,
+      "raw_complete_sha256": "e76ce5720dd6b631764ca6d8a9f46d790d766b6359f70e96fbcb18f1075449d1",
+      "raw_passed": false,
+      "source_id": "25II",
+      "split": "validation"
+    },
+    {
+      "arm": "full-raw",
+      "case_id": "25ii-gap13-seed7",
+      "length": 13,
+      "raw_complete_sha256": "1d3f99d462670106cfd98a581b9534ef0be8f7fb4b6688980d43f05023c61c46",
+      "raw_passed": true,
+      "source_id": "25II",
+      "split": "validation"
+    },
+    {
+      "arm": "full-raw",
+      "case_id": "25ii-gap13-seed19",
+      "length": 13,
+      "raw_complete_sha256": "ca48d485629b9cf4f21a4989357b7a7c54fa544be2bb3843c6b09a94ceb86916",
+      "raw_passed": true,
+      "source_id": "25II",
+      "split": "validation"
+    },
+    {
+      "arm": "full-raw",
+      "case_id": "25ii-gap25-seed7",
+      "length": 25,
+      "raw_complete_sha256": "fc425f5ea29cbe7405c0521808235f9bed0dc6326afa574c40f0202fd155b0bd",
+      "raw_passed": false,
+      "source_id": "25II",
+      "split": "validation"
+    },
+    {
+      "arm": "full-raw",
+      "case_id": "25ii-gap25-seed19",
+      "length": 25,
+      "raw_complete_sha256": "5e13d359bbf2ce046610f7137d03cc8c3fe786218034b9391a8205108d2d985e",
+      "raw_passed": false,
+      "source_id": "25II",
+      "split": "validation"
+    },
+    {
+      "arm": "full-raw",
+      "case_id": "25ii-gap26-seed7",
+      "length": 26,
+      "raw_complete_sha256": "c9c94bd58a42d52b5b15fae05bd334a16dced601063bc323dc59d2b3feb42709",
+      "raw_passed": false,
+      "source_id": "25II",
+      "split": "validation"
+    },
+    {
+      "arm": "full-raw",
+      "case_id": "25ii-gap26-seed19",
+      "length": 26,
+      "raw_complete_sha256": "993941ffe45dc5d500955bbdc4bd20f889c23d4721e5bb64935d3d611218b612",
+      "raw_passed": false,
+      "source_id": "25II",
+      "split": "validation"
+    },
+    {
+      "arm": "full-raw",
+      "case_id": "25ii-gap50-seed7",
+      "length": 50,
+      "raw_complete_sha256": "e4e6b753de934fe26450b4e542b3ea78e7af1bdf76d0ee15b8861cc6047fdf50",
+      "raw_passed": false,
+      "source_id": "25II",
+      "split": "validation"
+    },
+    {
+      "arm": "full-raw",
+      "case_id": "25ii-gap50-seed19",
+      "length": 50,
+      "raw_complete_sha256": "866d882717b025bf78cee620ca01254c4c3d00dfa0306053b8c1b40075958c7d",
+      "raw_passed": false,
+      "source_id": "25II",
+      "split": "validation"
+    },
+    {
+      "arm": "static-local",
+      "case_id": "12np-gap5-seed7",
+      "length": 5,
+      "raw_complete_sha256": "44f55c26b6bdce348344a2e3d49b76a70d7277c5922cc7fa55c3ae95a4bb6752",
+      "raw_passed": true,
+      "source_id": "12NP",
+      "split": "calibration"
+    },
+    {
+      "arm": "adaptive-monotonic",
+      "case_id": "12np-gap5-seed7",
+      "length": 5,
+      "raw_complete_sha256": "47997227cd18299a76f41d197453f41170b5c4da485f3724ac04100a097e7dcd",
+      "raw_passed": true,
+      "source_id": "12NP",
+      "split": "calibration"
+    },
+    {
+      "arm": "adaptive-contact-gated",
+      "case_id": "12np-gap5-seed7",
+      "length": 5,
+      "raw_complete_sha256": "e1b2a6efe67901248169d297ba23a9286f13c33a4eec14a54abab34b38213f71",
+      "raw_passed": true,
+      "source_id": "12NP",
+      "split": "calibration"
+    },
+    {
+      "arm": "static-local",
+      "case_id": "12np-gap5-seed19",
+      "length": 5,
+      "raw_complete_sha256": "b147beb33be511890aebec9bd7028d9dec0784f01f47efb867d41813350d0e3a",
+      "raw_passed": true,
+      "source_id": "12NP",
+      "split": "calibration"
+    },
+    {
+      "arm": "adaptive-monotonic",
+      "case_id": "12np-gap5-seed19",
+      "length": 5,
+      "raw_complete_sha256": "7a570337d4009d43b01a837d58b20d1538cf649121a7446ea62b0d7a7cc05950",
+      "raw_passed": true,
+      "source_id": "12NP",
+      "split": "calibration"
+    },
+    {
+      "arm": "adaptive-contact-gated",
+      "case_id": "12np-gap5-seed19",
+      "length": 5,
+      "raw_complete_sha256": "79bfeeae9da3a7b394a0f18d1bf252b32b00d19429d2d1ab67fcf058bec3b583",
+      "raw_passed": true,
+      "source_id": "12NP",
+      "split": "calibration"
+    },
+    {
+      "arm": "full-raw",
+      "case_id": "12np-gap13-seed7",
+      "length": 13,
+      "raw_complete_sha256": "a1d7bfbeccd14a3422613d9828f498b7930bd6a23119268be70374463e914449",
+      "raw_passed": true,
+      "source_id": "12NP",
+      "split": "calibration"
+    },
+    {
+      "arm": "full-raw",
+      "case_id": "12np-gap13-seed19",
+      "length": 13,
+      "raw_complete_sha256": "fd10a25ae828d5bdda841737ac4ecadbaff803b1f587f29a306e0bb336163794",
+      "raw_passed": true,
+      "source_id": "12NP",
+      "split": "calibration"
+    },
+    {
+      "arm": "full-raw",
+      "case_id": "12np-gap25-seed7",
+      "length": 25,
+      "raw_complete_sha256": "c8b3c4de8c30da2fb5e1a869b4526779cdaffea2ce91ba5e3ec3c673af53da15",
+      "raw_passed": false,
+      "source_id": "12NP",
+      "split": "calibration"
+    },
+    {
+      "arm": "full-raw",
+      "case_id": "12np-gap25-seed19",
+      "length": 25,
+      "raw_complete_sha256": "cad2bcf355071f9c80b81c07163d90b58bd16c1004d23ed1c578aa6674360e19",
+      "raw_passed": false,
+      "source_id": "12NP",
+      "split": "calibration"
+    },
+    {
+      "arm": "full-raw",
+      "case_id": "12np-gap26-seed7",
+      "length": 26,
+      "raw_complete_sha256": "b38bd396705b38427bee34ea2320ce1da7a10bdb17d7f3df77cf28999523705a",
+      "raw_passed": false,
+      "source_id": "12NP",
+      "split": "calibration"
+    },
+    {
+      "arm": "full-raw",
+      "case_id": "12np-gap26-seed19",
+      "length": 26,
+      "raw_complete_sha256": "1cf8db144e007f4e000640732613debc30d88764a4356fdc746299e6fbbf42d8",
+      "raw_passed": false,
+      "source_id": "12NP",
+      "split": "calibration"
+    },
+    {
+      "arm": "full-raw",
+      "case_id": "12np-gap50-seed7",
+      "length": 50,
+      "raw_complete_sha256": "91dde263ba0db8438b488bf43ad9e989335fcf0eda7f247eda1e6ca7aff00c8a",
+      "raw_passed": false,
+      "source_id": "12NP",
+      "split": "calibration"
+    },
+    {
+      "arm": "full-raw",
+      "case_id": "12np-gap50-seed19",
+      "length": 50,
+      "raw_complete_sha256": "bc651a39420efc9ddd41cad80afadeed26c3dc61e4f39666a0cdc89cf39fe63e",
+      "raw_passed": true,
+      "source_id": "12NP",
+      "split": "calibration"
+    },
+    {
+      "arm": "static-local",
+      "case_id": "13ee-gap5-seed7",
+      "length": 5,
+      "raw_complete_sha256": "aa237b53a92a61ff186fceb67434e02d2931b0b469210ebe11e7b8660a5eb8ad",
+      "raw_passed": true,
+      "source_id": "13EE",
+      "split": "calibration"
+    },
+    {
+      "arm": "adaptive-monotonic",
+      "case_id": "13ee-gap5-seed7",
+      "length": 5,
+      "raw_complete_sha256": "64176e7216e76a0fef787216ae1666f0126cc38a71c853ece7a4a3baf331566d",
+      "raw_passed": true,
+      "source_id": "13EE",
+      "split": "calibration"
+    },
+    {
+      "arm": "adaptive-contact-gated",
+      "case_id": "13ee-gap5-seed7",
+      "length": 5,
+      "raw_complete_sha256": "78bcb8ea094b7e40224235b8aade8a120fc5e416940e29f9b66ee3a918931c3b",
+      "raw_passed": true,
+      "source_id": "13EE",
+      "split": "calibration"
+    },
+    {
+      "arm": "static-local",
+      "case_id": "13ee-gap5-seed19",
+      "length": 5,
+      "raw_complete_sha256": "33d7e7618c3e05c79377817834cce99ca35f94a95f82e33c67c33d3113e329db",
+      "raw_passed": false,
+      "source_id": "13EE",
+      "split": "calibration"
+    },
+    {
+      "arm": "adaptive-monotonic",
+      "case_id": "13ee-gap5-seed19",
+      "length": 5,
+      "raw_complete_sha256": "2ca8106c08320af51544ed27b3ceb949878ddec74b8fc99e334898188b67e55f",
+      "raw_passed": false,
+      "source_id": "13EE",
+      "split": "calibration"
+    },
+    {
+      "arm": "adaptive-contact-gated",
+      "case_id": "13ee-gap5-seed19",
+      "length": 5,
+      "raw_complete_sha256": "5839df7dd84a8650a532e70a51276a7d7af73c867e3c7a6016f59d1783d17040",
+      "raw_passed": false,
+      "source_id": "13EE",
+      "split": "calibration"
+    },
+    {
+      "arm": "full-raw",
+      "case_id": "13ee-gap13-seed7",
+      "length": 13,
+      "raw_complete_sha256": "a00ff1a1c3415fc39dadffe0c63db2427efba6401cfdcdb69403da33347c790c",
+      "raw_passed": true,
+      "source_id": "13EE",
+      "split": "calibration"
+    },
+    {
+      "arm": "full-raw",
+      "case_id": "13ee-gap13-seed19",
+      "length": 13,
+      "raw_complete_sha256": "806ebe9d84704ed7181a9f88ab0c96994dcab898233276667c02ce22c06a36dc",
+      "raw_passed": true,
+      "source_id": "13EE",
+      "split": "calibration"
+    },
+    {
+      "arm": "full-raw",
+      "case_id": "13ee-gap25-seed7",
+      "length": 25,
+      "raw_complete_sha256": "c432efd94846f5f4c9527531a280f51ff14101608f32f35e87614c1c53bd75cc",
+      "raw_passed": true,
+      "source_id": "13EE",
+      "split": "calibration"
+    },
+    {
+      "arm": "full-raw",
+      "case_id": "13ee-gap25-seed19",
+      "length": 25,
+      "raw_complete_sha256": "375501b623ec9c2db16e148b2576cf241a6b2f088e16f25583ba967fe82aa856",
+      "raw_passed": false,
+      "source_id": "13EE",
+      "split": "calibration"
+    },
+    {
+      "arm": "full-raw",
+      "case_id": "13ee-gap26-seed7",
+      "length": 26,
+      "raw_complete_sha256": "5614ea123d40aad642e7ad644b1bf5e91bc94385c7bd7a7b1f6fa9ee0d5046db",
+      "raw_passed": false,
+      "source_id": "13EE",
+      "split": "calibration"
+    },
+    {
+      "arm": "full-raw",
+      "case_id": "13ee-gap26-seed19",
+      "length": 26,
+      "raw_complete_sha256": "2657f3b484892b0c75338443bd6e71e8e1f7ab410aa8044beb66b4efe08c741f",
+      "raw_passed": false,
+      "source_id": "13EE",
+      "split": "calibration"
+    },
+    {
+      "arm": "full-raw",
+      "case_id": "13ee-gap50-seed7",
+      "length": 50,
+      "raw_complete_sha256": "c7a0d760db93e1338b216438b72fe3c8227aa3dbd031ddbf3431de411ddf0abf",
+      "raw_passed": false,
+      "source_id": "13EE",
+      "split": "calibration"
+    },
+    {
+      "arm": "full-raw",
+      "case_id": "13ee-gap50-seed19",
+      "length": 50,
+      "raw_complete_sha256": "e7a031d2ed0b687c4f78a47757a723346b9502c1ebb07a8a02541a86b5297e4e",
+      "raw_passed": false,
+      "source_id": "13EE",
+      "split": "calibration"
+    },
+    {
+      "arm": "static-local",
+      "case_id": "21tw-gap5-seed7",
+      "length": 5,
+      "raw_complete_sha256": "aa3070a2a8a2bcde89c4b31be554a766587a44ecd20e6e57dd80fab1f097e956",
+      "raw_passed": false,
+      "source_id": "21TW",
+      "split": "validation"
+    },
+    {
+      "arm": "adaptive-monotonic",
+      "case_id": "21tw-gap5-seed7",
+      "length": 5,
+      "raw_complete_sha256": "f4614863a71c12bfa9a03c905a42ca11d5548473303f97626388b08d916495da",
+      "raw_passed": false,
+      "source_id": "21TW",
+      "split": "validation"
+    },
+    {
+      "arm": "adaptive-contact-gated",
+      "case_id": "21tw-gap5-seed7",
+      "length": 5,
+      "raw_complete_sha256": "29fef3e4d0cabf37ea2e55b9ab2693816169be7036036efe8286a95db1206f00",
+      "raw_passed": false,
+      "source_id": "21TW",
+      "split": "validation"
+    },
+    {
+      "arm": "static-local",
+      "case_id": "21tw-gap5-seed19",
+      "length": 5,
+      "raw_complete_sha256": "db9d8cda1a10f3d282abea27d976830b79808bb7007800f68cff62a8907bc54a",
+      "raw_passed": false,
+      "source_id": "21TW",
+      "split": "validation"
+    },
+    {
+      "arm": "adaptive-monotonic",
+      "case_id": "21tw-gap5-seed19",
+      "length": 5,
+      "raw_complete_sha256": "291f7453f3762c402f137ae5e3c517eb223312b3a2c6adf5f0af8f849bf2ad3f",
+      "raw_passed": false,
+      "source_id": "21TW",
+      "split": "validation"
+    },
+    {
+      "arm": "adaptive-contact-gated",
+      "case_id": "21tw-gap5-seed19",
+      "length": 5,
+      "raw_complete_sha256": "d9c2d963fda00aa9ebd4764e26782b043bb0ad289ce50ac0b4d4021b2874a508",
+      "raw_passed": false,
+      "source_id": "21TW",
+      "split": "validation"
+    },
+    {
+      "arm": "full-raw",
+      "case_id": "21tw-gap13-seed7",
+      "length": 13,
+      "raw_complete_sha256": "3e30bc1cc961cb594834cf33b380426af4a609677a62a135f36597e47df19453",
+      "raw_passed": false,
+      "source_id": "21TW",
+      "split": "validation"
+    },
+    {
+      "arm": "full-raw",
+      "case_id": "21tw-gap13-seed19",
+      "length": 13,
+      "raw_complete_sha256": "71ef5d32e87118d3fa7ecacaa4a4a327d77b16ee9d13aeb04ee47777c3b4979c",
+      "raw_passed": false,
+      "source_id": "21TW",
+      "split": "validation"
+    },
+    {
+      "arm": "full-raw",
+      "case_id": "21tw-gap25-seed7",
+      "length": 25,
+      "raw_complete_sha256": "3d4c17f42abe039bd6606e610faf08a8525e69be11b097c718cafd288a686336",
+      "raw_passed": false,
+      "source_id": "21TW",
+      "split": "validation"
+    },
+    {
+      "arm": "full-raw",
+      "case_id": "21tw-gap25-seed19",
+      "length": 25,
+      "raw_complete_sha256": "3c807a61616195cf3099d8a25cb880c7e967a1fa90c302199a5e77bc64f29e3c",
+      "raw_passed": false,
+      "source_id": "21TW",
+      "split": "validation"
+    },
+    {
+      "arm": "full-raw",
+      "case_id": "21tw-gap26-seed7",
+      "length": 26,
+      "raw_complete_sha256": "1f41642f8b38b3107425d4ae22e57128734df7cd33cefe9c904075bb9731464d",
+      "raw_passed": false,
+      "source_id": "21TW",
+      "split": "validation"
+    },
+    {
+      "arm": "full-raw",
+      "case_id": "21tw-gap26-seed19",
+      "length": 26,
+      "raw_complete_sha256": "c09b134496a2711dd233006682b22f79a5435d27feac60726ec13f4c4b183901",
+      "raw_passed": false,
+      "source_id": "21TW",
+      "split": "validation"
+    },
+    {
+      "arm": "full-raw",
+      "case_id": "21tw-gap50-seed7",
+      "length": 50,
+      "raw_complete_sha256": "77f563c60b5f3ddb0a229104cfc6648ca9fbcba7db970b5a64807a1c5f913486",
+      "raw_passed": false,
+      "source_id": "21TW",
+      "split": "validation"
+    },
+    {
+      "arm": "full-raw",
+      "case_id": "21tw-gap50-seed19",
+      "length": 50,
+      "raw_complete_sha256": "7d25f1cd7cd0bf5c367b3090b30204e969448686306913c305f27cd5ef9a771a",
+      "raw_passed": false,
+      "source_id": "21TW",
+      "split": "validation"
+    },
+    {
+      "arm": "static-local",
+      "case_id": "22vh-gap5-seed7",
+      "length": 5,
+      "raw_complete_sha256": "fa5522ba94ded27838c7104235c526c52971fe45b7aae5c17e45f173c5d35548",
+      "raw_passed": true,
+      "source_id": "22VH",
+      "split": "validation"
+    },
+    {
+      "arm": "adaptive-monotonic",
+      "case_id": "22vh-gap5-seed7",
+      "length": 5,
+      "raw_complete_sha256": "dc7a196ba277e5e227de297f612f4a4827c983f12109fb799a8205903f7e7575",
+      "raw_passed": true,
+      "source_id": "22VH",
+      "split": "validation"
+    },
+    {
+      "arm": "adaptive-contact-gated",
+      "case_id": "22vh-gap5-seed7",
+      "length": 5,
+      "raw_complete_sha256": "939eaeb0d48ce630a186fa3bd6f45cfb933271bebc84bc159b524b85720a8cad",
+      "raw_passed": true,
+      "source_id": "22VH",
+      "split": "validation"
+    },
+    {
+      "arm": "static-local",
+      "case_id": "22vh-gap5-seed19",
+      "length": 5,
+      "raw_complete_sha256": "bb4e3e79f977ff9834746987555275c245cf629951d17396c3d689a3b3a4cbf4",
+      "raw_passed": true,
+      "source_id": "22VH",
+      "split": "validation"
+    },
+    {
+      "arm": "adaptive-monotonic",
+      "case_id": "22vh-gap5-seed19",
+      "length": 5,
+      "raw_complete_sha256": "74f904ba2878f660b6d60f36f5897387c1938e91dce9fa7efe738d4dc0907835",
+      "raw_passed": true,
+      "source_id": "22VH",
+      "split": "validation"
+    },
+    {
+      "arm": "adaptive-contact-gated",
+      "case_id": "22vh-gap5-seed19",
+      "length": 5,
+      "raw_complete_sha256": "81b1321c4514820f0c4c5a3617accb12970f8f8e9ab776b29b1c63043d11320d",
+      "raw_passed": true,
+      "source_id": "22VH",
+      "split": "validation"
+    },
+    {
+      "arm": "full-raw",
+      "case_id": "22vh-gap13-seed7",
+      "length": 13,
+      "raw_complete_sha256": "e46827527f710378cafc8a86a0c4561c897dea7427bc2dab7d3d6f6274458987",
+      "raw_passed": true,
+      "source_id": "22VH",
+      "split": "validation"
+    },
+    {
+      "arm": "full-raw",
+      "case_id": "22vh-gap13-seed19",
+      "length": 13,
+      "raw_complete_sha256": "8a67ab11159150c84bbcf993c5da5bd3fc8c416f6307f063c5d6bc952951ceac",
+      "raw_passed": true,
+      "source_id": "22VH",
+      "split": "validation"
+    },
+    {
+      "arm": "full-raw",
+      "case_id": "22vh-gap25-seed7",
+      "length": 25,
+      "raw_complete_sha256": "8e2245c6325c86fa2348901e2cf7b3e560dafcda1ee6d0983456fd7a8238cedc",
+      "raw_passed": false,
+      "source_id": "22VH",
+      "split": "validation"
+    },
+    {
+      "arm": "full-raw",
+      "case_id": "22vh-gap25-seed19",
+      "length": 25,
+      "raw_complete_sha256": "9eae764d545cecef6a9eec09c14efef05db78522a6c2d116478df490fab8291b",
+      "raw_passed": false,
+      "source_id": "22VH",
+      "split": "validation"
+    },
+    {
+      "arm": "full-raw",
+      "case_id": "22vh-gap26-seed7",
+      "length": 26,
+      "raw_complete_sha256": "9cf916b941923481ef9c6b112da97a57b2a94b97315552118724ada7cb26475f",
+      "raw_passed": false,
+      "source_id": "22VH",
+      "split": "validation"
+    },
+    {
+      "arm": "full-raw",
+      "case_id": "22vh-gap26-seed19",
+      "length": 26,
+      "raw_complete_sha256": "f871ce60261ece58ae5d820de0a9475916efd0ac29aa4d3c74dd0a725a94c614",
+      "raw_passed": false,
+      "source_id": "22VH",
+      "split": "validation"
+    },
+    {
+      "arm": "full-raw",
+      "case_id": "22vh-gap50-seed7",
+      "length": 50,
+      "raw_complete_sha256": "5bddbe6d9805d7dd4acd47326e80fce9c511cedcd5da86a43726343fd6ded871",
+      "raw_passed": false,
+      "source_id": "22VH",
+      "split": "validation"
+    },
+    {
+      "arm": "full-raw",
+      "case_id": "22vh-gap50-seed19",
+      "length": 50,
+      "raw_complete_sha256": "812c9fcd1997d71d75f56f4eccd1e6a2e8f0e983fc8c7ffc3ed4f3c7cef9440f",
+      "raw_passed": false,
+      "source_id": "22VH",
+      "split": "validation"
+    },
+    {
+      "arm": "static-local",
+      "case_id": "21ch-gap5-seed7",
+      "length": 5,
+      "raw_complete_sha256": "ec58a1153377cbab3bdc56dbac62c9ab5672bd50c4ff5eb357f435a17b1139bf",
+      "raw_passed": true,
+      "source_id": "21CH",
+      "split": "calibration"
+    },
+    {
+      "arm": "adaptive-monotonic",
+      "case_id": "21ch-gap5-seed7",
+      "length": 5,
+      "raw_complete_sha256": "0e87d3019a667121d4ff07568f2f19307e092cd76abd998e204d7ad24e6a4f93",
+      "raw_passed": true,
+      "source_id": "21CH",
+      "split": "calibration"
+    },
+    {
+      "arm": "adaptive-contact-gated",
+      "case_id": "21ch-gap5-seed7",
+      "length": 5,
+      "raw_complete_sha256": "de01fe49f95da8dce04adf45230593b8806874423ce3f2d9c0918ef794f63c36",
+      "raw_passed": true,
+      "source_id": "21CH",
+      "split": "calibration"
+    },
+    {
+      "arm": "static-local",
+      "case_id": "21ch-gap5-seed19",
+      "length": 5,
+      "raw_complete_sha256": "62ff00240255c1900854ad03c2db3fe4e04c0accabbc1464f69d4aba6c105c85",
+      "raw_passed": true,
+      "source_id": "21CH",
+      "split": "calibration"
+    },
+    {
+      "arm": "adaptive-monotonic",
+      "case_id": "21ch-gap5-seed19",
+      "length": 5,
+      "raw_complete_sha256": "be6d29b81dfbb8fb7ad3d31b78b701d5ae1ef36248af5f70d9cf98a312f05549",
+      "raw_passed": true,
+      "source_id": "21CH",
+      "split": "calibration"
+    },
+    {
+      "arm": "adaptive-contact-gated",
+      "case_id": "21ch-gap5-seed19",
+      "length": 5,
+      "raw_complete_sha256": "234d89178b79297c655c0fdbfed860b3f5dcf35f7911f43a02db9aba8acb5fbf",
+      "raw_passed": true,
+      "source_id": "21CH",
+      "split": "calibration"
+    },
+    {
+      "arm": "full-raw",
+      "case_id": "21ch-gap13-seed7",
+      "length": 13,
+      "raw_complete_sha256": "a989559396a8792ef3a99dede7f776cc39213a222c45b8879d2092970a25caac",
+      "raw_passed": true,
+      "source_id": "21CH",
+      "split": "calibration"
+    },
+    {
+      "arm": "full-raw",
+      "case_id": "21ch-gap13-seed19",
+      "length": 13,
+      "raw_complete_sha256": "5b531919118fbb27dc8d131ef1ea1b513c8613f3ec17d83f1fd558ca343f059c",
+      "raw_passed": false,
+      "source_id": "21CH",
+      "split": "calibration"
+    }
+  ],
+  "code_sha256": {
+    "scripts/run_a100_relaxation.py": "7958be662397fc38d96437fe97731673a2608a390fbb59bb73592057cdf6f84b",
+    "src/dvbfixer/ffutils/geometry.py": "69767cc1c29e6685bcc3c53cae9304e5f30756f0eb07e9cb5fecbaaab364e203",
+    "src/dvbfixer/model/diffusion/boundary_refinement.py": "7d9356fa8b4ee9c07d8a7c3850b1e595325d42c0d526e805f1d19dce6384be30",
+    "src/dvbfixer/model/diffusion/runner_refinement.py": "946204537200a0e0472d0998ecdb447cd78840c7ac641fbf27ef8ef4a9b153a3",
+    "src/dvbfixer/model/diffusion/validate.py": "1f5bb86524ca6e600ac63d2487be817562c667a8d6f13e074b52ec870f285342"
+  },
+  "environment": {
+    "cuda_packages": {
+      "nvidia-cuda-cupti-cu12": "12.2.142",
+      "nvidia-cuda-nvcc-cu12": "12.2.140",
+      "nvidia-cuda-nvrtc-cu12": "12.2.140",
+      "nvidia-cuda-runtime-cu12": "12.2.140",
+      "nvidia-cufft-cu12": "11.0.8.103",
+      "nvidia-nvjitlink-cu12": "12.2.140",
+      "openmm-cuda-12": "8.6.1"
+    },
+    "numpy": "2.4.6",
+    "openmm": "8.6.1",
+    "python": "3.13.15",
+    "python_executable": "/data/user/skripkins/claude/DVBFixer/test/a100-relax-env/bin/python"
+  },
+  "include_raw_accepted": true,
+  "no_replacement": true,
+  "promotion": false,
+  "protocol": {
+    "constraints": "generated intra-residue heavy bonds at input lengths; inter-residue C-N unconstrained",
+    "extra_forces": "chirality wall; trans-amide omega; peptide angles",
+    "forcefield": [
+      "amber19/protein.ff19SB.xml",
+      "amber19/tip3p.xml"
+    ],
+    "max_iterations_other": 250,
+    "max_iterations_short_le_5": 500,
+    "mobile": "generated residues only; all outside atoms including anchors have mass zero",
+    "on_refinement_failure": "retain raw candidate as explicitly failed; no resampling or replacement",
+    "perturbation_angstrom_other": 0.75,
+    "perturbation_angstrom_short_le_5": 0.25,
+    "platform": "CUDA",
+    "reference_usage": "offline scoring only; never minimization or restart selection",
+    "restart_count": 8,
+    "revision": "dvbfixer-openmm-boundary-refinement-v6",
+    "selection": "existing v6 local geometry error count, then energy; not reference RMSD",
+    "solvent": false,
+    "timeout_seconds": 1800,
+    "tolerance_kj_mol_nm": 10.0
+  },
+  "raw_failure_analysis_sha256": "6494fb34837e0029885e4f9da2905fe6bc4d94ed982d2c9f2405eb912c6d92b2",
+  "raw_manifest_sha256": "3488f0efbe146bd155e369e4d5407fd4131d446943b2385a546e7f0febbef1aa",
+  "status": "frozen-before-paired-relaxation",
+  "supersedes_environment_failed_protocol_sha256": "43d0d01a15b91dc3f15130d99bf143616ab47a61d6486dd040afa46f7dc946a0",
+  "validation_policy_changed": false
+}

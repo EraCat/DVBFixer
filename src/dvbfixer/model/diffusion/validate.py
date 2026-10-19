@@ -46,6 +46,10 @@ from dvbfixer.model.diffusion.trace import validate_sampler_trace_context
 
 FIXED_HEAVY_ATOM_RMSD_MAX_ANGSTROM = 0.01
 FIXED_HEAVY_ATOM_DISPLACEMENT_MAX_ANGSTROM = 0.03
+# Junction acceptance is a bond-length quality gate around the ~1.33 Å amide
+# bond, not merely detection of disconnected chains. It rejects compressed as
+# well as stretched C(i)-N(i+1) bonds. The separate 1.80 Å internal-gap check
+# below is only a coarse break detector; the two tests have different purposes.
 JUNCTION_CN_MIN_ANGSTROM = 1.20
 JUNCTION_CN_MAX_ANGSTROM = 1.45
 GENERATED_BACKBONE_BREAK_MAX_ANGSTROM = 1.80

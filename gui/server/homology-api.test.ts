@@ -102,6 +102,10 @@ describe('homology project materialization', () => {
       '--backend', 'diffusion', '--diffusion-seed', '7', '--diffusion-context', 'local', '--diffusion-regenerate-covered',
     ])
     expect(() => validatedModelArgs({ '--backend': 'diffusion', '--diffusion-regenerate-covered': 'true' })).toThrow(/must be boolean/)
+    expect(validatedModelArgs({ '--backend': 'diffusion', '--diffusion-regenerate-covered': true, '--diffusion-edit-flanks': 3 })).toEqual([
+      '--backend', 'diffusion', '--diffusion-seed', '7', '--diffusion-regenerate-covered', '--diffusion-edit-flanks', '3',
+    ])
+    expect(() => validatedModelArgs({ '--backend': 'diffusion', '--diffusion-edit-flanks': 3 })).toThrow(/requires covered regeneration/)
   })
 
   it('parses multiple target chains and rejects duplicate ids', () => {

@@ -23,9 +23,9 @@ from dvbfixer.model.diffusion.contract import (
     TargetSequence,
     TemplateOwnership,
 )
+from dvbfixer.model.diffusion.gap_capabilities import accepted_gap_range_label, gap_capability
 from dvbfixer.model.diffusion.scope import (
     _CANONICAL_ONE_TO_THREE,
-    MAXIMUM_GAP_LENGTH,
     MINIMUM_GAP_LENGTH,
     canonical_heavy_atom_identities,
 )
@@ -338,6 +338,7 @@ def build_mosaic_diffusion_request(
     seeds: tuple[int, ...],
     regenerate_covered: bool = False,
     profile: str = "",
+    edit_flanks: int = 1,
 ) -> tuple[Path, Path]:
     """Use authoritative coverage positions, never sequence re-alignment.
 
@@ -349,6 +350,8 @@ def build_mosaic_diffusion_request(
     request_path = workdir / "mosaic_diffusion_request.json"
     if any(path.exists() or path.is_symlink() for path in (input_path, request_path)):
         raise ValueError("mosaic diffusion input or request destination already exists")
+    if type(edit_flanks) is not int or not 1 <= edit_flanks <= 5:
+        raise ValueError("mosaic edit flanks must be an integer from 1 to 5")
     _fasta, ownership = prepare_mosaic_diffusion_inputs(
         coverage_path, target_chains, workdir, regenerate_covered=regenerate_covered,
     )
@@ -375,12 +378,12 @@ def build_mosaic_diffusion_request(
                       if item["covered"] and item["templateResidue"] != item["targetResidue"]}
         if regenerate_covered:
             for index in sorted(mismatches):
-                mutable.update(range(max(0, index - 1), min(len(sequence), index + 2)))
+                mutable.update(range(max(0, index - edit_flanks), min(len(sequence), index + edit_flanks + 1)))
             for deletion in group.get("deletions", []):
                 boundary = int(deletion["boundaryTargetIndex"])
                 if not 0 <= boundary <= len(sequence):
                     raise ValueError("mosaic deletion boundary is outside the target sequence")
-                mutable.update(range(max(0, boundary - 1), min(len(sequence), boundary + 2)))
+                mutable.update(range(max(0, boundary - edit_flanks), min(len(sequence), boundary + edit_flanks + 1)))
         # Expand short runs in a fixed left-then-right order. Recompute runs
         # after each expansion because adjacent mutable windows can merge.
         while True:
@@ -401,8 +404,8 @@ def build_mosaic_diffusion_request(
         observed = tuple(index for index, item in enumerate(coverage) if item["covered"] and index not in mutable)
         placements.append(SequencePlacement(chain, len(sequence), observed, tuple(residues[index] for index in observed)))
         for start, stop in _index_runs(mutable):
-            if not MINIMUM_GAP_LENGTH <= stop - start <= MAXIMUM_GAP_LENGTH:
-                raise ValueError(f"mosaic regeneration window {chain}:{start}-{stop} is outside the accepted 3-12 range")
+            if not gap_capability(profile, stop - start).accepted:
+                raise ValueError(f"mosaic regeneration window {chain}:{start}-{stop} is outside the accepted {accepted_gap_range_label(profile)} range")
             left = residues[start - 1] if start else None
             right = residues[stop] if stop < len(sequence) else None
             generated = residues[start:stop]
@@ -435,21 +438,23 @@ def build_mosaic_diffusion_request(
             if line[76:78].strip().upper() not in {"H", "D"}:
                 fixed.append(AtomIdentity(residue.chain, residue.residue_number, residue.insertion_code, line[12:16].strip()))
         normalized_lines.append(line)
-    with input_path.open("x") as stream:
-        stream.write("".join(normalized_lines))
+    normalized_text = "".join(normalized_lines)
     request = DiffusionRequest(
         schema_version=DIFFUSION_SCHEMA_VERSION,
-        normalized_pdb=ArtifactReference(input_path.name, hashlib.sha256(input_path.read_bytes()).hexdigest()),
+        normalized_pdb=ArtifactReference(input_path.name, hashlib.sha256(normalized_text.encode()).hexdigest()),
         target_sequences=tuple(targets), sequence_placements=tuple(placements), gaps=tuple(gaps),
         fixed_atoms=tuple(fixed), generated_atoms=tuple(generated_atoms), retained_explicit_links=(),
         candidate_count=len(seeds), seeds=seeds,
         backend_options=(BackendOption("mosaic_source_sha256", hashlib.sha256(source.read_bytes()).hexdigest()),
                          BackendOption("mosaic_coverage_sha256", hashlib.sha256(coverage_path.read_bytes()).hexdigest()),
+                         *((BackendOption("mosaic_edit_flanks", str(edit_flanks)),) if edit_flanks != 1 else ()),
                          *((BackendOption("profile", profile),) if profile else ())),
         template_ownership=tuple(owner for owner in ownership if owner.residue not in mutable_residues),
         regenerated_template_ownership=(tuple(owner for owner in ownership if owner.residue in mutable_residues)
                                        if regenerate_covered else None),
     )
+    with input_path.open("x") as stream:
+        stream.write(normalized_text)
     with request_path.open("x") as stream:
         stream.write(request.to_json())
     return input_path, request_path

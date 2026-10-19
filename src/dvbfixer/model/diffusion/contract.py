@@ -458,9 +458,22 @@ class ProteinContextPlan:
     movable_junction: tuple[AtomIdentity, ...]
     fixed_conditioning: tuple[ContextCoordinate, ...]
     preserved_only: tuple[AtomIdentity, ...]
+    trajectory_queries: tuple[ContextCoordinate, ...] | None = dataclass_field(default=None, metadata={"omit_if_none": True})
+    retained_conditioning: tuple[AtomIdentity, ...] | None = dataclass_field(default=None, metadata={"omit_if_none": True})
+    previous_plan_sha256: str | None = dataclass_field(default=None, metadata={"omit_if_none": True})
+    adaptation_source: ArtifactReference | None = dataclass_field(default=None, metadata={"omit_if_none": True})
 
     def __post_init__(self) -> None:
         ArtifactReference("context-source", self.source_sha256)
+        adaptation = (self.trajectory_queries, self.retained_conditioning, self.previous_plan_sha256, self.adaptation_source)
+        if any(value is not None for value in adaptation):
+            if any(value is None for value in adaptation) or not self.trajectory_queries:
+                raise DiffusionContractError("adaptive context requires queries, retained identities, previous plan, and source artifact")
+            if self.previous_plan_sha256 is None:
+                raise DiffusionContractError("adaptive context requires a previous plan digest")
+            ArtifactReference("previous-context-plan", self.previous_plan_sha256)
+            if len({query.atom for query in self.trajectory_queries}) != len(self.trajectory_queries):
+                raise DiffusionContractError("adaptive trajectory query identities must be unique")
         roles = (self.generated, self.movable_junction, tuple(item.atom for item in self.fixed_conditioning), self.preserved_only)
         combined = tuple(atom for role in roles for atom in role)
         if len(set(combined)) != len(combined):

@@ -1,0 +1,37 @@
+{
+  "code_sha256": {
+    "scripts/research_flank_refinement.py": "864d27b8ec294745df460801d1279397b2897e6da6537a854bdfaaadbedc960c",
+    "scripts/run_flank_comparison.py": "17ec02889c0f6f97906a58c6f18819fec6c359a80ec35af377b45bdc99b7e6b4",
+    "scripts/run_relaxation_followup.py": "632d3a46c07efd2ccb9cb44cad78b7ba9dceb3fe9f341ba296a2a69a89950709",
+    "src/dvbfixer/model/diffusion/boundary_refinement.py": "7d9356fa8b4ee9c07d8a7c3850b1e595325d42c0d526e805f1d19dce6384be30",
+    "src/dvbfixer/model/diffusion/validate.py": "1f5bb86524ca6e600ac63d2487be817562c667a8d6f13e074b52ec870f285342"
+  },
+  "development_comparison_sha256": "a7d14e727fe6963fc520eb39fa40928d695d1cdc5d870aab09ef2cb255245b3f",
+  "environment": {
+    "cuda_packages": {
+      "nvidia-cuda-cupti-cu12": "12.2.142",
+      "nvidia-cuda-nvcc-cu12": "12.2.140",
+      "nvidia-cuda-nvrtc-cu12": "12.2.140",
+      "nvidia-cuda-runtime-cu12": "12.2.140",
+      "nvidia-cufft-cu12": "11.0.8.103",
+      "nvidia-nvjitlink-cu12": "12.2.140",
+      "openmm-cuda-12": "8.6.1"
+    },
+    "numpy": "2.4.6",
+    "openmm": "8.6.1",
+    "python": "3.13.15",
+    "python_executable": "/data/user/skripkins/claude/DVBFixer/test/a100-relax-env/bin/python"
+  },
+  "holdout_manifest_sha256": "26daf56de5ac8fbd0f05b4d9e97d1809fb2010b2c02cec0c3642668d104f2ca8",
+  "inference": "pinned Protenix CUDA; 200 updates; reinjection; no regeneration",
+  "no_replacement": true,
+  "public_promotion": false,
+  "reference_use": "offline evaluation only; no tuning or restart selection",
+  "seeds": [
+    7
+  ],
+  "selected_protocol": "rigid",
+  "selection_rule": "choose bounded-flank only if more accepted cases, zero loss among rigid-accepted controls, no execution errors, and median paired original-gap backbone RMSD change <=0.10A; otherwise retain rigid",
+  "solvent": false,
+  "status": "selected-and-frozen-before-new-source-inference"
+}

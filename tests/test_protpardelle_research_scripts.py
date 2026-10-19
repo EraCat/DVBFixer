@@ -54,6 +54,61 @@ def _load_production_runner() -> ModuleType:
     return module
 
 
+def test_neutral_chain_phase_changes_only_the_denoiser_phase_feature(monkeypatch):
+    adapter = _load_adapter()
+
+    class Tensor:
+        def __init__(self, values):
+            self.values = np.asarray(values)
+            self.shape = self.values.shape
+
+        def detach(self):
+            return self
+
+        def cpu(self):
+            return self
+
+        def numpy(self):
+            return self.values
+
+    monkeypatch.setitem(sys.modules, "torch", SimpleNamespace(zeros_like=lambda value: Tensor(np.zeros_like(value.values))))
+    chain = Tensor([[0, 0, 1, 1]])
+    positions = Tensor([[1, 2, 203, 204]])
+    args = (object(), object(), object())
+    crop = object()
+    kwargs = {"chain_index": chain, "residue_index": positions, "struct_crop_cond": crop}
+    hook = adapter._NeutralDenoiserChainPhase()
+    new_args, new_kwargs = hook(None, args, kwargs)
+    assert new_args is args
+    assert new_kwargs["residue_index"] is positions
+    assert new_kwargs["struct_crop_cond"] is crop
+    assert kwargs["chain_index"] is chain
+    assert chain.values.tolist() == [[0, 0, 1, 1]]
+    assert new_kwargs["chain_index"].values.tolist() == [[0, 0, 0, 0]]
+    assert hook.calls == 1
+    assert hook.chain_labels == (0, 1)
+    with pytest.raises(ValueError, match="residue-index chain breaks"):
+        adapter._NeutralDenoiserChainPhase()(None, args, {**kwargs, "residue_index": Tensor([[1, 2, 3, 4]])})
+
+
+def test_neutral_chain_phase_requires_an_explicit_matching_cuda_request():
+    from dataclasses import replace
+
+    from dvbfixer.model.diffusion.contract import BackendOption
+
+    adapter = _load_adapter()
+    request = _request()
+    adapter._require_chain_phase_policy(request, "mps", "native")
+    with pytest.raises(ValueError, match="explicitly declared"):
+        adapter._require_chain_phase_policy(request, "cuda", "neutral-v1")
+    declared = replace(request, backend_options=(BackendOption("cc89_chain_phase", "neutral-v1"),))
+    adapter._require_chain_phase_policy(declared, "cuda:0", "neutral-v1")
+    with pytest.raises(ValueError, match="CUDA research-only"):
+        adapter._require_chain_phase_policy(declared, "mps", "neutral-v1")
+    with pytest.raises(ValueError, match="explicitly declared"):
+        adapter._require_chain_phase_policy(declared, "cuda", "native")
+
+
 def _request() -> DiffusionRequest:
     residues = (
         ResidueIdentity("d", "82"),

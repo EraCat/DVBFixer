@@ -33,6 +33,13 @@ declared CUDA evidence. All six failed existing geometry gates. Representation
 support therefore does not imply reconstruction acceptance. MPS hardware is not
 available on this Linux/A100 host; no MPS acceptance is claimed.
 
+**Subsequent causal diagnosis (2026-10-19):** the extra rotary chain-phase term
+is incompatible with this monomer-trained cc89 checkpoint in these cases.
+Explicitly neutralizing only that denoiser feature reduces raw gap RMSD to
+0.35–0.89 Å; unchanged generated-only CUDA refinement then accepts 6/6. All
+original failures remain preserved. This is a same-seed diagnostic repair, not
+broader scientific promotion. See the [chain-phase investigation](cc89-chain-phase-root-cause.md).
+
 ## 3. Adaptive context
 
 `adaptive_context.py` implements bounded **between-round** expansion: sample once,
@@ -131,3 +138,8 @@ larger leakage-controlled independent cohorts, adaptive-policy calibration, and
 separate evidence-backed public promotion of longer gaps. A purpose-trained model
 is still a conditional research decision, not a consequence established by this
 small audit. MODELLER remains default and WP3 policy expansion stays paused.
+
+The subsequent chain-phase repair closes the catastrophic geometry failure for
+the original six cc89 probes, but needs additional sources/seeds and independent
+review before wider acceptance. MPS expansion is deferred until CUDA work is
+complete.

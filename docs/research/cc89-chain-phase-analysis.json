@@ -1,0 +1,914 @@
+{
+  "axis_controls": [
+    {
+      "arm": "source-native",
+      "backbone_rmsd_angstrom": 11.81957574428964,
+      "candidate_sha256": "df2cf763b83654ae596431c381ab0852b4224549d604cee5cc4172cc07d81012",
+      "case_id": "cc89-joint",
+      "conditioned_residues": 204,
+      "d_ca_count": 4.0,
+      "failed_gates": [
+        "junction-peptide-connectivity",
+        "generated-backbone-break",
+        "generated-or-junction-bond-length",
+        "generated-or-junction-bond-angle",
+        "generated-or-junction-amide-planarity",
+        "severe-steric-overlap",
+        "d-ca-chirality"
+      ],
+      "fixed_max_displacement_angstrom": 0.0,
+      "junction_cn_max_angstrom": 15.882260355503558,
+      "junction_cn_min_angstrom": 5.369428274965597,
+      "passed": false,
+      "status": "evaluated"
+    },
+    {
+      "arm": "source-projected",
+      "backbone_rmsd_angstrom": 13.794244937654254,
+      "candidate_sha256": "1827a65759ec9a00b682b578cfe5b16fe54a6e73f177c9c61e1eb788bca5d4a0",
+      "case_id": "cc89-joint",
+      "conditioned_residues": 204,
+      "d_ca_count": 6.0,
+      "failed_gates": [
+        "junction-peptide-connectivity",
+        "generated-backbone-break",
+        "generated-or-junction-bond-length",
+        "generated-or-junction-bond-angle",
+        "generated-or-junction-amide-planarity",
+        "generated-or-junction-ramachandran",
+        "severe-steric-overlap",
+        "d-ca-chirality"
+      ],
+      "fixed_max_displacement_angstrom": 0.0,
+      "junction_cn_max_angstrom": 19.344215078415562,
+      "junction_cn_min_angstrom": 6.360889403220276,
+      "passed": false,
+      "status": "evaluated"
+    },
+    {
+      "arm": "zero-phase-native",
+      "backbone_rmsd_angstrom": 0.3506684687849765,
+      "candidate_sha256": "d0412a8ed3b2217f2232df3a9963c39c0cd9539926d643184983893b9b038b03",
+      "case_id": "cc89-joint",
+      "conditioned_residues": 204,
+      "d_ca_count": 0.0,
+      "failed_gates": [],
+      "fixed_max_displacement_angstrom": 0.0,
+      "junction_cn_max_angstrom": 1.3040191716382084,
+      "junction_cn_min_angstrom": 1.209322537621787,
+      "passed": true,
+      "status": "evaluated"
+    },
+    {
+      "arm": "zero-phase-projected",
+      "backbone_rmsd_angstrom": 0.34941107595495596,
+      "candidate_sha256": "894e9e69158b8e5b5da9374e3667c48f9dc20d02902ffea41f7fc6acd3c4351a",
+      "case_id": "cc89-joint",
+      "conditioned_residues": 204,
+      "d_ca_count": 0.0,
+      "failed_gates": [],
+      "fixed_max_displacement_angstrom": 0.0,
+      "junction_cn_max_angstrom": 1.301595943447887,
+      "junction_cn_min_angstrom": 1.2096755763426814,
+      "passed": true,
+      "status": "evaluated"
+    },
+    {
+      "arm": "source-native",
+      "backbone_rmsd_angstrom": 11.939924059641251,
+      "candidate_sha256": "b49112219a3b06f09c5013e3d8f62b8fad2c00dc2c0001fc09719489ddbdfce2",
+      "case_id": "cc89-discontiguous",
+      "conditioned_residues": 81,
+      "d_ca_count": 3.0,
+      "failed_gates": [
+        "junction-peptide-connectivity",
+        "generated-backbone-break",
+        "generated-or-junction-bond-length",
+        "generated-or-junction-bond-angle",
+        "generated-or-junction-amide-planarity",
+        "generated-or-junction-ramachandran",
+        "d-ca-chirality"
+      ],
+      "fixed_max_displacement_angstrom": 0.0,
+      "junction_cn_max_angstrom": 15.785368351736363,
+      "junction_cn_min_angstrom": 4.33530898552802,
+      "passed": false,
+      "status": "evaluated"
+    },
+    {
+      "arm": "source-projected",
+      "backbone_rmsd_angstrom": 8.931684745892008,
+      "candidate_sha256": "08765cb6604f6c9be6bce4c953dabbbeb44ff1140d16cd9632c4c44e11f4076e",
+      "case_id": "cc89-discontiguous",
+      "conditioned_residues": 81,
+      "d_ca_count": 3.0,
+      "failed_gates": [
+        "junction-peptide-connectivity",
+        "generated-backbone-break",
+        "generated-or-junction-bond-length",
+        "generated-or-junction-bond-angle",
+        "generated-or-junction-amide-planarity",
+        "generated-or-junction-ramachandran",
+        "severe-steric-overlap",
+        "d-ca-chirality"
+      ],
+      "fixed_max_displacement_angstrom": 0.0,
+      "junction_cn_max_angstrom": 12.86419729326319,
+      "junction_cn_min_angstrom": 6.406745351580629,
+      "passed": false,
+      "status": "evaluated"
+    },
+    {
+      "arm": "zero-phase-native",
+      "backbone_rmsd_angstrom": 0.8896991907380836,
+      "candidate_sha256": "1523e81bdf854655eeb484c65d6887c5d437211bfc1ef15f0a593512437fd7a9",
+      "case_id": "cc89-discontiguous",
+      "conditioned_residues": 81,
+      "d_ca_count": 0.0,
+      "failed_gates": [
+        "severe-steric-overlap"
+      ],
+      "fixed_max_displacement_angstrom": 0.0,
+      "junction_cn_max_angstrom": 1.3583375869054057,
+      "junction_cn_min_angstrom": 1.3099484722690424,
+      "passed": false,
+      "status": "evaluated"
+    },
+    {
+      "arm": "zero-phase-projected",
+      "backbone_rmsd_angstrom": 0.8753739772234488,
+      "candidate_sha256": "f3f9012f4b8a205d98d587c1b5635d1541d591b239012c4b8df2e7d2846453f1",
+      "case_id": "cc89-discontiguous",
+      "conditioned_residues": 81,
+      "d_ca_count": 0.0,
+      "failed_gates": [
+        "severe-steric-overlap"
+      ],
+      "fixed_max_displacement_angstrom": 0.0,
+      "junction_cn_max_angstrom": 1.3770846016131342,
+      "junction_cn_min_angstrom": 1.353857821190984,
+      "passed": false,
+      "status": "evaluated"
+    },
+    {
+      "arm": "source-native",
+      "backbone_rmsd_angstrom": 11.628471208632718,
+      "candidate_sha256": "8a99914c83ff052605c6b023ba0dd90c253d792c2ab63d3d6fc7b27082380a2e",
+      "case_id": "cc89-case-insertion",
+      "conditioned_residues": 100,
+      "d_ca_count": 0.0,
+      "failed_gates": [
+        "junction-peptide-connectivity",
+        "generated-backbone-break",
+        "generated-or-junction-bond-length",
+        "generated-or-junction-bond-angle",
+        "generated-or-junction-amide-planarity",
+        "generated-or-junction-ramachandran",
+        "severe-steric-overlap"
+      ],
+      "fixed_max_displacement_angstrom": 0.0,
+      "junction_cn_max_angstrom": 9.59479212906666,
+      "junction_cn_min_angstrom": 9.471601501330154,
+      "passed": false,
+      "status": "evaluated"
+    },
+    {
+      "arm": "source-projected",
+      "backbone_rmsd_angstrom": 10.126501915765385,
+      "candidate_sha256": "1529ea324507d42eb0dee7f3fbd025be8562ce5a1d42b9c27898bbbc7b1e58b1",
+      "case_id": "cc89-case-insertion",
+      "conditioned_residues": 100,
+      "d_ca_count": 3.0,
+      "failed_gates": [
+        "junction-peptide-connectivity",
+        "generated-backbone-break",
+        "generated-or-junction-bond-length",
+        "generated-or-junction-bond-angle",
+        "generated-or-junction-amide-planarity",
+        "severe-steric-overlap",
+        "d-ca-chirality"
+      ],
+      "fixed_max_displacement_angstrom": 0.0,
+      "junction_cn_max_angstrom": 12.132953597537563,
+      "junction_cn_min_angstrom": 6.209044129332621,
+      "passed": false,
+      "status": "evaluated"
+    },
+    {
+      "arm": "zero-phase-native",
+      "backbone_rmsd_angstrom": 0.45012215008816836,
+      "candidate_sha256": "374864c8617723eb72f332a77e6ed294a8c474ac7c38aa2b7537e612000afdcb",
+      "case_id": "cc89-case-insertion",
+      "conditioned_residues": 100,
+      "d_ca_count": 0.0,
+      "failed_gates": [
+        "severe-steric-overlap"
+      ],
+      "fixed_max_displacement_angstrom": 0.0,
+      "junction_cn_max_angstrom": 1.421442225347216,
+      "junction_cn_min_angstrom": 1.347981082953318,
+      "passed": false,
+      "status": "evaluated"
+    },
+    {
+      "arm": "zero-phase-projected",
+      "backbone_rmsd_angstrom": 0.4553385553629252,
+      "candidate_sha256": "106abd7ac17a39e96c44e1334b95fd9f148a4220d41bb3223342bfd96b70d58d",
+      "case_id": "cc89-case-insertion",
+      "conditioned_residues": 100,
+      "d_ca_count": 0.0,
+      "failed_gates": [
+        "severe-steric-overlap"
+      ],
+      "fixed_max_displacement_angstrom": 0.0,
+      "junction_cn_max_angstrom": 1.4447103515930155,
+      "junction_cn_min_angstrom": 1.3408732229409341,
+      "passed": false,
+      "status": "evaluated"
+    },
+    {
+      "arm": "monomer-native",
+      "backbone_rmsd_angstrom": 0.8742023793149964,
+      "candidate_sha256": "f9a4e31a7f98b2c343ca14f3d0994b3b7938afc2eeae323e76bab1ec3936b1d5",
+      "case_id": "monomer-1emv-A",
+      "conditioned_residues": 78,
+      "d_ca_count": 0.0,
+      "failed_gates": [
+        "severe-steric-overlap"
+      ],
+      "fixed_max_displacement_angstrom": 0.0,
+      "junction_cn_max_angstrom": 1.3231001473811441,
+      "junction_cn_min_angstrom": 1.2024200597129102,
+      "passed": false,
+      "status": "evaluated"
+    },
+    {
+      "arm": "monomer-projected",
+      "backbone_rmsd_angstrom": 0.911731045868242,
+      "candidate_sha256": "c8dce177cd5d950c7c7411d027c333622f08e3031bdeeb110aa60782d6151055",
+      "case_id": "monomer-1emv-A",
+      "conditioned_residues": 78,
+      "d_ca_count": 0.0,
+      "failed_gates": [
+        "severe-steric-overlap"
+      ],
+      "fixed_max_displacement_angstrom": 0.0,
+      "junction_cn_max_angstrom": 1.3220593783941776,
+      "junction_cn_min_angstrom": 1.202361426526982,
+      "passed": false,
+      "status": "evaluated"
+    },
+    {
+      "arm": "monomer-native",
+      "backbone_rmsd_angstrom": 0.18297445176854615,
+      "candidate_sha256": "3db97cd66860f9ed2891f1690764212effd522f45522de4d58369612a360e3e1",
+      "case_id": "monomer-1emv-B",
+      "conditioned_residues": 126,
+      "d_ca_count": 0.0,
+      "failed_gates": [],
+      "fixed_max_displacement_angstrom": 0.0,
+      "junction_cn_max_angstrom": 1.331079636986456,
+      "junction_cn_min_angstrom": 1.2937310385083909,
+      "passed": true,
+      "status": "evaluated"
+    },
+    {
+      "arm": "monomer-projected",
+      "backbone_rmsd_angstrom": 0.17764332241882874,
+      "candidate_sha256": "facfbffa26682bab88a07914e3a2449e390532b4bae91002d762cea8797fc332",
+      "case_id": "monomer-1emv-B",
+      "conditioned_residues": 126,
+      "d_ca_count": 0.0,
+      "failed_gates": [],
+      "fixed_max_displacement_angstrom": 0.0,
+      "junction_cn_max_angstrom": 1.3235981263208216,
+      "junction_cn_min_angstrom": 1.295991898122823,
+      "passed": true,
+      "status": "evaluated"
+    },
+    {
+      "arm": "monomer-native",
+      "backbone_rmsd_angstrom": 0.3569605720524304,
+      "candidate_sha256": "d4019c54449552b9af7f83a47eb14b668129fcfc072280d443a863a5e3bee4db",
+      "case_id": "monomer-7k8s-H",
+      "conditioned_residues": 120,
+      "d_ca_count": 0.0,
+      "failed_gates": [
+        "severe-steric-overlap"
+      ],
+      "fixed_max_displacement_angstrom": 0.0,
+      "junction_cn_max_angstrom": 1.4024450078345256,
+      "junction_cn_min_angstrom": 1.297376198332623,
+      "passed": false,
+      "status": "evaluated"
+    },
+    {
+      "arm": "monomer-projected",
+      "backbone_rmsd_angstrom": 0.3577748593738771,
+      "candidate_sha256": "027a6920b9afab0072b4af19fb4f526f110214b9278b40d5feb853b791d1175c",
+      "case_id": "monomer-7k8s-H",
+      "conditioned_residues": 120,
+      "d_ca_count": 0.0,
+      "failed_gates": [
+        "severe-steric-overlap"
+      ],
+      "fixed_max_displacement_angstrom": 0.0,
+      "junction_cn_max_angstrom": 1.4042339548664966,
+      "junction_cn_min_angstrom": 1.3031630749833063,
+      "passed": false,
+      "status": "evaluated"
+    }
+  ],
+  "complete": true,
+  "counts": {
+    "axis_controls": 18,
+    "raw_repair_accepted": 2,
+    "refined_repair_accepted": 6,
+    "repair": 6,
+    "tensor_controls": 18
+  },
+  "producer_sha256": "15b6405e4f50c7d70572c11427ed6626f3252bfbf76ab9a57ce94f75b5c79119",
+  "protocol_digests": {
+    "axis_protocol": "803eb3c10f0d6dfd14b38c30228c3953e41ade639cd7c50ea49e8803ddb0745a",
+    "refinement_protocol": "197fa72291ee0dd0e01afd452d0f4910c77fc4336a883c8174a3bafaedc7d94d",
+    "repair_manifest": "f294acfcfd313aa9f47008da0acadc6a500e065a2a640fb98ef7caff4ee6cc80",
+    "tensor_protocol": "1210f534344e91e6cce4971b3ec3e6213e6971b96c78a3c9e6a458f3be2db332"
+  },
+  "public_promotion": false,
+  "repair": [
+    {
+      "arm": "neutral-native",
+      "candidate_sha256": "a16584325751d64a914f7dd9bd9d22e36408e9247247620f693a35263f10b8e4",
+      "case_id": "cc89-joint",
+      "matches_causal_control_bytes": true,
+      "only_declared_request_change": true,
+      "raw": {
+        "backbone_rmsd_angstrom": 0.35066846878497643,
+        "d_ca_count": 0.0,
+        "failed_gates": [],
+        "fixed_max_displacement_angstrom": 0.0,
+        "junction_cn_max_angstrom": 1.3040191716382084,
+        "junction_cn_min_angstrom": 1.209322537621787,
+        "passed": true
+      },
+      "refined": {
+        "backbone_rmsd_angstrom": 0.17131338243114533,
+        "d_ca_count": 0.0,
+        "failed_gates": [],
+        "fixed_max_displacement_angstrom": 0.0,
+        "junction_cn_max_angstrom": 1.3460319461290648,
+        "junction_cn_min_angstrom": 1.3349464408731908,
+        "passed": true
+      }
+    },
+    {
+      "arm": "neutral-projected",
+      "candidate_sha256": "f701076838d28fe40d00448d123614bef73cd7e7b910f9c736cd211d465f5a7b",
+      "case_id": "cc89-joint",
+      "matches_causal_control_bytes": true,
+      "only_declared_request_change": true,
+      "raw": {
+        "backbone_rmsd_angstrom": 0.349411075954956,
+        "d_ca_count": 0.0,
+        "failed_gates": [],
+        "fixed_max_displacement_angstrom": 0.0,
+        "junction_cn_max_angstrom": 1.301595943447887,
+        "junction_cn_min_angstrom": 1.2096755763426814,
+        "passed": true
+      },
+      "refined": {
+        "backbone_rmsd_angstrom": 0.17137648613505857,
+        "d_ca_count": 0.0,
+        "failed_gates": [],
+        "fixed_max_displacement_angstrom": 0.0,
+        "junction_cn_max_angstrom": 1.3406129195259884,
+        "junction_cn_min_angstrom": 1.3349299607095502,
+        "passed": true
+      }
+    },
+    {
+      "arm": "neutral-native",
+      "candidate_sha256": "dfe3001f8f76b0e9a6cccf72a7c2275e6211b6cf21af038a4475d131b1735926",
+      "case_id": "cc89-discontiguous",
+      "matches_causal_control_bytes": true,
+      "only_declared_request_change": true,
+      "raw": {
+        "backbone_rmsd_angstrom": 0.8896991907380836,
+        "d_ca_count": 0.0,
+        "failed_gates": [
+          "severe-steric-overlap"
+        ],
+        "fixed_max_displacement_angstrom": 0.0,
+        "junction_cn_max_angstrom": 1.3583375869054057,
+        "junction_cn_min_angstrom": 1.3099484722690424,
+        "passed": false
+      },
+      "refined": {
+        "backbone_rmsd_angstrom": 0.18686786775687234,
+        "d_ca_count": 0.0,
+        "failed_gates": [],
+        "fixed_max_displacement_angstrom": 0.0,
+        "junction_cn_max_angstrom": 1.3406274650327015,
+        "junction_cn_min_angstrom": 1.3395226761798398,
+        "passed": true
+      }
+    },
+    {
+      "arm": "neutral-projected",
+      "candidate_sha256": "30acea481c0077890b8ce5ae0700f965c961bdb884b4f40c2049f0479b1f8bbe",
+      "case_id": "cc89-discontiguous",
+      "matches_causal_control_bytes": true,
+      "only_declared_request_change": true,
+      "raw": {
+        "backbone_rmsd_angstrom": 0.8753739772234488,
+        "d_ca_count": 0.0,
+        "failed_gates": [
+          "severe-steric-overlap"
+        ],
+        "fixed_max_displacement_angstrom": 0.0,
+        "junction_cn_max_angstrom": 1.3770846016131342,
+        "junction_cn_min_angstrom": 1.353857821190984,
+        "passed": false
+      },
+      "refined": {
+        "backbone_rmsd_angstrom": 0.20313862262012083,
+        "d_ca_count": 0.0,
+        "failed_gates": [],
+        "fixed_max_displacement_angstrom": 0.0,
+        "junction_cn_max_angstrom": 1.3442027376850583,
+        "junction_cn_min_angstrom": 1.3394364486604058,
+        "passed": true
+      }
+    },
+    {
+      "arm": "neutral-native",
+      "candidate_sha256": "c3561be579c4f65ea98c78ce74c1922e5443353fb8f6ef730183816b3d2dd8ab",
+      "case_id": "cc89-case-insertion",
+      "matches_causal_control_bytes": true,
+      "only_declared_request_change": true,
+      "raw": {
+        "backbone_rmsd_angstrom": 0.45012215008816836,
+        "d_ca_count": 0.0,
+        "failed_gates": [
+          "severe-steric-overlap"
+        ],
+        "fixed_max_displacement_angstrom": 0.0,
+        "junction_cn_max_angstrom": 1.421442225347216,
+        "junction_cn_min_angstrom": 1.347981082953318,
+        "passed": false
+      },
+      "refined": {
+        "backbone_rmsd_angstrom": 0.25401751908086706,
+        "d_ca_count": 0.0,
+        "failed_gates": [],
+        "fixed_max_displacement_angstrom": 0.0,
+        "junction_cn_max_angstrom": 1.342229488574898,
+        "junction_cn_min_angstrom": 1.3264757819123545,
+        "passed": true
+      }
+    },
+    {
+      "arm": "neutral-projected",
+      "candidate_sha256": "f925694efab8fe17dace6a27cf4ccedc803a8607b6c318cb689772dc9fd845ce",
+      "case_id": "cc89-case-insertion",
+      "matches_causal_control_bytes": true,
+      "only_declared_request_change": true,
+      "raw": {
+        "backbone_rmsd_angstrom": 0.45533855536292517,
+        "d_ca_count": 0.0,
+        "failed_gates": [
+          "severe-steric-overlap"
+        ],
+        "fixed_max_displacement_angstrom": 0.0,
+        "junction_cn_max_angstrom": 1.4447103515930155,
+        "junction_cn_min_angstrom": 1.3408732229409341,
+        "passed": false
+      },
+      "refined": {
+        "backbone_rmsd_angstrom": 0.24771071837932052,
+        "d_ca_count": 0.0,
+        "failed_gates": [],
+        "fixed_max_displacement_angstrom": 0.0,
+        "junction_cn_max_angstrom": 1.3440048363008426,
+        "junction_cn_min_angstrom": 1.3332201618637434,
+        "passed": true
+      }
+    }
+  ],
+  "scope": "causal-debug-and-same-seed-repair-confirmation; two deposited sources, not broad acceptance",
+  "tensor_controls": [
+    {
+      "arm": "full-native",
+      "backbone_rmsd_angstrom": 11.81957574428964,
+      "byte_identical_prior_baseline": true,
+      "candidate_sha256": "df2cf763b83654ae596431c381ab0852b4224549d604cee5cc4172cc07d81012",
+      "case_id": "cc89-joint",
+      "conditioned_residues": 204,
+      "d_ca_count": 4.0,
+      "failed_gates": [
+        "junction-peptide-connectivity",
+        "generated-backbone-break",
+        "generated-or-junction-bond-length",
+        "generated-or-junction-bond-angle",
+        "generated-or-junction-amide-planarity",
+        "severe-steric-overlap",
+        "d-ca-chirality"
+      ],
+      "fixed_max_displacement_angstrom": 0.0,
+      "junction_cn_max_angstrom": 15.882260355503558,
+      "junction_cn_min_angstrom": 5.369428274965597,
+      "passed": false,
+      "status": "evaluated"
+    },
+    {
+      "arm": "full-projected",
+      "backbone_rmsd_angstrom": 13.794244937654254,
+      "byte_identical_prior_baseline": true,
+      "candidate_sha256": "1827a65759ec9a00b682b578cfe5b16fe54a6e73f177c9c61e1eb788bca5d4a0",
+      "case_id": "cc89-joint",
+      "conditioned_residues": 204,
+      "d_ca_count": 6.0,
+      "failed_gates": [
+        "junction-peptide-connectivity",
+        "generated-backbone-break",
+        "generated-or-junction-bond-length",
+        "generated-or-junction-bond-angle",
+        "generated-or-junction-amide-planarity",
+        "generated-or-junction-ramachandran",
+        "severe-steric-overlap",
+        "d-ca-chirality"
+      ],
+      "fixed_max_displacement_angstrom": 0.0,
+      "junction_cn_max_angstrom": 19.344215078415562,
+      "junction_cn_min_angstrom": 6.360889403220276,
+      "passed": false,
+      "status": "evaluated"
+    },
+    {
+      "arm": "full-projected-selfcond",
+      "backbone_rmsd_angstrom": 19.534879179943754,
+      "candidate_sha256": "23f2d97dbad004a852ebfc2d97085a254e478955c2d8a737970bd661c88745ac",
+      "case_id": "cc89-joint",
+      "conditioned_residues": 204,
+      "d_ca_count": 5.0,
+      "failed_gates": [
+        "junction-peptide-connectivity",
+        "generated-backbone-break",
+        "generated-or-junction-bond-length",
+        "generated-or-junction-bond-angle",
+        "generated-or-junction-amide-planarity",
+        "generated-or-junction-ramachandran",
+        "severe-steric-overlap",
+        "d-ca-chirality"
+      ],
+      "fixed_max_displacement_angstrom": 0.0,
+      "junction_cn_max_angstrom": 22.317442819462983,
+      "junction_cn_min_angstrom": 5.968104389167468,
+      "passed": false,
+      "status": "evaluated"
+    },
+    {
+      "arm": "sparse24-native",
+      "backbone_rmsd_angstrom": 15.126313995815373,
+      "candidate_sha256": "37c7b16cece3627ee63730acbf33a30ea6f9630685fec6d4a83848d2e1acad0e",
+      "case_id": "cc89-joint",
+      "conditioned_residues": 24,
+      "d_ca_count": 0.0,
+      "failed_gates": [
+        "junction-peptide-connectivity",
+        "generated-backbone-break",
+        "generated-or-junction-bond-length",
+        "generated-or-junction-bond-angle",
+        "generated-or-junction-amide-planarity",
+        "severe-steric-overlap"
+      ],
+      "fixed_max_displacement_angstrom": 0.0,
+      "junction_cn_max_angstrom": 21.604336833145325,
+      "junction_cn_min_angstrom": 8.062096811624132,
+      "passed": false,
+      "status": "evaluated"
+    },
+    {
+      "arm": "sparse24-projected",
+      "backbone_rmsd_angstrom": 11.91938146046178,
+      "candidate_sha256": "4ac35b99ef5eb29e771f84b3617e4ba90afa39b1ee3ef08b7baf95c1a5843f0c",
+      "case_id": "cc89-joint",
+      "conditioned_residues": 24,
+      "d_ca_count": 5.0,
+      "failed_gates": [
+        "junction-peptide-connectivity",
+        "generated-backbone-break",
+        "generated-or-junction-bond-length",
+        "generated-or-junction-bond-angle",
+        "generated-or-junction-amide-planarity",
+        "generated-or-junction-ramachandran",
+        "severe-steric-overlap",
+        "d-ca-chirality"
+      ],
+      "fixed_max_displacement_angstrom": 0.0,
+      "junction_cn_max_angstrom": 13.157775685882475,
+      "junction_cn_min_angstrom": 8.082254450337482,
+      "passed": false,
+      "status": "evaluated"
+    },
+    {
+      "arm": "sparse24-projected-selfcond",
+      "backbone_rmsd_angstrom": 13.930164862628152,
+      "candidate_sha256": "368f5c0c18bd89b361491b3e60c017099a56e9be0f36d86657a9acb659e9bd63",
+      "case_id": "cc89-joint",
+      "conditioned_residues": 24,
+      "d_ca_count": 5.0,
+      "failed_gates": [
+        "junction-peptide-connectivity",
+        "generated-backbone-break",
+        "generated-or-junction-bond-length",
+        "generated-or-junction-bond-angle",
+        "generated-or-junction-amide-planarity",
+        "generated-or-junction-ramachandran",
+        "severe-steric-overlap",
+        "d-ca-chirality"
+      ],
+      "fixed_max_displacement_angstrom": 0.0,
+      "junction_cn_max_angstrom": 15.733501612800634,
+      "junction_cn_min_angstrom": 6.992127644715874,
+      "passed": false,
+      "status": "evaluated"
+    },
+    {
+      "arm": "full-native",
+      "backbone_rmsd_angstrom": 11.324646826722677,
+      "byte_identical_prior_baseline": true,
+      "candidate_sha256": "26e873d78ecb65e42d620bd2fb89c9b4b8d51c8329368e58be7123c7f9856d66",
+      "case_id": "cc89-discontiguous",
+      "conditioned_residues": 81,
+      "d_ca_count": 1.0,
+      "failed_gates": [
+        "junction-peptide-connectivity",
+        "generated-backbone-break",
+        "generated-or-junction-bond-length",
+        "generated-or-junction-bond-angle",
+        "generated-or-junction-amide-planarity",
+        "severe-steric-overlap",
+        "d-ca-chirality"
+      ],
+      "fixed_max_displacement_angstrom": 0.0,
+      "junction_cn_max_angstrom": 12.671283202580549,
+      "junction_cn_min_angstrom": 3.2729668498168434,
+      "passed": false,
+      "status": "evaluated"
+    },
+    {
+      "arm": "full-projected",
+      "backbone_rmsd_angstrom": 17.82440211058985,
+      "byte_identical_prior_baseline": true,
+      "candidate_sha256": "bcb6605492bc5a80420ceee6e259bc640d26955abbc9189a6e188aab63beb23b",
+      "case_id": "cc89-discontiguous",
+      "conditioned_residues": 81,
+      "d_ca_count": 4.0,
+      "failed_gates": [
+        "junction-peptide-connectivity",
+        "generated-backbone-break",
+        "generated-or-junction-bond-length",
+        "generated-or-junction-bond-angle",
+        "generated-or-junction-amide-planarity",
+        "generated-or-junction-ramachandran",
+        "severe-steric-overlap",
+        "d-ca-chirality"
+      ],
+      "fixed_max_displacement_angstrom": 0.0,
+      "junction_cn_max_angstrom": 19.22943147885553,
+      "junction_cn_min_angstrom": 13.98987984222881,
+      "passed": false,
+      "status": "evaluated"
+    },
+    {
+      "arm": "full-projected-selfcond",
+      "backbone_rmsd_angstrom": 18.667212157952243,
+      "candidate_sha256": "077678ebc25c6de2dd2429c8b9477c9ade5747ebe17d666b6ecd469964ac412a",
+      "case_id": "cc89-discontiguous",
+      "conditioned_residues": 81,
+      "d_ca_count": 4.0,
+      "failed_gates": [
+        "junction-peptide-connectivity",
+        "generated-backbone-break",
+        "generated-or-junction-bond-length",
+        "generated-or-junction-bond-angle",
+        "generated-or-junction-amide-planarity",
+        "severe-steric-overlap",
+        "d-ca-chirality"
+      ],
+      "fixed_max_displacement_angstrom": 0.0,
+      "junction_cn_max_angstrom": 17.990112534389546,
+      "junction_cn_min_angstrom": 14.565311187887469,
+      "passed": false,
+      "status": "evaluated"
+    },
+    {
+      "arm": "sparse24-native",
+      "backbone_rmsd_angstrom": 12.878632114863754,
+      "candidate_sha256": "a2a56834cd3a7ee5e3ba7230a01b7ca82d6a5b64bff944ce9a9f5139b5e58571",
+      "case_id": "cc89-discontiguous",
+      "conditioned_residues": 24,
+      "d_ca_count": 1.0,
+      "failed_gates": [
+        "junction-peptide-connectivity",
+        "generated-backbone-break",
+        "generated-or-junction-bond-length",
+        "generated-or-junction-bond-angle",
+        "generated-or-junction-amide-planarity",
+        "generated-or-junction-ramachandran",
+        "severe-steric-overlap",
+        "d-ca-chirality"
+      ],
+      "fixed_max_displacement_angstrom": 0.0,
+      "junction_cn_max_angstrom": 15.356825127610199,
+      "junction_cn_min_angstrom": 8.549996081870447,
+      "passed": false,
+      "status": "evaluated"
+    },
+    {
+      "arm": "sparse24-projected",
+      "backbone_rmsd_angstrom": 14.38635508216032,
+      "candidate_sha256": "941d2d31969ad32d0396491157529dc3fe3d06dd0c048efd020de8cd5a313edf",
+      "case_id": "cc89-discontiguous",
+      "conditioned_residues": 24,
+      "d_ca_count": 2.0,
+      "failed_gates": [
+        "junction-peptide-connectivity",
+        "generated-backbone-break",
+        "generated-or-junction-bond-length",
+        "generated-or-junction-bond-angle",
+        "generated-or-junction-amide-planarity",
+        "generated-or-junction-ramachandran",
+        "severe-steric-overlap",
+        "d-ca-chirality"
+      ],
+      "fixed_max_displacement_angstrom": 0.0,
+      "junction_cn_max_angstrom": 14.006671089163191,
+      "junction_cn_min_angstrom": 11.71993792645678,
+      "passed": false,
+      "status": "evaluated"
+    },
+    {
+      "arm": "sparse24-projected-selfcond",
+      "backbone_rmsd_angstrom": 13.706278249400892,
+      "candidate_sha256": "9e8209af21dd3b37f10d71512bc556997efd5753e785350e530d459784e669d5",
+      "case_id": "cc89-discontiguous",
+      "conditioned_residues": 24,
+      "d_ca_count": 2.0,
+      "failed_gates": [
+        "junction-peptide-connectivity",
+        "generated-backbone-break",
+        "generated-or-junction-bond-length",
+        "generated-or-junction-bond-angle",
+        "generated-or-junction-amide-planarity",
+        "generated-or-junction-ramachandran",
+        "severe-steric-overlap",
+        "d-ca-chirality"
+      ],
+      "fixed_max_displacement_angstrom": 0.0,
+      "junction_cn_max_angstrom": 13.050965979574077,
+      "junction_cn_min_angstrom": 11.69565513342455,
+      "passed": false,
+      "status": "evaluated"
+    },
+    {
+      "arm": "full-native",
+      "backbone_rmsd_angstrom": 11.837263463317864,
+      "byte_identical_prior_baseline": true,
+      "candidate_sha256": "cd19d4a6f57053ee3713ac7fde8091568c2f5d70004c309f5d9607334045726d",
+      "case_id": "cc89-case-insertion",
+      "conditioned_residues": 100,
+      "d_ca_count": 1.0,
+      "failed_gates": [
+        "junction-peptide-connectivity",
+        "generated-backbone-break",
+        "generated-or-junction-bond-length",
+        "generated-or-junction-bond-angle",
+        "generated-or-junction-amide-planarity",
+        "generated-or-junction-ramachandran",
+        "severe-steric-overlap",
+        "d-ca-chirality"
+      ],
+      "fixed_max_displacement_angstrom": 0.0,
+      "junction_cn_max_angstrom": 16.236937796271786,
+      "junction_cn_min_angstrom": 4.932093571699533,
+      "passed": false,
+      "status": "evaluated"
+    },
+    {
+      "arm": "full-projected",
+      "backbone_rmsd_angstrom": 20.291855345187145,
+      "byte_identical_prior_baseline": true,
+      "candidate_sha256": "2621f2b9f53cd0fe2025badddfd79eb7155c0904a35a6b65789ad8e7a767a82f",
+      "case_id": "cc89-case-insertion",
+      "conditioned_residues": 100,
+      "d_ca_count": 4.0,
+      "failed_gates": [
+        "junction-peptide-connectivity",
+        "generated-backbone-break",
+        "generated-or-junction-bond-length",
+        "generated-or-junction-bond-angle",
+        "generated-or-junction-amide-planarity",
+        "generated-or-junction-ramachandran",
+        "severe-steric-overlap",
+        "d-ca-chirality"
+      ],
+      "fixed_max_displacement_angstrom": 0.0,
+      "junction_cn_max_angstrom": 29.171178567209083,
+      "junction_cn_min_angstrom": 11.157373033111329,
+      "passed": false,
+      "status": "evaluated"
+    },
+    {
+      "arm": "full-projected-selfcond",
+      "backbone_rmsd_angstrom": 20.559803711368453,
+      "candidate_sha256": "73129ffddda68512e015a2f5d4b6331f30d3c83665ac86e51ef2eb75cb4e916c",
+      "case_id": "cc89-case-insertion",
+      "conditioned_residues": 100,
+      "d_ca_count": 3.0,
+      "failed_gates": [
+        "junction-peptide-connectivity",
+        "generated-backbone-break",
+        "generated-or-junction-bond-length",
+        "generated-or-junction-bond-angle",
+        "generated-or-junction-amide-planarity",
+        "generated-or-junction-ramachandran",
+        "severe-steric-overlap",
+        "d-ca-chirality"
+      ],
+      "fixed_max_displacement_angstrom": 0.0,
+      "junction_cn_max_angstrom": 27.939119957507586,
+      "junction_cn_min_angstrom": 15.857148356498401,
+      "passed": false,
+      "status": "evaluated"
+    },
+    {
+      "arm": "sparse24-native",
+      "backbone_rmsd_angstrom": 9.707361142452669,
+      "candidate_sha256": "96299c29c17ac9c2f6f65c118758066054bbbec8a21ce783038c33d0805e3fcb",
+      "case_id": "cc89-case-insertion",
+      "conditioned_residues": 24,
+      "d_ca_count": 0.0,
+      "failed_gates": [
+        "junction-peptide-connectivity",
+        "generated-backbone-break",
+        "generated-or-junction-bond-length",
+        "generated-or-junction-bond-angle",
+        "generated-or-junction-amide-planarity",
+        "generated-or-junction-ramachandran",
+        "severe-steric-overlap"
+      ],
+      "fixed_max_displacement_angstrom": 0.0,
+      "junction_cn_max_angstrom": 14.91363741680746,
+      "junction_cn_min_angstrom": 6.641407305684542,
+      "passed": false,
+      "status": "evaluated"
+    },
+    {
+      "arm": "sparse24-projected",
+      "backbone_rmsd_angstrom": 21.064635331521885,
+      "candidate_sha256": "2dc8b0cca0632aa65a31d950a93d5f3f9cb01f09cdb87c5dfdc5669832133293",
+      "case_id": "cc89-case-insertion",
+      "conditioned_residues": 24,
+      "d_ca_count": 4.0,
+      "failed_gates": [
+        "junction-peptide-connectivity",
+        "generated-backbone-break",
+        "generated-or-junction-bond-length",
+        "generated-or-junction-bond-angle",
+        "generated-or-junction-amide-planarity",
+        "generated-or-junction-ramachandran",
+        "severe-steric-overlap",
+        "d-ca-chirality"
+      ],
+      "fixed_max_displacement_angstrom": 0.0,
+      "junction_cn_max_angstrom": 29.737053283740128,
+      "junction_cn_min_angstrom": 7.311981195271219,
+      "passed": false,
+      "status": "evaluated"
+    },
+    {
+      "arm": "sparse24-projected-selfcond",
+      "backbone_rmsd_angstrom": 22.623758110667644,
+      "candidate_sha256": "a0a9a1ac37546f80c6609553de1c9c68dbeb3f9550f0f084fdd40daf096414dc",
+      "case_id": "cc89-case-insertion",
+      "conditioned_residues": 24,
+      "d_ca_count": 2.0,
+      "failed_gates": [
+        "junction-peptide-connectivity",
+        "generated-backbone-break",
+        "generated-or-junction-bond-length",
+        "generated-or-junction-bond-angle",
+        "generated-or-junction-amide-planarity",
+        "severe-steric-overlap",
+        "d-ca-chirality"
+      ],
+      "fixed_max_displacement_angstrom": 0.0,
+      "junction_cn_max_angstrom": 29.52110314673215,
+      "junction_cn_min_angstrom": 10.77778219301169,
+      "passed": false,
+      "status": "evaluated"
+    }
+  ]
+}

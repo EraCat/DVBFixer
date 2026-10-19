@@ -5,6 +5,13 @@ Apple MPS follow-up is deferred until CUDA implementation is complete; it is not
 a gate for this CUDA work. MODELLER remains the default. Scientific publication
 gates are unchanged.
 
+**Subsequent cc89 diagnosis:** the 0/6 original rich-context refinement result
+below is preserved as historical evidence. A causal chain-phase investigation
+found and corrected a cc89 positional-feature incompatibility; the same six
+cases now pass the unchanged CUDA refinement with 0.17–0.25 Å backbone RMSD.
+See [the follow-up report](cc89-chain-phase-root-cause.md). Wider acceptance is
+still pending; this is not a change to the long-gap findings below.
+
 ## Delivered software
 
 - CLI request construction, authoritative mosaic construction, and scope admission

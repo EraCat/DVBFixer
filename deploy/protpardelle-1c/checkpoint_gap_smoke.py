@@ -39,7 +39,12 @@ from dvbfixer.model.diffusion.contract import (
 )
 from dvbfixer.model.diffusion.geometry import synchronize_and_reinject, weighted_kabsch
 from dvbfixer.model.diffusion.pdb_materialize import materialize_candidate_pdb
-from dvbfixer.model.diffusion.protein_context import context_evidence, engine_context_view, select_legacy_partner_spans, validate_context_source
+from dvbfixer.model.diffusion.protein_context import (
+    context_evidence,
+    engine_context_view,
+    select_legacy_partner_spans,
+    validate_context_source,
+)
 from dvbfixer.model.diffusion.runner import DIFFUSION_RUNNER_PROTOCOL_VERSION
 from dvbfixer.model.diffusion.trace import build_sampler_trace, write_sampler_trace
 from dvbfixer.model.diffusion.validate import validate_runner_result
@@ -844,6 +849,46 @@ def _probe_hook(module, probe):
             hook.remove()
 
 
+class _NeutralDenoiserChainPhase:
+    """cc89 compatibility intervention: neutral phase, unchanged residue breaks.
+
+    cc89 is a monomer-trained rotary model. Its source chain identities remain
+    intact in the sampler, motif mapping, and output; only the denoiser's extra
+    chain-frequency term is disabled. Residue-index gaps still separate chains.
+    """
+
+    def __init__(self):
+        self.calls = 0
+        self.chain_labels = ()
+
+    def __call__(self, module, args, kwargs):
+        import torch
+
+        if len(args) != 3 or "chain_index" not in kwargs or "residue_index" not in kwargs:
+            raise ValueError("unexpected denoiser positional-feature signature")
+        chain_index = kwargs["chain_index"]
+        residue_index = kwargs["residue_index"]
+        if chain_index is None or chain_index.shape != residue_index.shape:
+            raise ValueError("chain phase control requires explicit matching position features")
+        if self.calls == 0:
+            labels = chain_index.detach().cpu().numpy()
+            positions = residue_index.detach().cpu().numpy()
+            boundaries = labels[:, 1:] != labels[:, :-1]
+            if np.any(boundaries & (positions[:, 1:] - positions[:, :-1] <= 1)):
+                raise ValueError("neutral chain phase requires explicit residue-index chain breaks")
+            self.chain_labels = tuple(int(value) for value in np.unique(labels))
+        self.calls += 1
+        return args, {**kwargs, "chain_index": torch.zeros_like(chain_index)}
+
+
+def _require_chain_phase_policy(request, device_name, policy):
+    declared = next((option.value for option in request.backend_options if option.name == "cc89_chain_phase"), "native")
+    if policy not in {"native", "neutral-v1"} or declared != policy:
+        raise ValueError("cc89 chain phase policy must match the explicitly declared request")
+    if policy != "native" and device_name.split(":", 1)[0] != "cuda":
+        raise ValueError("neutral cc89 chain phase is CUDA research-only")
+
+
 def _run_staged(
     request_path: Path,
     output_dir: Path,
@@ -859,6 +904,7 @@ def _run_staged(
     context_probe: bool = False,
     crop_strategy: str = "backbone-sidechain",
     replacement_guidance: bool = False,
+    chain_phase_policy: str = "native",
 ) -> tuple[RunnerResult, Path]:
     import torch
     from protpardelle.common import residue_constants
@@ -874,6 +920,7 @@ def _run_staged(
     request_path = request_path.resolve()
     workspace = request_path.parent
     request = DiffusionRequest.from_json(request_path.read_text(encoding="utf-8"))
+    _require_chain_phase_policy(request, device_name, chain_phase_policy)
     if request.candidate_count != 1 or len(request.seeds) != 1:
         raise ValueError("cc89 benchmark requires one candidate")
     if any(
@@ -906,6 +953,8 @@ def _run_staged(
     _synchronize(torch, device)
     model_load_seconds = time.perf_counter() - model_load_start
     _assert_model_device(model, device)
+    if chain_phase_policy != "native" and model.config.model.struct_model.uvit.position_embedding_type != "rotary":
+        raise ValueError("neutral chain phase is specific to the pinned cc89 rotary checkpoint")
     conditional = {
         "enabled": True,
         "discontiguous_motif_assignment": {
@@ -950,6 +999,7 @@ def _run_staged(
     fit_max_displacement = 0.0
     conditioning_contexts: list[SamplerConditioningContext] = []
     context_probes = []
+    phase_control = _NeutralDenoiserChainPhase() if chain_phase_policy == "neutral-v1" else None
     for invocation_index, sampling_request in enumerate(sampling_requests):
         invocation_seed = seed + invocation_index
         seed_everything(invocation_seed)
@@ -1034,7 +1084,7 @@ def _run_staged(
         denoising_start = time.perf_counter()
         profile_context = torch.mps.profiler.profile() if mps_profile else nullcontext()
         probe = _DenoiserContextProbe(sampling_request) if context_probe else None
-        with profile_context, _probe_hook(model.struct_model, probe):
+        with profile_context, _probe_hook(model.struct_model, phase_control), _probe_hook(model.struct_model, probe):
             sampled = model.sample(
                 seq_mask=seq_mask,
                 residue_index=residue_index,
@@ -1174,6 +1224,8 @@ def _run_staged(
     )
     production_profile = device.type == "mps" and not per_step_reinjection
     callback_count = int(callback_stats["callback_count"])
+    if phase_control is not None and phase_control.calls != steps * len(sampling_requests):
+        raise RuntimeError("cc89 chain-phase control did not reach every denoising update")
     projection_error = float(
         callback_stats["maximum_post_projection_error_angstrom"]
     )
@@ -1188,7 +1240,10 @@ def _run_staged(
             ),
             engine_repository="https://github.com/ProteinDesignLab/protpardelle-1c",
             engine_revision=_REVISION,
-            patch_identity=f"sha256:{_APPLE_PATCH_SHA256}",
+            patch_identity=(
+                f"sha256:{_APPLE_PATCH_SHA256}" if phase_control is None else
+                f"adapter-sha256:{_sha256(Path(__file__))};cc89-chain-phase=neutral-v1"
+            ),
             atom_order=sampler_atom_order,
             fixed_atoms=request.fixed_atoms,
             represented_fixed_atoms=represented_fixed_atoms,
@@ -1240,6 +1295,8 @@ def _run_staged(
     )
     if request.heterogen_contexts:
         backend_label += "+heterogen-geometric-context"
+    if phase_control is not None:
+        backend_label += "+neutral-denoiser-chain-phase-v1"
     result = RunnerResult(
         schema_version=DIFFUSION_SCHEMA_VERSION,
         status=DiffusionStatus.SUCCESS,
@@ -1270,6 +1327,7 @@ def _run_staged(
                 f"{_HETEROGEN_REPULSION_CUTOFF_ANGSTROM}",
                 f"per-step-reinjection={per_step_reinjection}",
                 f"mps-fallback={os.environ.get('PYTORCH_ENABLE_MPS_FALLBACK', 'unset')}",
+                *(("cc89-denoiser-chain-phase=neutral-v1",) if phase_control is not None else ()),
             ),
         ),
         resource_metrics=resource_metrics,
@@ -1343,6 +1401,12 @@ def _run_staged(
         "step_scale": step_scale,
         "crop_strategy": crop_strategy,
         "replacement_guidance": replacement_guidance,
+        **({"cc89_chain_phase": {
+            "policy": chain_phase_policy,
+            "denoiser_calls": phase_control.calls,
+            "original_chain_labels": phase_control.chain_labels,
+            "sampler_chain_and_residue_indices_preserved": True,
+        }} if phase_control is not None else {}),
         "s_churn": s_churn,
         "motif_placements": placements,
         **({"denoiser_context_probes": context_probes} if context_probe else {}),

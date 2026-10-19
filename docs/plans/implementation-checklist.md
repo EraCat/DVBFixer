@@ -318,12 +318,17 @@ Detailed requirements and acceptance gates are in the
   writing the normalized candidate input.
 - [x] Freeze and execute generated-only CUDA refinement for all six rich cc89
   frontier outputs; retain 0/6 acceptance and two guarded chirality exceptions.
+- [x] Diagnose the original catastrophic cc89 failure with frozen tensor/axis
+  controls and implement an explicit CUDA-only neutral denoiser chain-phase mode.
+- [x] Confirm all six repaired candidates match causal controls byte-for-byte;
+  unchanged generated-only CUDA refinement accepts 6/6 at 0.17–0.25 Å RMSD.
 - [ ] Complete prospective long-gap noninferiority and independent review.
-- [ ] Achieve scientifically acceptable rich cc89 CUDA context reconstruction;
-  representation and projection alone do not close this gate.
+- [ ] Complete wider independent cc89 CUDA acceptance beyond the repaired
+  same-seed, two-source diagnostic pilot.
 - [ ] Complete larger independently reviewed context/CDR and Homology edit cohorts.
 
 Evidence: [CUDA expansion completion audit](../research/cuda-expansion-completion.md).
+Follow-up: [cc89 chain-phase diagnosis](../research/cc89-chain-phase-root-cause.md).
 Apple MPS follow-up is deferred until CUDA implementation completes.
 
 ## DDD Documentation Roadmap

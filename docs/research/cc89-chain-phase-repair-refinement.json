@@ -1,0 +1,66 @@
+{
+  "apple_mps": "deferred-until-cuda-implementation-completes",
+  "cases": [
+    {
+      "arm": "neutral-native",
+      "case_id": "cc89-joint",
+      "raw_complete_sha256": "5614b117457b1309edd8e8d5aa2897db597209491389c362f79e20cb4ccb837d"
+    },
+    {
+      "arm": "neutral-projected",
+      "case_id": "cc89-joint",
+      "raw_complete_sha256": "0b9b53e1ccd7d860b8b3c61fe225e96c91079d7e75aea5951e291da4e8494d2c"
+    },
+    {
+      "arm": "neutral-native",
+      "case_id": "cc89-discontiguous",
+      "raw_complete_sha256": "1f84ea1989d315e88b125f4d6e81432acf18138f7a2be73517aa33c95f59e24b"
+    },
+    {
+      "arm": "neutral-projected",
+      "case_id": "cc89-discontiguous",
+      "raw_complete_sha256": "cf402a54b94b7309ca54d20f35d5b4e147cf78bd261a327dff448d5600c84f5e"
+    },
+    {
+      "arm": "neutral-native",
+      "case_id": "cc89-case-insertion",
+      "raw_complete_sha256": "b1537c14cc960ee12e8ee8dc4c9de1aa17e43bcd6d2f2ed71f53ffdf0262d85e"
+    },
+    {
+      "arm": "neutral-projected",
+      "case_id": "cc89-case-insertion",
+      "raw_complete_sha256": "a6153d96b3a03bc9c9cf29e2321400e5f24c945353c7072124f375753fab0d5f"
+    }
+  ],
+  "code_sha256": {
+    "scripts/refine_cuda_context_frontiers.py": "b4b6d72c3c5c817359e65e20bf4c888ae676736fe2d23b5ea3228b4fd3be2c66",
+    "src/dvbfixer/ffutils/geometry.py": "69767cc1c29e6685bcc3c53cae9304e5f30756f0eb07e9cb5fecbaaab364e203",
+    "src/dvbfixer/model/diffusion/boundary_refinement.py": "7d9356fa8b4ee9c07d8a7c3850b1e595325d42c0d526e805f1d19dce6384be30",
+    "src/dvbfixer/model/diffusion/runner_refinement.py": "946204537200a0e0472d0998ecdb447cd78840c7ac641fbf27ef8ef4a9b153a3",
+    "src/dvbfixer/model/diffusion/validate.py": "1f5bb86524ca6e600ac63d2487be817562c667a8d6f13e074b52ec870f285342"
+  },
+  "environment": {
+    "cuda_packages": {
+      "nvidia-cuda-cupti-cu12": "12.2.142",
+      "nvidia-cuda-nvcc-cu12": "12.2.140",
+      "nvidia-cuda-nvrtc-cu12": "12.2.140",
+      "nvidia-cuda-runtime-cu12": "12.2.140",
+      "nvidia-cufft-cu12": "11.0.8.103",
+      "nvidia-nvjitlink-cu12": "12.2.140",
+      "openmm-cuda-12": "8.6.1"
+    },
+    "numpy": "2.4.6",
+    "openmm": "8.6.1",
+    "python": "3.13.15",
+    "python_executable": "/data/user/skripkins/claude/DVBFixer/test/a100-relax-env/bin/python"
+  },
+  "manifest_sha256": "f294acfcfd313aa9f47008da0acadc6a500e065a2a640fb98ef7caff4ee6cc80",
+  "no_replacement": true,
+  "public_promotion": false,
+  "reference_usage": "offline evaluation only",
+  "refinement": "unchanged rigid v6 CUDA; generated residues only; complete fixed source force-field context",
+  "sampling": "none; reuse every immutable raw native/projection-500 candidate",
+  "solvent": false,
+  "status": "frozen-before-rich-context-cuda-refinement",
+  "timeout_seconds": 1800
+}

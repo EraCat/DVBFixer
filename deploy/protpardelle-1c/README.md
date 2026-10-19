@@ -5,6 +5,22 @@ protocol runner for Protpardelle-1c revision
 `ee378400f25b801fa481028000f9060183d7fb4c`. MODELLER remains the default and
 production-supported backend.
 
+## CUDA rich-context chain-phase diagnosis
+
+The private CUDA adapter accepts explicit
+`chain_phase_policy="neutral-v1"` only when the request also declares
+`BackendOption("cc89_chain_phase", "neutral-v1")`. This neutralizes the cc89
+denoiser's extra rotary chain-phase term while retaining the sampler's chain
+indices, residue-index breaks, motif entities, and source mappings. The default
+is `native`; this research intervention is not enabled for MPS or exposed as a
+public profile.
+
+On the frozen three-case/six-output diagnostic cohort, the change reduces raw
+gap RMSD from 11–20 Å to 0.35–0.89 Å, and unchanged generated-only CUDA refinement
+accepts 6/6. See the [causal diagnosis and evidence](../../docs/research/cc89-chain-phase-root-cause.md).
+This replaces the earlier interpretation that local refinement could not rescue
+the gaps themselves; the original configuration's 0/6 result remains preserved.
+
 ## Apple Silicon preparation
 
 Use a native arm64 Python environment and apply the Apple patch to the clean,

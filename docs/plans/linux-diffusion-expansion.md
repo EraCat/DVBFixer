@@ -36,6 +36,14 @@
 
 ## Current Expansion Baseline
 
+**Subsequent cc89 chain-phase investigation:** 42 frozen CUDA samplings isolate
+the denoiser's extra rotary chain-phase component as the cause of the previous
+11–20 Å reconstruction failures. An explicit CUDA-only research repair preserves
+all input atoms/gaps and sampler chain/residue features and reproduces causal
+controls byte-for-byte. The unchanged generated-only refinement passes 6/6 at
+0.17–0.25 Å backbone RMSD. This repaired pilot does not complete wider source/seed
+acceptance; see [the causal report](../research/cc89-chain-phase-root-cause.md).
+
 **2026-10-19 CUDA completion audit:** shared profile-specific length admission,
 adaptive-source hardening, and Homology deletion-window/failed-request regression
 coverage are implemented. All 50 full-input clean-cohort outcomes were audited for

@@ -1,0 +1,95 @@
+{
+  "arms": {
+    "full-native": {
+      "learned_motif_residue_limit": null,
+      "project_all_represented_fixed_atoms": false,
+      "project_fixed_self_conditioning": false
+    },
+    "full-projected": {
+      "learned_motif_residue_limit": null,
+      "project_all_represented_fixed_atoms": true,
+      "project_fixed_self_conditioning": false
+    },
+    "full-projected-selfcond": {
+      "learned_motif_residue_limit": null,
+      "project_all_represented_fixed_atoms": true,
+      "project_fixed_self_conditioning": true
+    },
+    "sparse24-native": {
+      "learned_motif_residue_limit": 24,
+      "project_all_represented_fixed_atoms": false,
+      "project_fixed_self_conditioning": false
+    },
+    "sparse24-projected": {
+      "learned_motif_residue_limit": 24,
+      "project_all_represented_fixed_atoms": true,
+      "project_fixed_self_conditioning": false
+    },
+    "sparse24-projected-selfcond": {
+      "learned_motif_residue_limit": 24,
+      "project_all_represented_fixed_atoms": true,
+      "project_fixed_self_conditioning": true
+    }
+  },
+  "cases": [
+    {
+      "artifacts": {
+        "input/normalized.pdb": "94b7f2daaf938b9f25dc0ffe95ef957372866664ac7cf04f16b7928d0bd7cfba",
+        "reference.pdb": "8988cf76e4fed328b9dda9a195a8fc299cdc3ee88c7a4155454537863226bcfe",
+        "request.json": "d43f94838c2d897d80b5af3102d864800bb3cd5b2b382073697d4e59ec4cf641"
+      },
+      "case_id": "cc89-joint"
+    },
+    {
+      "artifacts": {
+        "input/normalized.pdb": "9cc83cb959000ff35730feb8e12f6392ae3678feb06572368ca8a558e29f50f2",
+        "reference.pdb": "8988cf76e4fed328b9dda9a195a8fc299cdc3ee88c7a4155454537863226bcfe",
+        "request.json": "0cc2466fb01eecd6a2d62af1204b98fab62b5e7c383e8a221c6230b813d63696"
+      },
+      "case_id": "cc89-discontiguous"
+    },
+    {
+      "artifacts": {
+        "input/normalized.pdb": "693ab15258e565c13bf511352e1d6e6c56ff04376eb8b535595da4f0ce28b815",
+        "reference.pdb": "08295c35a42ae73e91d278ce0b42af230dbb97edaf945e73baf1ecbae51e451e",
+        "request.json": "2e00495f40c05aca1529d89b510952a9ec337c5d4e089302ac1b81aa63d3792d"
+      },
+      "case_id": "cc89-case-insertion"
+    }
+  ],
+  "checkpoint_sha256": "dfc9895b399ec4497bf6d646502168725f01dcbd55bc0b541fc3e3cc1f2f0483",
+  "checks": [
+    "actual denoiser crop tensor identities/coordinates and zero gap coordinates",
+    "independent geometry and fixed/environment-aligned withheld accuracy",
+    "baseline candidate byte comparison; no geometry-threshold changes"
+  ],
+  "code_sha256": {
+    "deploy/protpardelle-1c/checkpoint_gap_smoke.py": "6e0a5373e4b7f60a3f1273f839b13179c1db2fe9a4d7b10a7637cf7307d32f5f",
+    "scripts/debug_cc89_conditioning.py": "b96fee5ca87fc4504328d9913dfbc0e402c962078d843b11b258921975341620",
+    "src/dvbfixer/model/diffusion/pdb_materialize.py": "7cf08620f283f3b96b5977843fa2f2505613ee9ee75321e7691ec00e4be4a55e",
+    "src/dvbfixer/model/diffusion/protein_context.py": "b4b0bc9b97a1ea2a9ede77fd869a88a58395d491b618278937be16c203d0c8d8",
+    "src/dvbfixer/model/diffusion/validate.py": "1f5bb86524ca6e600ac63d2487be817562c667a8d6f13e074b52ec870f285342",
+    "test/protpardelle-1c-audit/src/protpardelle/core/models.py": "2ec52fee68368ba3addfa4b46eec70949c6730801f05cb309c8eb5ed22f1f810",
+    "test/protpardelle-1c-audit/src/protpardelle/core/modules.py": "3fe69476e45932c04c56332e09f0e3b2b51cc77f3effe861d93c37d975a529a3",
+    "test/protpardelle-1c-audit/src/protpardelle/data/pdb_io.py": "71d091bcf2bd99dcc2624e1cd1a9736a5e1210b6ba96039ff55e014cd4808ea0"
+  },
+  "config_sha256": "e9999ace79bf3044351cc982a624fc3459add3a4f91cbf97ff5b437b8942eb9d",
+  "device": "cuda",
+  "engine_revision": "ee378400f25b801fa481028000f9060183d7fb4c",
+  "hypotheses": [
+    "motif density versus sparse <=24-residue training motifs on the same axis",
+    "fixed xt projection versus unprojected fixed x_self_cond"
+  ],
+  "no_replacement": true,
+  "public_promotion": false,
+  "reference_usage": "offline scoring only",
+  "refinement": "none",
+  "s_churn": 200.0,
+  "scope": "private-debug-no-public-runner-result",
+  "seed": 7,
+  "status": "frozen-before-cc89-tensor-semantics-controls",
+  "step_scale": 1.2,
+  "steps": 500,
+  "timeout_seconds": 600,
+  "torch": "2.6.0+cu124"
+}

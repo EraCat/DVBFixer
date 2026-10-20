@@ -8,7 +8,7 @@ Backfilled from git history — commits before v0.3.0 are grouped by
 feature area rather than by strict release. Older entries are
 best-effort summaries; consult `git log` for exact provenance.
 
-## [0.9.0] — 2026-10-01
+## [0.9.0] — 2026-10-20
 
 ### Added
 
@@ -23,6 +23,19 @@ best-effort summaries; consult `git log` for exact provenance.
   Protpardelle research adapter, including fail-closed device assertions,
   disabled CPU fallback, synchronized timing, memory telemetry, and exact final
   fixed-coordinate restoration.
+- Added experimental diffusion workflows across sequential model batch/resume,
+  ZBS, mosaic-first Homology and the GUI, with verified bundle custody and
+  provenance-preserving PDB/`.dat` handoff.
+- Added corrected cc89 CUDA and versioned Apple MPS local-context profiles with
+  physical source positions, neutral chain phase, isolated refinement runtimes,
+  multi-seed publication and frozen-request replay. Historical MPS behavior
+  remains a separate profile rather than being silently replaced.
+- Added authoritative offline `reconstruct-component` and `component-info`
+  commands for the admitted isolated-component scope. Linked, metal and redox
+  chemistry and MD parameterization retain separate acceptance requirements.
+- Added reference-distance benchmark metrics, protein-context conditioning and
+  frozen expanded-cohort research records without widening public admission
+  merely because a research adapter supports a larger scope.
 
 ### Changed
 
@@ -32,8 +45,9 @@ best-effort summaries; consult `git log` for exact provenance.
 - Added separate protocol runners for the Apple MPS Protpardelle profile and the
   Linux/CUDA Protenix profile, plus a bounded no-inference `doctor` handshake
   that is also enforced before public diffusion inference. The Apple public CLI
-  smoke and frozen 231-case production-wrapper cohort completed; Linux
-  checkpoint-backed production acceptance remains pending.
+  smoke and frozen 231-case production-wrapper cohort completed. Public Linux
+  checkpoint-backed workflow smokes also passed; the complete selected Protenix
+  production-wrapper replay and final OCI image build/GPU smoke remain pending.
 - Raised the runner contract to schema 4 with mandatory per-candidate sampler
   traces, exact generated/fixed sampler-axis identity checks, profile evidence
   labels in publication provenance, and frozen source-tree verification.
@@ -73,21 +87,48 @@ best-effort summaries; consult `git log` for exact provenance.
   Protpardelle keeps covered matching template atoms exact, generates admitted
   uncovered regions, and publishes the standard validated bundle without a
   MODELLER fallback. Covered substitutions remain fail closed.
+- Synchronized plan status to separate delivered software, bounded hardware
+  evidence and remaining scientific/production gates; retained historical
+  protocols and experiment hashes unchanged.
+
+### Fixed
+
+- Deferred optional Torch/reinjection imports in Protenix research helpers so
+  pure helpers can run in the core environment; made simulated Linux preflight
+  tests independent of the actual host's cgroup RAM limits.
+- Corrected fixture-manifest completeness checks for explicitly tracked Apple
+  provenance metadata and rejected duplicate manifest entries.
+- Hardened naming-output symlink cleanup, including dangling links, dry runs,
+  child failures and malformed reports, without touching link targets or
+  registering failed outputs.
+- Disabled the development API plugin during Vitest collection so tests do not
+  migrate or lock live workspace manifests; development hosting is unchanged.
+- Corrected Amber19SB external preprocessing fixtures to use a periodic box
+  compatible with Verlet cutoffs while retaining `grompp -maxwarn 0`.
 
 ### Compatibility
 
 - MODELLER remains the default and production-supported backend of
-  `dvbfixer model`. Diffusion is explicit and experimental, is not exposed
-  through GUI, batch, Homology, or ZBS, and introduces no automatic scientific
-  fallback or checkpoint download.
+  `dvbfixer model`. Diffusion remains explicit and experimental, including its
+  GUI, batch, Homology and ZBS integrations, and introduces no automatic
+  scientific fallback or checkpoint download. Corrected cc89 CUDA/MPS public
+  profiles remain protein-only with their bounded internal-gap admission;
+  legacy terminal/heterogen capabilities do not transfer to corrected profiles.
 
 ### Verification
 
-- The hardware-independent integration passed the full Python 3.11 non-slow
-  suite (907 passed, 9 skipped), the GUI suite (235 passed), mypy, Ruff,
-  generated-reference checks, DDD map validation, and whitespace validation.
-  Later Apple runner smoke passed on native M3 Pro hardware; Linux/NVIDIA
-  production-runner acceptance remains required.
+- Initial hardware-independent integration passed Python 3.11 non-slow tests
+  (907 passed, 9 skipped), GUI tests (235 passed), mypy, Ruff and generated/map
+  checks. Final baseline repairs passed Python non-slow tests (1212 passed,
+  2 optional-dependency skips), GUI tests (251 passed), TypeScript typecheck,
+  ESLint, Ruff, generated-reference/schema, version and agent-map checks.
+- Corrected Apple research acceptance passed 8/8 and public model/Homology
+  integration passed 5/5; corrected CUDA public integration passed 5/5 across
+  four workflows. These are bounded results, not general scientific acceptance.
+- All six Amber19SB water/ion pair selections passed actual GROMACS 2026.0
+  preprocessing. This does not claim solvated trajectories or mixed-chemistry
+  acceptance. See [baseline-repair evidence](docs/research/baseline-repair-2026-10-20.md)
+  and the [remaining-work index](docs/plans/README.md).
 
 ## [0.8.9] — 2026-09-30
 

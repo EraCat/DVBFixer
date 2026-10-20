@@ -1,5 +1,15 @@
 # Diffusion Runner Environment Plan
 
+**Current status (2026-10-20):** separate environments, profile locks, installer,
+Doctor and bounded protocol wrappers are implemented. Corrected Apple local-v1
+uses a separately verified CPU-refinement interpreter and passes public 5/5
+integration; the legacy native-position MPS identity remains available. Protenix's
+resolved profile lock and public NVIDIA smokes exist; the remaining Linux gate is
+the full selected production-wrapper cohort and final OCI build/GPU smoke, not
+initial environment pinning. See the [current index](README.md) and
+[Apple evidence](../research/cc89-public-apple-acceptance.md). Historical milestones
+below do not supersede these versioned profile boundaries.
+
 - Status: implementation in progress.
 - Scope: platform-specific environments and protocol wrappers for the
   experimental `dvbfixer model --backend diffusion` CLI.
@@ -164,5 +174,11 @@ GUI, `zbs`, `homology`, heterogen support, or automatic profile selection.
 - [x] Add the diffusion profile report and bounded no-inference handshake to
   `dvbfixer doctor`.
 - [x] Implement the portable `protenix-v1-cuda` protocol wrapper and core tests.
-- [ ] Pin the resolved Linux environment and accept `protenix-v1-cuda` on a
-  Linux/NVIDIA host.
+- [x] Pin the resolved Linux environment/source/auxiliary identities in
+  `deploy/protenix-v1/profile-lock.json` and exercise public NVIDIA workflows;
+  see [workflow evidence](../research/diffusion-workflow-integration.md).
+- [ ] Replay the complete selected 231-case cohort through the final Protenix
+  production wrapper and build/GPU-smoke its final OCI image.
+- [x] Implement versioned corrected Apple local-v1 with isolated CPU refinement,
+  bounded public 5/5 integration and exact frozen replay, retaining legacy MPS.
+- [ ] Complete the larger corrected-Apple operational/memory/latency cohort.

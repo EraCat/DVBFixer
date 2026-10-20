@@ -257,14 +257,23 @@ def test_grompp_external_acceptance(tmp_path: Path, water: str, pair: object) ->
     input_pdb = _write_peptide(tmp_path / "input.pdb")
     out = tmp_path / "out"
     top = _run_top(input_pdb, out, "--water", water)
+    # Verlet requires periodic boundaries. A finite, sufficiently large box is
+    # part of the preprocessing fixture, not a change to force-field parameters.
+    coordinates = out / "boxed.gro"
+    boxed = subprocess.run(
+        [gmx, "editconf", "-f", str(out / "conf.pdb"), "-o", str(coordinates), "-box", "4", "4", "4"],
+        cwd=out, text=True, capture_output=True, check=False,
+    )
+    assert boxed.returncode == 0, boxed.stdout + boxed.stderr
     mdp = out / "acceptance.mdp"
     mdp.write_text(
-        "integrator = md\nnsteps = 0\npbc = no\ncutoff-scheme = Verlet\n"
-        "nstlist = 1\nrlist = 1.0\ncoulombtype = Cut-off\nrcoulomb = 1.0\n"
+        "integrator = md\nnsteps = 0\ncontinuation = yes\npbc = xyz\ncutoff-scheme = Verlet\n"
+        "comm-mode = none\nverlet-buffer-tolerance = -1\n"
+        "nstlist = 10\nrlist = 1.0\ncoulombtype = Cut-off\nrcoulomb = 1.0\n"
         "vdwtype = Cut-off\nrvdw = 1.0\n"
     )
     result = subprocess.run(
-        [gmx, "grompp", "-f", str(mdp), "-p", str(top), "-c", str(out / "conf.pdb"),
+        [gmx, "grompp", "-f", str(mdp), "-p", str(top), "-c", str(coordinates),
          "-o", str(out / "acceptance.tpr"), "-maxwarn", "0"],
         cwd=out, text=True, capture_output=True, check=False,
     )

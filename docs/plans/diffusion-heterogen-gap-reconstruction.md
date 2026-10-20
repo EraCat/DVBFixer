@@ -1,7 +1,10 @@
 # Diffusion Gap Reconstruction With Heterogen Context Research Plan
 
-- Status: narrow isolated-SMILES geometric-context slice implemented for the
-  Protpardelle profile; broader chemistry classes remain proposed research.
+- Status (2026-10-20): narrow isolated-SMILES geometric-context slice implemented
+  for the **legacy** `protpardelle-1c-mps` profile; broader chemistry classes remain
+  proposed research. Corrected cc89 CUDA and `protpardelle-1c-mps-local-v1` remain
+  protein-only and reject nonwater heterogens. No legacy chemistry capability is
+  inherited by the corrected profiles. See the [current plan index](README.md).
 - Scope owner: Structure Preparation bounded context.
 - Depends on:
   - the narrow protein-only diffusion boundary in

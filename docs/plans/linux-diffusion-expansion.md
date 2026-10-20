@@ -1,7 +1,9 @@
 # Linux Diffusion Expansion Implementation Plan
 
-- Status: proposed implementation plan rebased onto the 2026-10-06 expansion
-  baseline; execute work packages only after explicit approval.
+- Status (2026-10-20): partially implemented and experimentally evaluated; see
+  the current evidence below and [plan index](README.md). Original work-package
+  checklists are historical decomposition, not a claim that all their software is
+  missing. New scientific scope and paused validation-policy work require separate approval.
 - Target branch: `feature/dvbfixer-hardening`.
 - Scope owner: Structure Preparation bounded context.
 - Exclusive coordinating change group: `missing-atom-rebuild-chirality`.
@@ -23,12 +25,12 @@
   public scientific scope.
 - [ ] Add reference-dependent benchmark metrics without combining unrelated
   score scales into one synthetic score.
-- [ ] Replace the global 3-12 gap limit with profile-specific, evidence-backed
+- [x] Replace the global 3-12 gap limit with profile-specific, evidence-backed
   capability strata.
 - [ ] Complete causal acceptance and broader engine support for surrounding-aware
   gap reconstruction, building on the implemented Protpardelle local-partner
   conditioning slice.
-- [ ] Add backend-aware batch output and diffusion-enabled `zbs`, and expand the
+- [x] Add backend-aware batch output and diffusion-enabled `zbs`, and expand the
   implemented one-chain mosaic-first `homology` slice without changing MODELLER
   defaults.
 - [ ] Preserve fail-closed admission, independent validation, atomic bundle
@@ -43,7 +45,7 @@ at most 512 whole-source residues. Sampling and CUDA refinement use separate
 environments/processes. Four public model/Homology workflows accept 5/5 candidates,
 including multi-seed publication and verified resume; independent audit confirms
 zero D-Cα and exact outside-gap records. This does not expose full-complex neural
-sampling or joint gap-bearing chains, or change the MPS profile/MODELLER default.
+sampling or joint gap-bearing chains, or change the historical MPS profile/MODELLER default.
 See the [public acceptance](../research/cc89-public-cuda-acceptance.md) and
 [deployment instructions](../../deploy/protpardelle-1c/README.md#public-linuxnvidia-cuda-profile).
 
@@ -91,8 +93,9 @@ withheld accuracy: 49/50 refined geometry passes include a length-50 result at
 8.69575 Å backbone RMSD. Rich cc89 CUDA refinement accepts 0/6; two cases stop at
 the chirality guard with no refined output. These are open scientific gates,
 not missing adapter wiring. See [completion evidence](../research/cuda-expansion-completion.md).
-Apple MPS work is deferred until CUDA implementation completes and does not block
-the current CUDA work packages.
+The subsequent corrected Apple port/public integration is now complete in its
+bounded local-v1 scope; see [Apple acceptance](../research/cc89-public-apple-acceptance.md).
+Its larger operational cohort remains pending and does not replace NVIDIA evidence.
 
 **Input-scope correction after manual review:** the
 [chain-truncation audit](../research/a100-input-truncation-audit.md) reproduces
@@ -130,8 +133,9 @@ Further implemented research slices and 31 verified frontier outcomes are record
 in [reconstruction frontiers](../research/reconstruction-frontiers.md): private
 joint/discontiguous cc89 views, two-round sampled-trajectory context expansion,
 explicit Homology edit flanks, and 13–25/26–50 research capability strata. Rich cc89
-geometry and adaptive improvement are not generally accepted; the public length
-gate remains 3–12 pending a larger independently reviewed study.
+geometry and adaptive improvement are not generally accepted. Public admission
+is profile-specific: 3–12 for Protenix/legacy MPS and 5–10 CYS-free internal gaps
+for corrected cc89 CUDA/MPS; research strata do not inherit public acceptance.
 
 Blocks WP5–WP8 and WP12 now have an additional implemented slice and frozen
 expanded studies: [context/Homology expansion protocol](../research/protein-context-expansion.md).

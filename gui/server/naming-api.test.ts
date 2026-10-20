@@ -63,10 +63,8 @@ function successfulRunner(options: {
     const outputBytes = options.outputBytes || Buffer.from('ATOM      1  CA  ALA A   1      10.000  10.000  10.000  1.00 20.00           C  \nEND\n')
     const digest = options.outputSha256 || await import('node:crypto').then(({ default: crypto }) =>
       crypto.createHash('sha256').update(outputBytes).digest('hex'))
-    if (!options.dryRun) {
-      if (options.outputSymlink) fs.symlinkSync(options.outputSymlink, output)
-      else fs.writeFileSync(output, outputBytes)
-    }
+    if (options.outputSymlink) fs.symlinkSync(options.outputSymlink, output)
+    else if (!options.dryRun) fs.writeFileSync(output, outputBytes)
     fs.writeFileSync(reportFile, JSON.stringify({
       schemaVersion: 1,
       operation: 'pdb-force-field-naming',
@@ -583,7 +581,9 @@ describe('naming conversion application boundary', () => {
     expect(loadWorkspace(dataRoot, 'workspace-a').artifacts).toHaveLength(1)
   })
 
-  it.each(['regular', 'dangling'] as const)('rejects a child-created %s output symlink without retaining it', async target => {
+  it.each([
+    ['regular', false], ['dangling', false], ['regular', true], ['dangling', true],
+  ] as const)('rejects a child-created %s output symlink without retaining it (dryRun=%s)', async (target, dryRun) => {
     const dataRoot = temp()
     workspace(dataRoot)
     const root = workspaceRoot(dataRoot, 'workspace-a')
@@ -592,13 +592,14 @@ describe('naming conversion application boundary', () => {
     if (target === 'regular') fs.writeFileSync(outside, content)
 
     await expect(executeNamingConversion(
-      dataRoot, 'workspace-a', request, successfulRunner({ outputSymlink: outside }),
+      dataRoot, 'workspace-a', { ...request, dryRun }, successfulRunner({ outputSymlink: outside, dryRun }),
     )).rejects.toMatchObject({ statusCode: 500, code: 'UNSAFE_OUTPUT' })
 
     if (target === 'regular') expect(fs.readFileSync(outside, 'utf8')).toBe(content)
     const failedRoot = path.join(root, 'runs', '_failed')
     const failedRun = path.join(failedRoot, fs.readdirSync(failedRoot)[0])
     expect(() => fs.lstatSync(path.join(failedRun, 'named.pdb'))).toThrow()
+    expect(loadWorkspace(dataRoot, 'workspace-a').artifacts).toHaveLength(1)
   })
 
   it('rejects source symlinks that escape the workspace', async () => {
@@ -612,6 +613,27 @@ describe('naming conversion application boundary', () => {
 
     await expect(executeNamingConversion(dataRoot, 'workspace-a', request, successfulRunner()))
       .rejects.toMatchObject({ statusCode: 404, code: 'ARTIFACT_NOT_FOUND' })
+  })
+
+  it.each(['child-error', 'malformed-report'] as const)('removes dangling output links before retaining %s diagnostics', async failure => {
+    const dataRoot = temp()
+    workspace(dataRoot)
+    const root = workspaceRoot(dataRoot, 'workspace-a')
+    const outside = path.join(temp(), 'missing.pdb')
+    const base = successfulRunner({ outputSymlink: outside })
+    const runner = async (...args: Parameters<typeof base>) => {
+      const result = await base(...args)
+      if (failure === 'child-error') return { ...result, code: 1 }
+      fs.writeFileSync(args[1][args[1].indexOf('--report-json') + 1], '{invalid')
+      return result
+    }
+    await expect(executeNamingConversion(dataRoot, 'workspace-a', request, runner))
+      .rejects.toMatchObject({ statusCode: 500, code: failure === 'child-error' ? 'SUBPROCESS_FAILED' : 'INVALID_CLI_REPORT' })
+    const failedRoot = path.join(root, 'runs', '_failed')
+    const failedRun = path.join(failedRoot, fs.readdirSync(failedRoot)[0])
+    expect(() => fs.lstatSync(path.join(failedRun, 'named.pdb'))).toThrow()
+    expect(fs.existsSync(outside)).toBe(false)
+    expect(loadWorkspace(dataRoot, 'workspace-a').artifacts).toHaveLength(1)
   })
 
   it('rejects an artifact ID belonging to another workspace', async () => {

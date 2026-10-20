@@ -3,10 +3,12 @@ import react from '@vitejs/plugin-react'
 import path from 'path'
 import { apiPlugin } from './server/api-plugin'
 
-export default defineConfig({
+export default defineConfig(({ mode }) => ({
   plugins: [
     react(),
-    apiPlugin(),
+    // Vitest uses Vite configuration, but must not migrate/lock live projects
+    // or start the development API while collecting unit tests.
+    ...(mode === 'test' ? [] : [apiPlugin()]),
   ],
   resolve: {
     alias: {
@@ -24,4 +26,4 @@ export default defineConfig({
   ssr: {
     noExternal: ['molstar'],
   },
-})
+}))

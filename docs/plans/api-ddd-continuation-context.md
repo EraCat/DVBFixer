@@ -1,5 +1,12 @@
 # API and DDD continuation context
 
+**Historical handoff, not the current backlog (2026-10-20).** API/naming,
+standalone security and single-host workflow work described as future work below
+has largely been delivered. Use the [current plan index](README.md) and
+[implementation checklist](implementation-checklist.md) for status; retain this
+document as design/reproduction context, not authorization to reimplement completed
+features.
+
 Current completion status is tracked in the canonical
 [implementation checklist](implementation-checklist.md). This file remains a
 historical handoff record rather than an implementation tracker.

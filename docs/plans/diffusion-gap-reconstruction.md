@@ -1,5 +1,15 @@
 # Diffusion Gap-Reconstruction Implementation Plan
 
+**Status synchronized 2026-10-20:** the backend-neutral core, bounded experimental
+CLI, batch/ZBS/GUI custody and mosaic-first Homology paths are implemented. Public
+cc89 CUDA and versioned corrected Apple each pass 5/5 integration; historical MPS
+remains separate. Protenix is locked and has public GPU workflow smokes, but its
+full production-wrapper cohort/final OCI acceptance is still open. Larger scientific
+cohorts, paused validation-policy refinements and a production/default decision
+are not implied by software delivery. See the [current plan index](README.md) and
+[canonical checklist](implementation-checklist.md). Older phase/task boxes retain
+their original scope and must not be used alone as a present-day backlog.
+
 - Status: Phase 4 implementation-ready for the narrow experimental scope.
 - Branch: `diffusion`.
 - Scope owner: Structure Preparation bounded context.

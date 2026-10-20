@@ -1,18 +1,22 @@
 # Small Diffusion And Apple Silicon Experiment Plan
 
-**Current restart point:** [corrected cc89 Apple handoff](apple-cc89-handoff.md),
-prepared after public CUDA baseline `cb43db6`. The historical MPS studies below
-predate neutral chain phase and physical source positions. Preserve that baseline;
-the corrected mode needs its own explicit MPS port and hardware acceptance.
+**Current restart point (2026-10-20):** the [corrected Apple handoff](apple-cc89-handoff.md)
+now records completed explicit research-mode implementation (8/8 after CPU refinement)
+and versioned public local-v1 integration (5/5 model/Homology, multi-seed and frozen
+replay). The next gate is a larger separately frozen corrected-mode operational/
+memory/latency cohort, not another implementation of the port. Historical MPS
+studies below predate neutral phase/physical positions and remain separate evidence.
 
-- Status: active research; Linux selection and 231-case descriptive follow-up
-  complete, Apple Silicon portability handoff next.
+- Status: bounded experimental implementation delivered; broader acceptance and
+  training-membership independence remain open. Linux selection and historical
+  231-case studies are complete. Historical goal/requirements boxes below are not
+  an independent implementation backlog; see the [current index](README.md).
 - Scope owner: Structure Preparation bounded context.
 - Relationship to production work:
   - Keep Protenix v1 as the selected experimental production-integration backend.
   - Treat this plan as an independent search for a smaller local alternative.
-  - Test compact candidates on Linux CPU/CUDA first. That gate is complete for
-    Protpardelle-1c; test its Apple Silicon support next on the physical Mac.
+  - Linux CPU/CUDA and native Apple portability gates exist for Protpardelle-1c;
+    preserve their per-profile scope and separate research from public evidence.
   - Do not delay or weaken the Protenix integration gates.
   - Do not use Apple Silicon evidence as a substitute for Linux/NVIDIA acceptance.
 - Related evidence:

@@ -10,11 +10,9 @@ import resource
 import time
 from dataclasses import asdict
 from pathlib import Path
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 import numpy as np
-import torch
-from reinjection import FixedAtomReinjector
 
 from dvbfixer.model.diffusion.contract import (
     DIFFUSION_SCHEMA_VERSION,
@@ -35,6 +33,9 @@ from dvbfixer.model.diffusion.runner import DIFFUSION_RUNNER_PROTOCOL_VERSION
 from dvbfixer.model.diffusion.sampler import SamplingAblationMode
 from dvbfixer.model.diffusion.trace import build_sampler_trace, write_sampler_trace
 from dvbfixer.model.diffusion.validate import validate_runner_result
+
+if TYPE_CHECKING:
+    import torch
 
 _ONE_TO_THREE = {
     "A": "ALA",
@@ -210,6 +211,8 @@ class _TracingCallback:
         fixed_coordinates: dict[AtomIdentity, np.ndarray],
         alignment_atoms: tuple[AtomIdentity, ...] | None = None,
     ) -> None:
+        from reinjection import FixedAtomReinjector
+
         self._reinject = FixedAtomReinjector(atom_axis, fixed_coordinates, alignment_atoms=alignment_atoms)
         index_by_identity = {identity: index for index, identity in enumerate(atom_axis)}
         ordered = tuple(sorted(fixed_coordinates))
@@ -220,6 +223,8 @@ class _TracingCallback:
         self.steps: list[dict[str, float | int]] = []
 
     def __call__(self, coordinates: torch.Tensor, step_index: int, step_count: int) -> torch.Tensor:
+        import torch
+
         if coordinates.device.type != "cuda":
             raise RuntimeError("sampler coordinates left the CUDA device")
         if not coordinates.is_floating_point():
@@ -332,6 +337,8 @@ class _DenoiserContextProbe:
         self.result = None
 
     def __call__(self, module, args, kwargs):
+        import torch
+
         step = self.calls
         self.calls += 1
         if step != 100:
@@ -376,6 +383,8 @@ def run(
     ablation_mode: SamplingAblationMode,
     context_probe: bool = False,
 ) -> tuple[RunnerResult, Path]:
+    import torch
+
     os.environ.setdefault("CUBLAS_WORKSPACE_CONFIG", ":4096:8")
     from configs.configs_inference import inference_configs
     from protenix.data.inference.infer_dataloader import get_inference_dataloader

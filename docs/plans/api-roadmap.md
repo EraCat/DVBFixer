@@ -3,8 +3,12 @@
 Completion status is tracked in the canonical
 [implementation checklist](implementation-checklist.md).
 
-Status: implementation in progress. The Phase 1 pure naming service is
-implemented; dedicated CLI and HTTP adapters are not.
+Status (2026-10-20): the naming service, dedicated CLI/V1 HTTP adapters, standalone
+host, security controls and versioned managed workflows are implemented. The
+[canonical checklist](implementation-checklist.md#api-phase-0-decisions-and-baseline)
+records completion and reference-host verification. Operator-specific deployment
+acceptance and multi-host scheduling are separate boundaries. Original milestones
+below are retained as design context, not wholly unimplemented features.
 
 This plan turns the existing local GUI middleware into a supported,
 versioned HTTP API. The first vertical slice is conversion of PDB atom and
@@ -46,11 +50,13 @@ The repository already has most of an API application shell:
 - `src/dvbfixer/command_registry.py` is the authoritative command inventory;
   `scripts/gen_gui_spec.py` derives the GUI command schema from argparse.
 
-The naming route is versioned and publishes OpenAPI, and the build includes a
-loopback-default standalone server. Static bearer principals and manifest-backed
-workspace ownership/ACLs are implemented. The wider HTTP layer is not yet a
-public production API: most legacy routes are unversioned, CORS and quotas are
-not hardened, and active job locks and SSE subscribers remain process-local.
+The naming route and managed workflows are versioned and publish OpenAPI; the
+build includes a loopback-default standalone server. Bearer principals, workspace
+ownership/ACLs, restrictive CORS, application/OS deployment quotas, durable audit
+retention and single-host cross-process locks/cancellation/event delivery are
+implemented. Reference Ubuntu/HTTPS deployment acceptance is recorded in the
+checklist; it does not attest a future operator host. Multi-host operation still
+requires an external scheduler/state store. Scientific policy remains in Python.
 
 ## Recommended architecture
 

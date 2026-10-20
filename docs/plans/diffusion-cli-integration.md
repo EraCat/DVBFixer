@@ -1,6 +1,21 @@
 # План A. Слияние веток и внедрение diffusion backend в CLI
 
-## Статус интеграции на 2026-10-02
+## Текущий статус на 2026-10-20
+
+Публичные opt-in CLI, runtime discovery/Doctor, batch/resume, ZBS handoff,
+mosaic-first Homology и GUI routing уже реализованы. Проверенный workflow-срез
+описан в [integration evidence](../research/diffusion-workflow-integration.md).
+Corrected cc89 CUDA и новый `protpardelle-1c-mps-local-v1` имеют по 5/5 публичных
+model/Homology кандидатов; Apple 8/8 research pilot и frozen replay описаны в
+[Apple acceptance](../research/cc89-public-apple-acceptance.md). Legacy MPS identity
+сохранён отдельно. Protenix profile lock и публичные GPU smokes существуют;
+полный 231-case production-wrapper replay и final OCI image/GPU smoke остаются
+отдельными gates. MODELLER остаётся default, расширение научной области не заявляется.
+
+Ниже сохранён исторический этап интеграции; его старые ограничения — не текущий
+перечень отсутствующего кода. Сводный статус: [индекс планов](README.md).
+
+## Исторический статус интеграции на 2026-10-02
 
 На ветке `feature/dvbfixer-hardening` выполнен предварительный этап:
 

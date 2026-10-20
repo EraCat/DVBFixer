@@ -341,23 +341,25 @@ export async function executeNamingConversion(
 
     let outputArtifact: WorkspaceArtifact | null = null
     let relativeOutput: string | null = null
+    let outputStat: fs.Stats | null = null
+    try { outputStat = fs.lstatSync(output) } catch { /* missing */ }
+    if (outputStat?.isSymbolicLink()) {
+      // Unlink the directory entry itself, including a dangling symlink.
+      // Some Node versions treat rmSync(force) as a no-op for dangling links.
+      try { fs.unlinkSync(output) } catch { /* failure handling will quarantine the run */ }
+      throw new NamingApiError(500, 'UNSAFE_OUTPUT', 'atom-names output is not a private regular file')
+    }
     if (request.dryRun) {
-      if (report.output.written || fs.existsSync(output)) {
+      if (report.output.written || outputStat) {
         throw new NamingApiError(500, 'CLI_REPORT_MISMATCH', 'dry run unexpectedly published an output')
       }
     } else {
-      let outputStat: fs.Stats | null = null
-      try { outputStat = fs.lstatSync(output) } catch { /* missing */ }
-      if (outputStat?.isSymbolicLink()) {
-        try { fs.rmSync(output, { force: true }) } catch { /* failure handling will quarantine the run */ }
-        throw new NamingApiError(500, 'UNSAFE_OUTPUT', 'atom-names output is not a private regular file')
-      }
       if (!report.output.written || !outputStat?.isFile()) {
         throw new NamingApiError(500, 'MISSING_OUTPUT', 'atom-names did not publish the expected output')
       }
       let outputBytes: Buffer | null
       try { outputBytes = readBoundedRegularFile(output, settings.maxSourceBytes) } catch {
-        try { fs.rmSync(output, { force: true }) } catch { /* failure handling will quarantine the run */ }
+        try { fs.unlinkSync(output) } catch { /* failure handling will quarantine the run */ }
         throw new NamingApiError(500, 'UNSAFE_OUTPUT', 'atom-names output is not a private regular file')
       }
       if (!outputBytes) {
@@ -417,6 +419,11 @@ export async function executeNamingConversion(
     if (request.dryRun) fs.rmSync(operationDirectory, { recursive: true, force: true })
     return { statusCode: request.dryRun ? 200 : 201, response }
   } catch (error) {
+    // A failed child or malformed report can bypass output validation above.
+    // Never retain a child-created output symlink in the diagnostic archive.
+    try {
+      if (fs.lstatSync(output).isSymbolicLink()) fs.unlinkSync(output)
+    } catch { /* missing output or cleanup failure must not replace the original error */ }
     if (error instanceof WorkspaceQuotaExceededError) {
       try { fs.rmSync(operationDirectory, { recursive: true, force: true }) } catch { /* preserve the quota failure */ }
     } else {

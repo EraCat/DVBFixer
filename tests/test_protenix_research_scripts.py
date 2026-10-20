@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import importlib.util
 import json
+import subprocess
 import sys
 from dataclasses import dataclass
 from pathlib import Path
@@ -539,9 +540,11 @@ def test_production_source_tree_rejects_unapproved_python_changes(
     assert not production._source_tree_is_frozen(tmp_path)
 
 
+@pytest.mark.parametrize("ram_bound", [True, False])
 def test_production_preflight_reports_cuda_without_loading_adapter(
     tmp_path: Path,
     monkeypatch: pytest.MonkeyPatch,
+    ram_bound: bool,
 ) -> None:
     production = _load_production_runner()
     checkpoint = tmp_path / production.CHECKPOINT_NAME
@@ -584,6 +587,9 @@ def test_production_preflight_reports_cuda_without_loading_adapter(
     monkeypatch.setattr(production, "_verify_kalign", lambda path, _lock: path)
     monkeypatch.setattr(production, "_verify_patched_sources", lambda _root, _lock: None)
     monkeypatch.setattr(production, "_verify_auxiliary_artifacts", lambda _root, _lock: None)
+    # This is a simulated Linux profile, not an attestation of the test host's
+    # cgroup (which may be absent on macOS or different in CI).
+    monkeypatch.setattr(production, "_cgroup_ram_limit", lambda: production.MAX_RAM_BYTES if ram_bound else None)
     monkeypatch.setattr(
         production,
         "_load_production_scripts",
@@ -592,5 +598,40 @@ def test_production_preflight_reports_cuda_without_loading_adapter(
 
     report = production.preflight_report(production.PROFILE, checkpoint)
 
-    assert {issue.code.value for issue in report.issues} == {"missing-cuda"}
+    expected = {"missing-cuda"}
+    if not ram_bound:
+        expected.add("incompatible-environment")
+    assert {issue.code.value for issue in report.issues} == expected
     assert report.facts.accelerator_available is False
+
+
+@pytest.mark.parametrize("limit", [None, 0, -1, 150_323_855_361])
+def test_production_ram_bound_rejects_missing_or_excessive_limits(monkeypatch, limit):
+    production = _load_production_runner()
+    monkeypatch.setattr(production, "_cgroup_ram_limit", lambda: limit)
+    with pytest.raises(RuntimeError, match="bounded cgroup RAM"):
+        production._verify_ram_bound()
+
+
+def test_checkpoint_helpers_import_without_ml_dependencies():
+    # Use a fresh process: an already-imported Torch or reinjection module in
+    # the test process must not hide an eager optional dependency.
+    code = '''
+import builtins
+import importlib.util
+import sys
+
+original = builtins.__import__
+def guarded(name, *args, **kwargs):
+    if name.split(".")[0] in {"torch", "reinjection", "protenix"}:
+        raise AssertionError("unexpected ML import: " + name)
+    return original(name, *args, **kwargs)
+builtins.__import__ = guarded
+spec = importlib.util.spec_from_file_location("protenix_light_helpers", sys.argv[1])
+module = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(module)
+assert callable(module._write_candidate)
+assert "torch" not in sys.modules
+assert "reinjection" not in sys.modules
+'''
+    subprocess.run([sys.executable, "-B", "-c", code, str(CHECKPOINT_SMOKE)], check=True, timeout=60)

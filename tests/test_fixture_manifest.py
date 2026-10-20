@@ -7,6 +7,9 @@ from pathlib import Path
 
 FIXTURES = Path(__file__).resolve().parent / "fixtures"
 REPO_ROOT = Path(__file__).resolve().parent.parent
+# Source-selection/provenance metadata is part of the portable input inventory,
+# unlike generated JSON reports. Keep this allowlist explicit.
+FIXTURE_METADATA = {FIXTURES / "cc89_apple_handoff" / "manifest.json"}
 
 
 def test_fixture_manifest_is_complete_and_matches_checksums() -> None:
@@ -24,4 +27,6 @@ def test_fixture_manifest_is_complete_and_matches_checksums() -> None:
         path.resolve() for path in FIXTURES.rglob("*")
         if path.is_file() and path.suffix.lower() in {".pdb", ".fasta"}
     }
-    assert set(entries) == fixture_inputs, "fixture manifest has missing or stale entries"
+    assert len(entries) == len(set(entries)), "fixture manifest repeats an input"
+    expected_inputs = fixture_inputs | {path.resolve() for path in FIXTURE_METADATA}
+    assert set(entries) == expected_inputs, "fixture manifest has missing or stale entries"

@@ -572,7 +572,14 @@ def test_all_atom_hook_spikes_record_checkpoint_backed_control() -> None:
     assert REPO_ROOT / patch["smoke"] == PROTENIX_HOOK_SMOKE
     assert REPO_ROOT / patch["reinjection"] == PROTENIX_REINJECTION
     assert REPO_ROOT / patch["checkpoint_smoke"] == PROTENIX_CHECKPOINT_SMOKE
-    assert patch["checkpoint_smoke_sha256"] == _sha256(PROTENIX_CHECKPOINT_SMOKE)
+    assert patch["checkpoint_smoke_current_sha256"] == _sha256(PROTENIX_CHECKPOINT_SMOKE)
+    assert patch["checkpoint_smoke_recorded_git_commit"] == "0e2a8c8"
+    # Executed protocols bind historical source, not whatever adapter happens
+    # to be in today's checkout. Never rewrite those hashes to make CI green.
+    for name in ("clean-protein-expanded-run-protocol-v2.json", "intact-recheck-run-protocol.json"):
+        protocol = json.loads((REPO_ROOT / "docs/research" / name).read_text())
+        assert protocol["code_sha256"]["deploy/protenix-v1/checkpoint_gap_smoke.py"] == patch["checkpoint_smoke_sha256"]
+    assert patch["checkpoint_smoke_current_sha256"] != patch["checkpoint_smoke_sha256"]
     assert REPO_ROOT / patch["refinement_smoke"] == PROTENIX_REFINEMENT_SMOKE
     assert patch["refinement_smoke_sha256"] == _sha256(PROTENIX_REFINEMENT_SMOKE)
     assert patch["callback_stage"] == "post-update-before-next-step"

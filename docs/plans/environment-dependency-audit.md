@@ -1,5 +1,13 @@
 # План B. Ревизия модулей и состава окружения
 
+**Статус на 2026-10-20: частично подготовлен, миграция packaging не выполнена.**
+Отдельные ML runner environments и `doctor` уже существуют; это не означает,
+что выполнены описанные ниже optional installation profiles, полная ревизия
+transitive/executable dependencies или clean-install matrix. В `pyproject.toml`
+пока определён только optional extra `dev`. Исправление eager Torch import в
+Protenix helper не добавляет Torch в core и не завершает весь аудит.
+Сводный статус: [индекс планов](README.md).
+
 ## B.1. Цель и правила аудита
 
 - Провести отдельную ревизию:

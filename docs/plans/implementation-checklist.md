@@ -1,6 +1,9 @@
 # Implementation Checklist
 
 This is the canonical completion tracker for the plans in this directory.
+Current cross-plan navigation is in [Plan status and remaining work](README.md).
+Status synchronized on 2026-10-20: software delivery, per-profile hardware
+acceptance and wider scientific/default promotion are separate completion gates.
 Check an item only after its implementation and required verification are
 complete. Detailed requirements remain in these authoritative sources:
 
@@ -248,13 +251,18 @@ these checked workflow-state items cover one-host multi-process operation.
 - [x] Complete Phase 2: pinned RFdiffusion v1 Linux/NVIDIA benchmark adapter and minimal digest-pinned container recipe; final container build/GPU smoke awaits a host with an OCI runtime.
 - [x] Complete Phase 3: select Protenix v1 through the all-atom constrained-sampler ablation and 231-group confirmatory benchmark; retain Boltz-2 as proxy-only.
 - [x] Record the confirmatory result: Protenix 220/231, MODELLER 169/231, noninferiority demonstrated, and `candidate-preferred` decision.
-- [ ] Complete Phase 4: experimental `model --backend diffusion` while retaining
+- [x] Deliver the Phase 4 experimental `model --backend diffusion` implementation while retaining
   MODELLER as the default and without automatic fallback. Public CLI, production
   wrappers, additive Doctor preflight, fail-closed batch/GUI admission,
   record-preserving candidate materialization, and portable protocol failure
-  handling are implemented and CPU-tested. Resolved Linux environment pinning
-  and hardware acceptance remain separate evidence tasks.
-- [ ] Complete Phase 5: mosaic-first homology evaluation preserving authoritative template coordinates.
+  handling are implemented and tested. Public cc89 CUDA and corrected Apple
+  integration each pass 5/5 within their bounded scope.
+- [ ] Complete the selected Protenix production-wrapper 231-case replay and final
+  OCI image build/GPU smoke; profile-lock pinning and public GPU smokes already exist.
+- [x] Deliver mosaic-first Homology with authoritative template coordinates,
+  coverage ownership, CLI/GUI routing and bounded public integration evidence.
+- [ ] Complete the larger independent Homology/context/edit evaluation before
+  claiming broader scientific acceptance.
 - [ ] Complete Phase 6: separate evidence-backed production decision.
 - [x] Execute the macOS Apple Silicon CPU/MPS portability evaluation separately
   from Linux/NVIDIA acceptance and remote-runner evidence; all 231 frozen cases
@@ -282,8 +290,8 @@ these checked workflow-state items cover one-host multi-process operation.
   reinjection is not selected as the compact baseline.
 - [x] Diagnose OpenMM's CUDA PTX failure and add an isolated CUDA-12.2-compatible
   refinement environment with digest-verified ff19SB data. Two byte-identical
-  `9dvi` runs and the 440-residue `9ina` run pass every CUDA hard gate; the full
-  231-case descriptive follow-up remains pending.
+  `9dvi` runs and the 440-residue `9ina` run pass every CUDA hard gate. This historical
+  kernel diagnostic preceded the completed 231-case follow-up recorded below.
 - [x] Freeze the full 231-case Protpardelle descriptive-follow-up manifest before
   cohort-wide inference, with 128 gap-5 and 103 gap-10 cases, CUDA refinement,
   validation-first selection, digest-tracked code/environment inputs, and no
@@ -352,15 +360,19 @@ Detailed requirements and acceptance gates are in the
   profile for one internal 5–10-residue gap, automatic fixed-policy local context,
   isolated CUDA refinement, CLI/GUI routing, exact bundle validation and resume.
   Public model/Homology integration accepts 5/5 candidates across four workflows.
-- [ ] Complete wider independent cc89 CUDA acceptance beyond the repaired
-  same-seed, two-source diagnostic pilot.
+- [ ] Complete wider independent cc89 CUDA acceptance beyond the corrected
+  development recheck, bounded four-source prospective check and public integration.
 - [ ] Complete larger independently reviewed context/CDR and Homology edit cohorts.
 
 Evidence: [CUDA expansion completion audit](../research/cuda-expansion-completion.md).
 Follow-up: [cc89 chain-phase diagnosis](../research/cc89-chain-phase-root-cause.md).
 Expanded follow-up: [known-sequence structural holdout](../research/cc89-known-sequence-holdout.md).
 Input correction: [representation audit](../research/cc89-input-representation-audit.md).
-Apple MPS follow-up is deferred until CUDA implementation completes.
+Apple follow-up completed in `0e2a8c8`: corrected research pilot 8/8 and versioned
+`protpardelle-1c-mps-local-v1` public integration 5/5, including multi-seed publication
+and exact frozen-request replay; historical MPS semantics remain separate.
+- [ ] Complete the larger corrected-Apple memory/latency/operational cohort before
+  wider acceptance. See [Apple public evidence](../research/cc89-public-apple-acceptance.md).
 
 ## DDD Documentation Roadmap
 

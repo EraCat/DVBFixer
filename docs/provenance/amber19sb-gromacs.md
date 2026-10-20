@@ -98,8 +98,21 @@ data; downstream distributors must preserve the notice and LGPL terms.
 
 ## External Acceptance
 
-No compatible `gmx` executable was available in the implementation environment.
-The six `gmx grompp` acceptance cases therefore skip explicitly and were not
-claimed as passed. The exact pending acceptance is one `gmx grompp` run for each
-of the six table rows using generated self-contained `ffparams.itp`,
-`water.itp`, `ions.itp`, chain ITP, topology, and coordinates.
+The initial implementation environment had no compatible `gmx`, so its six
+external cases skipped. On 2026-10-20 all six cases passed with GROMACS **2026.0**
+on Apple arm64 (mixed precision, CPU build):
+
+```bash
+micromamba run -n dvbfixer python -B -m pytest tests/test_top_amber19sb.py -k grompp_external_acceptance -v
+```
+
+Each case generates the self-contained `ffparams.itp`, `water.itp`, `ions.itp`,
+chain ITP and topology for its selected pair. `gmx editconf` puts the peptide in
+a 4 × 4 × 4 nm box; `gmx grompp -maxwarn 0` preprocesses it with `pbc=xyz`,
+Verlet cutoffs and `nsteps=0`. This corrects the original test's incompatible
+`pbc=no`/Verlet setup without changing force-field assets or allowing warnings.
+
+This is peptide topology/include preprocessing acceptance for all six pair
+selections, not a solvated water/ion simulation, an MD trajectory, or validation
+of mixed chemistry. Full baseline-repair evidence is recorded
+[separately](../research/baseline-repair-2026-10-20.md).

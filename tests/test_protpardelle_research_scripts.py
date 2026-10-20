@@ -180,6 +180,98 @@ def _request() -> DiffusionRequest:
     )
 
 
+def _corrected_mps_request():
+    from dvbfixer.model.diffusion.contract import BackendOption
+    from dvbfixer.model.diffusion.protein_context import CUDA_CC89_CONTEXT
+
+    return SimpleNamespace(
+        backend_options=(BackendOption("profile", "protpardelle-1c-mps-source-physical-research-v1"),
+            BackendOption("cc89_chain_phase", "neutral-v1"),
+            BackendOption("cc89_position_features", "source-physical-v1")),
+        protein_context=SimpleNamespace(policy=CUDA_CC89_CONTEXT, trajectory_queries=None,
+            retained_conditioning=(), previous_plan_sha256=None),
+        gaps=(object(),), heterogen_contexts=(),
+    )
+
+
+def test_corrected_mps_requires_both_explicit_invocation_and_research_identity():
+    from dvbfixer.model.diffusion.contract import BackendOption
+
+    adapter = _load_adapter()
+    request = _corrected_mps_request()
+    with pytest.raises(ValueError, match="explicit invocation"):
+        adapter._require_chain_phase_policy(request, "mps", "neutral-v1")
+    adapter._require_chain_phase_policy(request, "mps", "neutral-v1", corrected_mps_research=True)
+    adapter._require_position_feature_policy(request, "mps", "source-physical-v1", "neutral-v1", corrected_mps_research=True)
+    for device in ("cpu", "cuda", "mps:0"):
+        with pytest.raises(ValueError, match="explicit profile"):
+            adapter._require_chain_phase_policy(request, device, "neutral-v1", corrected_mps_research=True)
+    for profile in ("protpardelle-1c-mps", "protpardelle-1c-cuda"):
+        changed = SimpleNamespace(**{**vars(request), "backend_options": (
+            BackendOption("profile", profile), *request.backend_options[1:])})
+        with pytest.raises(ValueError, match="explicit profile"):
+            adapter._require_chain_phase_policy(changed, "mps", "neutral-v1", corrected_mps_research=True)
+    request.protein_context = None
+    with pytest.raises(ValueError, match="source-only local context"):
+        adapter._require_position_feature_policy(request, "mps", "source-physical-v1", "neutral-v1", corrected_mps_research=True)
+
+
+def test_corrected_mps_trace_identity_does_not_replace_public_mps_or_cuda():
+    adapter = _load_adapter()
+    assert adapter._sampler_profile("mps", False, False, True) == adapter._CORRECTED_MPS_PROFILE
+    assert adapter._sampler_profile("mps", False, False, False) == "protpardelle-1c-mps"
+    assert adapter._sampler_profile("cuda", False, True, False) == "protpardelle-1c-cuda"
+    assert adapter._sampler_profile("mps", True, False, False) == "protpardelle-1c-research"
+
+
+def test_rope_probe_intercepts_direct_forward_without_changing_result_and_restores_on_failure():
+    adapter = _load_adapter()
+    seen = []
+    def original(*args, **kwargs):
+        return args, kwargs
+
+    rope = SimpleNamespace(forward=original)
+
+    def probe(module, args, kwargs):
+        seen.append((module, args, kwargs))
+    with pytest.raises(RuntimeError, match="injected"):
+        with adapter._rope_probe(rope, probe):
+            assert rope.forward(3, chain_index=0) == ((3,), {"chain_index": 0})
+            raise RuntimeError("injected")
+    assert rope.forward is original
+    assert seen == [(rope, (3,), {"chain_index": 0})]
+
+
+def test_source_position_probe_checks_real_layer_features_and_device():
+    adapter = _load_adapter()
+
+    class Tensor:
+        def __init__(self, values, device="mps"):
+            self.values = np.asarray(values)
+            self.device = _FakeDevice(device)
+
+        def detach(self):
+            return self
+
+        def cpu(self):
+            return self
+
+        def numpy(self):
+            return self.values
+
+    module = SimpleNamespace(use_residx=True, interpolate_factor=1.0)
+    probe = adapter._SourcePositionProbe((1, 8, 209), (0, 0, 1), _FakeDevice("mps"))
+    probe(module, (Tensor([[1, 8, 209]]),), {"chain_index": Tensor([[0, 0, 0]])})
+    assert probe.result["chain_boundary_jumps"] == [201]
+    assert probe.result["module"] == "net.transformer.layers[0][0].rope"
+    with pytest.raises(RuntimeError, match="expected mps"):
+        probe(module, (Tensor([[1, 8, 209]], "cpu"),), {"chain_index": Tensor([[0, 0, 0]])})
+    for positions, phase in (([[1, 2, 3]], [[0, 0, 0]]), ([[1, 8, 209]], [[0, 0, 1]])):
+        with pytest.raises(RuntimeError, match="did not consume physical positions"):
+            adapter._SourcePositionProbe((1, 8, 209), (0, 0, 1), _FakeDevice("mps"))(
+                module, (Tensor(positions),), {"chain_index": Tensor(phase)})
+
+
 def _multichain_request() -> DiffusionRequest:
     first = _request()
     second_residues = (

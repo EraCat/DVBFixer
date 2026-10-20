@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import importlib.util
 import json
 import os
 import resource
@@ -40,11 +41,14 @@ from dvbfixer.model.diffusion.contract import (
 from dvbfixer.model.diffusion.geometry import synchronize_and_reinject, weighted_kabsch
 from dvbfixer.model.diffusion.pdb_materialize import materialize_candidate_pdb
 from dvbfixer.model.diffusion.protein_context import (
+    MPS_CC89_PROFILE,
     context_evidence,
     engine_context_view,
+    is_mps_cc89,
     select_legacy_partner_spans,
     source_context_position_features,
     validate_context_source,
+    validate_mps_cc89_request,
 )
 from dvbfixer.model.diffusion.runner import DIFFUSION_RUNNER_PROTOCOL_VERSION
 from dvbfixer.model.diffusion.trace import build_sampler_trace, write_sampler_trace
@@ -54,6 +58,7 @@ _REVISION = "ee378400f25b801fa481028000f9060183d7fb4c"
 _CHECKPOINT_SHA256 = "dfc9895b399ec4497bf6d646502168725f01dcbd55bc0b541fc3e3cc1f2f0483"
 _CONFIG_SHA256 = "e9999ace79bf3044351cc982a624fc3459add3a4f91cbf97ff5b437b8942eb9d"
 _APPLE_PATCH_SHA256 = "627891e28d5055cb0d903f542af695569d7133b0480cab8f25d154dc8ccc78c9"
+_CORRECTED_MPS_PROFILE = "protpardelle-1c-mps-source-physical-research-v1"
 _MPS_ENVIRONMENT_KEYS = (
     "PYTORCH_ENABLE_MPS_FALLBACK",
     "PYTORCH_MPS_FAST_MATH",
@@ -882,20 +887,135 @@ class _NeutralDenoiserChainPhase:
         return args, {**kwargs, "chain_index": torch.zeros_like(chain_index)}
 
 
-def _require_chain_phase_policy(request, device_name, policy):
+def _require_corrected_mps_request(request, device_name):
+    """Opt-in research identity, never an alias for the public MPS profile."""
+    from dvbfixer.model.diffusion.protein_context import CUDA_CC89_CONTEXT
+
+    profiles = [option.value for option in request.backend_options if option.name == "profile"]
+    policies = {option.name: option.value for option in request.backend_options}
+    if (device_name != "mps" or profiles != [_CORRECTED_MPS_PROFILE]
+            or policies.get("cc89_chain_phase") != "neutral-v1"
+            or policies.get("cc89_position_features") != "source-physical-v1"
+            or request.protein_context is None
+            or request.protein_context.policy != CUDA_CC89_CONTEXT
+            or request.protein_context.trajectory_queries is not None
+            or request.protein_context.retained_conditioning
+            or request.protein_context.previous_plan_sha256 is not None
+            or len(request.gaps) != 1 or request.heterogen_contexts):
+        raise ValueError("corrected MPS research requires its explicit profile, matched policies and source-only local context")
+
+
+def _verify_corrected_mps_environment(torch):
+    # Reuse the pinned Apple source/environment checks, not public admission or
+    # CUDA request preparation. Loading this module does not load the checkpoint.
+    path = Path(__file__).with_name("production_runner.py")
+    spec = importlib.util.spec_from_file_location("cc89_apple_environment", path)
+    if spec is None or spec.loader is None:
+        raise RuntimeError("could not load the pinned Apple environment verifier")
+    verifier = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(verifier)
+    verifier._verify_profile_environment()
+    if torch.__version__.split("+")[0] != "2.6.0":
+        raise RuntimeError("corrected MPS research requires PyTorch 2.6.0")
+
+
+def _require_chain_phase_policy(request, device_name, policy, *, corrected_mps_research=False):
+    if not corrected_mps_research and any(
+        option.name == "profile" and option.value == _CORRECTED_MPS_PROFILE for option in request.backend_options
+    ):
+        raise ValueError("corrected MPS research requires explicit invocation opt-in")
     declared = next((option.value for option in request.backend_options if option.name == "cc89_chain_phase"), "native")
     if policy not in {"native", "neutral-v1"} or declared != policy:
         raise ValueError("cc89 chain phase policy must match the explicitly declared request")
-    if policy != "native" and device_name.split(":", 1)[0] != "cuda":
+    if corrected_mps_research:
+        _require_corrected_mps_request(request, device_name)
+    if is_mps_cc89(request):
+        validate_mps_cc89_request(request)
+        if device_name != "mps":
+            raise ValueError("public corrected Apple cc89 requires MPS, without fallback")
+    if policy != "native" and device_name.split(":", 1)[0] != "cuda" and not corrected_mps_research and not is_mps_cc89(request):
         raise ValueError("neutral cc89 chain phase is CUDA research-only")
 
 
-def _require_position_feature_policy(request, device_name, policy, chain_phase):
+def _require_position_feature_policy(request, device_name, policy, chain_phase, *, corrected_mps_research=False):
     declared = next((option.value for option in request.backend_options if option.name == "cc89_position_features"), "native")
     if policy not in {"native", "source-physical-v1"} or declared != policy:
         raise ValueError("cc89 position feature policy must match the explicitly declared request")
-    if policy != "native" and (device_name.split(":", 1)[0] != "cuda" or request.protein_context is None or chain_phase != "neutral-v1"):
+    if corrected_mps_research:
+        _require_corrected_mps_request(request, device_name)
+    if is_mps_cc89(request):
+        validate_mps_cc89_request(request)
+        if device_name != "mps":
+            raise ValueError("public corrected Apple cc89 requires MPS, without fallback")
+    if policy != "native" and ((device_name.split(":", 1)[0] != "cuda" and not corrected_mps_research and not is_mps_cc89(request)) or request.protein_context is None or chain_phase != "neutral-v1"):
         raise ValueError("source-physical cc89 positions require explicit CUDA context and neutral-v1 phase")
+
+
+def _sampler_profile(device_type, per_step_reinjection, cuda_production, corrected_mps_research, mps_production=False):
+    if mps_production:
+        return MPS_CC89_PROFILE
+    if corrected_mps_research:
+        return _CORRECTED_MPS_PROFILE
+    if cuda_production:
+        return "protpardelle-1c-cuda"
+    if device_type == "mps" and not per_step_reinjection:
+        return "protpardelle-1c-mps"
+    return "protpardelle-1c-research"
+
+
+class _SourcePositionProbe:
+    """Passive evidence from the actual first attention layer's copied RoPE."""
+
+    def __init__(self, positions, chains, device):
+        self.positions = np.asarray([positions])
+        self.chains = np.asarray(chains)
+        self.device = device
+        self.calls = 0
+        self.result = None
+
+    def __call__(self, module, args, kwargs):
+        positions = args[0]
+        phase = kwargs.get("chain_index")
+        _assert_tensor_device("first-layer RoPE positions", positions, self.device)
+        if phase is None:
+            raise RuntimeError("first-layer RoPE is missing the neutral chain phase")
+        _assert_tensor_device("first-layer RoPE chain phase", phase, self.device)
+        self.calls += 1
+        if self.result is not None:
+            return
+        used = positions.detach().cpu().numpy()
+        phase_values = phase.detach().cpu().numpy()
+        if (not module.use_residx or not np.array_equal(used, self.positions / module.interpolate_factor)
+                or phase_values.shape != used.shape or np.any(phase_values != 0)):
+            raise RuntimeError("first-layer RoPE did not consume physical positions and neutral phase")
+        boundaries = np.flatnonzero(self.chains[1:] != self.chains[:-1])
+        jumps = used[0, boundaries + 1] - used[0, boundaries]
+        if np.any(jumps <= 1):
+            raise RuntimeError("first-layer RoPE lost physical chain breaks")
+        self.result = {"module": "net.transformer.layers[0][0].rope", "device": str(self.device),
+            "actual_used_positions": used[0].tolist(), "chain_boundary_jumps": jumps.tolist(),
+            "denoiser_chain_phase_values": np.unique(phase_values).tolist(),
+            "position_interpolation_factor": module.interpolate_factor}
+
+
+@contextmanager
+def _rope_probe(module, probe):
+    # Upstream rotate_queries_or_keys calls self.forward directly, bypassing
+    # nn.Module.__call__ and therefore register_forward_pre_hook.
+    if probe is None:
+        yield
+        return
+    original = module.forward
+
+    def forward(*args, **kwargs):
+        probe(module, args, kwargs)
+        return original(*args, **kwargs)
+
+    module.forward = forward
+    try:
+        yield
+    finally:
+        module.forward = original
 
 
 def _run_staged(
@@ -915,6 +1035,7 @@ def _run_staged(
     replacement_guidance: bool = False,
     chain_phase_policy: str = "native",
     position_feature_policy: str = "native",
+    corrected_mps_research: bool = False,
 ) -> tuple[RunnerResult, Path]:
     import torch
     from protpardelle.common import residue_constants
@@ -930,8 +1051,16 @@ def _run_staged(
     request_path = request_path.resolve()
     workspace = request_path.parent
     request = DiffusionRequest.from_json(request_path.read_text(encoding="utf-8"))
-    _require_chain_phase_policy(request, device_name, chain_phase_policy)
-    _require_position_feature_policy(request, device_name, position_feature_policy, chain_phase_policy)
+    _require_chain_phase_policy(request, device_name, chain_phase_policy, corrected_mps_research=corrected_mps_research)
+    _require_position_feature_policy(request, device_name, position_feature_policy, chain_phase_policy, corrected_mps_research=corrected_mps_research)
+    mps_production = is_mps_cc89(request)
+    corrected_mps = corrected_mps_research or mps_production
+    if mps_production and (steps != 500 or step_scale != 1.2 or s_churn != 200.0 or context_probe):
+        raise ValueError("public MPS cc89 requires its frozen numerical policy")
+    if corrected_mps:
+        if per_step_reinjection or replacement_guidance or crop_strategy != "backbone-sidechain":
+            raise ValueError("corrected MPS research requires unchanged native conditioning without reinjection")
+        _verify_corrected_mps_environment(torch)
     cuda_production = any(option.name == "profile" and option.value == "protpardelle-1c-cuda" for option in request.backend_options)
     if cuda_production:
         from dvbfixer.model.diffusion.protein_context import validate_cuda_cc89_request
@@ -1021,6 +1150,7 @@ def _run_staged(
     context_probes = []
     phase_control = _NeutralDenoiserChainPhase() if chain_phase_policy == "neutral-v1" else None
     position_evidence = None
+    position_probes = []
     for invocation_index, sampling_request in enumerate(sampling_requests):
         invocation_seed = seed + invocation_index
         seed_everything(invocation_seed)
@@ -1116,7 +1246,10 @@ def _run_staged(
         denoising_start = time.perf_counter()
         profile_context = torch.mps.profiler.profile() if mps_profile else nullcontext()
         probe = _DenoiserContextProbe(sampling_request) if context_probe else None
-        with profile_context, _probe_hook(model.struct_model, phase_control), _probe_hook(model.struct_model, probe):
+        position_probe = _SourcePositionProbe(source_indices, source_chains, device) if corrected_mps else None
+        # The transformer template's .rope is unused: layers deepcopy attention.
+        rope = model.struct_model.net.transformer.layers[0][0].rope if position_probe else None
+        with profile_context, _probe_hook(model.struct_model, phase_control), _probe_hook(model.struct_model, probe), _rope_probe(rope, position_probe):
             sampled = model.sample(
                 seq_mask=seq_mask,
                 residue_index=residue_index,
@@ -1142,6 +1275,10 @@ def _run_staged(
                 uniform_steps=True,
                 **sample_options,
             )
+        if position_probe:
+            if position_probe.result is None or position_probe.calls != 2 * steps:
+                raise RuntimeError("first-layer RoPE probe did not reach every query/key update")
+            position_probes.append({**position_probe.result, "calls": position_probe.calls})
         if probe:
             if probe.result is None:
                 raise RuntimeError("causal denoiser probe did not execute")
@@ -1254,7 +1391,7 @@ def _run_staged(
         peak_ram_bytes=memory["peak_rss_bytes"],
         peak_vram_bytes=memory["peak_accelerator_allocated_bytes"],
     )
-    production_profile = device.type == "mps" and not per_step_reinjection
+    actual_profile = _sampler_profile(device.type, per_step_reinjection, cuda_production, corrected_mps_research, mps_production)
     callback_count = int(callback_stats["callback_count"])
     if phase_control is not None and phase_control.calls != steps * len(sampling_requests):
         raise RuntimeError("cc89 chain-phase control did not reach every denoising update")
@@ -1265,17 +1402,13 @@ def _run_staged(
         workspace,
         output_dir / "sampler-trace.json",
         build_sampler_trace(
-            profile=(
-                "protpardelle-1c-cuda" if cuda_production else
-                "protpardelle-1c-mps"
-                if production_profile
-                else "protpardelle-1c-research"
-            ),
+            profile=actual_profile,
             engine_repository="https://github.com/ProteinDesignLab/protpardelle-1c",
             engine_revision=_REVISION,
             patch_identity=(
                 f"sha256:{_APPLE_PATCH_SHA256}" if phase_control is None else
-                f"adapter-sha256:{_sha256(Path(__file__))};cc89-chain-phase=neutral-v1"
+                (f"sha256:{_APPLE_PATCH_SHA256};" if corrected_mps else "")
+                + f"adapter-sha256:{_sha256(Path(__file__))};cc89-chain-phase=neutral-v1"
                 + (";cc89-position-features=source-physical-v1" if position_evidence else "")
             ),
             atom_order=sampler_atom_order,
@@ -1352,6 +1485,8 @@ def _run_staged(
             deterministic_algorithms=False,
             deterministic_flags=(
                 f"seed={seed}",
+                *((f"research-profile={actual_profile}", f"apple-patch-sha256={_APPLE_PATCH_SHA256}") if corrected_mps_research else ()),
+                *((f"cc89-first-layer-rope-calls={sum(probe['calls'] for probe in position_probes)}",) if mps_production else ()),
                 "fixed-sequence",
                 "mpnn-disabled",
                 f"independent-chain-invocations={len(sampling_requests)}",
@@ -1411,6 +1546,9 @@ def _run_staged(
             "fixed_heavy_rmsd_angstrom": quality.fixed_heavy_rmsd_angstrom,
         }
     summary = {
+        "profile": actual_profile,
+        "corrected_mps_research": corrected_mps_research,
+        **({"source_position_probes": position_probes} if position_probes else {}),
         "candidate_sha256": candidate.coordinate_artifact.sha256,
         "config_sha256": _CONFIG_SHA256,
         "checkpoint_sha256": _CHECKPOINT_SHA256,
@@ -1483,6 +1621,9 @@ def run(
     device: str = "cuda",
     mps_profile: bool = False,
     context_probe: bool = False,
+    chain_phase_policy: str = "native",
+    position_feature_policy: str = "native",
+    corrected_mps_research: bool = False,
 ) -> None:
     request_path = request_path.resolve()
     workspace = request_path.parent
@@ -1508,6 +1649,9 @@ def run(
             device_name=device,
             mps_profile=mps_profile,
             context_probe=context_probe,
+            chain_phase_policy=chain_phase_policy,
+            position_feature_policy=position_feature_policy,
+            corrected_mps_research=corrected_mps_research,
         )
         staging.rename(output_dir)
     finally:
@@ -1529,6 +1673,9 @@ def main() -> None:
     parser.add_argument("--mps-profile", action="store_true")
     parser.add_argument("--per-step-reinjection", action="store_true")
     parser.add_argument("--context-probe", action="store_true")
+    parser.add_argument("--chain-phase-policy", choices=("native", "neutral-v1"), default="native")
+    parser.add_argument("--position-feature-policy", choices=("native", "source-physical-v1"), default="native")
+    parser.add_argument("--corrected-mps-research", action="store_true")
     args = parser.parse_args()
     run(
         args.request,
@@ -1542,6 +1689,9 @@ def main() -> None:
         device=args.device,
         mps_profile=args.mps_profile,
         context_probe=args.context_probe,
+        chain_phase_policy=args.chain_phase_policy,
+        position_feature_policy=args.position_feature_policy,
+        corrected_mps_research=args.corrected_mps_research,
     )
 
 

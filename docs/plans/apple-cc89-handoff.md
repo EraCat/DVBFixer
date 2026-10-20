@@ -1,9 +1,20 @@
 # Apple Silicon handoff: corrected cc89 local input
 
-Prepared on Linux after public CUDA baseline **`cb43db6`**, branch
-`feature/dvbfixer-hardening`. This handoff prepares the next machine; it does not
-claim that the corrected mode has run on MPS. The existing public MPS profile
-remains the historical native-phase/native-position implementation.
+Originally prepared on Linux after public CUDA baseline **`cb43db6`**, branch
+`feature/dvbfixer-hardening`. Subsequent native Apple implementation and evidence
+are recorded below. The historical public MPS profile retains its native-phase/
+native-position implementation alongside the new versioned corrected profile.
+
+The adapter now implements the opt-in
+`protpardelle-1c-mps-source-physical-research-v1` mode. This is **not** a public
+profile promotion by itself. The [corrected Apple pilot](../research/cc89-apple-corrected-pilot.md)
+now passes independent geometry/source checks **8/8 after CPU refinement** (raw
+5/8), with research-runner resume verified. A larger operational cohort remains
+deferred; synthetic/one-step checks alone are
+not reconstruction acceptance. Subsequent
+[public Apple integration](../research/cc89-public-apple-acceptance.md) now passes
+5/5 candidates across four workflows with versioned
+`protpardelle-1c-mps-local-v1`, while retaining the historical public profile.
 
 ## Resume here
 
@@ -15,8 +26,9 @@ Read `AGENTS.md`, this file, then:
 
 Current evidence: corrected development recheck **60/60**, source-disjoint
 follow-up **24/24 on four sources**, and public CUDA integration **5/5 across four
-model/Homology workflows**, including multi-seed publication and resume.
-These are separate studies, not 89 independent structures. Geometry/source
+model/Homology workflows**, including multi-seed publication and resume. Apple
+adds the separate 8/8 research portability check and 5/5 public integration above.
+These are overlapping studies, not independent structures summed across runs. Geometry/source
 preservation is primary; reference RMSD is secondary, never a seed selector.
 
 Public CUDA scope: one CYS-free internal 5–10-residue gap, at most 512 whole-source
@@ -104,32 +116,78 @@ research request. The older files under `requests/` are materialization provenan
 not the corrected request entry points. Never copy `evaluation/` or the tracked
 native source PDBs into a sampling/refinement workspace.
 
-## Exact implementation still needed on Apple
+## Implemented Apple research mode
 
-The corrected requests deliberately **cannot run on MPS yet**. Do not remove
-guards merely to get a green run. Implement an explicitly identified research
-mode first, while preserving the legacy public MPS profile:
+`checkpoint_gap_smoke.py` requires both `--corrected-mps-research` and the explicit
+research profile in the request, with matched `neutral-v1` / `source-physical-v1`
+policies and the fixed source-only local context. Native arm64 Python 3.12,
+Torch 2.6.0, pinned upstream revision/Apple patch, checkpoint/config identities,
+MPS availability and disabled fallback are checked before sampling.
 
-1. `checkpoint_gap_smoke.py::_require_chain_phase_policy` and
-   `_require_position_feature_policy`: admit an explicit, matched corrected MPS
-   research policy after device/source checks; currently both restrict it to CUDA.
-2. `_run_staged`: use `_NeutralDenoiserChainPhase` and
-   `source_context_position_features` on real MPS tensors, preserve physical chain
-   breaks, and record the **actual** policy/profile in trace and provenance.
-   Current MPS trace selection automatically labels the legacy public profile;
-   corrected research must not be mislabeled as that profile.
-3. Audit `_NeutralDenoiserChainPhase` against the Apple-patched source. First-layer
-   instrumentation belongs on `net.transformer.layers[0][0].rope`, not the unused
-   template `transformer.rope` object. Do not add per-step reinjection: the frozen
-   method uses native conditioning and final exact source restoration.
-4. Use generated-only `refine_runner_result(..., platform_name="CPU")` for the
-   initial Apple arm. CPU **refinement** is intentional; CPU fallback during MPS
-   **denoising** is forbidden. Keep the interpreter's venv path intact: resolving
-   its symlink can select a different base environment.
-5. Only after the pilot passes, update public MPS profile metadata, admission,
-   installer/default context routing, trace contract and GUI semantics together.
-   CUDA-only `prepare_cuda_cc89_request` must not be reused by simply changing its
-   profile string. Preserve atomic publication and exact frozen-request replay.
+The adapter preserves physical chain breaks and records the actual research
+identity in trace/provenance. Passive instrumentation checks
+`net.transformer.layers[0][0].rope`, not the unused template `transformer.rope`.
+Upstream calls RoPE's `forward` directly, so the instrumentation wraps that method
+temporarily rather than relying on an inactive PyTorch module hook. It records
+actual consumed positions, neutral phase, device and query/key call counts.
+No per-step reinjection is added.
+
+[`scripts/run_apple_cc89_pilot.py`](../../scripts/run_apple_cc89_pilot.py) freezes
+the eight original requests, source/code/runtime hashes, environment exports,
+smoke identities, numerical settings and timeouts before execution. Workers get
+only their request and gapped source. Sampling runs sequentially on MPS;
+generated-only `refine_runner_result(..., platform_name="CPU")` runs in the core
+environment. Interpreter paths are kept without resolving venv symlinks.
+Resume verifies archive hashes and never repeats terminal failures or interrupted
+outcomes. The audit checks geometry, outside-gap records, actual RoPE evidence,
+source-position provenance and the generated-atom `DatRecord` handoff, without
+reading an evaluation reference or selecting by RMSD.
+
+Use the synthetic smoke commands in the deployment guide, writing their outputs
+as `cpu-operator-smoke.json`, `mps-operator-smoke.json` and
+`operator-comparison.json` under `.artifacts/apple-cc89/`. Then:
+
+```bash
+# Preserve the native environment paths, not their resolved symlink targets.
+SAMPLING_PYTHON="$(micromamba run -n dvbfixer-protpardelle-apple python -B -c 'import sys; print(sys.executable)')"
+REFINEMENT_PYTHON="$(micromamba run -n dvbfixer python -B -c 'import sys; print(sys.executable)')"
+
+"$REFINEMENT_PYTHON" scripts/run_apple_cc89_pilot.py freeze \
+  --controls .artifacts/apple-cc89/controls-v1 \
+  --inventory .artifacts/apple-cc89/host-inventory.json \
+  --operator-comparison .artifacts/apple-cc89/operator-comparison.json \
+  --sampling-python "$SAMPLING_PYTHON" --refinement-python "$REFINEMENT_PYTHON" \
+  --engine-root "$PROTPARDELLE_ROOT" --checkpoint "$CHECKPOINT" --config "$CONFIG" \
+  --protocol .artifacts/apple-cc89/execution-v1.json
+"$REFINEMENT_PYTHON" scripts/run_apple_cc89_pilot.py run \
+  --protocol .artifacts/apple-cc89/execution-v1.json \
+  --output .artifacts/apple-cc89/probes-v1 --stage probe
+"$REFINEMENT_PYTHON" scripts/run_apple_cc89_pilot.py run \
+  --protocol .artifacts/apple-cc89/execution-v1.json \
+  --output .artifacts/apple-cc89/pilot-v1 --probes .artifacts/apple-cc89/probes-v1 \
+  --stage pilot
+"$REFINEMENT_PYTHON" scripts/run_apple_cc89_pilot.py audit \
+  --protocol .artifacts/apple-cc89/execution-v1.json \
+  --output .artifacts/apple-cc89/pilot-v1 --report .artifacts/apple-cc89/results-v1.json
+```
+
+All destinations must be new. Freeze only after code changes are complete:
+execution refuses changed source hashes. If the development checkout contains
+unrelated untracked files, use the inventory collector's `--repository` option
+with a separate clean baseline worktree; disclose that scope. The protocol binds
+the actual development files independently. Never remove user files to satisfy
+the clean-checkout gate.
+
+### Versioned public integration and remaining rollout
+
+The passed pilot was followed by coordinated profile metadata/admission,
+installer/default context routing, trace contract and GUI semantics for the new
+`protpardelle-1c-mps-local-v1` identity. The old `protpardelle-1c-mps` identity remains
+available for explicit legacy replay. Public model/Homology, multi-seed publication
+and resume checks pass; see the [retained failures and final integration evidence](../research/cc89-public-apple-acceptance.md).
+Wider operational/memory/latency acceptance remains pending.
+CUDA-only `prepare_cuda_cc89_request` must not be reused by simply changing its
+profile string. Preserve atomic publication and exact frozen-request replay.
 
 ## Execution order and acceptance
 
@@ -163,7 +221,9 @@ typing errors or declaring MPS acceptance from these Linux tests.
 
 > Read AGENTS.md and docs/plans/apple-cc89-handoff.md. Continue the corrected
 > cc89 local-input Apple port from the pushed branch. Verify native arm64/MPS,
-> materialize the tracked controls, and implement the explicit research-mode
-> gates/trace identity before inference. Keep the old public MPS profile intact
-> until the new pilot passes. Geometry and preservation are primary; no hidden
-> reference coordinates, no seed selection by RMSD, no denoising fallback.
+> Review the completed 8/8 research pilot and 5/5 versioned public integration,
+> including the retained failed development protocol and exact frozen-request
+> replay check. The next step is a separately frozen larger operational cohort,
+> not a silent scope expansion. Keep legacy replay intact. Geometry and
+> preservation are primary; no hidden reference coordinates, no seed selection
+> by RMSD, no denoising fallback.

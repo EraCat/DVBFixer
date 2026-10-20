@@ -158,18 +158,18 @@ def assess_diffusion_scope(
     reasons: list[str] = []
     from dvbfixer.model.diffusion.protein_context import (
         ProteinContextError,
-        is_cuda_cc89,
+        is_corrected_cc89,
         validate_context_capability,
     )
 
-    if is_cuda_cc89(request):
+    if is_corrected_cc89(request):
         try:
             validate_context_capability(request, "protpardelle")
         except ProteinContextError:
-            reasons.append("cuda-cc89-profile-scope-mismatch")
+            reasons.append("corrected-cc89-profile-scope-mismatch")
     if request.protein_context is not None and request.protein_context.policy.name == "intact-native-segments-v1":
         reasons.append("intact-native-segments-research-only")
-    if request.protein_context is not None and request.protein_context.policy.name == "atom37-terminal-preservation-v1" and not is_cuda_cc89(request):
+    if request.protein_context is not None and request.protein_context.policy.name == "atom37-terminal-preservation-v1" and not is_corrected_cc89(request):
         reasons.append("atom37-terminal-preservation-research-only")
     if request.protein_context is not None and request.protein_context.trajectory_queries is not None:
         reasons.append("trajectory-adaptive-context-research-only")

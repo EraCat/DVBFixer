@@ -49,9 +49,15 @@ not guarantee closure for another deletion or scaffold.
 Protenix `--diffusion-context local|full` supports multiple uncovered spans and
 jointly sampled gap-bearing chains, including distinct logical `VH`/`VL` mappings.
 Every group still requires a chain from the common reference structure. Multiple
-templates are fitted and merged before inference. Protpardelle explicit context
-currently requires one gap-bearing chain and one contiguous span per represented
-source chain; unsupported mappings fail before runner launch. There is no fallback
+templates are fitted and merged before inference. Corrected Protpardelle CUDA and
+`protpardelle-1c-mps-local-v1` default to source-only local context for one CYS-free
+internal 5–10-residue gap in at most 512 whole-source canonical residues. Physical
+source positions preserve discontiguous spans; Apple uses separate CPU refinement.
+The context is finalized before the coverage-derived request is frozen; replay
+never repairs or silently changes an incomplete request. Explicit `none`/`full`
+is rejected by these corrected profiles. Legacy Protpardelle MPS explicit context
+retains its one-gap-bearing-chain/one-contiguous-span-per-source-chain restriction.
+Unsupported mappings fail before runner launch. There is no fallback
 to Modeller. These remain experimental capabilities subject to independent
 geometry validation and the frozen context/Homology acceptance studies.
 
@@ -116,7 +122,7 @@ dvbfixer homology target.fasta --template-plan template-plan.json \
 | `--diffusion-timeout SECONDS` | `900` | Positive finite runner timeout. |
 | `--diffusion-work-parent DIR` | output parent | Parent for the private isolated-runner workspace. |
 | `--diffusion-resume` | off | Reuse only a verified bundle matching the current mosaic request. |
-| `--diffusion-context` | `none` | Shared `local`/`full` protein context; checked against engine capabilities. Required for Protenix multi-chain or multi-gap plans. |
+| `--diffusion-context` | `auto` | Local for corrected Protpardelle CUDA/MPS; legacy behavior for other profiles. Explicit `local`/`full` is checked against engine capabilities. Required for Protenix multi-chain or multi-gap plans. |
 | `--diffusion-regenerate-covered` | off | Opt in to bounded covered-substitution, deletion-boundary, and short-window regeneration. |
 | `--diffusion-edit-flanks` | `1` | Explicit covered-edit flanks per side, 1–5; requires covered regeneration and retains the maximum 12-residue window. |
 | `--alignment PIR` | auto | Use a pre-built PIR alignment instead of automatic alignment. |

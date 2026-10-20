@@ -409,9 +409,16 @@ def run_diffusion_model(args: argparse.Namespace) -> None:
             "",
         )
         if requested_profile and requested_profile != runtime.profile:
-            raise DiffusionCliError(
-                "diffusion request profile does not match the selected runtime"
-            )
+            # A new versioned Apple default must not reinterpret legacy bundles.
+            if {requested_profile, runtime.profile} <= {"protpardelle-1c-mps", "protpardelle-1c-mps-local-v1"}:
+                try:
+                    runtime = resolve_diffusion_runtime(args.diffusion_model, profile=requested_profile)
+                except DiffusionRuntimeError as exc:
+                    raise DiffusionCliError(str(exc)) from exc
+            else:
+                raise DiffusionCliError(
+                    "diffusion request profile does not match the selected runtime"
+                )
         if not requested_profile:
             if args.diffusion_model is None:
                 raise DiffusionCliError(
@@ -428,11 +435,11 @@ def run_diffusion_model(args: argparse.Namespace) -> None:
 
     with ExitStack() as resources:
         model_input = input_path
-        if runtime.profile == "protpardelle-1c-cuda" and any(
+        if runtime.profile in {"protpardelle-1c-cuda", "protpardelle-1c-mps-local-v1"} and any(
             line.startswith("HETATM") and line[17:20].strip() not in {"HOH", "WAT", "DOD"}
             for line in input_path.read_text(encoding="utf-8").splitlines()
         ):
-            raise DiffusionCliError("Protpardelle CUDA requires canonical protein input without nonwater heterogens")
+            raise DiffusionCliError("Corrected Protpardelle requires canonical protein input without nonwater heterogens")
         if frozen_request is None and not args.keep_heterogens:
             from dvbfixer.model.pipeline import _strip_hetatm_lines
 
@@ -469,19 +476,23 @@ def run_diffusion_model(args: argparse.Namespace) -> None:
         else:
             request = frozen_request
         context_mode = getattr(args, "diffusion_context", "auto")
-        if runtime.profile == "protpardelle-1c-cuda":
+        if runtime.profile in {"protpardelle-1c-cuda", "protpardelle-1c-mps-local-v1"}:
             from dvbfixer.model.diffusion.protein_context import (
                 ProteinContextError,
                 prepare_cuda_cc89_request,
+                prepare_mps_cc89_request,
                 validate_cuda_cc89_request,
+                validate_mps_cc89_request,
             )
 
             try:
+                prepare_cc89 = prepare_cuda_cc89_request if runtime.profile == "protpardelle-1c-cuda" else prepare_mps_cc89_request
+                validate_cc89 = validate_cuda_cc89_request if runtime.profile == "protpardelle-1c-cuda" else validate_mps_cc89_request
                 if frozen_request is not None:
-                    validate_cuda_cc89_request(request)
-                request = prepare_cuda_cc89_request(request, model_input.read_bytes(), context_mode)
+                    validate_cc89(request)
+                request = prepare_cc89(request, model_input.read_bytes(), context_mode)
             except ProteinContextError as exc:
-                raise DiffusionCliError(f"unsupported CUDA cc89 input: {exc}") from exc
+                raise DiffusionCliError(f"unsupported corrected cc89 input: {exc}") from exc
         elif context_mode not in {"none", "auto"}:
             from dvbfixer.model.diffusion.contract import ProteinContextPolicy
             from dvbfixer.model.diffusion.protein_context import (
@@ -521,7 +532,7 @@ def run_diffusion_model(args: argparse.Namespace) -> None:
             )
             print(f"Reused verified diffusion bundle {output_path} ({published.status})")
             return
-        if runtime.model == "protpardelle" and runtime.profile != "protpardelle-1c-cuda" and len(request.target_sequences) > 1:
+        if runtime.model == "protpardelle" and runtime.profile not in {"protpardelle-1c-cuda", "protpardelle-1c-mps-local-v1"} and len(request.target_sequences) > 1:
             sampled_chains = tuple(dict.fromkeys(gap.chain for gap in request.gaps))
             print(
                 "WARNING: Protpardelle will reconstruct gaps using "

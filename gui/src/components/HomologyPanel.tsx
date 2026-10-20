@@ -902,7 +902,7 @@ export function HomologyPanel() {
                 onClick={runModel} disabled={busy !== '' || !project.alignmentGroups.length}>Run {(project.modelOptions['--backend'] ?? 'modeller') === 'diffusion' ? 'Diffusion' : 'Modeller'}</Button>
             </Box>
             <Typography variant="caption" color="text.secondary">
-              Selected spans are assembled from the fitted structures into one coordinate-preserving mosaic template. At overlapping columns, the earlier template in the Templates tab has precedence. Diffusion keeps covered matching residues fixed and generates only admitted uncovered regions; it never falls back to Modeller.
+              Selected spans are assembled from the fitted structures into one coordinate-preserving mosaic template. At overlapping columns, the earlier template in the Templates tab has precedence. Diffusion keeps covered matching residues fixed and generates only admitted uncovered regions; it never falls back to Modeller. Corrected Protpardelle on CUDA or Apple MPS uses source-only local context for one CYS-free internal gap of 5–10 residues (at most 512 source residues); Apple refinement runs on CPU. Explicit full/none context is rejected, not silently changed. Existing legacy Apple profiles retain their historical behavior.
             </Typography>
           </Box>
         )}

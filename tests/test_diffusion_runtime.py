@@ -25,8 +25,17 @@ def test_apple_auto_selects_installed_protpardelle(
     runtime = resolve_diffusion_runtime()
 
     assert runtime.model == "protpardelle"
+    assert runtime.profile == "protpardelle-1c-mps-local-v1"
+    assert runtime.runner.endswith("dvbfixer-diffusion-protpardelle-1c-mps-local-v1")
+
+
+def test_frozen_legacy_apple_profile_can_select_its_original_launcher(monkeypatch):
+    monkeypatch.setattr("dvbfixer.model.diffusion.runtime.sys.platform", "darwin")
+    monkeypatch.setattr("dvbfixer.model.diffusion.runtime.platform.machine", lambda: "arm64")
+    monkeypatch.setattr("dvbfixer.model.diffusion.runtime._installed_runner", lambda name: "/installed/" + name)
+    runtime = resolve_diffusion_runtime("protpardelle", profile="protpardelle-1c-mps")
     assert runtime.profile == "protpardelle-1c-mps"
-    assert runtime.runner.endswith("dvbfixer-diffusion-protpardelle-1c-mps")
+    assert runtime.runner.endswith("protpardelle-1c-mps")
 
 
 def test_explicit_incompatible_model_reports_host(

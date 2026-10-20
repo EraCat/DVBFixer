@@ -57,8 +57,9 @@ Backend:
   --diffusion-resume    Reuse a verified bundle matching the current mosaic
                         request
   --diffusion-context {auto,none,local,full}
-                        Protein context: auto uses local for Protpardelle CUDA
-                        and the legacy path for other profiles (default: auto)
+                        Protein context: auto uses local for corrected
+                        Protpardelle CUDA/MPS; legacy profiles retain their
+                        prior path (default: auto)
   --diffusion-regenerate-covered
                         Opt in to bounded regeneration of covered
                         substitutions and short uncovered windows

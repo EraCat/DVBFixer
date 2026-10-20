@@ -156,11 +156,16 @@ checkpoints and never falls back to another profile or MODELLER.
   [CUDA setup](../deploy/protpardelle-1c/README.md#public-linuxnvidia-cuda-profile).
   Sampling and refinement use separate pinned environments. The profile provides
   automatic local context for one internal 5–10-residue gap in canonical proteins.
-- Native Apple Silicon `protpardelle-1c-mps`: follow
+- Native Apple Silicon `protpardelle-1c-mps-local-v1`: follow
   [`deploy/protpardelle-1c/README.md`](../deploy/protpardelle-1c/README.md) and
-  use its pinned arm64 environment. Set `PYTORCH_ENABLE_MPS_FALLBACK=0` before
-  Python starts. Apple evidence is descriptive and training membership remains
-  unresolved.
+  use its pinned arm64 sampling environment and a separate core CPU-refinement
+  interpreter via `--refinement-python` (keep the venv path, not its resolved
+  symlink target). Sampling requires Torch 2.6.0; initial refinement is pinned to
+  Python 3.12, OpenMM 8.5.2 and NumPy 2.4.6. Set
+  `PYTORCH_ENABLE_MPS_FALLBACK=0` before Python starts. The bounded corrected profile
+  does not replace the historical `protpardelle-1c-mps` identity; optional legacy
+  registration uses `protpardelle-mps-legacy`. Evidence remains descriptive and
+  training membership is not independently attested.
 
 The supported input slice and directory-bundle output are documented under
 [`dvbfixer model`](commands/model.md#experimental-diffusion-scope).

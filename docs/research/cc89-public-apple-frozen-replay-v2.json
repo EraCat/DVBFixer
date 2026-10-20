@@ -1,0 +1,16 @@
+{
+  "backend_invoked": false,
+  "bundle_files": 9,
+  "bundle_unchanged": true,
+  "execution_protocol_sha256": "f115984405832cdf0ecd475103eff336712aa6e5b57643756196ee365f32fbef",
+  "exit_code": 0,
+  "original_harness_override_rejected": true,
+  "poisoned_backend_exit_code_if_invoked": 88,
+  "producer_sha256": "50801f739ed2f067370ce501320cea9a6bcaca4cd5ee420c0ad5bc907d110baa",
+  "request_bytes_unchanged": true,
+  "request_sha256": "c7169dcbc1a3402141a1a9d5dfd475baf6fcbd512a9c96093d9f858feafb0054",
+  "seeds": [
+    7,
+    19
+  ]
+}

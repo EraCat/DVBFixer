@@ -91,7 +91,7 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     )
     diffusion.add_argument(
         "--diffusion-context", choices=("auto", "none", "local", "full"), default="auto",
-        help="Protein context: auto uses local for Protpardelle CUDA and the legacy path for other profiles (default: auto)",
+        help="Protein context: auto uses local for corrected Protpardelle CUDA/MPS; legacy profiles retain their prior path (default: auto)",
     )
     diffusion.add_argument(
         "--diffusion-heterogen-smiles",

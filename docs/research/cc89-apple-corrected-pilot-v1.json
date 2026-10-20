@@ -1,0 +1,1129 @@
+{
+  "accepted": 8,
+  "planned_outcomes": 8,
+  "protocol_sha256": "243f0712aee022c79358dd64d13e9bc7de0bcbbe039fa459774e7fac99d41119",
+  "public_promotion": false,
+  "reference_rmsd_used": false,
+  "rows": [
+    {
+      "case_id": "prospective-9ww8-gap5",
+      "coordinate_sha256": "21dc0ff77ba81bcd22b1a26a857e9cdf420387eb42ef3c3a1ebfc8aa6509164e",
+      "dat_generated_atom_count": 44,
+      "outside_gap_atom_records_identical": true,
+      "postprocessing_failures": [],
+      "profile": "protpardelle-1c-mps-source-physical-research-v1",
+      "sampling_resources": {
+        "denoising_seconds": 17.92717779101804,
+        "model_load_seconds": 0.2207069587893784,
+        "mps_recommended_max_memory_bytes": 14302248960,
+        "peak_accelerator_allocated_bytes": 355237888,
+        "peak_mps_driver_allocated_bytes": 355237888,
+        "peak_mps_tensor_allocated_bytes": 223217664,
+        "peak_rss_bytes": 761577472
+      },
+      "seed": 7,
+      "stages": {
+        "raw": {
+          "exit_code": 0,
+          "status": "completed"
+        },
+        "refine": {
+          "exit_code": 0,
+          "status": "completed"
+        }
+      },
+      "validation": {
+        "hard_gate_failures": [],
+        "metrics": [
+          {
+            "name": "outside-atom-identities-missing",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "outside-atom-identities-added",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "outside-residue-names-changed",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "fixed-heavy-atom-rmsd",
+            "unit": "angstrom",
+            "value": 0.0
+          },
+          {
+            "name": "fixed-heavy-atom-max-displacement",
+            "unit": "angstrom",
+            "value": 0.0
+          },
+          {
+            "name": "generated-residues-missing",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "generated-residue-names-wrong",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "generated-heavy-atoms-missing",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "generated-heavy-atoms-unexpected",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "junction-cn-distance-min",
+            "unit": "angstrom",
+            "value": 1.3406778136450221
+          },
+          {
+            "name": "junction-cn-distance-max",
+            "unit": "angstrom",
+            "value": 1.3421844135587317
+          },
+          {
+            "name": "generated-region-cn-distance-max",
+            "unit": "angstrom",
+            "value": 1.343949403809532
+          },
+          {
+            "name": "retained-explicit-links-missing",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "retained-explicit-links-unexpected",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "generated-or-junction-bond-length-errors",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "generated-or-junction-bond-angle-errors",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "generated-or-junction-non-planar-amides",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "generated-or-junction-ramachandran-outliers",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "generated-or-junction-sidechain-chi12-outliers",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "severe-steric-overlaps",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "detectable-d-ca",
+            "unit": "count",
+            "value": 0.0
+          }
+        ],
+        "passed": true,
+        "warnings": []
+      }
+    },
+    {
+      "case_id": "prospective-9ww8-gap5",
+      "coordinate_sha256": "a00a62323f9798eab05400188591182c399fbefe2ded6aa45332b226178a983c",
+      "dat_generated_atom_count": 44,
+      "outside_gap_atom_records_identical": true,
+      "postprocessing_failures": [],
+      "profile": "protpardelle-1c-mps-source-physical-research-v1",
+      "sampling_resources": {
+        "denoising_seconds": 18.057931958232075,
+        "model_load_seconds": 0.22936825011856854,
+        "mps_recommended_max_memory_bytes": 14302248960,
+        "peak_accelerator_allocated_bytes": 355237888,
+        "peak_mps_driver_allocated_bytes": 355237888,
+        "peak_mps_tensor_allocated_bytes": 212717312,
+        "peak_rss_bytes": 896073728
+      },
+      "seed": 19,
+      "stages": {
+        "raw": {
+          "exit_code": 0,
+          "status": "completed"
+        },
+        "refine": {
+          "exit_code": 0,
+          "status": "completed"
+        }
+      },
+      "validation": {
+        "hard_gate_failures": [],
+        "metrics": [
+          {
+            "name": "outside-atom-identities-missing",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "outside-atom-identities-added",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "outside-residue-names-changed",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "fixed-heavy-atom-rmsd",
+            "unit": "angstrom",
+            "value": 0.0
+          },
+          {
+            "name": "fixed-heavy-atom-max-displacement",
+            "unit": "angstrom",
+            "value": 0.0
+          },
+          {
+            "name": "generated-residues-missing",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "generated-residue-names-wrong",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "generated-heavy-atoms-missing",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "generated-heavy-atoms-unexpected",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "junction-cn-distance-min",
+            "unit": "angstrom",
+            "value": 1.3413221089656273
+          },
+          {
+            "name": "junction-cn-distance-max",
+            "unit": "angstrom",
+            "value": 1.3457206247955025
+          },
+          {
+            "name": "generated-region-cn-distance-max",
+            "unit": "angstrom",
+            "value": 1.3474553795951818
+          },
+          {
+            "name": "retained-explicit-links-missing",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "retained-explicit-links-unexpected",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "generated-or-junction-bond-length-errors",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "generated-or-junction-bond-angle-errors",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "generated-or-junction-non-planar-amides",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "generated-or-junction-ramachandran-outliers",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "generated-or-junction-sidechain-chi12-outliers",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "severe-steric-overlaps",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "detectable-d-ca",
+            "unit": "count",
+            "value": 0.0
+          }
+        ],
+        "passed": true,
+        "warnings": []
+      }
+    },
+    {
+      "case_id": "prospective-9ww8-gap10",
+      "coordinate_sha256": "dea8b7049e29549edf0a038fd44e445844a95f378bbb8de22147ce8138653257",
+      "dat_generated_atom_count": 72,
+      "outside_gap_atom_records_identical": true,
+      "postprocessing_failures": [],
+      "profile": "protpardelle-1c-mps-source-physical-research-v1",
+      "sampling_resources": {
+        "denoising_seconds": 18.04194508306682,
+        "model_load_seconds": 0.24071687506511807,
+        "mps_recommended_max_memory_bytes": 14302248960,
+        "peak_accelerator_allocated_bytes": 355237888,
+        "peak_mps_driver_allocated_bytes": 355237888,
+        "peak_mps_tensor_allocated_bytes": 214817024,
+        "peak_rss_bytes": 898596864
+      },
+      "seed": 7,
+      "stages": {
+        "raw": {
+          "exit_code": 0,
+          "status": "completed"
+        },
+        "refine": {
+          "exit_code": 0,
+          "status": "completed"
+        }
+      },
+      "validation": {
+        "hard_gate_failures": [],
+        "metrics": [
+          {
+            "name": "outside-atom-identities-missing",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "outside-atom-identities-added",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "outside-residue-names-changed",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "fixed-heavy-atom-rmsd",
+            "unit": "angstrom",
+            "value": 0.0
+          },
+          {
+            "name": "fixed-heavy-atom-max-displacement",
+            "unit": "angstrom",
+            "value": 0.0
+          },
+          {
+            "name": "generated-residues-missing",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "generated-residue-names-wrong",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "generated-heavy-atoms-missing",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "generated-heavy-atoms-unexpected",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "junction-cn-distance-min",
+            "unit": "angstrom",
+            "value": 1.3424611726228808
+          },
+          {
+            "name": "junction-cn-distance-max",
+            "unit": "angstrom",
+            "value": 1.3437808601107537
+          },
+          {
+            "name": "generated-region-cn-distance-max",
+            "unit": "angstrom",
+            "value": 1.3532401856285525
+          },
+          {
+            "name": "retained-explicit-links-missing",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "retained-explicit-links-unexpected",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "generated-or-junction-bond-length-errors",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "generated-or-junction-bond-angle-errors",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "generated-or-junction-non-planar-amides",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "generated-or-junction-ramachandran-outliers",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "generated-or-junction-sidechain-chi12-outliers",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "severe-steric-overlaps",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "detectable-d-ca",
+            "unit": "count",
+            "value": 0.0
+          }
+        ],
+        "passed": true,
+        "warnings": []
+      }
+    },
+    {
+      "case_id": "prospective-9ww8-gap10",
+      "coordinate_sha256": "b177140bcc57315c534bd18e621aaf2087f57878b68373eb2361af18508eec91",
+      "dat_generated_atom_count": 72,
+      "outside_gap_atom_records_identical": true,
+      "postprocessing_failures": [],
+      "profile": "protpardelle-1c-mps-source-physical-research-v1",
+      "sampling_resources": {
+        "denoising_seconds": 17.985181082971394,
+        "model_load_seconds": 0.21579724992625415,
+        "mps_recommended_max_memory_bytes": 14302248960,
+        "peak_accelerator_allocated_bytes": 355237888,
+        "peak_mps_driver_allocated_bytes": 355237888,
+        "peak_mps_tensor_allocated_bytes": 223217664,
+        "peak_rss_bytes": 893239296
+      },
+      "seed": 19,
+      "stages": {
+        "raw": {
+          "exit_code": 0,
+          "status": "completed"
+        },
+        "refine": {
+          "exit_code": 0,
+          "status": "completed"
+        }
+      },
+      "validation": {
+        "hard_gate_failures": [],
+        "metrics": [
+          {
+            "name": "outside-atom-identities-missing",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "outside-atom-identities-added",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "outside-residue-names-changed",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "fixed-heavy-atom-rmsd",
+            "unit": "angstrom",
+            "value": 0.0
+          },
+          {
+            "name": "fixed-heavy-atom-max-displacement",
+            "unit": "angstrom",
+            "value": 0.0
+          },
+          {
+            "name": "generated-residues-missing",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "generated-residue-names-wrong",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "generated-heavy-atoms-missing",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "generated-heavy-atoms-unexpected",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "junction-cn-distance-min",
+            "unit": "angstrom",
+            "value": 1.339738034094725
+          },
+          {
+            "name": "junction-cn-distance-max",
+            "unit": "angstrom",
+            "value": 1.3425144319522224
+          },
+          {
+            "name": "generated-region-cn-distance-max",
+            "unit": "angstrom",
+            "value": 1.3484917500674576
+          },
+          {
+            "name": "retained-explicit-links-missing",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "retained-explicit-links-unexpected",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "generated-or-junction-bond-length-errors",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "generated-or-junction-bond-angle-errors",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "generated-or-junction-non-planar-amides",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "generated-or-junction-ramachandran-outliers",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "generated-or-junction-sidechain-chi12-outliers",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "severe-steric-overlaps",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "detectable-d-ca",
+            "unit": "count",
+            "value": 0.0
+          }
+        ],
+        "passed": true,
+        "warnings": []
+      }
+    },
+    {
+      "case_id": "prospective-8ek6-H-cdr1-gap5",
+      "coordinate_sha256": "8bce7dea5d8b03fa99a7ba0866d3ccb8c6572198391d2167b807d03d59fc7d6b",
+      "dat_generated_atom_count": 41,
+      "outside_gap_atom_records_identical": true,
+      "postprocessing_failures": [],
+      "profile": "protpardelle-1c-mps-source-physical-research-v1",
+      "sampling_resources": {
+        "denoising_seconds": 18.73197633284144,
+        "model_load_seconds": 0.26751229097135365,
+        "mps_recommended_max_memory_bytes": 14302248960,
+        "peak_accelerator_allocated_bytes": 355221504,
+        "peak_mps_driver_allocated_bytes": 355221504,
+        "peak_mps_tensor_allocated_bytes": 260499456,
+        "peak_rss_bytes": 902758400
+      },
+      "seed": 7,
+      "stages": {
+        "raw": {
+          "exit_code": 0,
+          "status": "completed"
+        },
+        "refine": {
+          "exit_code": 0,
+          "status": "completed"
+        }
+      },
+      "validation": {
+        "hard_gate_failures": [],
+        "metrics": [
+          {
+            "name": "outside-atom-identities-missing",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "outside-atom-identities-added",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "outside-residue-names-changed",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "fixed-heavy-atom-rmsd",
+            "unit": "angstrom",
+            "value": 0.0
+          },
+          {
+            "name": "fixed-heavy-atom-max-displacement",
+            "unit": "angstrom",
+            "value": 0.0
+          },
+          {
+            "name": "generated-residues-missing",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "generated-residue-names-wrong",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "generated-heavy-atoms-missing",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "generated-heavy-atoms-unexpected",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "junction-cn-distance-min",
+            "unit": "angstrom",
+            "value": 1.337774644699174
+          },
+          {
+            "name": "junction-cn-distance-max",
+            "unit": "angstrom",
+            "value": 1.3403096657116211
+          },
+          {
+            "name": "generated-region-cn-distance-max",
+            "unit": "angstrom",
+            "value": 1.3403096657116211
+          },
+          {
+            "name": "retained-explicit-links-missing",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "retained-explicit-links-unexpected",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "generated-or-junction-bond-length-errors",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "generated-or-junction-bond-angle-errors",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "generated-or-junction-non-planar-amides",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "generated-or-junction-ramachandran-outliers",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "generated-or-junction-sidechain-chi12-outliers",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "severe-steric-overlaps",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "detectable-d-ca",
+            "unit": "count",
+            "value": 0.0
+          }
+        ],
+        "passed": true,
+        "warnings": []
+      }
+    },
+    {
+      "case_id": "prospective-8ek6-H-cdr1-gap5",
+      "coordinate_sha256": "3157be8c344d77d33b0c1756eb11450f3c4af63f3cf9919b64216017ce7bda02",
+      "dat_generated_atom_count": 41,
+      "outside_gap_atom_records_identical": true,
+      "postprocessing_failures": [],
+      "profile": "protpardelle-1c-mps-source-physical-research-v1",
+      "sampling_resources": {
+        "denoising_seconds": 18.6793394589331,
+        "model_load_seconds": 0.2839652500115335,
+        "mps_recommended_max_memory_bytes": 14302248960,
+        "peak_accelerator_allocated_bytes": 355221504,
+        "peak_mps_driver_allocated_bytes": 355221504,
+        "peak_mps_tensor_allocated_bytes": 248420096,
+        "peak_rss_bytes": 870072320
+      },
+      "seed": 19,
+      "stages": {
+        "raw": {
+          "exit_code": 0,
+          "status": "completed"
+        },
+        "refine": {
+          "exit_code": 0,
+          "status": "completed"
+        }
+      },
+      "validation": {
+        "hard_gate_failures": [],
+        "metrics": [
+          {
+            "name": "outside-atom-identities-missing",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "outside-atom-identities-added",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "outside-residue-names-changed",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "fixed-heavy-atom-rmsd",
+            "unit": "angstrom",
+            "value": 0.0
+          },
+          {
+            "name": "fixed-heavy-atom-max-displacement",
+            "unit": "angstrom",
+            "value": 0.0
+          },
+          {
+            "name": "generated-residues-missing",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "generated-residue-names-wrong",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "generated-heavy-atoms-missing",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "generated-heavy-atoms-unexpected",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "junction-cn-distance-min",
+            "unit": "angstrom",
+            "value": 1.3471503256875224
+          },
+          {
+            "name": "junction-cn-distance-max",
+            "unit": "angstrom",
+            "value": 1.3484290860108274
+          },
+          {
+            "name": "generated-region-cn-distance-max",
+            "unit": "angstrom",
+            "value": 1.3484290860108274
+          },
+          {
+            "name": "retained-explicit-links-missing",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "retained-explicit-links-unexpected",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "generated-or-junction-bond-length-errors",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "generated-or-junction-bond-angle-errors",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "generated-or-junction-non-planar-amides",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "generated-or-junction-ramachandran-outliers",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "generated-or-junction-sidechain-chi12-outliers",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "severe-steric-overlaps",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "detectable-d-ca",
+            "unit": "count",
+            "value": 0.0
+          }
+        ],
+        "passed": true,
+        "warnings": []
+      }
+    },
+    {
+      "case_id": "prospective-9z0u-H-cdr3-gap10",
+      "coordinate_sha256": "81d3cbab6df5e971c3a93e3a44acfa9b1808b1df68b58155b3634452c7343069",
+      "dat_generated_atom_count": 79,
+      "outside_gap_atom_records_identical": true,
+      "postprocessing_failures": [],
+      "profile": "protpardelle-1c-mps-source-physical-research-v1",
+      "sampling_resources": {
+        "denoising_seconds": 16.723020249977708,
+        "model_load_seconds": 0.22989962506107986,
+        "mps_recommended_max_memory_bytes": 14302248960,
+        "peak_accelerator_allocated_bytes": 355221504,
+        "peak_mps_driver_allocated_bytes": 355221504,
+        "peak_mps_tensor_allocated_bytes": 193812992,
+        "peak_rss_bytes": 836714496
+      },
+      "seed": 7,
+      "stages": {
+        "raw": {
+          "exit_code": 0,
+          "status": "completed"
+        },
+        "refine": {
+          "exit_code": 0,
+          "status": "completed"
+        }
+      },
+      "validation": {
+        "hard_gate_failures": [],
+        "metrics": [
+          {
+            "name": "outside-atom-identities-missing",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "outside-atom-identities-added",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "outside-residue-names-changed",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "fixed-heavy-atom-rmsd",
+            "unit": "angstrom",
+            "value": 0.0
+          },
+          {
+            "name": "fixed-heavy-atom-max-displacement",
+            "unit": "angstrom",
+            "value": 0.0
+          },
+          {
+            "name": "generated-residues-missing",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "generated-residue-names-wrong",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "generated-heavy-atoms-missing",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "generated-heavy-atoms-unexpected",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "junction-cn-distance-min",
+            "unit": "angstrom",
+            "value": 1.329278751804905
+          },
+          {
+            "name": "junction-cn-distance-max",
+            "unit": "angstrom",
+            "value": 1.3300368415950004
+          },
+          {
+            "name": "generated-region-cn-distance-max",
+            "unit": "angstrom",
+            "value": 1.3543540895939996
+          },
+          {
+            "name": "retained-explicit-links-missing",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "retained-explicit-links-unexpected",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "generated-or-junction-bond-length-errors",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "generated-or-junction-bond-angle-errors",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "generated-or-junction-non-planar-amides",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "generated-or-junction-ramachandran-outliers",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "generated-or-junction-sidechain-chi12-outliers",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "severe-steric-overlaps",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "detectable-d-ca",
+            "unit": "count",
+            "value": 0.0
+          }
+        ],
+        "passed": true,
+        "warnings": []
+      }
+    },
+    {
+      "case_id": "prospective-9z0u-H-cdr3-gap10",
+      "coordinate_sha256": "192003b6b912688311029710e499d80679a23888c9720d842d503f07d23f894e",
+      "dat_generated_atom_count": 79,
+      "outside_gap_atom_records_identical": true,
+      "postprocessing_failures": [],
+      "profile": "protpardelle-1c-mps-source-physical-research-v1",
+      "sampling_resources": {
+        "denoising_seconds": 16.779955625068396,
+        "model_load_seconds": 0.22400962514802814,
+        "mps_recommended_max_memory_bytes": 14302248960,
+        "peak_accelerator_allocated_bytes": 355237888,
+        "peak_mps_driver_allocated_bytes": 355237888,
+        "peak_mps_tensor_allocated_bytes": 221379584,
+        "peak_rss_bytes": 893829120
+      },
+      "seed": 19,
+      "stages": {
+        "raw": {
+          "exit_code": 0,
+          "status": "completed"
+        },
+        "refine": {
+          "exit_code": 0,
+          "status": "completed"
+        }
+      },
+      "validation": {
+        "hard_gate_failures": [],
+        "metrics": [
+          {
+            "name": "outside-atom-identities-missing",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "outside-atom-identities-added",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "outside-residue-names-changed",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "fixed-heavy-atom-rmsd",
+            "unit": "angstrom",
+            "value": 0.0
+          },
+          {
+            "name": "fixed-heavy-atom-max-displacement",
+            "unit": "angstrom",
+            "value": 0.0
+          },
+          {
+            "name": "generated-residues-missing",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "generated-residue-names-wrong",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "generated-heavy-atoms-missing",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "generated-heavy-atoms-unexpected",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "junction-cn-distance-min",
+            "unit": "angstrom",
+            "value": 1.3147429406541788
+          },
+          {
+            "name": "junction-cn-distance-max",
+            "unit": "angstrom",
+            "value": 1.3226609542887413
+          },
+          {
+            "name": "generated-region-cn-distance-max",
+            "unit": "angstrom",
+            "value": 1.3402857904193417
+          },
+          {
+            "name": "retained-explicit-links-missing",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "retained-explicit-links-unexpected",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "generated-or-junction-bond-length-errors",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "generated-or-junction-bond-angle-errors",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "generated-or-junction-non-planar-amides",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "generated-or-junction-ramachandran-outliers",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "generated-or-junction-sidechain-chi12-outliers",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "severe-steric-overlaps",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "detectable-d-ca",
+            "unit": "count",
+            "value": 0.0
+          }
+        ],
+        "passed": true,
+        "warnings": []
+      }
+    }
+  ]
+}

@@ -845,6 +845,17 @@ class SamplerTrace:
                     or "cc89-chain-phase=neutral-v1" not in self.patch_identity
                     or "cc89-position-features=source-physical-v1" not in self.patch_identity):
                 raise DiffusionContractError("CUDA cc89 profile lacks its frozen sampler/context evidence")
+        if self.profile == "protpardelle-1c-mps-local-v1":
+            if (not self.sampler_evidence_complete or self.device != "mps"
+                    or not self.fallback_disabled or self.denoising_update_count != 500
+                    or self.callback_update_count or self.steps
+                    or self.capabilities.supports_per_step_reinjection()
+                    or not self.final_fixed_coordinate_restoration
+                    or self.protein_context_evidence is None
+                    or "cc89-chain-phase=neutral-v1" not in self.patch_identity
+                    or "cc89-position-features=source-physical-v1" not in self.patch_identity
+                    or "sha256:627891e28d5055cb0d903f542af695569d7133b0480cab8f25d154dc8ccc78c9" not in self.patch_identity):
+                raise DiffusionContractError("MPS cc89 profile lacks its frozen sampler/context evidence")
 
     def to_dict(self) -> dict[str, Any]:
         return _encode(self)

@@ -40,6 +40,12 @@ _RUNTIME_SPECS = (
     ),
     _RuntimeSpec(
         model="protpardelle",
+        profile="protpardelle-1c-mps-local-v1",
+        executable="dvbfixer-diffusion-protpardelle-1c-mps-local-v1",
+        platforms=(("darwin", "arm64"),),
+    ),
+    _RuntimeSpec(
+        model="protpardelle",
         profile="protpardelle-1c-mps",
         executable="dvbfixer-diffusion-protpardelle-1c-mps",
         platforms=(("darwin", "arm64"),),
@@ -71,7 +77,7 @@ def _installed_runner(executable: str) -> str | None:
     return None
 
 
-def resolve_diffusion_runtime(model: str | None = None) -> DiffusionRuntime:
+def resolve_diffusion_runtime(model: str | None = None, *, profile: str | None = None) -> DiffusionRuntime:
     """Select an installed launcher by optional model and host platform."""
     machine = platform.machine().lower()
     compatible = [
@@ -79,12 +85,20 @@ def resolve_diffusion_runtime(model: str | None = None) -> DiffusionRuntime:
         for spec in _RUNTIME_SPECS
         if (sys.platform, machine) in spec.platforms
         and (model is None or spec.model == model)
+        and (profile is None or spec.profile == profile)
     ]
     installed = [
         (spec, runner)
         for spec in compatible
         if (runner := _installed_runner(spec.executable)) is not None
     ]
+    # Versioned profiles of the SAME model are not ambiguous. Prefer the first
+    # installed version, but frozen requests can explicitly select the old one.
+    if profile is None:
+        preferred: dict[str, tuple[_RuntimeSpec, str]] = {}
+        for spec, runner in installed:
+            preferred.setdefault(spec.model, (spec, runner))
+        installed = list(preferred.values())
     if len(installed) == 1:
         spec, runner = installed[0]
         return DiffusionRuntime(spec.model, spec.profile, runner)

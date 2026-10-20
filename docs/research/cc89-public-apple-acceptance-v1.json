@@ -1,0 +1,47 @@
+{
+  "accepted": 0,
+  "execution_protocol_sha256": "a47767d24e0fc077e1facd82a93e8ef813af040608c87032fe480225daac46fe",
+  "planned_candidates": 5,
+  "planned_workflows": 4,
+  "reference_rmsd_used": false,
+  "rows": [],
+  "wider_operational_acceptance": false,
+  "workflows": [
+    {
+      "case_id": "prospective-9ww8-gap5",
+      "execution": {
+        "exit_code": 1,
+        "status": "failed"
+      },
+      "resume": [],
+      "tool": "homology"
+    },
+    {
+      "case_id": "prospective-8ek6-H-cdr1-gap5",
+      "execution": {
+        "exit_code": 1,
+        "status": "failed"
+      },
+      "resume": [],
+      "tool": "homology"
+    },
+    {
+      "case_id": "prospective-9z0u-H-cdr3-gap10",
+      "execution": {
+        "exit_code": 1,
+        "status": "failed"
+      },
+      "resume": [],
+      "tool": "homology"
+    },
+    {
+      "case_id": "prospective-9ww8-gap10",
+      "execution": {
+        "exit_code": 1,
+        "status": "failed"
+      },
+      "resume": [],
+      "tool": "model"
+    }
+  ]
+}

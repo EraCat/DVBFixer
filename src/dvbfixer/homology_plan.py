@@ -339,6 +339,7 @@ def build_mosaic_diffusion_request(
     regenerate_covered: bool = False,
     profile: str = "",
     edit_flanks: int = 1,
+    context_mode: str = "auto",
 ) -> tuple[Path, Path]:
     """Use authoritative coverage positions, never sequence re-alignment.
 
@@ -453,6 +454,16 @@ def build_mosaic_diffusion_request(
         regenerated_template_ownership=(tuple(owner for owner in ownership if owner.residue in mutable_residues)
                                        if regenerate_covered else None),
     )
+    # Finalize freshly built requests BEFORE freezing them. The CLI replay path
+    # must validate, never silently add missing context to a frozen request.
+    if profile in {"protpardelle-1c-cuda", "protpardelle-1c-mps-local-v1"}:
+        from dvbfixer.model.diffusion.protein_context import (
+            prepare_cuda_cc89_request,
+            prepare_mps_cc89_request,
+        )
+
+        prepare = prepare_cuda_cc89_request if profile == "protpardelle-1c-cuda" else prepare_mps_cc89_request
+        request = prepare(request, normalized_text.encode(), context_mode)
     with input_path.open("x") as stream:
         stream.write(normalized_text)
     with request_path.open("x") as stream:

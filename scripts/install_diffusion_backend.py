@@ -24,6 +24,7 @@ class Backend:
     kalign_sha256: str | None = None
     mps: bool = False
     cuda_cc89: bool = False
+    local_mps_cc89: bool = False
 
 
 BACKENDS = {
@@ -35,6 +36,14 @@ BACKENDS = {
         cuda_cc89=True,
     ),
     "protpardelle": Backend(
+        "deploy/protpardelle-1c/mps_runner.py",
+        "dvbfixer-diffusion-protpardelle-1c-mps-local-v1",
+        "dfc9895b399ec4497bf6d646502168725f01dcbd55bc0b541fc3e3cc1f2f0483",
+        "src",
+        mps=True,
+        local_mps_cc89=True,
+    ),
+    "protpardelle-mps-legacy": Backend(
         "deploy/protpardelle-1c/production_runner.py",
         "dvbfixer-diffusion-protpardelle-1c-mps",
         "dfc9895b399ec4497bf6d646502168725f01dcbd55bc0b541fc3e3cc1f2f0483",
@@ -66,7 +75,7 @@ def main() -> None:
     parser.add_argument("model", choices=tuple(BACKENDS))
     parser.add_argument("checkpoint", type=Path)
     parser.add_argument("--refinement-python", type=Path,
-                        help="Separate Python 3.13/OpenMM CUDA runtime required by Protpardelle CUDA")
+                        help="Separate refinement Python required by corrected Protpardelle CUDA/MPS (preserve venv path)")
     parser.add_argument(
         "--engine-root",
         type=Path,
@@ -120,9 +129,9 @@ def main() -> None:
             )
         )
     extra_arguments = ()
-    if backend.cuda_cc89:
+    if backend.cuda_cc89 or backend.local_mps_cc89:
         if args.refinement_python is None:
-            parser.error("--refinement-python is required for Protpardelle CUDA")
+            parser.error("--refinement-python is required for corrected Protpardelle")
         refinement_python = args.refinement_python.expanduser().absolute()
         if not refinement_python.is_file() or not os.access(refinement_python, os.X_OK):
             parser.error("refinement Python must be executable")

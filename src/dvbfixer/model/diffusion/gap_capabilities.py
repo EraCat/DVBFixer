@@ -16,6 +16,7 @@ class GapCapability:
 
 ACCEPTED_INTERNAL_RANGES = MappingProxyType({
     "protpardelle-1c-cuda": ((5, 10),),
+    "protpardelle-1c-mps-local-v1": ((5, 10),),
     "protenix-v1-cuda": ((3, 12),),
     "protpardelle-1c-mps": ((3, 12),),
 })

@@ -89,23 +89,31 @@ remain unchanged. Terminal OXT is preserved outside atom37 conditioning. Explici
 Installation and the two isolated runtimes are described in the
 [CUDA deployment guide](../../deploy/protpardelle-1c/README.md#public-linuxnvidia-cuda-profile).
 
+New native Apple registrations use the versioned
+`protpardelle-1c-mps-local-v1` profile with the same bounded source-only local
+input policy and **separate generated-only CPU refinement**. MPS denoising never
+falls back to CPU. The installer requires `--refinement-python`; see the
+[Apple deployment guide](../../deploy/protpardelle-1c/README.md#apple-silicon-preparation).
+The historical `protpardelle-1c-mps` identity is retained for legacy requests;
+installing the corrected version does not relabel or migrate those requests.
+
 Protenix can opt into source-only protein context with
 `--diffusion-model protenix --diffusion-context local` (eight sequence flanks and
 observed-anchor spatial/partner shells) or `--diffusion-context full` (the
-supported protein environment). For Protenix and MPS, `auto` retains the legacy
+supported protein environment). For Protenix and the **legacy** MPS profile, `auto` retains the legacy
 `none` behavior. Explicit context requires
 complete canonical protein context and a bounded residue
 axis; unsupported selections fail before inference. Protenix also supports an
-explicit jointly sampled plan for multiple gap-bearing chains. MPS Protpardelle can
+explicit jointly sampled plan for multiple gap-bearing chains. Legacy MPS Protpardelle can
 use the same explicit selector for one gap-bearing chain and one contiguous span
 per represented source chain; discontiguous entities and joint gap-bearing chains
 are rejected before runner launch. Fixed conditioning and
 preserved-only atoms are distinguished in provenance. See the
 [bounded causal pilot and remaining acceptance](../research/protein-context-pilot.md).
 
-The existing MPS/Protenix profiles accept canonical protein chains with unambiguous
+The legacy MPS and Protenix profiles accept canonical protein chains with unambiguous
 missing regions of 3–12 residues and target sequences from SEQRES or `--fasta`.
-Internal gaps use two anchors. The Protpardelle MPS profile also supports one-anchor N-terminal and
+Internal gaps use two anchors. The legacy Protpardelle MPS profile also supports one-anchor N-terminal and
 C-terminal generation; generated terminal identities extend deterministically
 before or after the observed PDB residue-number range. The materializer inserts
 N-terminal atoms before the first observed residue and C-terminal atoms before
@@ -113,7 +121,7 @@ that chain's `TER`. Validation applies the single available peptide-junction gat
 plus atom completeness, geometry, clashes, chirality, and exact fixed-coordinate
 checks. Other diffusion profiles reject terminal requests before runner launch.
 Pass `--no-terminal` to crop each target outside its first and last observed
-anchors and reconstruct only internal gaps. MPS Protpardelle can retain complete,
+anchors and reconstruct only internal gaps. Legacy MPS Protpardelle can retain complete,
 isolated, single-residue small molecules only when every retained HETATM residue
 has an authoritative repeatable `--diffusion-heterogen-smiles RESNAME=SMILES`
 mapping. DVBFixer requires occupancy 1.00, explicit heavy elements, complete

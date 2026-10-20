@@ -72,7 +72,7 @@ def materialize(output):
     import numpy as np
     from materialize_cc89_known_sequence_holdout import write_case
 
-    from dvbfixer.model.diffusion.contract import DiffusionRequest
+    from dvbfixer.model.diffusion.contract import BackendOption, DiffusionRequest
     from dvbfixer.model.diffusion.protein_context import (
         CUDA_CC89_CONTEXT,
         CUDA_CC89_OPTIONS,
@@ -100,8 +100,9 @@ def materialize(output):
             request = DiffusionRequest.from_json((directory / f"requests/cc89-seed{seed}.json").read_text())
             request = select_protein_context(replace(request, protein_context=None),
                 (directory / request.normalized_pdb.path).read_bytes(), CUDA_CC89_CONTEXT)
-            options = tuple(option for option in request.backend_options if option.name not in {o.name for o in CUDA_CC89_OPTIONS})
-            request = replace(request, backend_options=(*options, *CUDA_CC89_OPTIONS))
+            options = tuple(option for option in request.backend_options if option.name not in {"profile", *(o.name for o in CUDA_CC89_OPTIONS)})
+            request = replace(request, backend_options=(*options, *CUDA_CC89_OPTIONS,
+                BackendOption("profile", "protpardelle-1c-mps-source-physical-research-v1")))
             validate_context_source(request, (directory / request.normalized_pdb.path).read_bytes())
             positions, chains = source_context_position_features(request)
             (directory / f"request-seed{seed}.json").write_text(request.to_json())
@@ -112,8 +113,8 @@ def materialize(output):
         evaluation.mkdir(parents=True)
         (directory / "reference.pdb").rename(evaluation / "reference.pdb")
     report = {"fixture_manifest_sha256": sha(FIXTURES / "manifest.json"), "requests": rows,
-        "inference_executed": False, "corrected_mps_port_status": "not-yet-implemented",
-        "note": "These are explicit research requests. Current numerical-policy guards reject corrected MPS; do not register them as the legacy public MPS profile."}
+        "inference_executed": False, "corrected_mps_port_status": "research-mode-requires-explicit-opt-in",
+        "note": "Explicit corrected MPS research requests require --corrected-mps-research and matching policies. Not the legacy public MPS profile; no MPS acceptance is implied."}
     dump(output / "inputs.json", report)
     print(json.dumps({"cases": len(manifest["cases"]), "requests": len(rows), "inference_executed": False}, indent=2))
 

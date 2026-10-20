@@ -1,0 +1,157 @@
+{
+  "accepted": 5,
+  "execution_protocol_sha256": "f115984405832cdf0ecd475103eff336712aa6e5b57643756196ee365f32fbef",
+  "planned_candidates": 5,
+  "planned_workflows": 4,
+  "reference_rmsd_used": false,
+  "rows": [
+    {
+      "bundle_sha256": "e83a8dc7ac8d633ab5f2d52f8ddb98a596bba84b5138899e6b854a5152189a77",
+      "callback_updates": 0,
+      "case_id": "prospective-9ww8-gap5",
+      "coordinate_sha256": "21dc0ff77ba81bcd22b1a26a857e9cdf420387eb42ef3c3a1ebfc8aa6509164e",
+      "d_ca": 0,
+      "dat_generated_atom_count": 44,
+      "denoising_updates": 500,
+      "fixed_max_displacement_angstrom": 0,
+      "outside_gap_atom_records_identical": true,
+      "passed": true,
+      "profile": "protpardelle-1c-mps-local-v1",
+      "request_sha256": "6d7026e2947217b89a0e99621f5ea7e2c83e4d73f9877cc0317d17931848a87c",
+      "seed": 7,
+      "tool": "homology"
+    },
+    {
+      "bundle_sha256": "dd47568f88d9c3ead85d119064031f1049b200651e97d374ee80c85306c95943",
+      "callback_updates": 0,
+      "case_id": "prospective-8ek6-H-cdr1-gap5",
+      "coordinate_sha256": "8bce7dea5d8b03fa99a7ba0866d3ccb8c6572198391d2167b807d03d59fc7d6b",
+      "d_ca": 0,
+      "dat_generated_atom_count": 41,
+      "denoising_updates": 500,
+      "fixed_max_displacement_angstrom": 0,
+      "outside_gap_atom_records_identical": true,
+      "passed": true,
+      "profile": "protpardelle-1c-mps-local-v1",
+      "request_sha256": "e84e9d502b3ba6de5ee32b6e755312df080a3f985f92e1a69d8b9a04ab09dc9c",
+      "seed": 7,
+      "tool": "homology"
+    },
+    {
+      "bundle_sha256": "8fdf9ec8e3ab9d884a681991774f35f428bcfac072587d51483172f9b42b7be2",
+      "callback_updates": 0,
+      "case_id": "prospective-9z0u-H-cdr3-gap10",
+      "coordinate_sha256": "81d3cbab6df5e971c3a93e3a44acfa9b1808b1df68b58155b3634452c7343069",
+      "d_ca": 0,
+      "dat_generated_atom_count": 79,
+      "denoising_updates": 500,
+      "fixed_max_displacement_angstrom": 0,
+      "outside_gap_atom_records_identical": true,
+      "passed": true,
+      "profile": "protpardelle-1c-mps-local-v1",
+      "request_sha256": "1dc9ce6e14a8b59078737e395200cd898bbcdd93ef6f221c7b775e1f68b46cc2",
+      "seed": 7,
+      "tool": "homology"
+    },
+    {
+      "bundle_sha256": "d663aef872f77fcb40495f29e40d33bc489e79f28974282fee69dc1c3a2c017a",
+      "callback_updates": 0,
+      "case_id": "prospective-9ww8-gap10",
+      "coordinate_sha256": "b177140bcc57315c534bd18e621aaf2087f57878b68373eb2361af18508eec91",
+      "d_ca": 0,
+      "dat_generated_atom_count": 72,
+      "denoising_updates": 500,
+      "fixed_max_displacement_angstrom": 0,
+      "outside_gap_atom_records_identical": true,
+      "passed": true,
+      "profile": "protpardelle-1c-mps-local-v1",
+      "request_sha256": "c7169dcbc1a3402141a1a9d5dfd475baf6fcbd512a9c96093d9f858feafb0054",
+      "seed": 19,
+      "tool": "model"
+    },
+    {
+      "bundle_sha256": "d663aef872f77fcb40495f29e40d33bc489e79f28974282fee69dc1c3a2c017a",
+      "callback_updates": 0,
+      "case_id": "prospective-9ww8-gap10",
+      "coordinate_sha256": "dea8b7049e29549edf0a038fd44e445844a95f378bbb8de22147ce8138653257",
+      "d_ca": 0,
+      "dat_generated_atom_count": 72,
+      "denoising_updates": 500,
+      "fixed_max_displacement_angstrom": 0,
+      "outside_gap_atom_records_identical": true,
+      "passed": true,
+      "profile": "protpardelle-1c-mps-local-v1",
+      "request_sha256": "c7169dcbc1a3402141a1a9d5dfd475baf6fcbd512a9c96093d9f858feafb0054",
+      "seed": 7,
+      "tool": "model"
+    }
+  ],
+  "wider_operational_acceptance": false,
+  "workflows": [
+    {
+      "case_id": "prospective-9ww8-gap5",
+      "execution": {
+        "exit_code": 0,
+        "status": "completed"
+      },
+      "resume": [
+        {
+          "bundle_unchanged": true,
+          "exit_code": 0,
+          "frozen_request": false
+        }
+      ],
+      "tool": "homology"
+    },
+    {
+      "case_id": "prospective-8ek6-H-cdr1-gap5",
+      "execution": {
+        "exit_code": 0,
+        "status": "completed"
+      },
+      "resume": [
+        {
+          "bundle_unchanged": true,
+          "exit_code": 0,
+          "frozen_request": false
+        }
+      ],
+      "tool": "homology"
+    },
+    {
+      "case_id": "prospective-9z0u-H-cdr3-gap10",
+      "execution": {
+        "exit_code": 0,
+        "status": "completed"
+      },
+      "resume": [
+        {
+          "bundle_unchanged": true,
+          "exit_code": 0,
+          "frozen_request": false
+        }
+      ],
+      "tool": "homology"
+    },
+    {
+      "case_id": "prospective-9ww8-gap10",
+      "execution": {
+        "exit_code": 0,
+        "status": "completed"
+      },
+      "resume": [
+        {
+          "bundle_unchanged": true,
+          "exit_code": 0,
+          "frozen_request": false
+        },
+        {
+          "bundle_unchanged": true,
+          "exit_code": 2,
+          "frozen_request": true
+        }
+      ],
+      "tool": "model"
+    }
+  ]
+}

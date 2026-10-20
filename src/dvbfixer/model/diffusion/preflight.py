@@ -92,6 +92,21 @@ class DiffusionProfileMetadata:
 
 
 DIFFUSION_PROFILES = {
+    "protpardelle-1c-mps-local-v1": DiffusionProfileMetadata(
+        profile="protpardelle-1c-mps-local-v1",
+        status="experimental-corrected-local-context",
+        evidence_labels=("experimental", "apple-portability-8-of-8", "source-only-local-context", "no-per-step-reinjection"),
+        engine="Protpardelle-1c",
+        source_revision="ee378400f25b801fa481028000f9060183d7fb4c",
+        patch_identity="cc89-neutral-v1;source-physical-v1;apple-patch-v1",
+        expected_checkpoint_sha256="dfc9895b399ec4497bf6d646502168725f01dcbd55bc0b541fc3e3cc1f2f0483",
+        sampling_platform="native macOS arm64 / MPS",
+        refinement_platform="OpenMM CPU",
+        runner_protocol_version=DIFFUSION_RUNNER_PROTOCOL_VERSION,
+        contract_schema_version=DIFFUSION_SCHEMA_VERSION,
+        fallback_policy="PYTORCH_ENABLE_MPS_FALLBACK=0; no profile, device, or MODELLER fallback",
+        training_membership_status="not-independently-attested",
+    ),
     "protpardelle-1c-cuda": DiffusionProfileMetadata(
         profile="protpardelle-1c-cuda",
         status="experimental-local-context-accepted",
@@ -160,6 +175,11 @@ class _RuntimeExpectation:
 
 
 _PROFILE_RUNTIME_EXPECTATIONS = {
+    "protpardelle-1c-mps-local-v1": _RuntimeExpectation(
+        platform="darwin", architectures=frozenset({"arm64"}),
+        python_version="3.12", framework_version="2.6.0", device_prefix="mps",
+        environment_identity="macos-arm64;cc89-local-v1;python=3.12;torch=2.6.0;refinement=openmm-8.5.2-cpu",
+    ),
     "protpardelle-1c-cuda": _RuntimeExpectation(
         platform="linux", architectures=frozenset({"x86_64", "amd64"}),
         python_version="3.12", framework_version="2.6.0",

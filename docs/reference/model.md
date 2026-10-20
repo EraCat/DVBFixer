@@ -68,8 +68,9 @@ Diffusion options:
   --diffusion-resume    Reuse an existing digest-verified bundle only when its
                         scientific request matches
   --diffusion-context {auto,none,local,full}
-                        Protein context: auto uses local for Protpardelle CUDA
-                        and the legacy path for other profiles (default: auto)
+                        Protein context: auto uses local for corrected
+                        Protpardelle CUDA/MPS; legacy profiles retain their
+                        prior path (default: auto)
   --diffusion-heterogen-smiles RESNAME=SMILES
                         Authoritative SMILES for a retained isolated HETATM
                         residue; repeat for multiple residue names

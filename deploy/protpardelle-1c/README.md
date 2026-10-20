@@ -104,11 +104,32 @@ see the [paired comparison](../../docs/research/cc89-input-correction-comparison
 
 ## Apple Silicon preparation
 
-For the **new corrected local-input port**, start with the
-[Apple handoff](../../docs/plans/apple-cc89-handoff.md). It includes portable
-tracked controls and the exact remaining research-mode gates. The instructions
-below describe the historical public MPS baseline; they do not enable the new
-CUDA-corrected policy on MPS or establish its acceptance there.
+New Apple registrations select **`protpardelle-1c-mps-local-v1`**, an explicitly
+versioned corrected public profile. It uses fixed source-only local context,
+neutral denoiser chain phase and physical source positions for **one CYS-free
+internal gap of 5–10 residues**, at most 512 whole-source canonical residues.
+Explicit `none`/`full`, terminal/multiple gaps and nonwater heterogens fail closed.
+MPS sampling has no fallback; generated-only refinement runs in a separate CPU
+process. MODELLER remains default and wider operational acceptance is still pending.
+
+The [Apple handoff](../../docs/plans/apple-cc89-handoff.md) includes portable
+tracked controls, the separate `protpardelle-1c-mps-source-physical-research-v1`
+research mode and its frozen pilot workflow. The first corrected
+[research portability pilot](../../docs/research/cc89-apple-corrected-pilot.md)
+passes 8/8 after CPU refinement, with exact source preservation and no detectable
+D-Cα. Research-runner resume is not public bundle acceptance.
+The subsequent [public Apple integration](../../docs/research/cc89-public-apple-acceptance.md)
+passes 5/5 candidates across four model/Homology workflows, including multi-seed
+publication and exact frozen-request replay. Its failed development protocol is
+retained separately; broader memory/latency/operational acceptance remains pending.
+
+The historical **`protpardelle-1c-mps`** profile keeps its native-phase/native-position
+semantics, old trace contract and separate launcher. It is not silently relabeled
+or converted into corrected requests. To register that historical path explicitly,
+use `protpardelle-mps-legacy` instead of `protpardelle` below (without
+`--refinement-python`). When both Apple versions are installed, new requests
+prefer corrected local-v1; an explicit frozen legacy request selects its original
+launcher or fails rather than switching profiles.
 
 Use a native arm64 Python environment and apply the Apple patch to the clean,
 pinned upstream checkout:
@@ -216,7 +237,7 @@ Register the frozen backend once from the native Apple environment:
 ```bash
 python "$DVBFIXER_ROOT/scripts/install_diffusion_backend.py" \
   protpardelle "$MODEL_PARAMS/weights/cc89_epoch415.pth" \
-  --engine-root "$PROTPARDELLE_ROOT"
+  --engine-root "$PROTPARDELLE_ROOT" --refinement-python "$REFINEMENT_PYTHON"
 ```
 
 The installed private launcher binds the backend Python, runner, checkpoint,
@@ -234,3 +255,10 @@ Protpardelle. It uses the frozen 500-step float32 MPS settings, disables
 per-step reinjection, performs generated-only OpenMM refinement on the CPU, and
 writes the versioned `result.json` expected by core DVBFixer. Core DVBFixer
 remains responsible for independent validation and atomic publication.
+
+Set `REFINEMENT_PYTHON` to the separate core environment's Python path, preserving
+venv symlinks. The first corrected Apple runtime requires native Python 3.12,
+OpenMM 8.5.2 and NumPy 2.4.6 and executes an actual CPU force-kernel preflight;
+sampling remains Python 3.12 / Torch 2.6.0. The versioned launcher supports multiple
+seeds sequentially, retains first-layer RoPE/source-position evidence, and never
+reuses the CUDA request preparer by relabeling its profile.

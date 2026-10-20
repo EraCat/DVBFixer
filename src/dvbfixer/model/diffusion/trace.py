@@ -154,17 +154,23 @@ def validate_sampler_trace_context(
     )
     if expected_profile is not None and trace.profile != expected_profile:
         raise DiffusionContractError("sampler trace changed the requested profile")
-    if expected_profile == "protpardelle-1c-cuda":
+    if expected_profile in {"protpardelle-1c-cuda", "protpardelle-1c-mps-local-v1"}:
         from dvbfixer.model.diffusion.protein_context import (
             source_context_position_features,
             validate_cuda_cc89_request,
+            validate_mps_cc89_request,
         )
 
-        validate_cuda_cc89_request(request)
+        if expected_profile == "protpardelle-1c-cuda":
+            validate_cuda_cc89_request(request)
+        else:
+            validate_mps_cc89_request(request)
         positions, chains = source_context_position_features(request)
         digest = hashlib.sha256(np.asarray((positions, chains), dtype="<i8").tobytes()).hexdigest()
         if f"cc89-position-features-sha256={digest}" not in provenance.deterministic_flags:
-            raise DiffusionContractError("CUDA cc89 source-position provenance mismatch")
+            raise DiffusionContractError("corrected cc89 source-position provenance mismatch")
+        if expected_profile == "protpardelle-1c-mps-local-v1" and "cc89-first-layer-rope-calls=1000" not in provenance.deterministic_flags:
+            raise DiffusionContractError("MPS cc89 lacks actual first-layer RoPE evidence")
     if (
         trace.engine_repository != provenance.engine_repository
         or trace.engine_revision != provenance.engine_revision

@@ -109,6 +109,21 @@ def test_neutral_chain_phase_requires_an_explicit_matching_cuda_request():
         adapter._require_chain_phase_policy(declared, "cuda", "native")
 
 
+def test_source_position_policy_is_explicit_and_requires_cuda_context_and_neutral_phase():
+    from dvbfixer.model.diffusion.contract import BackendOption
+
+    adapter = _load_adapter()
+    ordinary = SimpleNamespace(backend_options=(), protein_context=None)
+    adapter._require_position_feature_policy(ordinary, "mps", "native", "native")
+    with pytest.raises(ValueError, match="explicitly declared"):
+        adapter._require_position_feature_policy(ordinary, "cuda", "source-physical-v1", "neutral-v1")
+    declared = SimpleNamespace(backend_options=(BackendOption("cc89_position_features", "source-physical-v1"),), protein_context=object())
+    adapter._require_position_feature_policy(declared, "cuda:0", "source-physical-v1", "neutral-v1")
+    for device, phase in (("mps", "neutral-v1"), ("cuda", "native")):
+        with pytest.raises(ValueError, match="explicit CUDA context"):
+            adapter._require_position_feature_policy(declared, device, "source-physical-v1", phase)
+
+
 def _request() -> DiffusionRequest:
     residues = (
         ResidueIdentity("d", "82"),

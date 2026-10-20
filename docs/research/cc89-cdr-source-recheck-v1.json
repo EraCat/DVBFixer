@@ -1,0 +1,440 @@
+{
+  "cases": [
+    {
+      "artifacts": {
+        "input/normalized.pdb": "9be6cc310b168c983198d66100448f8cc17f11ce4dc65b8a5ac283ae23558402",
+        "reference.pdb": "7404d35fdb8a418c694fc90e274149768ac0fb24eceec5f552390420c48d7d4b",
+        "requests/cc89-seed19.json": "bc392083d3698fcf1e4b235682caa8486bb127d3a6e1417cf66cdb86d374a4c8",
+        "requests/cc89-seed7.json": "b318a7b128bdf2cd935a12f33fbf4dcae8b1f472424986eb824c250e33461c9a"
+      },
+      "case_id": "antibody-1mim-H-cdr1-gap5",
+      "cc89_eligible": true,
+      "conditioned_atoms": 482,
+      "full_axis_residues": 425,
+      "known_gap_sequence": "GYSFT",
+      "length": 5,
+      "local_axis_residues": 64,
+      "original_generated_residues": [
+        [
+          "H",
+          "24",
+          ""
+        ],
+        [
+          "H",
+          "25",
+          ""
+        ],
+        [
+          "H",
+          "26",
+          ""
+        ],
+        [
+          "H",
+          "27",
+          ""
+        ],
+        [
+          "H",
+          "28",
+          ""
+        ]
+      ],
+      "preserved_only_atoms": 2712,
+      "serialization_entities": 5,
+      "source_id": "1MIM",
+      "status": "eligible",
+      "stratum": "antibody-cdr"
+    },
+    {
+      "artifacts": {
+        "input/normalized.pdb": "18d338a7c4cee28b43ce921ee9097833934da2b0efee81bab37dc57f33738250",
+        "reference.pdb": "7404d35fdb8a418c694fc90e274149768ac0fb24eceec5f552390420c48d7d4b",
+        "requests/cc89-seed19.json": "12cabfc8f4487df4f8f45e79ddd6d99450417740022dfa0f05be84d88cb62370",
+        "requests/cc89-seed7.json": "b1a3e892539d43a9b36e4a38e6ff43fd954c66629b8e8a1487d46d08a6f1be7a"
+      },
+      "case_id": "antibody-1mim-H-cdr3-gap10",
+      "cc89_eligible": true,
+      "conditioned_atoms": 869,
+      "full_axis_residues": 425,
+      "known_gap_sequence": "SRDYGYYFDF",
+      "length": 10,
+      "local_axis_residues": 116,
+      "original_generated_residues": [
+        [
+          "H",
+          "100",
+          ""
+        ],
+        [
+          "H",
+          "101",
+          ""
+        ],
+        [
+          "H",
+          "102",
+          ""
+        ],
+        [
+          "H",
+          "103",
+          ""
+        ],
+        [
+          "H",
+          "104",
+          ""
+        ],
+        [
+          "H",
+          "95",
+          ""
+        ],
+        [
+          "H",
+          "96",
+          ""
+        ],
+        [
+          "H",
+          "97",
+          ""
+        ],
+        [
+          "H",
+          "98",
+          ""
+        ],
+        [
+          "H",
+          "99",
+          ""
+        ]
+      ],
+      "preserved_only_atoms": 2270,
+      "serialization_entities": 7,
+      "source_id": "1MIM",
+      "status": "eligible",
+      "stratum": "antibody-cdr"
+    },
+    {
+      "artifacts": {
+        "input/normalized.pdb": "e67d4f36e4dc5e8e4990af1bb06d03463d03392dc3e30125e1300576ff4c252f",
+        "reference.pdb": "7404d35fdb8a418c694fc90e274149768ac0fb24eceec5f552390420c48d7d4b",
+        "requests/cc89-seed19.json": "ac9992817848cc989ac1d0a546f717a183c74a681f8f96f39e9fcd6369b637b9",
+        "requests/cc89-seed7.json": "8bd5e893c6167e0ff64b7af93a2bd32814ba5759c8e6ff9d7d1858f07f8451b2"
+      },
+      "case_id": "antibody-1mim-L-cdr1-gap5",
+      "cc89_eligible": true,
+      "conditioned_atoms": 582,
+      "full_axis_residues": 425,
+      "known_gap_sequence": "SSRSY",
+      "length": 5,
+      "local_axis_residues": 78,
+      "original_generated_residues": [
+        [
+          "L",
+          "27",
+          ""
+        ],
+        [
+          "L",
+          "28",
+          ""
+        ],
+        [
+          "L",
+          "29",
+          ""
+        ],
+        [
+          "L",
+          "30",
+          ""
+        ],
+        [
+          "L",
+          "31",
+          ""
+        ]
+      ],
+      "preserved_only_atoms": 2611,
+      "serialization_entities": 6,
+      "source_id": "1MIM",
+      "status": "eligible",
+      "stratum": "antibody-cdr"
+    },
+    {
+      "artifacts": {
+        "input/normalized.pdb": "432e6f50b76684d724c0e72a3e6bd4062e84753ee0bc85a84d3bfae0f4cc0341",
+        "reference.pdb": "7404d35fdb8a418c694fc90e274149768ac0fb24eceec5f552390420c48d7d4b",
+        "requests/cc89-seed19.json": "2ffa669992dcf995d6fd6180c4c3ae516c6d4d0e5be97e79c4a070f92fd7fd58",
+        "requests/cc89-seed7.json": "5224b82baf57fb2ce6488aa055dd3235900e033d9be50d9542213b274df2452b"
+      },
+      "case_id": "antibody-1mim-L-cdr3-gap5",
+      "cc89_eligible": true,
+      "conditioned_atoms": 977,
+      "full_axis_residues": 425,
+      "known_gap_sequence": "HQRSS",
+      "length": 5,
+      "local_axis_residues": 124,
+      "original_generated_residues": [
+        [
+          "L",
+          "88",
+          ""
+        ],
+        [
+          "L",
+          "89",
+          ""
+        ],
+        [
+          "L",
+          "90",
+          ""
+        ],
+        [
+          "L",
+          "91",
+          ""
+        ],
+        [
+          "L",
+          "92",
+          ""
+        ]
+      ],
+      "preserved_only_atoms": 2215,
+      "serialization_entities": 9,
+      "source_id": "1MIM",
+      "status": "eligible",
+      "stratum": "antibody-cdr"
+    },
+    {
+      "artifacts": {
+        "input/normalized.pdb": "11d62c9f22f7ed607ab0599880a41472e15331717bdd296eedbf0fcbac977fc8",
+        "reference.pdb": "4899d6eb9749141c14e09514874d892f03e55d1979f3e971a9e2e4d5dd79fb50",
+        "requests/cc89-seed19.json": "d2cce4a10e481d7f86dea24a6a215a5842e2aff12f3346d4ef3d5f6841f4bfdd",
+        "requests/cc89-seed7.json": "82c284dadd4cd400f152ee843749d2530f78e5175de601ff929c798366feeeb6"
+      },
+      "case_id": "antibody-1bvl-H-cdr1-gap5",
+      "cc89_eligible": true,
+      "conditioned_atoms": 496,
+      "full_axis_residues": 448,
+      "known_gap_sequence": "FSLTG",
+      "length": 5,
+      "local_axis_residues": 66,
+      "original_generated_residues": [
+        [
+          "A",
+          "27",
+          ""
+        ],
+        [
+          "A",
+          "28",
+          ""
+        ],
+        [
+          "A",
+          "29",
+          ""
+        ],
+        [
+          "A",
+          "30",
+          ""
+        ],
+        [
+          "A",
+          "31",
+          ""
+        ]
+      ],
+      "preserved_only_atoms": 2954,
+      "serialization_entities": 5,
+      "source_id": "1BVL",
+      "status": "eligible",
+      "stratum": "antibody-cdr"
+    },
+    {
+      "artifacts": {
+        "input/normalized.pdb": "34f6570f2bacd11e1fbbbfd5c64544609df3f24b91fc8c4085a3c6e47699e439",
+        "reference.pdb": "4899d6eb9749141c14e09514874d892f03e55d1979f3e971a9e2e4d5dd79fb50",
+        "requests/cc89-seed19.json": "15d7b74b079a5ca7723e0c84ccb45e02b94cfdb7551c30eefe4e0b487fcc9f09",
+        "requests/cc89-seed7.json": "40579b8948ed4bf64489be6abc050bf41ca1d01f5058cbe6b6acbd6594dbb953"
+      },
+      "case_id": "antibody-1bvl-H-cdr3-gap10",
+      "cc89_eligible": true,
+      "conditioned_atoms": 924,
+      "full_axis_residues": 448,
+      "known_gap_sequence": "ARERDYRLDY",
+      "length": 10,
+      "local_axis_residues": 125,
+      "original_generated_residues": [
+        [
+          "A",
+          "100",
+          ""
+        ],
+        [
+          "A",
+          "101",
+          ""
+        ],
+        [
+          "A",
+          "102",
+          ""
+        ],
+        [
+          "A",
+          "103",
+          ""
+        ],
+        [
+          "A",
+          "104",
+          ""
+        ],
+        [
+          "A",
+          "105",
+          ""
+        ],
+        [
+          "A",
+          "96",
+          ""
+        ],
+        [
+          "A",
+          "97",
+          ""
+        ],
+        [
+          "A",
+          "98",
+          ""
+        ],
+        [
+          "A",
+          "99",
+          ""
+        ]
+      ],
+      "preserved_only_atoms": 2467,
+      "serialization_entities": 9,
+      "source_id": "1BVL",
+      "status": "eligible",
+      "stratum": "antibody-cdr"
+    },
+    {
+      "artifacts": {
+        "input/normalized.pdb": "7d21df88e82b37e5b9ea18d41de63b5ca860e597681e29d06186cde07b46c76d",
+        "reference.pdb": "4899d6eb9749141c14e09514874d892f03e55d1979f3e971a9e2e4d5dd79fb50",
+        "requests/cc89-seed19.json": "338d1bf3607229492271b64dcdf613ae6997595adc7bf75296865ecb544378b7",
+        "requests/cc89-seed7.json": "6f5788798f34f547260a19570b7808563e3024360782e53f22a0931b2dd48066"
+      },
+      "case_id": "antibody-1bvl-L-cdr1-gap5",
+      "cc89_eligible": true,
+      "conditioned_atoms": 655,
+      "full_axis_residues": 448,
+      "known_gap_sequence": "NIHNY",
+      "length": 5,
+      "local_axis_residues": 86,
+      "original_generated_residues": [
+        [
+          "B",
+          "28",
+          ""
+        ],
+        [
+          "B",
+          "29",
+          ""
+        ],
+        [
+          "B",
+          "30",
+          ""
+        ],
+        [
+          "B",
+          "31",
+          ""
+        ],
+        [
+          "B",
+          "32",
+          ""
+        ]
+      ],
+      "preserved_only_atoms": 2785,
+      "serialization_entities": 6,
+      "source_id": "1BVL",
+      "status": "eligible",
+      "stratum": "antibody-cdr"
+    },
+    {
+      "artifacts": {
+        "input/normalized.pdb": "b64a9b781dfa2228c41aa048c8787d390e1990e0107402c7c8012a70a791cbe9",
+        "reference.pdb": "4899d6eb9749141c14e09514874d892f03e55d1979f3e971a9e2e4d5dd79fb50",
+        "requests/cc89-seed19.json": "ace575b12e606cdc419724061fdf7e8f8f2565c5a0a3b4764e2ef3da3bb5b61f",
+        "requests/cc89-seed7.json": "abf13bc32d7e5905ea8b8f5d847505e7335527780f104711dd96d24fda4674b8"
+      },
+      "case_id": "antibody-1bvl-L-cdr3-gap5",
+      "cc89_eligible": true,
+      "conditioned_atoms": 872,
+      "full_axis_residues": 448,
+      "known_gap_sequence": "FWSTP",
+      "length": 5,
+      "local_axis_residues": 110,
+      "original_generated_residues": [
+        [
+          "B",
+          "91",
+          ""
+        ],
+        [
+          "B",
+          "92",
+          ""
+        ],
+        [
+          "B",
+          "93",
+          ""
+        ],
+        [
+          "B",
+          "94",
+          ""
+        ],
+        [
+          "B",
+          "95",
+          ""
+        ]
+      ],
+      "preserved_only_atoms": 2569,
+      "serialization_entities": 9,
+      "source_id": "1BVL",
+      "status": "eligible",
+      "stratum": "antibody-cdr"
+    }
+  ],
+  "interpretation": "diagnostic recheck of the same known-sequence CDR masks after input correction; not independent confirmatory acceptance",
+  "method": "source-only 8-residue flanks +6/10A shells; preserve full input/output; source-physical positions; neutral phase; unchanged native sampling and CUDA refinement",
+  "no_replacement": true,
+  "public_protenix_workflow_controls": [],
+  "seeds": [
+    7,
+    19
+  ],
+  "source_holdout_manifest_sha256": "e59f06789105eddf4cd66f855058b26aa2fe796b09ed38301738470e8690f0a3",
+  "status": "frozen-before-known-sequence-holdout-inference"
+}

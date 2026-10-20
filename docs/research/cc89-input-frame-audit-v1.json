@@ -1,0 +1,96 @@
+{
+  "arms": {
+    "native": {
+      "per_step_reinjection": false,
+      "s_churn": 200.0,
+      "step_scale": 1.2
+    },
+    "ode-native": {
+      "per_step_reinjection": false,
+      "s_churn": 0.0,
+      "step_scale": 1.0
+    },
+    "ode-projected": {
+      "per_step_reinjection": true,
+      "s_churn": 0.0,
+      "step_scale": 1.0
+    },
+    "projected": {
+      "per_step_reinjection": true,
+      "s_churn": 200.0,
+      "step_scale": 1.2
+    }
+  },
+  "cases": [
+    {
+      "case_id": "general-9wgm-gap5",
+      "input_sha256": "210db0ba4cf9234fdbba2fa92c37c562604a2b38b045937a30ce58bc813073e8",
+      "original_native_candidate_sha256": "db38a30d1e896bd1168175072900e651ba4edf75061aca5677a178fb3ddc8998",
+      "original_raw_complete_sha256": "8b7e422303062fef2f51354b3fdfe88e81835ac8a6ee9a20f07ca1b89bb184b6",
+      "reference_sha256": "84fd02721f07f05d54ce92bd203a33fbff39779ed3465009638b5aa984ddd910",
+      "request_sha256": "1bc0ac90bbb723c26452ae2af87ed851f5fd2395ad088693f841aa6798cb78f3"
+    },
+    {
+      "case_id": "antibody-1mim-H-cdr1-gap5",
+      "input_sha256": "9be6cc310b168c983198d66100448f8cc17f11ce4dc65b8a5ac283ae23558402",
+      "original_native_candidate_sha256": "f5ca90cf175d96facf900585b3242d5ae7b0276a375cf00fbe8476b104b4d4e2",
+      "original_raw_complete_sha256": "ef28be2e8682d211f07cddeac3fd69943ea64e7c668f15195944e5bcd3c89d27",
+      "reference_sha256": "7404d35fdb8a418c694fc90e274149768ac0fb24eceec5f552390420c48d7d4b",
+      "request_sha256": "744406fef1912bbb4b46bd483de8d7a67c92aec036a93c9a7db41c8bf45d6859"
+    },
+    {
+      "case_id": "antibody-1mim-L-cdr1-gap5",
+      "input_sha256": "e67d4f36e4dc5e8e4990af1bb06d03463d03392dc3e30125e1300576ff4c252f",
+      "original_native_candidate_sha256": "a501acc23083bfe8c1a790526582cdfed0f73f5223915bc90d3733d8de1c4103",
+      "original_raw_complete_sha256": "7159a80cb858c336558fc8d2f9c4ff27dd13ba7e82c8152bf51e7c3668d5f6f5",
+      "reference_sha256": "7404d35fdb8a418c694fc90e274149768ac0fb24eceec5f552390420c48d7d4b",
+      "request_sha256": "bf7f3288682bb2f184ca55ff35994659d3315959c3689c7a169528727bd30534"
+    },
+    {
+      "case_id": "antibody-1bvl-H-cdr1-gap5",
+      "input_sha256": "11d62c9f22f7ed607ab0599880a41472e15331717bdd296eedbf0fcbac977fc8",
+      "original_native_candidate_sha256": "7ca7a22eb9e25742510d5e2c8c8456ab6a302030b69f57f4795931807087cc4e",
+      "original_raw_complete_sha256": "2eed2b4ad23c1ef18d9f134073d1c2966e43ba5c53498368df6dbac67d79e335",
+      "reference_sha256": "4899d6eb9749141c14e09514874d892f03e55d1979f3e971a9e2e4d5dd79fb50",
+      "request_sha256": "76c3620cb9985b7e48ea281e9fe7581868053784de83650492c48ca7edcae5db"
+    },
+    {
+      "case_id": "antibody-1bvl-L-cdr1-gap5",
+      "input_sha256": "7d21df88e82b37e5b9ea18d41de63b5ca860e597681e29d06186cde07b46c76d",
+      "original_native_candidate_sha256": "c1b0db494fd61557ca0b8cf7f8a6e0691212a912eb5bd1cc9ed8b746ef9047b4",
+      "original_raw_complete_sha256": "357bc9ab7d3841361dad273b1a8f68dbb5462f78e7645ccd335ccf6221bd45bf",
+      "reference_sha256": "4899d6eb9749141c14e09514874d892f03e55d1979f3e971a9e2e4d5dd79fb50",
+      "request_sha256": "79dfa6b67069996d8f715fa3159dbe8b9533292ca0180976f511ddaa20c99dab"
+    }
+  ],
+  "checkpoint_sha256": "dfc9895b399ec4497bf6d646502168725f01dcbd55bc0b541fc3e3cc1f2f0483",
+  "code_sha256": {
+    "deploy/protpardelle-1c/checkpoint_gap_smoke.py": "b9efeae1754a26e23b985ea5c33ed777c2a662a3c214907fbdb140b1890d9d27",
+    "scripts/audit_cc89_input_frames.py": "4cb2aaac1443023fd0b5456c1cc5b6f3b928393d3d7c76ee5a374b2bbd639d83",
+    "scripts/run_cc89_known_sequence_holdout.py": "3d806a61ae14ba53f40943216b57721fd73c1f8166b34a9eaf6a0fd8d1dde92d",
+    "src/dvbfixer/model/diffusion/geometry.py": "b527d7519162bbba75a7c4571f60a9af7a1f98533bbcfa31a9914d0f57dfe170",
+    "src/dvbfixer/model/diffusion/pdb_materialize.py": "7cf08620f283f3b96b5977843fa2f2505613ee9ee75321e7691ec00e4be4a55e",
+    "src/dvbfixer/model/diffusion/protein_context.py": "47426ef9407a8874990626522481c673c5caaa2a4253bc655ee9c661e87a878e",
+    "src/dvbfixer/model/diffusion/validate.py": "1f5bb86524ca6e600ac63d2487be817562c667a8d6f13e074b52ec870f285342",
+    "test/protpardelle-1c-audit/src/protpardelle/core/models.py": "2ec52fee68368ba3addfa4b46eec70949c6730801f05cb309c8eb5ed22f1f810",
+    "test/protpardelle-1c-audit/src/protpardelle/core/modules.py": "3fe69476e45932c04c56332e09f0e3b2b51cc77f3effe861d93c37d975a529a3",
+    "test/protpardelle-1c-audit/src/protpardelle/data/pdb_io.py": "71d091bcf2bd99dcc2624e1cd1a9736a5e1210b6ba96039ff55e014cd4808ea0"
+  },
+  "config_sha256": "e9999ace79bf3044351cc982a624fc3459add3a4f91cbf97ff5b437b8942eb9d",
+  "device": "cuda",
+  "frame_controls": [
+    "legacy-output-scaffold-fit",
+    "authoritative-input-motif-fit",
+    "observed-anchor-fit"
+  ],
+  "no_replacement": true,
+  "oracle_control": "native-reference through independent upstream PDB featurization and output round trip; zero neural forward calls; not restoration accuracy evidence",
+  "public_promotion": false,
+  "refinement": "none",
+  "sampling_reference_policy": "no reference copied to real sampling workspace; references read only by offline frame/oracle analysis",
+  "seed": 7,
+  "status": "frozen-before-cc89-input-frame-diagnostics",
+  "steps": 500,
+  "timeout_seconds": 600,
+  "torch": "2.6.0+cu124"
+}

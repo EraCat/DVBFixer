@@ -1,0 +1,649 @@
+{
+  "complete": true,
+  "interpretation": "diagnostic recheck of the same known-sequence CDR masks after input correction; not independent confirmatory acceptance",
+  "manifest_sha256": "1eabed8d61b052e773f9d71b01648aa7a32b2e66c4a3aee7ef4cf8634f7e81b7",
+  "maximum_refined_backbone_rmsd_angstrom": 1.7899257177324432,
+  "median_refined_backbone_rmsd_angstrom": 1.1516040776417305,
+  "minimum_refined_backbone_rmsd_angstrom": 0.4189342430501475,
+  "producer_sha256": "faaa68b5b52089ff4c9f3f88eb0944ec2d9124ce99d114a98ccc9d38567b1e87",
+  "protocol_sha256": "4f19db4582b17a589ae427141609c092d23d72fcc7264ad9fbd996d567ac20b9",
+  "public_promotion": false,
+  "raw_accepted": 5,
+  "refined_accepted": 16,
+  "refined_count": 16,
+  "rows": [
+    {
+      "backbone_rmsd_angstrom": 1.3483641014206809,
+      "candidate": {
+        "path": "raw/candidate.pdb",
+        "sha256": "3c0a1e96c88aa54d8ec5f8fa4b906730235e43686068acfc41211867c898691f"
+      },
+      "case_id": "antibody-1mim-H-cdr1-gap5",
+      "d_ca_count": 0.0,
+      "failed_gates": [],
+      "fixed_max_displacement_angstrom": 0.0,
+      "full_axis_residues": 425,
+      "independently_revalidated": true,
+      "length": 5,
+      "local_axis_residues": 64,
+      "passed": true,
+      "seed": 7,
+      "source_position_feature_sha256": "42f9f412bd2781accd23778029e0bcb5c77649026a08a720aaf60d64515cc4fc",
+      "stage": "raw"
+    },
+    {
+      "backbone_rmsd_angstrom": 1.2609737308921227,
+      "candidate": {
+        "path": "raw/candidate.pdb",
+        "sha256": "b6218f8ae8490e78a8d56d17bb8abb36a4459cc22b7a556e4ffca51187710048"
+      },
+      "case_id": "antibody-1mim-H-cdr1-gap5",
+      "d_ca_count": 0.0,
+      "failed_gates": [
+        "junction-peptide-connectivity",
+        "severe-steric-overlap"
+      ],
+      "fixed_max_displacement_angstrom": 0.0,
+      "full_axis_residues": 425,
+      "independently_revalidated": true,
+      "length": 5,
+      "local_axis_residues": 64,
+      "passed": false,
+      "seed": 19,
+      "source_position_feature_sha256": "42f9f412bd2781accd23778029e0bcb5c77649026a08a720aaf60d64515cc4fc",
+      "stage": "raw"
+    },
+    {
+      "backbone_rmsd_angstrom": 1.1156701685534127,
+      "candidate": {
+        "path": "raw/candidate.pdb",
+        "sha256": "b4f267a5b8a45ce4892d3f7a4aa19559daaf470e95039536ab91430c678f5657"
+      },
+      "case_id": "antibody-1mim-H-cdr3-gap10",
+      "d_ca_count": 0.0,
+      "failed_gates": [
+        "severe-steric-overlap"
+      ],
+      "fixed_max_displacement_angstrom": 0.0,
+      "full_axis_residues": 425,
+      "independently_revalidated": true,
+      "length": 10,
+      "local_axis_residues": 116,
+      "passed": false,
+      "seed": 7,
+      "source_position_feature_sha256": "0e8ef9afcda1557697689397a6bfd12137f848f8758ea430fe5192b8b6b4d1f3",
+      "stage": "raw"
+    },
+    {
+      "backbone_rmsd_angstrom": 1.8283833979775688,
+      "candidate": {
+        "path": "raw/candidate.pdb",
+        "sha256": "7c1cac108d2cced1b971d683f7fde2025b1339bad88cb5be19f9ee2814a0ff54"
+      },
+      "case_id": "antibody-1mim-H-cdr3-gap10",
+      "d_ca_count": 0.0,
+      "failed_gates": [
+        "severe-steric-overlap"
+      ],
+      "fixed_max_displacement_angstrom": 0.0,
+      "full_axis_residues": 425,
+      "independently_revalidated": true,
+      "length": 10,
+      "local_axis_residues": 116,
+      "passed": false,
+      "seed": 19,
+      "source_position_feature_sha256": "0e8ef9afcda1557697689397a6bfd12137f848f8758ea430fe5192b8b6b4d1f3",
+      "stage": "raw"
+    },
+    {
+      "backbone_rmsd_angstrom": 0.9074536902784623,
+      "candidate": {
+        "path": "raw/candidate.pdb",
+        "sha256": "c57dad0f99b77b22e78d18cc2c89b5a49c73939db55f35f684f62cbffc0d7594"
+      },
+      "case_id": "antibody-1mim-L-cdr1-gap5",
+      "d_ca_count": 0.0,
+      "failed_gates": [
+        "severe-steric-overlap"
+      ],
+      "fixed_max_displacement_angstrom": 0.0,
+      "full_axis_residues": 425,
+      "independently_revalidated": true,
+      "length": 5,
+      "local_axis_residues": 78,
+      "passed": false,
+      "seed": 7,
+      "source_position_feature_sha256": "893047d21ed0c97ff9358b4037ad42adf6987a71d32a2a18210c30169e48dfee",
+      "stage": "raw"
+    },
+    {
+      "backbone_rmsd_angstrom": 1.2880058811977528,
+      "candidate": {
+        "path": "raw/candidate.pdb",
+        "sha256": "e1364612885a9e125d944b411aacda36b1555c4b771e155e42a8c0f7d1594c2b"
+      },
+      "case_id": "antibody-1mim-L-cdr1-gap5",
+      "d_ca_count": 0.0,
+      "failed_gates": [],
+      "fixed_max_displacement_angstrom": 0.0,
+      "full_axis_residues": 425,
+      "independently_revalidated": true,
+      "length": 5,
+      "local_axis_residues": 78,
+      "passed": true,
+      "seed": 19,
+      "source_position_feature_sha256": "893047d21ed0c97ff9358b4037ad42adf6987a71d32a2a18210c30169e48dfee",
+      "stage": "raw"
+    },
+    {
+      "backbone_rmsd_angstrom": 1.3237138663623644,
+      "candidate": {
+        "path": "raw/candidate.pdb",
+        "sha256": "bc740ab453bc1355a43f431702c302163f120bdd4e0089161cfb6cd29b2b08c8"
+      },
+      "case_id": "antibody-1mim-L-cdr3-gap5",
+      "d_ca_count": 0.0,
+      "failed_gates": [
+        "severe-steric-overlap"
+      ],
+      "fixed_max_displacement_angstrom": 0.0,
+      "full_axis_residues": 425,
+      "independently_revalidated": true,
+      "length": 5,
+      "local_axis_residues": 124,
+      "passed": false,
+      "seed": 7,
+      "source_position_feature_sha256": "d1860fcaf29806a8d06012169e4d81bcd055cdaee9a102a58762a80fd42957ff",
+      "stage": "raw"
+    },
+    {
+      "backbone_rmsd_angstrom": 0.7800281084678935,
+      "candidate": {
+        "path": "raw/candidate.pdb",
+        "sha256": "fb05302d32542439a55432d47d9de6c18d1a9e93675202b35885fe3ff134d536"
+      },
+      "case_id": "antibody-1mim-L-cdr3-gap5",
+      "d_ca_count": 0.0,
+      "failed_gates": [
+        "junction-peptide-connectivity",
+        "severe-steric-overlap"
+      ],
+      "fixed_max_displacement_angstrom": 0.0,
+      "full_axis_residues": 425,
+      "independently_revalidated": true,
+      "length": 5,
+      "local_axis_residues": 124,
+      "passed": false,
+      "seed": 19,
+      "source_position_feature_sha256": "d1860fcaf29806a8d06012169e4d81bcd055cdaee9a102a58762a80fd42957ff",
+      "stage": "raw"
+    },
+    {
+      "backbone_rmsd_angstrom": 1.2716562231987087,
+      "candidate": {
+        "path": "raw/candidate.pdb",
+        "sha256": "92b0f74ed41887aa928132935f795a999aac1f8bead69dad5512ba7d8f2e0c5d"
+      },
+      "case_id": "antibody-1bvl-H-cdr1-gap5",
+      "d_ca_count": 0.0,
+      "failed_gates": [],
+      "fixed_max_displacement_angstrom": 0.0,
+      "full_axis_residues": 448,
+      "independently_revalidated": true,
+      "length": 5,
+      "local_axis_residues": 66,
+      "passed": true,
+      "seed": 7,
+      "source_position_feature_sha256": "bca039ec56f901b50c8c13333c4547a027163fa2544ab4ceae38cce6e41be480",
+      "stage": "raw"
+    },
+    {
+      "backbone_rmsd_angstrom": 1.3584451958029085,
+      "candidate": {
+        "path": "raw/candidate.pdb",
+        "sha256": "240f099c9a4a6b06d6494a50b50e5fde41c980076a7b69c634e6170e9a645424"
+      },
+      "case_id": "antibody-1bvl-H-cdr1-gap5",
+      "d_ca_count": 0.0,
+      "failed_gates": [],
+      "fixed_max_displacement_angstrom": 0.0,
+      "full_axis_residues": 448,
+      "independently_revalidated": true,
+      "length": 5,
+      "local_axis_residues": 66,
+      "passed": true,
+      "seed": 19,
+      "source_position_feature_sha256": "bca039ec56f901b50c8c13333c4547a027163fa2544ab4ceae38cce6e41be480",
+      "stage": "raw"
+    },
+    {
+      "backbone_rmsd_angstrom": 1.3672668448404652,
+      "candidate": {
+        "path": "raw/candidate.pdb",
+        "sha256": "7dadb95d98be02572d20520f15e24fe4047e7cdc91573695041006a41b4c5caf"
+      },
+      "case_id": "antibody-1bvl-H-cdr3-gap10",
+      "d_ca_count": 0.0,
+      "failed_gates": [
+        "severe-steric-overlap"
+      ],
+      "fixed_max_displacement_angstrom": 0.0,
+      "full_axis_residues": 448,
+      "independently_revalidated": true,
+      "length": 10,
+      "local_axis_residues": 125,
+      "passed": false,
+      "seed": 7,
+      "source_position_feature_sha256": "653dbd53d80eb591f4b914d2cb89c80def2abc8d07fbc8757897cea4afeb68bf",
+      "stage": "raw"
+    },
+    {
+      "backbone_rmsd_angstrom": 1.8149783951882192,
+      "candidate": {
+        "path": "raw/candidate.pdb",
+        "sha256": "b898966156d03a59450fe1c0ccfc5d588e9553572a2046ad60de11015a751274"
+      },
+      "case_id": "antibody-1bvl-H-cdr3-gap10",
+      "d_ca_count": 0.0,
+      "failed_gates": [
+        "severe-steric-overlap"
+      ],
+      "fixed_max_displacement_angstrom": 0.0,
+      "full_axis_residues": 448,
+      "independently_revalidated": true,
+      "length": 10,
+      "local_axis_residues": 125,
+      "passed": false,
+      "seed": 19,
+      "source_position_feature_sha256": "653dbd53d80eb591f4b914d2cb89c80def2abc8d07fbc8757897cea4afeb68bf",
+      "stage": "raw"
+    },
+    {
+      "backbone_rmsd_angstrom": 0.8303433326040499,
+      "candidate": {
+        "path": "raw/candidate.pdb",
+        "sha256": "344900ec11633a3da5792dee0aab6b638a8760a3fc395772987ac3c0d78a3c48"
+      },
+      "case_id": "antibody-1bvl-L-cdr1-gap5",
+      "d_ca_count": 0.0,
+      "failed_gates": [
+        "junction-peptide-connectivity"
+      ],
+      "fixed_max_displacement_angstrom": 0.0,
+      "full_axis_residues": 448,
+      "independently_revalidated": true,
+      "length": 5,
+      "local_axis_residues": 86,
+      "passed": false,
+      "seed": 7,
+      "source_position_feature_sha256": "ae046e44cf0dca225bd6e74962edd4a3d9ee5aa4fc5fa42b22354d5162457ed8",
+      "stage": "raw"
+    },
+    {
+      "backbone_rmsd_angstrom": 0.9317022861408029,
+      "candidate": {
+        "path": "raw/candidate.pdb",
+        "sha256": "014ec14eb04f2da19e49a80acee2b5131e177ba7c2bcb4b2bf255abe09e4881c"
+      },
+      "case_id": "antibody-1bvl-L-cdr1-gap5",
+      "d_ca_count": 0.0,
+      "failed_gates": [
+        "severe-steric-overlap"
+      ],
+      "fixed_max_displacement_angstrom": 0.0,
+      "full_axis_residues": 448,
+      "independently_revalidated": true,
+      "length": 5,
+      "local_axis_residues": 86,
+      "passed": false,
+      "seed": 19,
+      "source_position_feature_sha256": "ae046e44cf0dca225bd6e74962edd4a3d9ee5aa4fc5fa42b22354d5162457ed8",
+      "stage": "raw"
+    },
+    {
+      "backbone_rmsd_angstrom": 0.7857026154977473,
+      "candidate": {
+        "path": "raw/candidate.pdb",
+        "sha256": "e8587c36ec4c12431794cbc00687472dfc9e5826dc598bc4698f0d6f606f6910"
+      },
+      "case_id": "antibody-1bvl-L-cdr3-gap5",
+      "d_ca_count": 0.0,
+      "failed_gates": [],
+      "fixed_max_displacement_angstrom": 0.0,
+      "full_axis_residues": 448,
+      "independently_revalidated": true,
+      "length": 5,
+      "local_axis_residues": 110,
+      "passed": true,
+      "seed": 7,
+      "source_position_feature_sha256": "542323b55c037507065dc7dbe5861170034a9eff2b039e1788a764e981973030",
+      "stage": "raw"
+    },
+    {
+      "backbone_rmsd_angstrom": 0.8593661617727336,
+      "candidate": {
+        "path": "raw/candidate.pdb",
+        "sha256": "b8c4ef9034eadb009bd004ba3b97cddd6a587a91c05a8bdcf3fd6671d2eee57b"
+      },
+      "case_id": "antibody-1bvl-L-cdr3-gap5",
+      "d_ca_count": 0.0,
+      "failed_gates": [
+        "junction-peptide-connectivity",
+        "severe-steric-overlap"
+      ],
+      "fixed_max_displacement_angstrom": 0.0,
+      "full_axis_residues": 448,
+      "independently_revalidated": true,
+      "length": 5,
+      "local_axis_residues": 110,
+      "passed": false,
+      "seed": 19,
+      "source_position_feature_sha256": "542323b55c037507065dc7dbe5861170034a9eff2b039e1788a764e981973030",
+      "stage": "raw"
+    },
+    {
+      "backbone_rmsd_angstrom": 0.6854043696971885,
+      "candidate": {
+        "path": "refined/candidate.pdb",
+        "sha256": "82b5639fc074a19144af4acde6ee620662b384845928d1d06c648e841d3a632d"
+      },
+      "case_id": "antibody-1mim-H-cdr1-gap5",
+      "d_ca_count": 0.0,
+      "failed_gates": [],
+      "fixed_max_displacement_angstrom": 0.0,
+      "full_axis_residues": 425,
+      "independently_revalidated": true,
+      "length": 5,
+      "local_axis_residues": 64,
+      "passed": true,
+      "seed": 7,
+      "source_position_feature_sha256": "42f9f412bd2781accd23778029e0bcb5c77649026a08a720aaf60d64515cc4fc",
+      "stage": "refine"
+    },
+    {
+      "backbone_rmsd_angstrom": 0.9801501670662511,
+      "candidate": {
+        "path": "refined/candidate.pdb",
+        "sha256": "ca65e5f2220cb6809307514193e4a149985052e55a406552c41c4672804a1e4e"
+      },
+      "case_id": "antibody-1mim-H-cdr1-gap5",
+      "d_ca_count": 0.0,
+      "failed_gates": [],
+      "fixed_max_displacement_angstrom": 0.0,
+      "full_axis_residues": 425,
+      "independently_revalidated": true,
+      "length": 5,
+      "local_axis_residues": 64,
+      "passed": true,
+      "seed": 19,
+      "source_position_feature_sha256": "42f9f412bd2781accd23778029e0bcb5c77649026a08a720aaf60d64515cc4fc",
+      "stage": "refine"
+    },
+    {
+      "backbone_rmsd_angstrom": 1.0249614748857638,
+      "candidate": {
+        "path": "refined/candidate.pdb",
+        "sha256": "33457ec2375d84c3f105c4497a6f34dd7cb1316e6ded7a1ecfb11631080ad7d5"
+      },
+      "case_id": "antibody-1mim-H-cdr3-gap10",
+      "d_ca_count": 0.0,
+      "failed_gates": [],
+      "fixed_max_displacement_angstrom": 0.0,
+      "full_axis_residues": 425,
+      "independently_revalidated": true,
+      "length": 10,
+      "local_axis_residues": 116,
+      "passed": true,
+      "seed": 7,
+      "source_position_feature_sha256": "0e8ef9afcda1557697689397a6bfd12137f848f8758ea430fe5192b8b6b4d1f3",
+      "stage": "refine"
+    },
+    {
+      "backbone_rmsd_angstrom": 1.7796352997173326,
+      "candidate": {
+        "path": "refined/candidate.pdb",
+        "sha256": "ab2c804e015bb0c58ac62edc2a8f71899ac9303d911b249348accbdb1749136a"
+      },
+      "case_id": "antibody-1mim-H-cdr3-gap10",
+      "d_ca_count": 0.0,
+      "failed_gates": [],
+      "fixed_max_displacement_angstrom": 0.0,
+      "full_axis_residues": 425,
+      "independently_revalidated": true,
+      "length": 10,
+      "local_axis_residues": 116,
+      "passed": true,
+      "seed": 19,
+      "source_position_feature_sha256": "0e8ef9afcda1557697689397a6bfd12137f848f8758ea430fe5192b8b6b4d1f3",
+      "stage": "refine"
+    },
+    {
+      "backbone_rmsd_angstrom": 0.9525629900431788,
+      "candidate": {
+        "path": "refined/candidate.pdb",
+        "sha256": "b24ee0d9376592a3de3644535471837e7e4eb97d9e3d727f336d53f68ab85791"
+      },
+      "case_id": "antibody-1mim-L-cdr1-gap5",
+      "d_ca_count": 0.0,
+      "failed_gates": [],
+      "fixed_max_displacement_angstrom": 0.0,
+      "full_axis_residues": 425,
+      "independently_revalidated": true,
+      "length": 5,
+      "local_axis_residues": 78,
+      "passed": true,
+      "seed": 7,
+      "source_position_feature_sha256": "893047d21ed0c97ff9358b4037ad42adf6987a71d32a2a18210c30169e48dfee",
+      "stage": "refine"
+    },
+    {
+      "backbone_rmsd_angstrom": 1.1909404267216728,
+      "candidate": {
+        "path": "refined/candidate.pdb",
+        "sha256": "5c7a411dd51c75553e42431728a822f4dc574cc21232ada726b1afc160d91056"
+      },
+      "case_id": "antibody-1mim-L-cdr1-gap5",
+      "d_ca_count": 0.0,
+      "failed_gates": [],
+      "fixed_max_displacement_angstrom": 0.0,
+      "full_axis_residues": 425,
+      "independently_revalidated": true,
+      "length": 5,
+      "local_axis_residues": 78,
+      "passed": true,
+      "seed": 19,
+      "source_position_feature_sha256": "893047d21ed0c97ff9358b4037ad42adf6987a71d32a2a18210c30169e48dfee",
+      "stage": "refine"
+    },
+    {
+      "backbone_rmsd_angstrom": 1.1122677285617881,
+      "candidate": {
+        "path": "refined/candidate.pdb",
+        "sha256": "7512f3dd91bd4c0f7cf18ede497d67cbe4a964a9b561bed46508886d66a849ab"
+      },
+      "case_id": "antibody-1mim-L-cdr3-gap5",
+      "d_ca_count": 0.0,
+      "failed_gates": [],
+      "fixed_max_displacement_angstrom": 0.0,
+      "full_axis_residues": 425,
+      "independently_revalidated": true,
+      "length": 5,
+      "local_axis_residues": 124,
+      "passed": true,
+      "seed": 7,
+      "source_position_feature_sha256": "d1860fcaf29806a8d06012169e4d81bcd055cdaee9a102a58762a80fd42957ff",
+      "stage": "refine"
+    },
+    {
+      "backbone_rmsd_angstrom": 0.4189342430501475,
+      "candidate": {
+        "path": "refined/candidate.pdb",
+        "sha256": "61edb19e84f7e1169e92879fb98029d80c21d85f9d068fda58247ac553f872a4"
+      },
+      "case_id": "antibody-1mim-L-cdr3-gap5",
+      "d_ca_count": 0.0,
+      "failed_gates": [],
+      "fixed_max_displacement_angstrom": 0.0,
+      "full_axis_residues": 425,
+      "independently_revalidated": true,
+      "length": 5,
+      "local_axis_residues": 124,
+      "passed": true,
+      "seed": 19,
+      "source_position_feature_sha256": "d1860fcaf29806a8d06012169e4d81bcd055cdaee9a102a58762a80fd42957ff",
+      "stage": "refine"
+    },
+    {
+      "backbone_rmsd_angstrom": 1.3314656773646116,
+      "candidate": {
+        "path": "refined/candidate.pdb",
+        "sha256": "5b441ad13883d5817eb37c34327ecded1e90b3dad86e53919af07beac99e808d"
+      },
+      "case_id": "antibody-1bvl-H-cdr1-gap5",
+      "d_ca_count": 0.0,
+      "failed_gates": [],
+      "fixed_max_displacement_angstrom": 0.0,
+      "full_axis_residues": 448,
+      "independently_revalidated": true,
+      "length": 5,
+      "local_axis_residues": 66,
+      "passed": true,
+      "seed": 7,
+      "source_position_feature_sha256": "bca039ec56f901b50c8c13333c4547a027163fa2544ab4ceae38cce6e41be480",
+      "stage": "refine"
+    },
+    {
+      "backbone_rmsd_angstrom": 1.3293256184998468,
+      "candidate": {
+        "path": "refined/candidate.pdb",
+        "sha256": "c185e451d91db2a3181f8fb81068e63fcdf8925ae350713a3e4661c5184a4ccd"
+      },
+      "case_id": "antibody-1bvl-H-cdr1-gap5",
+      "d_ca_count": 0.0,
+      "failed_gates": [],
+      "fixed_max_displacement_angstrom": 0.0,
+      "full_axis_residues": 448,
+      "independently_revalidated": true,
+      "length": 5,
+      "local_axis_residues": 66,
+      "passed": true,
+      "seed": 19,
+      "source_position_feature_sha256": "bca039ec56f901b50c8c13333c4547a027163fa2544ab4ceae38cce6e41be480",
+      "stage": "refine"
+    },
+    {
+      "backbone_rmsd_angstrom": 1.4265656924936903,
+      "candidate": {
+        "path": "refined/candidate.pdb",
+        "sha256": "6b7f042fadea0f003dc853067dfded4cabe3fae15532183dc6339f041de174ce"
+      },
+      "case_id": "antibody-1bvl-H-cdr3-gap10",
+      "d_ca_count": 0.0,
+      "failed_gates": [],
+      "fixed_max_displacement_angstrom": 0.0,
+      "full_axis_residues": 448,
+      "independently_revalidated": true,
+      "length": 10,
+      "local_axis_residues": 125,
+      "passed": true,
+      "seed": 7,
+      "source_position_feature_sha256": "653dbd53d80eb591f4b914d2cb89c80def2abc8d07fbc8757897cea4afeb68bf",
+      "stage": "refine"
+    },
+    {
+      "backbone_rmsd_angstrom": 1.7899257177324432,
+      "candidate": {
+        "path": "refined/candidate.pdb",
+        "sha256": "4f0439780723fe8a8e2260ddb8ce9a5e457554186d54d859c7da4f0c634c36fd"
+      },
+      "case_id": "antibody-1bvl-H-cdr3-gap10",
+      "d_ca_count": 0.0,
+      "failed_gates": [],
+      "fixed_max_displacement_angstrom": 0.0,
+      "full_axis_residues": 448,
+      "independently_revalidated": true,
+      "length": 10,
+      "local_axis_residues": 125,
+      "passed": true,
+      "seed": 19,
+      "source_position_feature_sha256": "653dbd53d80eb591f4b914d2cb89c80def2abc8d07fbc8757897cea4afeb68bf",
+      "stage": "refine"
+    },
+    {
+      "backbone_rmsd_angstrom": 0.6235209298812673,
+      "candidate": {
+        "path": "refined/candidate.pdb",
+        "sha256": "6bbbf2b6ddb2d8a42e24d01f50fddaf632c279097ac1511d48ab6c174fe94a80"
+      },
+      "case_id": "antibody-1bvl-L-cdr1-gap5",
+      "d_ca_count": 0.0,
+      "failed_gates": [],
+      "fixed_max_displacement_angstrom": 0.0,
+      "full_axis_residues": 448,
+      "independently_revalidated": true,
+      "length": 5,
+      "local_axis_residues": 86,
+      "passed": true,
+      "seed": 7,
+      "source_position_feature_sha256": "ae046e44cf0dca225bd6e74962edd4a3d9ee5aa4fc5fa42b22354d5162457ed8",
+      "stage": "refine"
+    },
+    {
+      "backbone_rmsd_angstrom": 0.6423005527009926,
+      "candidate": {
+        "path": "refined/candidate.pdb",
+        "sha256": "a2ef36c7b1d5aa89fd3b13cf911cc4154352c4399a6512a0c2409d084b686874"
+      },
+      "case_id": "antibody-1bvl-L-cdr1-gap5",
+      "d_ca_count": 0.0,
+      "failed_gates": [],
+      "fixed_max_displacement_angstrom": 0.0,
+      "full_axis_residues": 448,
+      "independently_revalidated": true,
+      "length": 5,
+      "local_axis_residues": 86,
+      "passed": true,
+      "seed": 19,
+      "source_position_feature_sha256": "ae046e44cf0dca225bd6e74962edd4a3d9ee5aa4fc5fa42b22354d5162457ed8",
+      "stage": "refine"
+    },
+    {
+      "backbone_rmsd_angstrom": 1.2426682984610165,
+      "candidate": {
+        "path": "refined/candidate.pdb",
+        "sha256": "a030675a236e003a294046ced105b18c5e93ba6fe852349aeadcaa9cb8a8782f"
+      },
+      "case_id": "antibody-1bvl-L-cdr3-gap5",
+      "d_ca_count": 0.0,
+      "failed_gates": [],
+      "fixed_max_displacement_angstrom": 0.0,
+      "full_axis_residues": 448,
+      "independently_revalidated": true,
+      "length": 5,
+      "local_axis_residues": 110,
+      "passed": true,
+      "seed": 7,
+      "source_position_feature_sha256": "542323b55c037507065dc7dbe5861170034a9eff2b039e1788a764e981973030",
+      "stage": "refine"
+    },
+    {
+      "backbone_rmsd_angstrom": 1.2641801493458125,
+      "candidate": {
+        "path": "refined/candidate.pdb",
+        "sha256": "97a5b5917ce9ab8bbdcd4a5155c75c3383dec3d23b32aa4f43e73fd650169188"
+      },
+      "case_id": "antibody-1bvl-L-cdr3-gap5",
+      "d_ca_count": 0.0,
+      "failed_gates": [],
+      "fixed_max_displacement_angstrom": 0.0,
+      "full_axis_residues": 448,
+      "independently_revalidated": true,
+      "length": 5,
+      "local_axis_residues": 110,
+      "passed": true,
+      "seed": 19,
+      "source_position_feature_sha256": "542323b55c037507065dc7dbe5861170034a9eff2b039e1788a764e981973030",
+      "stage": "refine"
+    }
+  ]
+}

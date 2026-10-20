@@ -31,6 +31,7 @@ from dvbfixer.model.diffusion.protein_context import (
     engine_context_view,
     sampling_entities,
     select_protein_context,
+    source_context_position_features,
     validate_context_capability,
 )
 from dvbfixer.model.diffusion.scope import canonical_heavy_atom_identities
@@ -414,3 +415,56 @@ def test_adaptive_policy_cannot_claim_expansion_when_partner_context_is_disabled
     assert updated == initial
     assert not decision["expanded"]
     assert decision["reason"] == "no-additional-context-permitted-by-policy"
+
+
+def _with_oxt(request, pdb, residue_number="5"):
+    from dvbfixer.model.diffusion.contract import AtomIdentity
+
+    atom = AtomIdentity("D", residue_number, "", "OXT")
+    serial = len(request.fixed_atoms) + 1
+    line = f"ATOM  {serial:5d}  OXT ALA D{int(residue_number):4d}    {14.0:8.3f}{1.0:8.3f}{0.0:8.3f}  1.00  0.00           O\n".encode()
+    modified = pdb.replace(b"END\n", line + b"END\n")
+    return replace(request, normalized_pdb=replace(request.normalized_pdb, sha256=hashlib.sha256(modified).hexdigest()),
+                   fixed_atoms=(*request.fixed_atoms, atom)), modified, atom
+
+
+def test_research_atom37_policy_preserves_oxt_without_claiming_model_conditioning():
+    from dvbfixer.model.diffusion.protein_context import validate_context_source
+    from dvbfixer.model.diffusion.scope import assess_diffusion_scope
+
+    request, pdb = context_request()
+    request, pdb, oxt = _with_oxt(request, pdb)
+    ordinary = select_protein_context(request, pdb, ProteinContextPolicy(partner_mode="full"))
+    with pytest.raises(ProteinContextError, match="canonical-heavy mask"):
+        validate_context_capability(ordinary, "protpardelle")
+    selected = select_protein_context(request, pdb, ProteinContextPolicy(name="atom37-terminal-preservation-v1", partner_mode="full"))
+    assert selected.fixed_atoms == request.fixed_atoms
+    assert selected.protein_context.preserved_only == (oxt,)
+    assert oxt not in {item.atom for item in selected.protein_context.fixed_conditioning}
+    validate_context_source(selected, pdb)
+    validate_context_capability(selected, "protpardelle")
+    assert [len(entity.target.sequence) for entity in sampling_entities(selected)] == [5, 3]
+    view = engine_context_view(selected)
+    assert oxt not in {original for _, original in view.atom_to_source}
+    assert "atom37-terminal-preservation-research-only" in assess_diffusion_scope(selected, pdb).reasons
+
+
+def test_atom37_policy_rejects_nonterminal_oxt_instead_of_hiding_it():
+    request, pdb = context_request()
+    request, pdb, _ = _with_oxt(request, pdb, "1")
+    with pytest.raises(ProteinContextError, match="observed C terminus"):
+        select_protein_context(request, pdb, ProteinContextPolicy(name="atom37-terminal-preservation-v1", partner_mode="full"))
+
+
+def test_physical_source_positions_preserve_parent_chains_and_native_sequence_gaps():
+    request, pdb = context_request(partner_y={2: 100})
+    selected = select_protein_context(request, pdb, ProteinContextPolicy(sequence_padding=0))
+    positions, chains = source_context_position_features(selected)
+    assert len(sampling_entities(selected)) == 3
+    assert positions == (1, 2, 3, 4, 5, 205, 207)
+    assert chains == (0, 0, 0, 0, 0, 1, 1)
+    assert source_context_position_features(selected, chain_gap=300)[0][-2:] == (305, 307)
+    with pytest.raises(ProteinContextError, match="non-peptide"):
+        source_context_position_features(selected, chain_gap=1)
+    with pytest.raises(ProteinContextError, match="explicit context"):
+        source_context_position_features(request)

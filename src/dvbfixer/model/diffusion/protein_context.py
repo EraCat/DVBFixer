@@ -166,7 +166,15 @@ def select_protein_context(
             if not expected <= set(atoms_by_residue.get(residue, [])):
                 raise ProteinContextError(f"selected context residue is heavy-atom-incomplete: {residue}")
             selected_residues.add(residue)
-    selected_fixed = tuple(atom for atom in request.fixed_atoms if _residue(atom) in selected_residues)
+    preserved_terminal_atoms: set[AtomIdentity] = set()
+    if policy.name == "atom37-terminal-preservation-v1":
+        terminals = {placement.observed_residues[-1] for placement in request.sequence_placements
+                     if placement.observed_target_indices and placement.observed_target_indices[-1] == placement.target_length - 1}
+        preserved_terminal_atoms = {atom for atom in request.fixed_atoms if atom.atom_name == "OXT"}
+        if any(_residue(atom) not in terminals for atom in preserved_terminal_atoms):
+            raise ProteinContextError("atom37 terminal preservation requires OXT on an observed C terminus")
+    selected_fixed = tuple(atom for atom in request.fixed_atoms
+                           if _residue(atom) in selected_residues and atom not in preserved_terminal_atoms)
     junction = {residue for gap in request.gaps for residue in (gap.generated_residues[0], gap.generated_residues[-1])}
     plan = ProteinContextPlan(
         policy, request.normalized_pdb.sha256, tuple(spans),
@@ -203,7 +211,7 @@ def _split_native_segments(
             nitrogen = points.get(AtomIdentity(right.chain, right.residue_number, right.insertion_code, "N"))
             if carbon is None or nitrogen is None or not 1.0 <= float(np.linalg.norm(carbon - nitrogen)) <= 1.8:
                 boundaries.add((placement.chain, right_index))
-    previous = None
+    previous: ResidueIdentity | None = None
     terminated = False
     for line in pdb.decode().splitlines():
         if line.startswith("TER"):
@@ -211,14 +219,14 @@ def _split_native_segments(
         elif line.startswith("ATOM  "):
             residue = ResidueIdentity(line[21], line[22:26].strip(), line[26].strip())
             if residue != previous:
-                if terminated and previous in indices and residue in indices:
+                if terminated and previous is not None and previous in indices and residue in indices:
                     left_chain, left_index = indices[previous]
                     right_chain, right_index = indices[residue]
                     if left_chain == right_chain and right_index == left_index + 1:
                         boundaries.add((right_chain, right_index))
                 previous = residue
                 terminated = False
-    separated = []
+    separated: list[ProteinContextSpan] = []
     for span in spans:
         cuts = [span.start, *(index for chain, index in sorted(boundaries) if chain == span.chain and span.start < index < span.stop), span.stop]
         separated.extend(ProteinContextSpan(span.chain, left, right) for left, right in zip(cuts, cuts[1:]))
@@ -275,6 +283,47 @@ def sampling_entities(request: DiffusionRequest) -> tuple[SamplingEntity, ...]:
             tuple(mapped[index] for index in range(span.start, span.stop)),
         ))
     return tuple(entities)
+
+
+def source_context_position_features(
+    request: DiffusionRequest, *, chain_gap: int = 200,
+) -> tuple[tuple[int, ...], tuple[int, ...]]:
+    """Position a packed context axis using physical source chains, not proxies.
+
+    Motif serialization may split one chain into several entities. Their source
+    sequence separations must survive packing. Different physical chains retain
+    an explicit position break; omitted residues never become peptide neighbors.
+    """
+    plan = request.protein_context
+    if plan is None:
+        raise ProteinContextError("source position features require an explicit context plan")
+    if type(chain_gap) is not int or chain_gap < 2:
+        raise ProteinContextError("source chains require a non-peptide position break")
+    order = tuple(dict.fromkeys(span.chain for span in plan.spans))
+    seen: set[str] = set()
+    previous_chain: str | None = None
+    ends: dict[str, int] = {}
+    for span in plan.spans:
+        if span.chain != previous_chain and span.chain in seen:
+            raise ProteinContextError("source context spans must be grouped by physical chain")
+        if span.chain in ends and span.start < ends[span.chain]:
+            raise ProteinContextError("source context spans must retain sequence order")
+        seen.add(span.chain)
+        ends[span.chain] = span.stop
+        previous_chain = span.chain
+    origins: dict[str, int] = {}
+    previous_end: int | None = None
+    for chain in order:
+        spans = tuple(span for span in plan.spans if span.chain == chain)
+        first = min(span.start for span in spans)
+        last = max(span.stop for span in spans)
+        start = 1 if previous_end is None else previous_end + chain_gap
+        origins[chain] = start - first
+        previous_end = origins[chain] + last - 1
+    chain_numbers = {chain: index for index, chain in enumerate(order)}
+    indices = tuple(origins[span.chain] + index for span in plan.spans for index in range(span.start, span.stop))
+    chains = tuple(chain_numbers[span.chain] for span in plan.spans for _ in range(span.start, span.stop))
+    return indices, chains
 
 
 def engine_context_view(request: DiffusionRequest) -> EngineContextView:

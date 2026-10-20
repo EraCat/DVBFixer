@@ -280,6 +280,7 @@ start = [
   "src/dvbfixer/model/diffusion/scope.py::assess_diffusion_scope",
   "src/dvbfixer/model/diffusion/gap_capabilities.py::gap_capability",
   "src/dvbfixer/model/diffusion/protein_context.py::engine_context_view",
+  "src/dvbfixer/model/diffusion/protein_context.py::source_context_position_features",
   "src/dvbfixer/model/diffusion/adaptive_context.py::validate_adaptive_transition",
   "deploy/protpardelle-1c/checkpoint_gap_smoke.py::_NeutralDenoiserChainPhase",
   "src/dvbfixer/model/diffusion/runner.py::run_diffusion_runner",
@@ -328,11 +329,13 @@ test_files = [
   "tests/test_protein_context.py",
   "tests/test_reconstruction_accuracy_audit.py",
   "tests/test_cc89_conditioning_debug.py",
+  "tests/test_known_sequence_holdout.py",
   "tests/test_sequence_alignment.py",
   "tests/test_protenix_research_scripts.py",
   "tests/test_protpardelle_research_scripts.py",
 ]
 verification = [
+  "pytest -q tests/test_known_sequence_holdout.py tests/test_protein_context.py",
   "pytest -q tests/test_diffusion_benchmark.py tests/test_diffusion_benchmark_scripts.py tests/test_diffusion_cli.py tests/test_diffusion_confirmatory_runner.py tests/test_diffusion_contract.py tests/test_diffusion_geometry.py tests/test_diffusion_masks.py tests/test_diffusion_pipeline.py tests/test_diffusion_preflight.py tests/test_diffusion_provenance.py tests/test_diffusion_research_inventory.py tests/test_diffusion_rfdiffusion_v1.py tests/test_diffusion_runner.py tests/test_diffusion_runner_refinement.py tests/test_diffusion_sampler.py tests/test_diffusion_scope.py tests/test_diffusion_validate.py tests/test_protenix_research_scripts.py tests/test_protpardelle_research_scripts.py tests/test_sequence_alignment.py",
   "python scripts/check_agent_docs.py",
   "git diff --check",

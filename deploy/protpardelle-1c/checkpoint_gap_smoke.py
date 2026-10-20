@@ -43,6 +43,7 @@ from dvbfixer.model.diffusion.protein_context import (
     context_evidence,
     engine_context_view,
     select_legacy_partner_spans,
+    source_context_position_features,
     validate_context_source,
 )
 from dvbfixer.model.diffusion.runner import DIFFUSION_RUNNER_PROTOCOL_VERSION
@@ -889,6 +890,14 @@ def _require_chain_phase_policy(request, device_name, policy):
         raise ValueError("neutral cc89 chain phase is CUDA research-only")
 
 
+def _require_position_feature_policy(request, device_name, policy, chain_phase):
+    declared = next((option.value for option in request.backend_options if option.name == "cc89_position_features"), "native")
+    if policy not in {"native", "source-physical-v1"} or declared != policy:
+        raise ValueError("cc89 position feature policy must match the explicitly declared request")
+    if policy != "native" and (device_name.split(":", 1)[0] != "cuda" or request.protein_context is None or chain_phase != "neutral-v1"):
+        raise ValueError("source-physical cc89 positions require explicit CUDA context and neutral-v1 phase")
+
+
 def _run_staged(
     request_path: Path,
     output_dir: Path,
@@ -905,6 +914,7 @@ def _run_staged(
     crop_strategy: str = "backbone-sidechain",
     replacement_guidance: bool = False,
     chain_phase_policy: str = "native",
+    position_feature_policy: str = "native",
 ) -> tuple[RunnerResult, Path]:
     import torch
     from protpardelle.common import residue_constants
@@ -921,6 +931,7 @@ def _run_staged(
     workspace = request_path.parent
     request = DiffusionRequest.from_json(request_path.read_text(encoding="utf-8"))
     _require_chain_phase_policy(request, device_name, chain_phase_policy)
+    _require_position_feature_policy(request, device_name, position_feature_policy, chain_phase_policy)
     if request.candidate_count != 1 or len(request.seeds) != 1:
         raise ValueError("cc89 benchmark requires one candidate")
     if any(
@@ -1000,6 +1011,7 @@ def _run_staged(
     conditioning_contexts: list[SamplerConditioningContext] = []
     context_probes = []
     phase_control = _NeutralDenoiserChainPhase() if chain_phase_policy == "neutral-v1" else None
+    position_evidence = None
     for invocation_index, sampling_request in enumerate(sampling_requests):
         invocation_seed = seed + invocation_index
         seed_everything(invocation_seed)
@@ -1017,6 +1029,17 @@ def _run_staged(
                 len(target.sequence) for target in sampling_request.target_sequences
             ]])
         )
+        if position_feature_policy == "source-physical-v1":
+            source_indices, source_chains = source_context_position_features(request)
+            if view is None or len(sampling_requests) != 1 or residue_index.shape != (1, len(source_indices)):
+                raise ValueError("source position features do not match the explicit context token axis")
+            residue_index = torch.as_tensor([source_indices], device=residue_index.device, dtype=residue_index.dtype)
+            chain_index = torch.as_tensor([source_chains], device=chain_index.device, dtype=chain_index.dtype)
+            digest = hashlib.sha256(np.asarray((source_indices, source_chains), dtype="<i8").tobytes()).hexdigest()
+            position_evidence = {"policy": position_feature_policy, "feature_sha256": digest,
+                "source_chains": tuple(dict.fromkeys(span.chain for span in request.protein_context.spans)),
+                "engine_entities": len(sampling_request.target_sequences), "residue_index": source_indices,
+                "physical_chain_index": source_chains}
         seq_mask = seq_mask.to(device=device)
         residue_index = residue_index.to(device=device)
         chain_index = chain_index.to(device=device)
@@ -1243,6 +1266,7 @@ def _run_staged(
             patch_identity=(
                 f"sha256:{_APPLE_PATCH_SHA256}" if phase_control is None else
                 f"adapter-sha256:{_sha256(Path(__file__))};cc89-chain-phase=neutral-v1"
+                + (";cc89-position-features=source-physical-v1" if position_evidence else "")
             ),
             atom_order=sampler_atom_order,
             fixed_atoms=request.fixed_atoms,
@@ -1297,6 +1321,8 @@ def _run_staged(
         backend_label += "+heterogen-geometric-context"
     if phase_control is not None:
         backend_label += "+neutral-denoiser-chain-phase-v1"
+    if position_evidence is not None:
+        backend_label += "+source-physical-positions-v1"
     result = RunnerResult(
         schema_version=DIFFUSION_SCHEMA_VERSION,
         status=DiffusionStatus.SUCCESS,
@@ -1328,6 +1354,7 @@ def _run_staged(
                 f"per-step-reinjection={per_step_reinjection}",
                 f"mps-fallback={os.environ.get('PYTORCH_ENABLE_MPS_FALLBACK', 'unset')}",
                 *(("cc89-denoiser-chain-phase=neutral-v1",) if phase_control is not None else ()),
+                *(("cc89-position-features=source-physical-v1", f"cc89-position-features-sha256={position_evidence['feature_sha256']}") if position_evidence else ()),
             ),
         ),
         resource_metrics=resource_metrics,
@@ -1401,6 +1428,7 @@ def _run_staged(
         "step_scale": step_scale,
         "crop_strategy": crop_strategy,
         "replacement_guidance": replacement_guidance,
+        **({"cc89_position_features": position_evidence} if position_evidence else {}),
         **({"cc89_chain_phase": {
             "policy": chain_phase_policy,
             "denoiser_calls": phase_control.calls,

@@ -21,6 +21,24 @@ accepts 6/6. See the [causal diagnosis and evidence](../../docs/research/cc89-ch
 This replaces the earlier interpretation that local refinement could not rescue
 the gaps themselves; the original configuration's 0/6 result remains preserved.
 
+### Source-position input correction
+
+For the subsequent CUDA input correction, see the
+[input-representation audit](../../docs/research/cc89-input-representation-audit.md).
+The private `position_feature_policy="source-physical-v1"` requires the matching
+request option `cc89_position_features=source-physical-v1`, an explicit context
+plan, CUDA, and neutral-v1 phase. This preserves actual source-chain sequence
+distances across proxy serialization spans. Local neural context is declared
+explicitly; the full original source remains preserved. It is not a silent
+fallback from a full-context request or an MPS rollout.
+
+The complete same-source corrected recheck passes the existing geometry and
+source-preservation gates for 44/44 general-protein and 16/16 CDR outcomes after
+unchanged refinement, with zero detectable D-Cα and exact outside-gap atom-record
+preservation. Reference RMSD is secondary and does not select candidates or gate
+acceptance. This diagnostic result does not establish independent acceptance;
+see the [paired comparison](../../docs/research/cc89-input-correction-comparison.md).
+
 ## Apple Silicon preparation
 
 Use a native arm64 Python environment and apply the Apple patch to the clean,

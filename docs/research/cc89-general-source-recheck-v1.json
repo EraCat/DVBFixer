@@ -1,0 +1,1324 @@
+{
+  "cases": [
+    {
+      "artifacts": {
+        "input/normalized.pdb": "d17a2acd10d7a0ae32c962c9afc2462e96c11ed3d790565349b878c9d591f2c9",
+        "reference.pdb": "b8b8dac6480d5437a53d286635f909f9aba2073d1a6937f833fd83bfbc731e40",
+        "requests/cc89-seed19.json": "cd779c9bbfdf62e346be7ce93ed94862db78eba1bd903eedbf423ff172491347",
+        "requests/cc89-seed7.json": "ec0dd51a4013cf35e424a0a2751572747c074f5bba9d367292d64aa07a3d66f8"
+      },
+      "case_id": "general-28vw-gap5",
+      "cc89_eligible": true,
+      "conditioned_atoms": 580,
+      "full_axis_residues": 141,
+      "known_gap_sequence": "HRVKK",
+      "length": 5,
+      "local_axis_residues": 77,
+      "original_generated_residues": [
+        [
+          "A",
+          "114",
+          ""
+        ],
+        [
+          "A",
+          "115",
+          ""
+        ],
+        [
+          "A",
+          "116",
+          ""
+        ],
+        [
+          "A",
+          "117",
+          ""
+        ],
+        [
+          "A",
+          "118",
+          ""
+        ]
+      ],
+      "preserved_only_atoms": 504,
+      "serialization_entities": 6,
+      "source_id": "28VW",
+      "status": "eligible",
+      "stratum": "general-protein"
+    },
+    {
+      "artifacts": {
+        "input/normalized.pdb": "f2fc6972aabef426629e8ebb8331f56342e5716bf0baaffe0238d7666dd02051",
+        "reference.pdb": "b8b8dac6480d5437a53d286635f909f9aba2073d1a6937f833fd83bfbc731e40",
+        "requests/cc89-seed19.json": "ea7cd6b7b9e98620f505e1fe0e0235b3b3b01f2444c0d186721962343cdc7652",
+        "requests/cc89-seed7.json": "48de95f34ea532bc5ffc0933320630823d08f3f058d6316bc68ba32622c41451"
+      },
+      "case_id": "general-28vw-gap10",
+      "cc89_eligible": true,
+      "conditioned_atoms": 710,
+      "full_axis_residues": 141,
+      "known_gap_sequence": "YNHRVKKLNE",
+      "length": 10,
+      "local_axis_residues": 100,
+      "original_generated_residues": [
+        [
+          "A",
+          "112",
+          ""
+        ],
+        [
+          "A",
+          "113",
+          ""
+        ],
+        [
+          "A",
+          "114",
+          ""
+        ],
+        [
+          "A",
+          "115",
+          ""
+        ],
+        [
+          "A",
+          "116",
+          ""
+        ],
+        [
+          "A",
+          "117",
+          ""
+        ],
+        [
+          "A",
+          "118",
+          ""
+        ],
+        [
+          "A",
+          "119",
+          ""
+        ],
+        [
+          "A",
+          "120",
+          ""
+        ],
+        [
+          "A",
+          "121",
+          ""
+        ]
+      ],
+      "preserved_only_atoms": 329,
+      "serialization_entities": 6,
+      "source_id": "28VW",
+      "status": "eligible",
+      "stratum": "general-protein"
+    },
+    {
+      "artifacts": {
+        "input/normalized.pdb": "210db0ba4cf9234fdbba2fa92c37c562604a2b38b045937a30ce58bc813073e8",
+        "reference.pdb": "84fd02721f07f05d54ce92bd203a33fbff39779ed3465009638b5aa984ddd910",
+        "requests/cc89-seed19.json": "bfc3f5838dc280d56d501318e5caea7300ccec982729bcf2e472fe6ea9f27d1e",
+        "requests/cc89-seed7.json": "4ed12b2635107071db76d946d320493cc2479e639dcf4c548030e4cd78923dfa"
+      },
+      "case_id": "general-9wgm-gap5",
+      "cc89_eligible": true,
+      "conditioned_atoms": 574,
+      "full_axis_residues": 269,
+      "known_gap_sequence": "ILRPD",
+      "length": 5,
+      "local_axis_residues": 82,
+      "original_generated_residues": [
+        [
+          "A",
+          "107",
+          ""
+        ],
+        [
+          "A",
+          "108",
+          ""
+        ],
+        [
+          "A",
+          "109",
+          ""
+        ],
+        [
+          "A",
+          "110",
+          ""
+        ],
+        [
+          "A",
+          "111",
+          ""
+        ]
+      ],
+      "preserved_only_atoms": 1457,
+      "serialization_entities": 4,
+      "source_id": "9WGM",
+      "status": "eligible",
+      "stratum": "general-protein"
+    },
+    {
+      "artifacts": {
+        "input/normalized.pdb": "b0856d39fe195dd7bba10c148daa6d85df1ed1619e27bb8c9decb32afafc3e64",
+        "reference.pdb": "84fd02721f07f05d54ce92bd203a33fbff39779ed3465009638b5aa984ddd910",
+        "requests/cc89-seed19.json": "93621d885451f4768ecda0a869f6db40e4b951a77e1cc420f9d5a3ded65464a6",
+        "requests/cc89-seed7.json": "56243189d517d44388d6d17c029e0dd7c8e81779dc6858d831846e175e9b9dd7"
+      },
+      "case_id": "general-9wgm-gap10",
+      "cc89_eligible": true,
+      "conditioned_atoms": 827,
+      "full_axis_residues": 269,
+      "known_gap_sequence": "VVLGHGLGID",
+      "length": 10,
+      "local_axis_residues": 115,
+      "original_generated_residues": [
+        [
+          "A",
+          "21",
+          ""
+        ],
+        [
+          "A",
+          "22",
+          ""
+        ],
+        [
+          "A",
+          "23",
+          ""
+        ],
+        [
+          "A",
+          "24",
+          ""
+        ],
+        [
+          "A",
+          "25",
+          ""
+        ],
+        [
+          "A",
+          "26",
+          ""
+        ],
+        [
+          "A",
+          "27",
+          ""
+        ],
+        [
+          "A",
+          "28",
+          ""
+        ],
+        [
+          "A",
+          "29",
+          ""
+        ],
+        [
+          "A",
+          "30",
+          ""
+        ]
+      ],
+      "preserved_only_atoms": 1178,
+      "serialization_entities": 6,
+      "source_id": "9WGM",
+      "status": "eligible",
+      "stratum": "general-protein"
+    },
+    {
+      "artifacts": {
+        "input/normalized.pdb": "7186e72ce7eaa233cba50817e12fe0ba44868cdecd84384181c005fe62d84449",
+        "reference.pdb": "1e8ed8b6f0fa56f5f4425d79e231038bcd87a302c60ea3510ef8698701ffad0d",
+        "requests/cc89-seed19.json": "e87a35762b22bd260e0a06cb43d49bf017887e52d966a916e39688546653c881",
+        "requests/cc89-seed7.json": "9d2d35144ece99aae936420762b58a7d6171108f00b51ae758fa5da1c720b80d"
+      },
+      "case_id": "general-9m9n-gap5",
+      "cc89_eligible": true,
+      "conditioned_atoms": 448,
+      "full_axis_residues": 300,
+      "known_gap_sequence": "VQLRV",
+      "length": 5,
+      "local_axis_residues": 64,
+      "original_generated_residues": [
+        [
+          "A",
+          "73",
+          ""
+        ],
+        [
+          "A",
+          "74",
+          ""
+        ],
+        [
+          "A",
+          "75",
+          ""
+        ],
+        [
+          "A",
+          "76",
+          ""
+        ],
+        [
+          "A",
+          "77",
+          ""
+        ]
+      ],
+      "preserved_only_atoms": 1835,
+      "serialization_entities": 4,
+      "source_id": "9M9N",
+      "status": "eligible",
+      "stratum": "general-protein"
+    },
+    {
+      "artifacts": {
+        "input/normalized.pdb": "ec083aaaba6a22f29065e1b07d25666357a675163cd849ea891305c48b1ae062",
+        "reference.pdb": "1e8ed8b6f0fa56f5f4425d79e231038bcd87a302c60ea3510ef8698701ffad0d",
+        "requests/cc89-seed19.json": "74e049d089c2ea760218da0c4608eba815c114e7cd383e2986a24502b749e6e9",
+        "requests/cc89-seed7.json": "b9ba55d74d5b45deb43ceff24e9a61f17988c70cbfa711b878dacf79945b665c"
+      },
+      "case_id": "general-9m9n-gap10",
+      "cc89_eligible": true,
+      "conditioned_atoms": 671,
+      "full_axis_residues": 300,
+      "known_gap_sequence": "ILGSALLEDE",
+      "length": 10,
+      "local_axis_residues": 95,
+      "original_generated_residues": [
+        [
+          "A",
+          "281",
+          ""
+        ],
+        [
+          "A",
+          "282",
+          ""
+        ],
+        [
+          "A",
+          "283",
+          ""
+        ],
+        [
+          "A",
+          "284",
+          ""
+        ],
+        [
+          "A",
+          "285",
+          ""
+        ],
+        [
+          "A",
+          "286",
+          ""
+        ],
+        [
+          "A",
+          "287",
+          ""
+        ],
+        [
+          "A",
+          "288",
+          ""
+        ],
+        [
+          "A",
+          "289",
+          ""
+        ],
+        [
+          "A",
+          "290",
+          ""
+        ]
+      ],
+      "preserved_only_atoms": 1581,
+      "serialization_entities": 6,
+      "source_id": "9M9N",
+      "status": "eligible",
+      "stratum": "general-protein"
+    },
+    {
+      "artifacts": {
+        "input/normalized.pdb": "e3ef38ef35855384af4d01e951dda12b962a636fad29a0f1e5170ef526b850d2",
+        "reference.pdb": "12bf4921a615eab3a13afb467c3e262c1e5e92a4a2768678f44e2fc1681923aa",
+        "requests/cc89-seed19.json": "89437ec73a399569b7a8eff46ce73f23dfadc45784deb7d99dcbad8e85c76156",
+        "requests/cc89-seed7.json": "251c47029834312effd3739be94ba64ff2e7789472b5f26d410f57b0a385ae0a"
+      },
+      "case_id": "general-9v77-gap5",
+      "cc89_eligible": true,
+      "conditioned_atoms": 985,
+      "full_axis_residues": 470,
+      "known_gap_sequence": "YSPNF",
+      "length": 5,
+      "local_axis_residues": 129,
+      "original_generated_residues": [
+        [
+          "A",
+          "48",
+          ""
+        ],
+        [
+          "A",
+          "49",
+          ""
+        ],
+        [
+          "A",
+          "50",
+          ""
+        ],
+        [
+          "A",
+          "51",
+          ""
+        ],
+        [
+          "A",
+          "52",
+          ""
+        ]
+      ],
+      "preserved_only_atoms": 2615,
+      "serialization_entities": 6,
+      "source_id": "9V77",
+      "status": "eligible",
+      "stratum": "general-protein"
+    },
+    {
+      "artifacts": {
+        "input/normalized.pdb": "dd804b6b7211cef3c287b3e1d970e67fb1cf1fa0cecc6959aafaac79fdf468b1",
+        "reference.pdb": "12bf4921a615eab3a13afb467c3e262c1e5e92a4a2768678f44e2fc1681923aa",
+        "requests/cc89-seed19.json": "6a84de6571577984fe5917c9104b4179249e0d1c3cba050378b46e570afd0c5c",
+        "requests/cc89-seed7.json": "d3d0cc79b62229a16b9a78fdd39a9abf17add5364e6d273de18def62936f74aa"
+      },
+      "case_id": "general-9v77-gap10",
+      "cc89_eligible": true,
+      "conditioned_atoms": 737,
+      "full_axis_residues": 470,
+      "known_gap_sequence": "KDQLSEIEQG",
+      "length": 10,
+      "local_axis_residues": 104,
+      "original_generated_residues": [
+        [
+          "A",
+          "164",
+          ""
+        ],
+        [
+          "A",
+          "165",
+          ""
+        ],
+        [
+          "A",
+          "166",
+          ""
+        ],
+        [
+          "A",
+          "167",
+          ""
+        ],
+        [
+          "A",
+          "168",
+          ""
+        ],
+        [
+          "A",
+          "169",
+          ""
+        ],
+        [
+          "A",
+          "170",
+          ""
+        ],
+        [
+          "A",
+          "171",
+          ""
+        ],
+        [
+          "A",
+          "172",
+          ""
+        ],
+        [
+          "A",
+          "173",
+          ""
+        ]
+      ],
+      "preserved_only_atoms": 2828,
+      "serialization_entities": 6,
+      "source_id": "9V77",
+      "status": "eligible",
+      "stratum": "general-protein"
+    },
+    {
+      "artifacts": {
+        "input/normalized.pdb": "9016e710d54929b5b7af6e90edf0d9f321876de14dcc5bcf1086cd26d1a1f6a2",
+        "reference.pdb": "87578b92407453f2459cfa3f29c5dc23c9dc12226853b6c604580901da5b82b7",
+        "requests/cc89-seed19.json": "995a620e5a559ff02015324027df17989fc777b789999242d42dcf79dc7f6ae7",
+        "requests/cc89-seed7.json": "99be7634236bf4c5ad3db87d89ff3136bb6e9f314014792782122d30cc7ef45e"
+      },
+      "case_id": "general-9ndl-gap5",
+      "cc89_eligible": true,
+      "conditioned_atoms": 547,
+      "full_axis_residues": 318,
+      "known_gap_sequence": "VTIVV",
+      "length": 5,
+      "local_axis_residues": 74,
+      "original_generated_residues": [
+        [
+          "A",
+          "100",
+          ""
+        ],
+        [
+          "A",
+          "101",
+          ""
+        ],
+        [
+          "A",
+          "102",
+          ""
+        ],
+        [
+          "A",
+          "103",
+          ""
+        ],
+        [
+          "A",
+          "104",
+          ""
+        ]
+      ],
+      "preserved_only_atoms": 1844,
+      "serialization_entities": 3,
+      "source_id": "9NDL",
+      "status": "eligible",
+      "stratum": "general-protein"
+    },
+    {
+      "artifacts": {
+        "input/normalized.pdb": "b2f5e318e912ef4ad510d22f37df945492af7be30de1c41769cf5f9ed2a396ea",
+        "reference.pdb": "87578b92407453f2459cfa3f29c5dc23c9dc12226853b6c604580901da5b82b7",
+        "requests/cc89-seed19.json": "4e367d92a7917682ed33e1c4e3545ff7bd89cb1bf348d441497f0d64ad4b6354",
+        "requests/cc89-seed7.json": "7e213df535cdeee24015f84a5609bc66d3cbd6147a01b47e042245994800aa12"
+      },
+      "case_id": "general-9ndl-gap10",
+      "cc89_eligible": true,
+      "conditioned_atoms": 604,
+      "full_axis_residues": 318,
+      "known_gap_sequence": "LRVVLEGLHI",
+      "length": 10,
+      "local_axis_residues": 89,
+      "original_generated_residues": [
+        [
+          "A",
+          "61",
+          ""
+        ],
+        [
+          "A",
+          "62",
+          ""
+        ],
+        [
+          "A",
+          "63",
+          ""
+        ],
+        [
+          "A",
+          "64",
+          ""
+        ],
+        [
+          "A",
+          "65",
+          ""
+        ],
+        [
+          "A",
+          "66",
+          ""
+        ],
+        [
+          "A",
+          "67",
+          ""
+        ],
+        [
+          "A",
+          "68",
+          ""
+        ],
+        [
+          "A",
+          "69",
+          ""
+        ],
+        [
+          "A",
+          "70",
+          ""
+        ]
+      ],
+      "preserved_only_atoms": 1743,
+      "serialization_entities": 6,
+      "source_id": "9NDL",
+      "status": "eligible",
+      "stratum": "general-protein"
+    },
+    {
+      "artifacts": {
+        "input/normalized.pdb": "e27bc9254e6ebd079fa1a1e0565d4ff32acd81a738775118e4c12fb382bb6113",
+        "reference.pdb": "90d867076951d6fcff067cf6e50e28c888b524848977ec0ccc3d73e7cd19b687",
+        "requests/cc89-seed19.json": "63764dd208db7a8e95e93ebf323d57ab39396b8143b8094f31b94be369f226d7",
+        "requests/cc89-seed7.json": "6c0bff92f6ff3ec5c89bca7d2162649350821914e946a58f912fdb7cf2dc5ff7"
+      },
+      "case_id": "general-9vnw-gap5",
+      "cc89_eligible": true,
+      "conditioned_atoms": 420,
+      "full_axis_residues": 281,
+      "known_gap_sequence": "EEALE",
+      "length": 5,
+      "local_axis_residues": 58,
+      "original_generated_residues": [
+        [
+          "A",
+          "300",
+          ""
+        ],
+        [
+          "A",
+          "301",
+          ""
+        ],
+        [
+          "A",
+          "302",
+          ""
+        ],
+        [
+          "A",
+          "303",
+          ""
+        ],
+        [
+          "A",
+          "304",
+          ""
+        ]
+      ],
+      "preserved_only_atoms": 1697,
+      "serialization_entities": 3,
+      "source_id": "9VNW",
+      "status": "eligible",
+      "stratum": "general-protein"
+    },
+    {
+      "artifacts": {
+        "input/normalized.pdb": "4fa1244be53b0dab864114706f93491b992e2b76533fad9c411f8c713bc583b2",
+        "reference.pdb": "90d867076951d6fcff067cf6e50e28c888b524848977ec0ccc3d73e7cd19b687",
+        "requests/cc89-seed19.json": "e15c4d64f336bd1d5a42e69cbf0d9728c25f558ee7576bdc06bd13bb5b78547b",
+        "requests/cc89-seed7.json": "e0f7e372af94e03f2dfde842c98fe23f2f02cc40a0522855e2fc52886d24a169"
+      },
+      "case_id": "general-9vnw-gap10",
+      "cc89_eligible": true,
+      "conditioned_atoms": 585,
+      "full_axis_residues": 281,
+      "known_gap_sequence": "RELGKIKVKN",
+      "length": 10,
+      "local_axis_residues": 85,
+      "original_generated_residues": [
+        [
+          "A",
+          "320",
+          ""
+        ],
+        [
+          "A",
+          "321",
+          ""
+        ],
+        [
+          "A",
+          "322",
+          ""
+        ],
+        [
+          "A",
+          "323",
+          ""
+        ],
+        [
+          "A",
+          "324",
+          ""
+        ],
+        [
+          "A",
+          "325",
+          ""
+        ],
+        [
+          "A",
+          "326",
+          ""
+        ],
+        [
+          "A",
+          "327",
+          ""
+        ],
+        [
+          "A",
+          "328",
+          ""
+        ],
+        [
+          "A",
+          "329",
+          ""
+        ]
+      ],
+      "preserved_only_atoms": 1490,
+      "serialization_entities": 4,
+      "source_id": "9VNW",
+      "status": "eligible",
+      "stratum": "general-protein"
+    },
+    {
+      "artifacts": {
+        "input/normalized.pdb": "ffd183cfcfc843ca2ebb55c19e1629e9809f0ac7fadade2ff46f09824221517e",
+        "reference.pdb": "e8ecc07a0f1a577c4edbd26494e51b6cbd71d20899cf1fda5d25931ff7165ec3",
+        "requests/cc89-seed19.json": "fbb51bee41288670a45c148d110b08ed20ecf812d6b328f69ddf2f3ba3bd0c79",
+        "requests/cc89-seed7.json": "f6f3a95f400288fa3d8c838c3882ae08af19d451752c051fa86f5e35ca0a7e7d"
+      },
+      "case_id": "general-9q8p-gap5",
+      "cc89_eligible": true,
+      "conditioned_atoms": 817,
+      "full_axis_residues": 228,
+      "known_gap_sequence": "IDPET",
+      "length": 5,
+      "local_axis_residues": 104,
+      "original_generated_residues": [
+        [
+          "A",
+          "100",
+          ""
+        ],
+        [
+          "A",
+          "101",
+          ""
+        ],
+        [
+          "A",
+          "102",
+          ""
+        ],
+        [
+          "A",
+          "103",
+          ""
+        ],
+        [
+          "A",
+          "104",
+          ""
+        ]
+      ],
+      "preserved_only_atoms": 976,
+      "serialization_entities": 7,
+      "source_id": "9Q8P",
+      "status": "eligible",
+      "stratum": "general-protein"
+    },
+    {
+      "artifacts": {
+        "input/normalized.pdb": "fbc5dfc3f3939a21ec116fbc09b75395fa52ef609b6358113133f7bbe6be6c21",
+        "reference.pdb": "e8ecc07a0f1a577c4edbd26494e51b6cbd71d20899cf1fda5d25931ff7165ec3",
+        "requests/cc89-seed19.json": "d678ef34ae378bdfa430e868ce8dd975f2ec61924ea3f3a09f9afcdae93b934f",
+        "requests/cc89-seed7.json": "5c7653c6d1d2b8d69f0ee4217af7a62ba640501d9884ff9f18e711f48e56493e"
+      },
+      "case_id": "general-9q8p-gap10",
+      "cc89_eligible": true,
+      "conditioned_atoms": 544,
+      "full_axis_residues": 228,
+      "known_gap_sequence": "DTDLGVRRSY",
+      "length": 10,
+      "local_axis_residues": 77,
+      "original_generated_residues": [
+        [
+          "A",
+          "59",
+          ""
+        ],
+        [
+          "A",
+          "60",
+          ""
+        ],
+        [
+          "A",
+          "61",
+          ""
+        ],
+        [
+          "A",
+          "62",
+          ""
+        ],
+        [
+          "A",
+          "63",
+          ""
+        ],
+        [
+          "A",
+          "64",
+          ""
+        ],
+        [
+          "A",
+          "65",
+          ""
+        ],
+        [
+          "A",
+          "66",
+          ""
+        ],
+        [
+          "A",
+          "67",
+          ""
+        ],
+        [
+          "A",
+          "68",
+          ""
+        ]
+      ],
+      "preserved_only_atoms": 1206,
+      "serialization_entities": 3,
+      "source_id": "9Q8P",
+      "status": "eligible",
+      "stratum": "general-protein"
+    },
+    {
+      "artifacts": {
+        "input/normalized.pdb": "9f97a1c06512c20148774b2401384fe126adb91252292831c1f5b08c4f77aa5c",
+        "reference.pdb": "3fead7ab5ab6973a4f3252f3dfde50481db3c27eddbc537f3792d890f45eec93",
+        "requests/cc89-seed19.json": "4cf0450d66c6e9b484cefa95517da0362c307291f5f1fbd99e200ed3a3eeab09",
+        "requests/cc89-seed7.json": "4c33cd5a59ab422946e999d97613c24c76a79c0f9725d52cb6d76155ef2ee2d3"
+      },
+      "case_id": "general-9y1s-gap5",
+      "cc89_eligible": true,
+      "conditioned_atoms": 662,
+      "full_axis_residues": 290,
+      "known_gap_sequence": "RLVRF",
+      "length": 5,
+      "local_axis_residues": 91,
+      "original_generated_residues": [
+        [
+          "A",
+          "122",
+          ""
+        ],
+        [
+          "A",
+          "123",
+          ""
+        ],
+        [
+          "A",
+          "124",
+          ""
+        ],
+        [
+          "A",
+          "125",
+          ""
+        ],
+        [
+          "A",
+          "126",
+          ""
+        ]
+      ],
+      "preserved_only_atoms": 1602,
+      "serialization_entities": 4,
+      "source_id": "9Y1S",
+      "status": "eligible",
+      "stratum": "general-protein"
+    },
+    {
+      "artifacts": {
+        "input/normalized.pdb": "61f58ae7ae2fb3974e8683066b97d7227261881c43b78e619c4086605770cf43",
+        "reference.pdb": "3fead7ab5ab6973a4f3252f3dfde50481db3c27eddbc537f3792d890f45eec93",
+        "requests/cc89-seed19.json": "d192b36aa7ef73cbe71de92efee3b855ac157949dcab842629a7cae892e09082",
+        "requests/cc89-seed7.json": "cd27273f43a539ba5499523790329e41fc7777929b66ee205ca3391a3bb6ad8d"
+      },
+      "case_id": "general-9y1s-gap10",
+      "cc89_eligible": true,
+      "conditioned_atoms": 419,
+      "full_axis_residues": 290,
+      "known_gap_sequence": "KKRALINIYE",
+      "length": 10,
+      "local_axis_residues": 63,
+      "original_generated_residues": [
+        [
+          "A",
+          "10",
+          ""
+        ],
+        [
+          "A",
+          "11",
+          ""
+        ],
+        [
+          "A",
+          "12",
+          ""
+        ],
+        [
+          "A",
+          "3",
+          ""
+        ],
+        [
+          "A",
+          "4",
+          ""
+        ],
+        [
+          "A",
+          "5",
+          ""
+        ],
+        [
+          "A",
+          "6",
+          ""
+        ],
+        [
+          "A",
+          "7",
+          ""
+        ],
+        [
+          "A",
+          "8",
+          ""
+        ],
+        [
+          "A",
+          "9",
+          ""
+        ]
+      ],
+      "preserved_only_atoms": 1806,
+      "serialization_entities": 3,
+      "source_id": "9Y1S",
+      "status": "eligible",
+      "stratum": "general-protein"
+    },
+    {
+      "artifacts": {
+        "input/normalized.pdb": "55a4e2ecbc63e29877ffc573817a41683bcf0fb038c1c406f8e71710da3ba357",
+        "reference.pdb": "3132286c93c8ada90b73f688f5b2c94d01b9c910490b9ad5e851bb18c7612f81",
+        "requests/cc89-seed19.json": "fb94fc57963616ec2f7c0bf62c36a280be0a247a941b6ed1b3fae39291121168",
+        "requests/cc89-seed7.json": "50234ef0f3dba5c7b5898f9fe3d93075655986a52b587a6be4258f9a9a80f26f"
+      },
+      "case_id": "general-26jk-gap5",
+      "cc89_eligible": true,
+      "conditioned_atoms": 597,
+      "full_axis_residues": 158,
+      "known_gap_sequence": "KRFAP",
+      "length": 5,
+      "local_axis_residues": 77,
+      "original_generated_residues": [
+        [
+          "A",
+          "139",
+          ""
+        ],
+        [
+          "A",
+          "140",
+          ""
+        ],
+        [
+          "A",
+          "141",
+          ""
+        ],
+        [
+          "A",
+          "142",
+          ""
+        ],
+        [
+          "A",
+          "143",
+          ""
+        ]
+      ],
+      "preserved_only_atoms": 639,
+      "serialization_entities": 4,
+      "source_id": "26JK",
+      "status": "eligible",
+      "stratum": "general-protein"
+    },
+    {
+      "artifacts": {
+        "input/normalized.pdb": "f5d2deaa5d033e16ac73ccf0907416da4c854e135517a28d21a8664dbad72b71",
+        "reference.pdb": "3132286c93c8ada90b73f688f5b2c94d01b9c910490b9ad5e851bb18c7612f81",
+        "requests/cc89-seed19.json": "a9a780f46d12fb403722b1565afdc1df86ff2d6fffd907a6676539c72cdc6caf",
+        "requests/cc89-seed7.json": "e97e4938e18d10a080b7023088c18934934b445ffb155bb70e5092785ba89100"
+      },
+      "case_id": "general-26jk-gap10",
+      "cc89_eligible": true,
+      "conditioned_atoms": 645,
+      "full_axis_residues": 158,
+      "known_gap_sequence": "GFTSQFEGLQ",
+      "length": 10,
+      "local_axis_residues": 90,
+      "original_generated_residues": [
+        [
+          "A",
+          "37",
+          ""
+        ],
+        [
+          "A",
+          "38",
+          ""
+        ],
+        [
+          "A",
+          "39",
+          ""
+        ],
+        [
+          "A",
+          "40",
+          ""
+        ],
+        [
+          "A",
+          "41",
+          ""
+        ],
+        [
+          "A",
+          "42",
+          ""
+        ],
+        [
+          "A",
+          "43",
+          ""
+        ],
+        [
+          "A",
+          "44",
+          ""
+        ],
+        [
+          "A",
+          "45",
+          ""
+        ],
+        [
+          "A",
+          "46",
+          ""
+        ]
+      ],
+      "preserved_only_atoms": 556,
+      "serialization_entities": 4,
+      "source_id": "26JK",
+      "status": "eligible",
+      "stratum": "general-protein"
+    },
+    {
+      "artifacts": {
+        "input/normalized.pdb": "cfa10d529a2384cdd8b61a61099bd4506ce649bfef9ff116242e97a36c59e1c1",
+        "reference.pdb": "dc7ef22d78f85deb128dbb0f92e6236c2700b395f3b7ded85d2176da3f6987a0",
+        "requests/cc89-seed19.json": "4dd05865ee969a4bb2bbce8263255f213a68c9b7f4c64cc221ac65c5e519ceef",
+        "requests/cc89-seed7.json": "488dce599dc989b09bc6aeb69e46e78f8beb343eb8fddeaa394332f3ec9fd8c7"
+      },
+      "case_id": "general-9s91-gap5",
+      "cc89_eligible": true,
+      "conditioned_atoms": 565,
+      "full_axis_residues": 230,
+      "known_gap_sequence": "VFRKA",
+      "length": 5,
+      "local_axis_residues": 77,
+      "original_generated_residues": [
+        [
+          "A",
+          "32",
+          ""
+        ],
+        [
+          "A",
+          "33",
+          ""
+        ],
+        [
+          "A",
+          "34",
+          ""
+        ],
+        [
+          "A",
+          "35",
+          ""
+        ],
+        [
+          "A",
+          "36",
+          ""
+        ]
+      ],
+      "preserved_only_atoms": 1170,
+      "serialization_entities": 6,
+      "source_id": "9S91",
+      "status": "eligible",
+      "stratum": "general-protein"
+    },
+    {
+      "artifacts": {
+        "input/normalized.pdb": "9e41628786ae817c1f502eda15e337f5b2ce449c22112d323314450b3ead1b66",
+        "reference.pdb": "dc7ef22d78f85deb128dbb0f92e6236c2700b395f3b7ded85d2176da3f6987a0",
+        "requests/cc89-seed19.json": "36ae2c6ea8d30bd21d5c795b81c24a6b9d517f789001993d0a1c9fa0ae3e781d",
+        "requests/cc89-seed7.json": "171131e747eb31e3a0ea1f65acb2c9dfda73efcdbfad6909d88175035da08ceb"
+      },
+      "case_id": "general-9s91-gap10",
+      "cc89_eligible": true,
+      "conditioned_atoms": 741,
+      "full_axis_residues": 230,
+      "known_gap_sequence": "WKALGISPFH",
+      "length": 10,
+      "local_axis_residues": 107,
+      "original_generated_residues": [
+        [
+          "A",
+          "79",
+          ""
+        ],
+        [
+          "A",
+          "80",
+          ""
+        ],
+        [
+          "A",
+          "81",
+          ""
+        ],
+        [
+          "A",
+          "82",
+          ""
+        ],
+        [
+          "A",
+          "83",
+          ""
+        ],
+        [
+          "A",
+          "84",
+          ""
+        ],
+        [
+          "A",
+          "85",
+          ""
+        ],
+        [
+          "A",
+          "86",
+          ""
+        ],
+        [
+          "A",
+          "87",
+          ""
+        ],
+        [
+          "A",
+          "88",
+          ""
+        ]
+      ],
+      "preserved_only_atoms": 955,
+      "serialization_entities": 8,
+      "source_id": "9S91",
+      "status": "eligible",
+      "stratum": "general-protein"
+    },
+    {
+      "artifacts": {
+        "input/normalized.pdb": "767b5d081cc1630ddbae264aaf9482c596954151e9fb4acaaae3e0db60a6f7cb",
+        "reference.pdb": "c0f67188a6ff01cb8e883da0d940915fd9e99fa97f0fbdd00c9bcd0e36af0681",
+        "requests/cc89-seed19.json": "429d8d7538c35363b4d004acf8a0e5f7b0bfc930f20180dc73e111149afba84d",
+        "requests/cc89-seed7.json": "7b7d35869dc4977cb85603cf0dd5a35ad4884b6e280edd041715f5ffee70d29a"
+      },
+      "case_id": "general-9m71-gap5",
+      "cc89_eligible": true,
+      "conditioned_atoms": 303,
+      "full_axis_residues": 226,
+      "known_gap_sequence": "PKLRA",
+      "length": 5,
+      "local_axis_residues": 43,
+      "original_generated_residues": [
+        [
+          "A",
+          "15",
+          ""
+        ],
+        [
+          "A",
+          "16",
+          ""
+        ],
+        [
+          "A",
+          "17",
+          ""
+        ],
+        [
+          "A",
+          "18",
+          ""
+        ],
+        [
+          "A",
+          "19",
+          ""
+        ]
+      ],
+      "preserved_only_atoms": 1462,
+      "serialization_entities": 2,
+      "source_id": "9M71",
+      "status": "eligible",
+      "stratum": "general-protein"
+    },
+    {
+      "artifacts": {
+        "input/normalized.pdb": "b6beff40f461da9ea88f7a31119cfbf21fc3d2f62b3565bd778ec3e6917873a9",
+        "reference.pdb": "c0f67188a6ff01cb8e883da0d940915fd9e99fa97f0fbdd00c9bcd0e36af0681",
+        "requests/cc89-seed19.json": "f78e64ac8de23fab166da7f89e9dedfd5cb04397ada41b7273b667c926000680",
+        "requests/cc89-seed7.json": "66a303986e2c8510ae1d1ae57b8dffc3679da7367afbe3d7beed7a2012b6ce76"
+      },
+      "case_id": "general-9m71-gap10",
+      "cc89_eligible": true,
+      "conditioned_atoms": 247,
+      "full_axis_residues": 226,
+      "known_gap_sequence": "PSFTPSPKLR",
+      "length": 10,
+      "local_axis_residues": 41,
+      "original_generated_residues": [
+        [
+          "A",
+          "10",
+          ""
+        ],
+        [
+          "A",
+          "11",
+          ""
+        ],
+        [
+          "A",
+          "12",
+          ""
+        ],
+        [
+          "A",
+          "13",
+          ""
+        ],
+        [
+          "A",
+          "14",
+          ""
+        ],
+        [
+          "A",
+          "15",
+          ""
+        ],
+        [
+          "A",
+          "16",
+          ""
+        ],
+        [
+          "A",
+          "17",
+          ""
+        ],
+        [
+          "A",
+          "18",
+          ""
+        ],
+        [
+          "A",
+          "9",
+          ""
+        ]
+      ],
+      "preserved_only_atoms": 1479,
+      "serialization_entities": 2,
+      "source_id": "9M71",
+      "status": "eligible",
+      "stratum": "general-protein"
+    }
+  ],
+  "interpretation": "diagnostic recheck of the same known-sequence masks after input correction; not independent confirmatory acceptance",
+  "method": "source-only 8-residue flanks +6/10A shells; preserve full input/output; source-physical positions; neutral phase; unchanged native sampling and CUDA refinement",
+  "no_replacement": true,
+  "public_protenix_workflow_controls": [],
+  "seeds": [
+    7,
+    19
+  ],
+  "selected_stratum": "general-protein",
+  "source_holdout_manifest_sha256": "e59f06789105eddf4cd66f855058b26aa2fe796b09ed38301738470e8690f0a3",
+  "status": "frozen-before-known-sequence-holdout-inference"
+}

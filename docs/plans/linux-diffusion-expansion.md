@@ -36,6 +36,30 @@
 
 ## Current Expansion Baseline
 
+**Input-representation correction:** actual attention/RoPE audits retain chain
+position breaks, but the full Fab/ASU denoising axis and proxy-fragment position
+features were inappropriate for the local repair experiment. Explicit local
+conditioning and physical source positions reduce raw CDR1 RMSD from 4–32 Å to
+0.83–1.35 Å; the ordinary adapter's unchanged refinement then passes all 16
+original CDR mask/seed pairs, median 1.152 Å. This same-source diagnostic repair
+does not replace the original holdout or establish independent acceptance.
+The complete general-protein recheck now passes 44/44 after unchanged refinement,
+retaining all 37 original passes and recovering seven failures. Combined corrected
+acceptance is 60/60, with zero detectable D-Cα and exact outside-gap atom-record
+preservation. Geometry/source preservation is the primary outcome; reference RMSD
+is a secondary conformation descriptor, not an acceptance gate.
+See [the input audit](../research/cc89-input-representation-audit.md).
+
+**Expanded known-sequence holdout:** all 154 planned jobs on 13 X-ray source
+structures are complete and independently revalidated. Under the explicit
+atom37 terminal-preservation policy (observed OXT retained as preserved-only),
+cc89 passes 16/60 raw and 37/60 after unchanged CUDA refinement: 37/44 general
+protein outcomes, 0/16 antibody CDR outcomes, with three guarded chirality
+failures retained. MODELLER's unconstrained comparator geometry passes 30/30;
+four public Protenix/Homology controls pass. This is evidence against promoting
+the current full-context cc89 mode broadly, not completion of that acceptance
+gate. See [the known-sequence study](../research/cc89-known-sequence-holdout.md).
+
 **Subsequent cc89 chain-phase investigation:** 42 frozen CUDA samplings isolate
 the denoiser's extra rotary chain-phase component as the cause of the previous
 11–20 Å reconstruction failures. An explicit CUDA-only research repair preserves

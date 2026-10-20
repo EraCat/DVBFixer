@@ -3,6 +3,12 @@
 Date: 2026-10-19. Device: NVIDIA A100, PyTorch 2.6.0+cu124, fixed cc89 checkpoint.
 Apple MPS work remains deferred. No geometry threshold was changed.
 
+**Expanded follow-up:** the subsequent
+[13-source known-sequence holdout](cc89-known-sequence-holdout.md) passes 37/60
+after refinement, including 0/16 full-context CDR outcomes. The causal repair
+below remains reproducible on its diagnostic pilot, but it does not establish
+broad full-context support. Four public Protenix/Homology workflow controls pass.
+
 ## Finding
 
 The catastrophic rich-context failure is caused, in the three frozen cases, by

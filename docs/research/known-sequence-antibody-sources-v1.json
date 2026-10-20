@@ -1,0 +1,3822 @@
+{
+  "artifacts": {
+    "1BVL/deposited_source.cif": "95e655c26d6d2e302bd53a868403b42966d81324c1e12aa48fe865033cc3fbfb",
+    "1BVL/normalized.pdb": "3b5b7f73e1f022fefe24b90994c1721717c6dc8f73307f8eb9318af4491dc953",
+    "1BVL/reference.pdb": "3b5b7f73e1f022fefe24b90994c1721717c6dc8f73307f8eb9318af4491dc953",
+    "1D5B/deposited_source.cif": "ff32cd01df70239c8e91d28609f752b53483ba8e286d6049070c7c22f7aa4637",
+    "1FVC/deposited_source.cif": "1649cdc7f94d39b40f3f5987d78b21f1e10f79c10bf8ee1deba4a32937879d0f",
+    "1FVD/deposited_source.cif": "daf2897671bb77f4d878cd9fbe52b36a7977bc79e82713e5ab21e241f2b90c1a",
+    "1FVE/deposited_source.cif": "0878df02233f66494c6ba0b252cb2c20f3d1270d517bd48ad4b27d9f30030317",
+    "1HIL/deposited_source.cif": "789531e0703079a8bb231b751f4839a478f676f10878a0ee7426e434e08199ac",
+    "1IGF/deposited_source.cif": "ecded0afbea87e97e2a87c4597fd2128f58adca66d22fa0d07fa22d8ec488b53",
+    "1MIM/deposited_source.cif": "d59615c5c3abf47bf1f38eddb73d68b04dd80aaec0adc84a978f6a9fb4bba25b",
+    "1MIM/normalized.pdb": "1dcd63f7221ba5ed4b549d2c396434be559b2987e38410c925a806aa306c838d",
+    "1MIM/reference.pdb": "f67f9d62ecd1cd3d9c8e1b63470fd9a3367355777286a938eb4886c4b7389e8b",
+    "1NQB/deposited_source.cif": "ec1100beabb7af36b60c23fd0077dc022b54d80c618935d3ddfc05cd87ad9172",
+    "1QOK/deposited_source.cif": "440600fe5ed2df20f1e44ff97d3fb886c737510bb7a6791ebd614b0a8e0b9973",
+    "1REI/deposited_source.cif": "e20249c6a63c76052fdc5858e1b5acf2371c6c9b0b8985d578cf0ccae637eae6",
+    "1REI/normalized.pdb": "683d036d1b8423f258c809135f9bb68f184be5030015850a1fa2daf287e03383",
+    "1REI/reference.pdb": "6a89634d373290d02b15e71b882de570f565b5c5b0fd066f2bf7525b45ed22b7",
+    "2FBJ/deposited_source.cif": "4e9906c5d299ed381663399cc1ce56268ed9a0bd539c82695b78d86ffbee12ce",
+    "protocol.json": "6730d32e06c165a10ed07b4280f5b6d8e06f45050ab139d572d6c2c6c4c1cd54"
+  },
+  "cases": [
+    {
+      "chain_counts": {
+        "A": 109,
+        "B": 120,
+        "C": 108,
+        "D": 120
+      },
+      "pdb_id": "1FVC",
+      "protein_residues": 457,
+      "reasons": [
+        "incomplete-or-duplicate-heavy-atoms:A/108",
+        "incomplete-or-duplicate-heavy-atoms:C/108"
+      ],
+      "sequences": {
+        "A": "DIQMTQSPSSLSASVGDRVTITCRASQDVNTAVAWYQQKPGKAPKLLIYSASFLYSGVPSRFSGSRSGTDFTLTISSLQPEDFATYYCQQHYTTPPTFGQGTKVEIKRT",
+        "B": "EVQLVESGGGLVQPGGSLRLSCAASGFNIKDTYIHWVRQAPGKGLEWVARIYPTNGYTRYADSVKGRFTISADTSKNTAYLQMNSLRAEDTAVYYCSRWGGDGFYAMDYWGQGTLVTVSS",
+        "C": "DIQMTQSPSSLSASVGDRVTITCRASQDVNTAVAWYQQKPGKAPKLLIYSASFLYSGVPSRFSGSRSGTDFTLTISSLQPEDFATYYCQQHYTTPPTFGQGTKVEIKR",
+        "D": "EVQLVESGGGLVQPGGSLRLSCAASGFNIKDTYIHWVRQAPGKGLEWVARIYPTNGYTRYADSVKGRFTISADTSKNTAYLQMNSLRAEDTAVYYCSRWGGDGFYAMDYWGQGTLVTVSS"
+      },
+      "source_sha256": "1649cdc7f94d39b40f3f5987d78b21f1e10f79c10bf8ee1deba4a32937879d0f",
+      "status": "unsupported",
+      "supported": false,
+      "unobserved_terminal_tails": [
+        {
+          "chain": "C",
+          "declared_sequence_length": 109,
+          "first_observed_label_seq": 1,
+          "last_observed_label_seq": 108
+        }
+      ],
+      "water_residues": 126
+    },
+    {
+      "chain_counts": {
+        "A": 214,
+        "B": 223,
+        "C": 214,
+        "D": 223
+      },
+      "pdb_id": "1FVE",
+      "protein_residues": 874,
+      "reasons": [
+        "whole-source-residue-budget-exceeded-or-empty"
+      ],
+      "sequences": {
+        "A": "DIQMTQSPSSLSASVGDRVTITCRASQDVNTAVAWYQQKPGKAPKLLIYSASFLESGVPSRFSGSRSGTDFTLTISSLQPEDFATYYCQQHYTTPPTFGQGTKVEIKRTVAAPSVFIFPPSDEQLKSGTASVVCLLNNFYPREAKVQWKVDNALQSGNSQESVTEQDSKDSTYSLSSTLTLSKADYEKHKVYACEVTHQGLSSPVTKSFNRGEC",
+        "B": "EVQLVESGGGLVQPGGSLRLSCAASGFNIKDTYIHWVRQAPGKGLEWVARIYPTNGYTRYADSVKGRFTISADTSKNTAYLQMNSLRAEDTAVYYCSRWGGDGFYAMDYWGQGTLVTVSSASTKGPSVFPLAPSSKSTSGGTAALGCLVKDYFPEPVTVSWNSGALTSGVHTFPAVLQSSGLYSLSSVVTVPSSSLGTQTYICNVNHKPSNTKVDKKVEPKSC",
+        "C": "DIQMTQSPSSLSASVGDRVTITCRASQDVNTAVAWYQQKPGKAPKLLIYSASFLESGVPSRFSGSRSGTDFTLTISSLQPEDFATYYCQQHYTTPPTFGQGTKVEIKRTVAAPSVFIFPPSDEQLKSGTASVVCLLNNFYPREAKVQWKVDNALQSGNSQESVTEQDSKDSTYSLSSTLTLSKADYEKHKVYACEVTHQGLSSPVTKSFNRGEC",
+        "D": "EVQLVESGGGLVQPGGSLRLSCAASGFNIKDTYIHWVRQAPGKGLEWVARIYPTNGYTRYADSVKGRFTISADTSKNTAYLQMNSLRAEDTAVYYCSRWGGDGFYAMDYWGQGTLVTVSSASTKGPSVFPLAPSSKSTSGGTAALGCLVKDYFPEPVTVSWNSGALTSGVHTFPAVLQSSGLYSLSSVVTVPSSSLGTQTYICNVNHKPSNTKVDKKVEPKSC"
+      },
+      "source_sha256": "0878df02233f66494c6ba0b252cb2c20f3d1270d517bd48ad4b27d9f30030317",
+      "status": "unsupported",
+      "supported": false,
+      "unobserved_terminal_tails": [],
+      "water_residues": 51
+    },
+    {
+      "chain_counts": {
+        "A": 217,
+        "B": 214,
+        "C": 217,
+        "D": 214
+      },
+      "pdb_id": "1HIL",
+      "protein_residues": 862,
+      "reasons": [
+        "coordinate-incomplete-polymer-sequence:B",
+        "coordinate-incomplete-polymer-sequence:D",
+        "incomplete-or-duplicate-heavy-atoms:D/228",
+        "native-backbone-break:B/127->136",
+        "native-backbone-break:D/127->136",
+        "whole-source-residue-budget-exceeded-or-empty"
+      ],
+      "sequences": {
+        "A": "DIVMTQSPSSLTVTAGEKVTMSCTSSQSLFNSGKQKNYLTWYQQKPGQPPKVLIYWASTRESGVPDRFTGSGSGTDFTLTISSVQAEDLAVYYCQNDYSNPLTFGGGTKLELKRADAAPTVSIFPPSSEQLTSGGASVVCFLNNFYPKDINVKWKIDGSERQNGVLNSWTDQDSKDSTYSMSSTLTLTKDEYERHNSYTCEATHKTSTSPIVKSFNR",
+        "B": "EVQLVESGGDLVKPGGSLKLSCAASGFSFSSYGMSWVRQTPDKRLEWVATISNGGGYTYYPDSVKGRFTISRDNAKNTLYLQMSSLKSEDSAMYYCARRERYDENGFAYWGQGTLVTVSAAKTTAPSVYPLAPVSSVTLGCLVKGYFPEPVTLTWNSGSLSSGVHTFPAVLQSDLYTLSSSVTVTSSTWPSQSITCNVAHPASSTKVDKKIEPR",
+        "C": "DIVMTQSPSSLTVTAGEKVTMSCTSSQSLFNSGKQKNYLTWYQQKPGQPPKVLIYWASTRESGVPDRFTGSGSGTDFTLTISSVQAEDLAVYYCQNDYSNPLTFGGGTKLELKRADAAPTVSIFPPSSEQLTSGGASVVCFLNNFYPKDINVKWKIDGSERQNGVLNSWTDQDSKDSTYSMSSTLTLTKDEYERHNSYTCEATHKTSTSPIVKSFNR",
+        "D": "EVQLVESGGDLVKPGGSLKLSCAASGFSFSSYGMSWVRQTPDKRLEWVATISNGGGYTYYPDSVKGRFTISRDNAKNTLYLQMSSLKSEDSAMYYCARRERYDENGFAYWGQGTLVTVSAAKTTAPSVYPLAPVSSVTLGCLVKGYFPEPVTLTWNSGSLSSGVHTFPAVLQSDLYTLSSSVTVTSSTWPSQSITCNVAHPASSTKVDKKIEPR"
+      },
+      "source_sha256": "789531e0703079a8bb231b751f4839a478f676f10878a0ee7426e434e08199ac",
+      "status": "unsupported",
+      "supported": false,
+      "unobserved_terminal_tails": [],
+      "water_residues": 160
+    },
+    {
+      "chain_counts": {
+        "H": 215,
+        "L": 210
+      },
+      "chain_map": {
+        "H": "H",
+        "L": "L"
+      },
+      "domains": [
+        {
+          "chain": "L",
+          "chain_type": "K",
+          "end": 103,
+          "positions": [
+            {
+              "imgt_insertion": "",
+              "imgt_number": 1,
+              "target_index": 0
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 2,
+              "target_index": 1
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 3,
+              "target_index": 2
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 4,
+              "target_index": 3
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 5,
+              "target_index": 4
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 6,
+              "target_index": 5
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 7,
+              "target_index": 6
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 8,
+              "target_index": 7
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 9,
+              "target_index": 8
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 10,
+              "target_index": 9
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 11,
+              "target_index": 10
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 12,
+              "target_index": 11
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 13,
+              "target_index": 12
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 14,
+              "target_index": 13
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 15,
+              "target_index": 14
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 16,
+              "target_index": 15
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 17,
+              "target_index": 16
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 18,
+              "target_index": 17
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 19,
+              "target_index": 18
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 20,
+              "target_index": 19
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 21,
+              "target_index": 20
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 22,
+              "target_index": 21
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 23,
+              "target_index": 22
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 24,
+              "target_index": 23
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 25,
+              "target_index": 24
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 26,
+              "target_index": 25
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 27,
+              "target_index": 26
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 28,
+              "target_index": 27
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 29,
+              "target_index": 28
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 37,
+              "target_index": 29
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 38,
+              "target_index": 30
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 39,
+              "target_index": 31
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 40,
+              "target_index": 32
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 41,
+              "target_index": 33
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 42,
+              "target_index": 34
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 43,
+              "target_index": 35
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 44,
+              "target_index": 36
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 45,
+              "target_index": 37
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 46,
+              "target_index": 38
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 47,
+              "target_index": 39
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 48,
+              "target_index": 40
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 49,
+              "target_index": 41
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 50,
+              "target_index": 42
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 51,
+              "target_index": 43
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 52,
+              "target_index": 44
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 53,
+              "target_index": 45
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 54,
+              "target_index": 46
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 55,
+              "target_index": 47
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 56,
+              "target_index": 48
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 57,
+              "target_index": 49
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 65,
+              "target_index": 50
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 66,
+              "target_index": 51
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 67,
+              "target_index": 52
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 68,
+              "target_index": 53
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 69,
+              "target_index": 54
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 70,
+              "target_index": 55
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 71,
+              "target_index": 56
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 72,
+              "target_index": 57
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 74,
+              "target_index": 58
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 75,
+              "target_index": 59
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 76,
+              "target_index": 60
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 77,
+              "target_index": 61
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 78,
+              "target_index": 62
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 79,
+              "target_index": 63
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 80,
+              "target_index": 64
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 83,
+              "target_index": 65
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 84,
+              "target_index": 66
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 85,
+              "target_index": 67
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 86,
+              "target_index": 68
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 87,
+              "target_index": 69
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 88,
+              "target_index": 70
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 89,
+              "target_index": 71
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 90,
+              "target_index": 72
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 91,
+              "target_index": 73
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 92,
+              "target_index": 74
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 93,
+              "target_index": 75
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 94,
+              "target_index": 76
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 95,
+              "target_index": 77
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 96,
+              "target_index": 78
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 97,
+              "target_index": 79
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 98,
+              "target_index": 80
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 99,
+              "target_index": 81
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 100,
+              "target_index": 82
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 101,
+              "target_index": 83
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 102,
+              "target_index": 84
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 103,
+              "target_index": 85
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 104,
+              "target_index": 86
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 105,
+              "target_index": 87
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 106,
+              "target_index": 88
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 107,
+              "target_index": 89
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 108,
+              "target_index": 90
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 115,
+              "target_index": 91
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 116,
+              "target_index": 92
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 117,
+              "target_index": 93
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 118,
+              "target_index": 94
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 119,
+              "target_index": 95
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 120,
+              "target_index": 96
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 121,
+              "target_index": 97
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 122,
+              "target_index": 98
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 123,
+              "target_index": 99
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 124,
+              "target_index": 100
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 125,
+              "target_index": 101
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 126,
+              "target_index": 102
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 127,
+              "target_index": 103
+            }
+          ],
+          "score": 162.7,
+          "start": 0
+        },
+        {
+          "chain": "H",
+          "chain_type": "H",
+          "end": 114,
+          "positions": [
+            {
+              "imgt_insertion": "",
+              "imgt_number": 3,
+              "target_index": 0
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 4,
+              "target_index": 1
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 5,
+              "target_index": 2
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 6,
+              "target_index": 3
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 7,
+              "target_index": 4
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 8,
+              "target_index": 5
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 9,
+              "target_index": 6
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 11,
+              "target_index": 7
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 12,
+              "target_index": 8
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 13,
+              "target_index": 9
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 14,
+              "target_index": 10
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 15,
+              "target_index": 11
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 16,
+              "target_index": 12
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 17,
+              "target_index": 13
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 18,
+              "target_index": 14
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 19,
+              "target_index": 15
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 20,
+              "target_index": 16
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 21,
+              "target_index": 17
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 22,
+              "target_index": 18
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 23,
+              "target_index": 19
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 24,
+              "target_index": 20
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 25,
+              "target_index": 21
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 26,
+              "target_index": 22
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 27,
+              "target_index": 23
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 28,
+              "target_index": 24
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 29,
+              "target_index": 25
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 30,
+              "target_index": 26
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 35,
+              "target_index": 27
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 36,
+              "target_index": 28
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 37,
+              "target_index": 29
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 38,
+              "target_index": 30
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 39,
+              "target_index": 31
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 40,
+              "target_index": 32
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 41,
+              "target_index": 33
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 42,
+              "target_index": 34
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 43,
+              "target_index": 35
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 44,
+              "target_index": 36
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 45,
+              "target_index": 37
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 46,
+              "target_index": 38
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 47,
+              "target_index": 39
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 48,
+              "target_index": 40
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 49,
+              "target_index": 41
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 50,
+              "target_index": 42
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 51,
+              "target_index": 43
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 52,
+              "target_index": 44
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 53,
+              "target_index": 45
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 54,
+              "target_index": 46
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 55,
+              "target_index": 47
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 56,
+              "target_index": 48
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 57,
+              "target_index": 49
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 58,
+              "target_index": 50
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 59,
+              "target_index": 51
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 62,
+              "target_index": 52
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 63,
+              "target_index": 53
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 64,
+              "target_index": 54
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 65,
+              "target_index": 55
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 66,
+              "target_index": 56
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 67,
+              "target_index": 57
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 68,
+              "target_index": 58
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 69,
+              "target_index": 59
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 70,
+              "target_index": 60
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 71,
+              "target_index": 61
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 72,
+              "target_index": 62
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 74,
+              "target_index": 63
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 75,
+              "target_index": 64
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 76,
+              "target_index": 65
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 77,
+              "target_index": 66
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 78,
+              "target_index": 67
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 79,
+              "target_index": 68
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 80,
+              "target_index": 69
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 81,
+              "target_index": 70
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 82,
+              "target_index": 71
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 83,
+              "target_index": 72
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 84,
+              "target_index": 73
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 85,
+              "target_index": 74
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 86,
+              "target_index": 75
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 87,
+              "target_index": 76
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 88,
+              "target_index": 77
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 89,
+              "target_index": 78
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 90,
+              "target_index": 79
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 91,
+              "target_index": 80
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 92,
+              "target_index": 81
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 93,
+              "target_index": 82
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 94,
+              "target_index": 83
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 95,
+              "target_index": 84
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 96,
+              "target_index": 85
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 97,
+              "target_index": 86
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 98,
+              "target_index": 87
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 99,
+              "target_index": 88
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 100,
+              "target_index": 89
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 101,
+              "target_index": 90
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 102,
+              "target_index": 91
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 103,
+              "target_index": 92
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 104,
+              "target_index": 93
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 105,
+              "target_index": 94
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 106,
+              "target_index": 95
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 107,
+              "target_index": 96
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 108,
+              "target_index": 97
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 109,
+              "target_index": 98
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 113,
+              "target_index": 99
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 114,
+              "target_index": 100
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 115,
+              "target_index": 101
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 116,
+              "target_index": 102
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 117,
+              "target_index": 103
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 118,
+              "target_index": 104
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 119,
+              "target_index": 105
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 120,
+              "target_index": 106
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 121,
+              "target_index": 107
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 122,
+              "target_index": 108
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 123,
+              "target_index": 109
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 124,
+              "target_index": 110
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 125,
+              "target_index": 111
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 126,
+              "target_index": 112
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 127,
+              "target_index": 113
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 128,
+              "target_index": 114
+            }
+          ],
+          "score": 173.7,
+          "start": 0
+        }
+      ],
+      "observed_sequences": {
+        "H": "QLQQSGTVLARPGASVKMSCKASGYSFTRYWMHWIKQRPGQGLEWIGAIYPGNSDTSYNQKFEGKAKLTAVTSASTAYMELSSLTHEDSAVYYCSRDYGYYFDFWGQGTTLTVSSASTKGPSVFPLAPSSKSTSGGTAALGCLVKDYFPEPVTVSWNSGALTSGVHTFPAVLQSSGLYSLSSVVTVPSSSLGTQTYICNVNHKPSNTKVDKRVEP",
+        "L": "QIVSTQSPAIMSASPGEKVTMTCSASSSRSYMQWYQQKPGTSPKRWIYDTSKLASGVPARFSGSGSGTSYSLTISSMEAEDAATYYCHQRSSYTFGGGTKLEIKRTVAAPSVFIFPPSDEQLKSGTASVVCLLNNFYPREAKVQWKVDNALQSGNSQESVTEQDSKDSTYSLSSTLTLSKADYEKHKVYACEVTHQGLSSPVTKSFNRGE"
+      },
+      "pdb_id": "1MIM",
+      "preparation": {
+        "alternative_conformer_atoms_removed": 0,
+        "conformer_policy": "blank and A only; reject if any observed residue disappears or selected context is incomplete",
+        "hydrogens_removed": 0,
+        "native_breaks": [],
+        "water_atoms_removed": 69
+      },
+      "protein_residues": 425,
+      "reasons": [],
+      "reference_sha256": "f67f9d62ecd1cd3d9c8e1b63470fd9a3367355777286a938eb4886c4b7389e8b",
+      "sequences": {
+        "H": "QLQQSGTVLARPGASVKMSCKASGYSFTRYWMHWIKQRPGQGLEWIGAIYPGNSDTSYNQKFEGKAKLTAVTSASTAYMELSSLTHEDSAVYYCSRDYGYYFDFWGQGTTLTVSSASTKGPSVFPLAPSSKSTSGGTAALGCLVKDYFPEPVTVSWNSGALTSGVHTFPAVLQSSGLYSLSSVVTVPSSSLGTQTYICNVNHKPSNTKVDKRVEP",
+        "L": "QIVSTQSPAIMSASPGEKVTMTCSASSSRSYMQWYQQKPGTSPKRWIYDTSKLASGVPARFSGSGSGTSYSLTISSMEAEDAATYYCHQRSSYTFGGGTKLEIKRTVAAPSVFIFPPSDEQLKSGTASVVCLLNNFYPREAKVQWKVDNALQSGNSQESVTEQDSKDSTYSLSSTLTLSKADYEKHKVYACEVTHQGLSSPVTKSFNRGE"
+      },
+      "source_sha256": "d59615c5c3abf47bf1f38eddb73d68b04dd80aaec0adc84a978f6a9fb4bba25b",
+      "status": "source-eligible",
+      "supported": true,
+      "unobserved_terminal_tails": [],
+      "water_residues": 69
+    },
+    {
+      "chain_counts": {
+        "H": 220,
+        "L": 213
+      },
+      "pdb_id": "2FBJ",
+      "protein_residues": 433,
+      "reasons": [
+        "nonprotein-or-noncanonical:A/NAG1",
+        "nonprotein-or-noncanonical:A/NAG2",
+        "nonprotein-or-noncanonical:B/FUC3",
+        "nonprotein-or-noncanonical:B/NAG1",
+        "nonprotein-or-noncanonical:B/NAG2",
+        "nonprotein-or-noncanonical:H/ZN226",
+        "nonstandard-covalent-protein-link:covale1",
+        "nonstandard-covalent-protein-link:covale2",
+        "nonstandard-covalent-protein-link:covale3",
+        "nonstandard-covalent-protein-link:covale4",
+        "nonstandard-covalent-protein-link:covale5"
+      ],
+      "sequences": {
+        "H": "EVKLLESGGGLVQPGGSLKLSCAASGFDFSKYWMSWVRQAPGKGLEWIGEIHPDSGTINYTPSLKDKFIISRDNAKNSLYLQMSKVRSEDTALYYCARLHYYGYNAYWGQGTLVTVSAESARNPTIYPLTLPPALSSDPVIIGCLIHDYFPSGTMNVTWGKSGKDITTVNFPPALASGGRYTMSNQLTLPAVECPEGESVKCSVQHDSNPVQELDVNCSG",
+        "L": "EIVLTQSPAITAASLGQKVTITCSASSSVSSLHWYQQKSGTSPKPWIYEISKLASGVPARFSGSGSGTSYSLTINTMEAEDAAIYYCQQWTYPLITFGAGTKLELKRADAAPTVSIFPPSSEQLTSGGASVVCFLNNFYPKDINVKWKIDGSERQNGVLNSWTDQDSKDSTYSMSSTLTLTKDEYERHNSYTCEATHKTSTSPIVKSFNRNEC"
+      },
+      "source_sha256": "4e9906c5d299ed381663399cc1ce56268ed9a0bd539c82695b78d86ffbee12ce",
+      "status": "unsupported",
+      "supported": false,
+      "unobserved_terminal_tails": [],
+      "water_residues": 375
+    },
+    {
+      "chain_counts": {
+        "H": 218,
+        "J": 218,
+        "L": 219,
+        "M": 219
+      },
+      "pdb_id": "1IGF",
+      "protein_residues": 874,
+      "reasons": [
+        "nonprotein-or-noncanonical:L/NAG901",
+        "nonstandard-covalent-protein-link:covale1",
+        "whole-source-residue-budget-exceeded-or-empty"
+      ],
+      "sequences": {
+        "H": "EVQLVESGGDLVKPGGSLKLSCAASGFTFSRCAMSWVRQTPEKRLEWVAGISSGGSYTFYPDTVKGRFIISRNNARNTLSLQMSSLRSEDTAIYYCTRYSSDPFYFDYWGQGTTLTVSSAKTTPPSVYPLAPGSAAQTNSMVTLGCLVKGYFPEPVTVTWNSGSLSSGVHTFPAVLQSDLYTLSSSVTVPSSPRPSETVTCNVAHPASSTKVDKKIVP",
+        "J": "EVQLVESGGDLVKPGGSLKLSCAASGFTFSRCAMSWVRQTPEKRLEWVAGISSGGSYTFYPDTVKGRFIISRNNARNTLSLQMSSLRSEDTAIYYCTRYSSDPFYFDYWGQGTTLTVSSAKTTPPSVYPLAPGSAAQTNSMVTLGCLVKGYFPEPVTVTWNSGSLSSGVHTFPAVLQSDLYTLSSSVTVPSSPRPSETVTCNVAHPASSTKVDKKIVP",
+        "L": "DVLMTQTPLSLPVSLGDQASISCRSNQTILLSDGDTYLEWYLQKPGQSPKLLIYKVSNRFSGVPDRFSGSGSGTDFTLKISRVEAEDLGVYYCFQGSHVPPTFGGGTKLEIKRADAAPTVSIFPPSSEQLTSGGASVVCFLNNFYPKDINVKWKIDGSERQNGVLNSWTDQDSKDSTYSMSSTLTLTKDEYERHNSYTCEATHKTSTSPIVKSFNRNEC",
+        "M": "DVLMTQTPLSLPVSLGDQASISCRSNQTILLSDGDTYLEWYLQKPGQSPKLLIYKVSNRFSGVPDRFSGSGSGTDFTLKISRVEAEDLGVYYCFQGSHVPPTFGGGTKLEIKRADAAPTVSIFPPSSEQLTSGGASVVCFLNNFYPKDINVKWKIDGSERQNGVLNSWTDQDSKDSTYSMSSTLTLTKDEYERHNSYTCEATHKTSTSPIVKSFNRNEC"
+      },
+      "source_sha256": "ecded0afbea87e97e2a87c4597fd2128f58adca66d22fa0d07fa22d8ec488b53",
+      "status": "unsupported",
+      "supported": false,
+      "unobserved_terminal_tails": [
+        {
+          "chain": "H",
+          "declared_sequence_length": 221,
+          "first_observed_label_seq": 1,
+          "last_observed_label_seq": 218
+        },
+        {
+          "chain": "J",
+          "declared_sequence_length": 221,
+          "first_observed_label_seq": 1,
+          "last_observed_label_seq": 218
+        }
+      ],
+      "water_residues": 0
+    },
+    {
+      "chain_counts": {
+        "A": 107,
+        "B": 107
+      },
+      "pdb_id": "1REI",
+      "protein_residues": 214,
+      "reasons": [
+        "paired ANARCI H and K/L domains absent"
+      ],
+      "sequences": {
+        "A": "DIQMTQSPSSLSASVGDRVTITCQASQDIIKYLNWYQQTPGKAPKLLIYEASNLQAGVPSRFSGSGSGTDYTFTISSLQPEDIATYYCQQYQSLPYTFGQGTKLQIT",
+        "B": "DIQMTQSPSSLSASVGDRVTITCQASQDIIKYLNWYQQTPGKAPKLLIYEASNLQAGVPSRFSGSGSGTDYTFTISSLQPEDIATYYCQQYQSLPYTFGQGTKLQIT"
+      },
+      "source_sha256": "e20249c6a63c76052fdc5858e1b5acf2371c6c9b0b8985d578cf0ccae637eae6",
+      "status": "unsupported",
+      "supported": true,
+      "unobserved_terminal_tails": [],
+      "water_residues": 53
+    },
+    {
+      "chain_counts": {
+        "A": 116,
+        "B": 108,
+        "C": 116,
+        "D": 108
+      },
+      "chain_map": {
+        "A": "A",
+        "B": "B",
+        "C": "C",
+        "D": "D"
+      },
+      "domains": [
+        {
+          "chain": "A",
+          "chain_type": "H",
+          "end": 115,
+          "positions": [
+            {
+              "imgt_insertion": "",
+              "imgt_number": 1,
+              "target_index": 0
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 2,
+              "target_index": 1
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 3,
+              "target_index": 2
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 4,
+              "target_index": 3
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 5,
+              "target_index": 4
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 6,
+              "target_index": 5
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 7,
+              "target_index": 6
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 8,
+              "target_index": 7
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 9,
+              "target_index": 8
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 11,
+              "target_index": 9
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 12,
+              "target_index": 10
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 13,
+              "target_index": 11
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 14,
+              "target_index": 12
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 15,
+              "target_index": 13
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 16,
+              "target_index": 14
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 17,
+              "target_index": 15
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 18,
+              "target_index": 16
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 19,
+              "target_index": 17
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 20,
+              "target_index": 18
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 21,
+              "target_index": 19
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 22,
+              "target_index": 20
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 23,
+              "target_index": 21
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 24,
+              "target_index": 22
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 25,
+              "target_index": 23
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 26,
+              "target_index": 24
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 27,
+              "target_index": 25
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 28,
+              "target_index": 26
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 29,
+              "target_index": 27
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 30,
+              "target_index": 28
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 35,
+              "target_index": 29
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 36,
+              "target_index": 30
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 37,
+              "target_index": 31
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 38,
+              "target_index": 32
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 39,
+              "target_index": 33
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 40,
+              "target_index": 34
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 41,
+              "target_index": 35
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 42,
+              "target_index": 36
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 43,
+              "target_index": 37
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 44,
+              "target_index": 38
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 45,
+              "target_index": 39
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 46,
+              "target_index": 40
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 47,
+              "target_index": 41
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 48,
+              "target_index": 42
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 49,
+              "target_index": 43
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 50,
+              "target_index": 44
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 51,
+              "target_index": 45
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 52,
+              "target_index": 46
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 53,
+              "target_index": 47
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 54,
+              "target_index": 48
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 55,
+              "target_index": 49
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 56,
+              "target_index": 50
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 57,
+              "target_index": 51
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 58,
+              "target_index": 52
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 59,
+              "target_index": 53
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 63,
+              "target_index": 54
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 64,
+              "target_index": 55
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 65,
+              "target_index": 56
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 66,
+              "target_index": 57
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 67,
+              "target_index": 58
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 68,
+              "target_index": 59
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 69,
+              "target_index": 60
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 70,
+              "target_index": 61
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 71,
+              "target_index": 62
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 72,
+              "target_index": 63
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 74,
+              "target_index": 64
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 75,
+              "target_index": 65
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 76,
+              "target_index": 66
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 77,
+              "target_index": 67
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 78,
+              "target_index": 68
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 79,
+              "target_index": 69
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 80,
+              "target_index": 70
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 81,
+              "target_index": 71
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 82,
+              "target_index": 72
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 83,
+              "target_index": 73
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 84,
+              "target_index": 74
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 85,
+              "target_index": 75
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 86,
+              "target_index": 76
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 87,
+              "target_index": 77
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 88,
+              "target_index": 78
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 89,
+              "target_index": 79
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 90,
+              "target_index": 80
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 91,
+              "target_index": 81
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 92,
+              "target_index": 82
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 93,
+              "target_index": 83
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 94,
+              "target_index": 84
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 95,
+              "target_index": 85
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 96,
+              "target_index": 86
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 97,
+              "target_index": 87
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 98,
+              "target_index": 88
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 99,
+              "target_index": 89
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 100,
+              "target_index": 90
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 101,
+              "target_index": 91
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 102,
+              "target_index": 92
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 103,
+              "target_index": 93
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 104,
+              "target_index": 94
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 105,
+              "target_index": 95
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 106,
+              "target_index": 96
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 107,
+              "target_index": 97
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 108,
+              "target_index": 98
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 109,
+              "target_index": 99
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 113,
+              "target_index": 100
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 114,
+              "target_index": 101
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 115,
+              "target_index": 102
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 116,
+              "target_index": 103
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 117,
+              "target_index": 104
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 118,
+              "target_index": 105
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 119,
+              "target_index": 106
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 120,
+              "target_index": 107
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 121,
+              "target_index": 108
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 122,
+              "target_index": 109
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 123,
+              "target_index": 110
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 124,
+              "target_index": 111
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 125,
+              "target_index": 112
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 126,
+              "target_index": 113
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 127,
+              "target_index": 114
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 128,
+              "target_index": 115
+            }
+          ],
+          "score": 170.2,
+          "start": 0
+        },
+        {
+          "chain": "B",
+          "chain_type": "K",
+          "end": 106,
+          "positions": [
+            {
+              "imgt_insertion": "",
+              "imgt_number": 1,
+              "target_index": 0
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 2,
+              "target_index": 1
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 3,
+              "target_index": 2
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 4,
+              "target_index": 3
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 5,
+              "target_index": 4
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 6,
+              "target_index": 5
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 7,
+              "target_index": 6
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 8,
+              "target_index": 7
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 9,
+              "target_index": 8
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 10,
+              "target_index": 9
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 11,
+              "target_index": 10
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 12,
+              "target_index": 11
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 13,
+              "target_index": 12
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 14,
+              "target_index": 13
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 15,
+              "target_index": 14
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 16,
+              "target_index": 15
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 17,
+              "target_index": 16
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 18,
+              "target_index": 17
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 19,
+              "target_index": 18
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 20,
+              "target_index": 19
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 21,
+              "target_index": 20
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 22,
+              "target_index": 21
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 23,
+              "target_index": 22
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 24,
+              "target_index": 23
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 25,
+              "target_index": 24
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 26,
+              "target_index": 25
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 27,
+              "target_index": 26
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 28,
+              "target_index": 27
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 29,
+              "target_index": 28
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 36,
+              "target_index": 29
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 37,
+              "target_index": 30
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 38,
+              "target_index": 31
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 39,
+              "target_index": 32
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 40,
+              "target_index": 33
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 41,
+              "target_index": 34
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 42,
+              "target_index": 35
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 43,
+              "target_index": 36
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 44,
+              "target_index": 37
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 45,
+              "target_index": 38
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 46,
+              "target_index": 39
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 47,
+              "target_index": 40
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 48,
+              "target_index": 41
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 49,
+              "target_index": 42
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 50,
+              "target_index": 43
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 51,
+              "target_index": 44
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 52,
+              "target_index": 45
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 53,
+              "target_index": 46
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 54,
+              "target_index": 47
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 55,
+              "target_index": 48
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 56,
+              "target_index": 49
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 57,
+              "target_index": 50
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 65,
+              "target_index": 51
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 66,
+              "target_index": 52
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 67,
+              "target_index": 53
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 68,
+              "target_index": 54
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 69,
+              "target_index": 55
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 70,
+              "target_index": 56
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 71,
+              "target_index": 57
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 72,
+              "target_index": 58
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 74,
+              "target_index": 59
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 75,
+              "target_index": 60
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 76,
+              "target_index": 61
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 77,
+              "target_index": 62
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 78,
+              "target_index": 63
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 79,
+              "target_index": 64
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 80,
+              "target_index": 65
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 83,
+              "target_index": 66
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 84,
+              "target_index": 67
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 85,
+              "target_index": 68
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 86,
+              "target_index": 69
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 87,
+              "target_index": 70
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 88,
+              "target_index": 71
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 89,
+              "target_index": 72
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 90,
+              "target_index": 73
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 91,
+              "target_index": 74
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 92,
+              "target_index": 75
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 93,
+              "target_index": 76
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 94,
+              "target_index": 77
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 95,
+              "target_index": 78
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 96,
+              "target_index": 79
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 97,
+              "target_index": 80
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 98,
+              "target_index": 81
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 99,
+              "target_index": 82
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 100,
+              "target_index": 83
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 101,
+              "target_index": 84
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 102,
+              "target_index": 85
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 103,
+              "target_index": 86
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 104,
+              "target_index": 87
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 105,
+              "target_index": 88
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 106,
+              "target_index": 89
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 107,
+              "target_index": 90
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 108,
+              "target_index": 91
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 109,
+              "target_index": 92
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 114,
+              "target_index": 93
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 115,
+              "target_index": 94
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 116,
+              "target_index": 95
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 117,
+              "target_index": 96
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 118,
+              "target_index": 97
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 119,
+              "target_index": 98
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 120,
+              "target_index": 99
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 121,
+              "target_index": 100
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 122,
+              "target_index": 101
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 123,
+              "target_index": 102
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 124,
+              "target_index": 103
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 125,
+              "target_index": 104
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 126,
+              "target_index": 105
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 127,
+              "target_index": 106
+            }
+          ],
+          "score": 173.6,
+          "start": 0
+        },
+        {
+          "chain": "C",
+          "chain_type": "H",
+          "end": 115,
+          "positions": [
+            {
+              "imgt_insertion": "",
+              "imgt_number": 1,
+              "target_index": 0
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 2,
+              "target_index": 1
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 3,
+              "target_index": 2
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 4,
+              "target_index": 3
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 5,
+              "target_index": 4
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 6,
+              "target_index": 5
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 7,
+              "target_index": 6
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 8,
+              "target_index": 7
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 9,
+              "target_index": 8
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 11,
+              "target_index": 9
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 12,
+              "target_index": 10
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 13,
+              "target_index": 11
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 14,
+              "target_index": 12
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 15,
+              "target_index": 13
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 16,
+              "target_index": 14
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 17,
+              "target_index": 15
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 18,
+              "target_index": 16
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 19,
+              "target_index": 17
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 20,
+              "target_index": 18
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 21,
+              "target_index": 19
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 22,
+              "target_index": 20
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 23,
+              "target_index": 21
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 24,
+              "target_index": 22
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 25,
+              "target_index": 23
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 26,
+              "target_index": 24
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 27,
+              "target_index": 25
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 28,
+              "target_index": 26
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 29,
+              "target_index": 27
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 30,
+              "target_index": 28
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 35,
+              "target_index": 29
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 36,
+              "target_index": 30
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 37,
+              "target_index": 31
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 38,
+              "target_index": 32
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 39,
+              "target_index": 33
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 40,
+              "target_index": 34
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 41,
+              "target_index": 35
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 42,
+              "target_index": 36
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 43,
+              "target_index": 37
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 44,
+              "target_index": 38
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 45,
+              "target_index": 39
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 46,
+              "target_index": 40
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 47,
+              "target_index": 41
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 48,
+              "target_index": 42
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 49,
+              "target_index": 43
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 50,
+              "target_index": 44
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 51,
+              "target_index": 45
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 52,
+              "target_index": 46
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 53,
+              "target_index": 47
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 54,
+              "target_index": 48
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 55,
+              "target_index": 49
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 56,
+              "target_index": 50
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 57,
+              "target_index": 51
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 58,
+              "target_index": 52
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 59,
+              "target_index": 53
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 63,
+              "target_index": 54
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 64,
+              "target_index": 55
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 65,
+              "target_index": 56
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 66,
+              "target_index": 57
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 67,
+              "target_index": 58
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 68,
+              "target_index": 59
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 69,
+              "target_index": 60
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 70,
+              "target_index": 61
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 71,
+              "target_index": 62
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 72,
+              "target_index": 63
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 74,
+              "target_index": 64
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 75,
+              "target_index": 65
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 76,
+              "target_index": 66
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 77,
+              "target_index": 67
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 78,
+              "target_index": 68
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 79,
+              "target_index": 69
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 80,
+              "target_index": 70
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 81,
+              "target_index": 71
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 82,
+              "target_index": 72
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 83,
+              "target_index": 73
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 84,
+              "target_index": 74
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 85,
+              "target_index": 75
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 86,
+              "target_index": 76
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 87,
+              "target_index": 77
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 88,
+              "target_index": 78
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 89,
+              "target_index": 79
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 90,
+              "target_index": 80
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 91,
+              "target_index": 81
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 92,
+              "target_index": 82
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 93,
+              "target_index": 83
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 94,
+              "target_index": 84
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 95,
+              "target_index": 85
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 96,
+              "target_index": 86
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 97,
+              "target_index": 87
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 98,
+              "target_index": 88
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 99,
+              "target_index": 89
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 100,
+              "target_index": 90
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 101,
+              "target_index": 91
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 102,
+              "target_index": 92
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 103,
+              "target_index": 93
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 104,
+              "target_index": 94
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 105,
+              "target_index": 95
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 106,
+              "target_index": 96
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 107,
+              "target_index": 97
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 108,
+              "target_index": 98
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 109,
+              "target_index": 99
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 113,
+              "target_index": 100
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 114,
+              "target_index": 101
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 115,
+              "target_index": 102
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 116,
+              "target_index": 103
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 117,
+              "target_index": 104
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 118,
+              "target_index": 105
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 119,
+              "target_index": 106
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 120,
+              "target_index": 107
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 121,
+              "target_index": 108
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 122,
+              "target_index": 109
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 123,
+              "target_index": 110
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 124,
+              "target_index": 111
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 125,
+              "target_index": 112
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 126,
+              "target_index": 113
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 127,
+              "target_index": 114
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 128,
+              "target_index": 115
+            }
+          ],
+          "score": 170.2,
+          "start": 0
+        },
+        {
+          "chain": "D",
+          "chain_type": "K",
+          "end": 106,
+          "positions": [
+            {
+              "imgt_insertion": "",
+              "imgt_number": 1,
+              "target_index": 0
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 2,
+              "target_index": 1
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 3,
+              "target_index": 2
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 4,
+              "target_index": 3
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 5,
+              "target_index": 4
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 6,
+              "target_index": 5
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 7,
+              "target_index": 6
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 8,
+              "target_index": 7
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 9,
+              "target_index": 8
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 10,
+              "target_index": 9
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 11,
+              "target_index": 10
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 12,
+              "target_index": 11
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 13,
+              "target_index": 12
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 14,
+              "target_index": 13
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 15,
+              "target_index": 14
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 16,
+              "target_index": 15
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 17,
+              "target_index": 16
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 18,
+              "target_index": 17
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 19,
+              "target_index": 18
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 20,
+              "target_index": 19
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 21,
+              "target_index": 20
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 22,
+              "target_index": 21
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 23,
+              "target_index": 22
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 24,
+              "target_index": 23
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 25,
+              "target_index": 24
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 26,
+              "target_index": 25
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 27,
+              "target_index": 26
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 28,
+              "target_index": 27
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 29,
+              "target_index": 28
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 36,
+              "target_index": 29
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 37,
+              "target_index": 30
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 38,
+              "target_index": 31
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 39,
+              "target_index": 32
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 40,
+              "target_index": 33
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 41,
+              "target_index": 34
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 42,
+              "target_index": 35
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 43,
+              "target_index": 36
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 44,
+              "target_index": 37
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 45,
+              "target_index": 38
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 46,
+              "target_index": 39
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 47,
+              "target_index": 40
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 48,
+              "target_index": 41
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 49,
+              "target_index": 42
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 50,
+              "target_index": 43
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 51,
+              "target_index": 44
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 52,
+              "target_index": 45
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 53,
+              "target_index": 46
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 54,
+              "target_index": 47
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 55,
+              "target_index": 48
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 56,
+              "target_index": 49
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 57,
+              "target_index": 50
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 65,
+              "target_index": 51
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 66,
+              "target_index": 52
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 67,
+              "target_index": 53
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 68,
+              "target_index": 54
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 69,
+              "target_index": 55
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 70,
+              "target_index": 56
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 71,
+              "target_index": 57
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 72,
+              "target_index": 58
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 74,
+              "target_index": 59
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 75,
+              "target_index": 60
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 76,
+              "target_index": 61
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 77,
+              "target_index": 62
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 78,
+              "target_index": 63
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 79,
+              "target_index": 64
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 80,
+              "target_index": 65
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 83,
+              "target_index": 66
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 84,
+              "target_index": 67
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 85,
+              "target_index": 68
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 86,
+              "target_index": 69
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 87,
+              "target_index": 70
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 88,
+              "target_index": 71
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 89,
+              "target_index": 72
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 90,
+              "target_index": 73
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 91,
+              "target_index": 74
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 92,
+              "target_index": 75
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 93,
+              "target_index": 76
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 94,
+              "target_index": 77
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 95,
+              "target_index": 78
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 96,
+              "target_index": 79
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 97,
+              "target_index": 80
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 98,
+              "target_index": 81
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 99,
+              "target_index": 82
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 100,
+              "target_index": 83
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 101,
+              "target_index": 84
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 102,
+              "target_index": 85
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 103,
+              "target_index": 86
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 104,
+              "target_index": 87
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 105,
+              "target_index": 88
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 106,
+              "target_index": 89
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 107,
+              "target_index": 90
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 108,
+              "target_index": 91
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 109,
+              "target_index": 92
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 114,
+              "target_index": 93
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 115,
+              "target_index": 94
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 116,
+              "target_index": 95
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 117,
+              "target_index": 96
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 118,
+              "target_index": 97
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 119,
+              "target_index": 98
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 120,
+              "target_index": 99
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 121,
+              "target_index": 100
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 122,
+              "target_index": 101
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 123,
+              "target_index": 102
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 124,
+              "target_index": 103
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 125,
+              "target_index": 104
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 126,
+              "target_index": 105
+            },
+            {
+              "imgt_insertion": "",
+              "imgt_number": 127,
+              "target_index": 106
+            }
+          ],
+          "score": 173.6,
+          "start": 0
+        }
+      ],
+      "observed_sequences": {
+        "A": "QVQLQESGPGLVRPSQTLSLTCTVSGFSLTGYGVNWVRQPPGRGLEWIGMIWGDGNTDYNSALKSRVTMLKDTSKNQFSLRLSSVTAADTAVYYCARERDYRLDYWGQGSLVTVSS",
+        "B": "DIQMTQSPSSLSASVGDRVTITCRASGNIHNYLAWYQQKPGKAPKLLIYYTTTLADGVPSRFSGSGSGTDYTFTISSLQPEDIATYYCQHFWSTPRTFGQGTKVEIKR",
+        "C": "QVQLQESGPGLVRPSQTLSLTCTVSGFSLTGYGVNWVRQPPGRGLEWIGMIWGDGNTDYNSALKSRVTMLKDTSKNQFSLRLSSVTAADTAVYYCARERDYRLDYWGQGSLVTVSS",
+        "D": "DIQMTQSPSSLSASVGDRVTITCRASGNIHNYLAWYQQKPGKAPKLLIYYTTTLADGVPSRFSGSGSGTDYTFTISSLQPEDIATYYCQHFWSTPRTFGQGTKVEIKR"
+      },
+      "pdb_id": "1BVL",
+      "preparation": {
+        "alternative_conformer_atoms_removed": 0,
+        "conformer_policy": "blank and A only; reject if any observed residue disappears or selected context is incomplete",
+        "hydrogens_removed": 0,
+        "native_breaks": [],
+        "water_atoms_removed": 0
+      },
+      "protein_residues": 448,
+      "reasons": [],
+      "reference_sha256": "3b5b7f73e1f022fefe24b90994c1721717c6dc8f73307f8eb9318af4491dc953",
+      "sequences": {
+        "A": "QVQLQESGPGLVRPSQTLSLTCTVSGFSLTGYGVNWVRQPPGRGLEWIGMIWGDGNTDYNSALKSRVTMLKDTSKNQFSLRLSSVTAADTAVYYCARERDYRLDYWGQGSLVTVSS",
+        "B": "DIQMTQSPSSLSASVGDRVTITCRASGNIHNYLAWYQQKPGKAPKLLIYYTTTLADGVPSRFSGSGSGTDYTFTISSLQPEDIATYYCQHFWSTPRTFGQGTKVEIKR",
+        "C": "QVQLQESGPGLVRPSQTLSLTCTVSGFSLTGYGVNWVRQPPGRGLEWIGMIWGDGNTDYNSALKSRVTMLKDTSKNQFSLRLSSVTAADTAVYYCARERDYRLDYWGQGSLVTVSS",
+        "D": "DIQMTQSPSSLSASVGDRVTITCRASGNIHNYLAWYQQKPGKAPKLLIYYTTTLADGVPSRFSGSGSGTDYTFTISSLQPEDIATYYCQHFWSTPRTFGQGTKVEIKR"
+      },
+      "source_sha256": "95e655c26d6d2e302bd53a868403b42966d81324c1e12aa48fe865033cc3fbfb",
+      "status": "source-eligible",
+      "supported": true,
+      "unobserved_terminal_tails": [
+        {
+          "chain": "A",
+          "declared_sequence_length": 117,
+          "first_observed_label_seq": 1,
+          "last_observed_label_seq": 116
+        },
+        {
+          "chain": "C",
+          "declared_sequence_length": 117,
+          "first_observed_label_seq": 1,
+          "last_observed_label_seq": 116
+        }
+      ],
+      "water_residues": 0
+    },
+    {
+      "chain_counts": {
+        "A": 211,
+        "B": 221,
+        "H": 221,
+        "L": 211
+      },
+      "pdb_id": "1D5B",
+      "protein_residues": 864,
+      "reasons": [
+        "nonprotein-or-noncanonical:A/CD212",
+        "whole-source-residue-budget-exceeded-or-empty"
+      ],
+      "sequences": {
+        "A": "DIKMTQSPSSMYASLGERVTITCKASQDINSYLNWFQQKPGKSPKTLIYRTNRLVDGVPSRFSGSGSGQDYSLTISSLEYEDMGIYYCLQYDEFPYTFGSGTKLEIKRTVAAPSVFIFPPSDEQLKSGTASVVCLLNNFYPREAKVQWKVDNALQSGNSQESVTEQDSKDSTYSLSSTLTLSKADYEKHKVYACEVTHQGLSSPVTKSFNR",
+        "B": "QVQLQQSGAELMKPGASVKISCKATGYTFSSFWIEWVKQRPGHGLEWIGEILPGSGGTHYNEKFKGKATFTADKSSNTAYMQLSSLTSEDSAVYYCARGHSYYFYDGDYWGQGTSVTVSSASTKGPSVFPLAPSSKSTSGGTAALGCLVKDYFPEPVTVSWNSGALTSGVHTFPAVLQSSGLYSLSSVVTVPSSSLGTQTYICNVNHKPSNTKVDKKVEPK",
+        "H": "QVQLQQSGAELMKPGASVKISCKATGYTFSSFWIEWVKQRPGHGLEWIGEILPGSGGTHYNEKFKGKATFTADKSSNTAYMQLSSLTSEDSAVYYCARGHSYYFYDGDYWGQGTSVTVSSASTKGPSVFPLAPSSKSTSGGTAALGCLVKDYFPEPVTVSWNSGALTSGVHTFPAVLQSSGLYSLSSVVTVPSSSLGTQTYICNVNHKPSNTKVDKKVEPK",
+        "L": "DIKMTQSPSSMYASLGERVTITCKASQDINSYLNWFQQKPGKSPKTLIYRTNRLVDGVPSRFSGSGSGQDYSLTISSLEYEDMGIYYCLQYDEFPYTFGSGTKLEIKRTVAAPSVFIFPPSDEQLKSGTASVVCLLNNFYPREAKVQWKVDNALQSGNSQESVTEQDSKDSTYSLSSTLTLSKADYEKHKVYACEVTHQGLSSPVTKSFNR"
+      },
+      "source_sha256": "ff32cd01df70239c8e91d28609f752b53483ba8e286d6049070c7c22f7aa4637",
+      "status": "unsupported",
+      "supported": false,
+      "unobserved_terminal_tails": [],
+      "water_residues": 74
+    },
+    {
+      "chain_counts": {
+        "A": 214,
+        "B": 223,
+        "C": 214,
+        "D": 223
+      },
+      "pdb_id": "1FVD",
+      "protein_residues": 874,
+      "reasons": [
+        "whole-source-residue-budget-exceeded-or-empty"
+      ],
+      "sequences": {
+        "A": "DIQMTQSPSSLSASVGDRVTITCRASQDVNTAVAWYQQKPGKAPKLLIYSASFLESGVPSRFSGSRSGTDFTLTISSLQPEDFATYYCQQHYTTPPTFGQGTKVEIKRTVAAPSVFIFPPSDEQLKSGTASVVCLLNNFYPREAKVQWKVDNALQSGNSQESVTEQDSKDSTYSLSSTLTLSKADYEKHKVYACEVTHQGLSSPVTKSFNRGEC",
+        "B": "EVQLVESGGGLVQPGGSLRLSCAASGFNIKDTYIHWVRQAPGKGLEWVARIYPTNGYTRYADSVKGRFTISADTSKNTLYLQMNSLRAEDTAVYYCSRWGGDGFYAMDVWGQGTLVTVSSASTKGPSVFPLAPSSKSTSGGTAALGCLVKDYFPEPVTVSWNSGALTSGVHTFPAVLQSSGLYSLSSVVTVPSSSLGTQTYICNVNHKPSNTKVDKKVEPKSC",
+        "C": "DIQMTQSPSSLSASVGDRVTITCRASQDVNTAVAWYQQKPGKAPKLLIYSASFLESGVPSRFSGSRSGTDFTLTISSLQPEDFATYYCQQHYTTPPTFGQGTKVEIKRTVAAPSVFIFPPSDEQLKSGTASVVCLLNNFYPREAKVQWKVDNALQSGNSQESVTEQDSKDSTYSLSSTLTLSKADYEKHKVYACEVTHQGLSSPVTKSFNRGEC",
+        "D": "EVQLVESGGGLVQPGGSLRLSCAASGFNIKDTYIHWVRQAPGKGLEWVARIYPTNGYTRYADSVKGRFTISADTSKNTLYLQMNSLRAEDTAVYYCSRWGGDGFYAMDVWGQGTLVTVSSASTKGPSVFPLAPSSKSTSGGTAALGCLVKDYFPEPVTVSWNSGALTSGVHTFPAVLQSSGLYSLSSVVTVPSSSLGTQTYICNVNHKPSNTKVDKKVEPKSC"
+      },
+      "source_sha256": "daf2897671bb77f4d878cd9fbe52b36a7977bc79e82713e5ab21e241f2b90c1a",
+      "status": "unsupported",
+      "supported": false,
+      "unobserved_terminal_tails": [],
+      "water_residues": 199
+    },
+    {
+      "chain_counts": {
+        "A": 232,
+        "C": 232
+      },
+      "pdb_id": "1NQB",
+      "protein_residues": 464,
+      "reasons": [
+        "incomplete-or-duplicate-heavy-atoms:A/2",
+        "incomplete-or-duplicate-heavy-atoms:C/2"
+      ],
+      "sequences": {
+        "A": "VQLQQSGAELVKPGASVKLSCKASGYTFTSYWMHWVKQRPGRGLEWIGRIDPNSGGTKYNEKFKSKATLTVDKPSSTAYMQLSSLTSEDSAVYYCARYDYYGSSYFDYWGQGTTVTVSSDIELTQTPLSLPVSLGDQASISCRSSQSIVHSNGNTYLEWYLQKPGQSPKLLIYKVSNRFSGVPDRFSGSGSGTDFTLKISRVEAEDLGVYYCFQGSHVPYTFGGGTKLEIKR",
+        "C": "VQLQQSGAELVKPGASVKLSCKASGYTFTSYWMHWVKQRPGRGLEWIGRIDPNSGGTKYNEKFKSKATLTVDKPSSTAYMQLSSLTSEDSAVYYCARYDYYGSSYFDYWGQGTTVTVSSDIELTQTPLSLPVSLGDQASISCRSSQSIVHSNGNTYLEWYLQKPGQSPKLLIYKVSNRFSGVPDRFSGSGSGTDFTLKISRVEAEDLGVYYCFQGSHVPYTFGGGTKLEIKR"
+      },
+      "source_sha256": "ec1100beabb7af36b60c23fd0077dc022b54d80c618935d3ddfc05cd87ad9172",
+      "status": "unsupported",
+      "supported": false,
+      "unobserved_terminal_tails": [
+        {
+          "chain": "A",
+          "declared_sequence_length": 256,
+          "first_observed_label_seq": 2,
+          "last_observed_label_seq": 233
+        },
+        {
+          "chain": "C",
+          "declared_sequence_length": 256,
+          "first_observed_label_seq": 2,
+          "last_observed_label_seq": 233
+        }
+      ],
+      "water_residues": 477
+    },
+    {
+      "chain_counts": {
+        "A": 227
+      },
+      "pdb_id": "1QOK",
+      "protein_residues": 227,
+      "reasons": [
+        "coordinate-incomplete-polymer-sequence:A",
+        "incomplete-or-duplicate-heavy-atoms:A/147"
+      ],
+      "sequences": {
+        "A": "QVKLQQSGAELVRSGTSVKLSCTASGFNIKDSYMHWLRQGPEQGLEWIGWIDPENGDTEYAPKFQGKATFTTDTSSNTAYLQLSSLTSEDTAVYYCNEGTPTGPYYFDYWGQGTTVTVSSGENVLTQSPAIMSASPGEKVTITCSASSSVSYMHWFQQKPGTSPKLWIYSTSNLASGVPARFSGSGSGTSYSLTISRMEAEDAATYYCQQRSSYPLTFGAGTKLELK"
+      },
+      "source_sha256": "440600fe5ed2df20f1e44ff97d3fb886c737510bb7a6791ebd614b0a8e0b9973",
+      "status": "unsupported",
+      "supported": false,
+      "unobserved_terminal_tails": [],
+      "water_residues": 96
+    }
+  ],
+  "protocol": {
+    "annotation": "ANARCI IMGT on unchanged observed sequences; paired H and K/L required",
+    "criteria": "X-ray; one whole canonical protein model <=512 residues; no nonwater chemistry, altlocs, incomplete heavy atoms or internal native breaks",
+    "mask_specs": [
+      [
+        "H",
+        "CDR1",
+        5
+      ],
+      [
+        "H",
+        "CDR3",
+        10
+      ],
+      [
+        "L",
+        "CDR1",
+        5
+      ],
+      [
+        "L",
+        "CDR3",
+        5
+      ]
+    ],
+    "maximum_cif_bytes": 10000000,
+    "no_replacement": true,
+    "pdb_ids": [
+      "1FVC",
+      "1FVE",
+      "1HIL",
+      "1MIM",
+      "2FBJ",
+      "1IGF",
+      "1REI",
+      "1BVL",
+      "1D5B",
+      "1FVD",
+      "1NQB",
+      "1QOK"
+    ],
+    "producer_sha256": "a1b33daaf3b622b0a5391e17d6350301f1ca2baf7342e55cdeb5e378a8c2be72",
+    "sequence_changes": false,
+    "source": "https://files.rcsb.org/download/<PDB>.cif",
+    "status": "fixed-source-pool-before-screening-and-inference",
+    "terminal_policy": "disclose absent terminal tails; target is the full observed sequence only",
+    "training_membership_independently_attested": false
+  },
+  "status": "antibody-source-screen-completed-before-inference"
+}

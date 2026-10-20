@@ -1,0 +1,82 @@
+{
+  "cases": [
+    {
+      "artifacts": {
+        "input/normalized.pdb": "210db0ba4cf9234fdbba2fa92c37c562604a2b38b045937a30ce58bc813073e8",
+        "reference.pdb": "84fd02721f07f05d54ce92bd203a33fbff39779ed3465009638b5aa984ddd910",
+        "requests/cc89-seed7.json": "4ed12b2635107071db76d946d320493cc2479e639dcf4c548030e4cd78923dfa"
+      },
+      "case_id": "general-9wgm-gap5",
+      "cc89_eligible": true,
+      "expected_control_candidate_sha256": "0bb2f3515decbfb25978ae077cb079054058466bd046c8daa2d4db860771f396",
+      "length": 5,
+      "source_id": "9WGM",
+      "status": "eligible",
+      "stratum": "general-protein"
+    },
+    {
+      "artifacts": {
+        "input/normalized.pdb": "9be6cc310b168c983198d66100448f8cc17f11ce4dc65b8a5ac283ae23558402",
+        "reference.pdb": "7404d35fdb8a418c694fc90e274149768ac0fb24eceec5f552390420c48d7d4b",
+        "requests/cc89-seed7.json": "b318a7b128bdf2cd935a12f33fbf4dcae8b1f472424986eb824c250e33461c9a"
+      },
+      "case_id": "antibody-1mim-H-cdr1-gap5",
+      "cc89_eligible": true,
+      "expected_control_candidate_sha256": "3c0a1e96c88aa54d8ec5f8fa4b906730235e43686068acfc41211867c898691f",
+      "length": 5,
+      "source_id": "1MIM",
+      "status": "eligible",
+      "stratum": "antibody-cdr"
+    },
+    {
+      "artifacts": {
+        "input/normalized.pdb": "e67d4f36e4dc5e8e4990af1bb06d03463d03392dc3e30125e1300576ff4c252f",
+        "reference.pdb": "7404d35fdb8a418c694fc90e274149768ac0fb24eceec5f552390420c48d7d4b",
+        "requests/cc89-seed7.json": "8bd5e893c6167e0ff64b7af93a2bd32814ba5759c8e6ff9d7d1858f07f8451b2"
+      },
+      "case_id": "antibody-1mim-L-cdr1-gap5",
+      "cc89_eligible": true,
+      "expected_control_candidate_sha256": "c57dad0f99b77b22e78d18cc2c89b5a49c73939db55f35f684f62cbffc0d7594",
+      "length": 5,
+      "source_id": "1MIM",
+      "status": "eligible",
+      "stratum": "antibody-cdr"
+    },
+    {
+      "artifacts": {
+        "input/normalized.pdb": "11d62c9f22f7ed607ab0599880a41472e15331717bdd296eedbf0fcbac977fc8",
+        "reference.pdb": "4899d6eb9749141c14e09514874d892f03e55d1979f3e971a9e2e4d5dd79fb50",
+        "requests/cc89-seed7.json": "82c284dadd4cd400f152ee843749d2530f78e5175de601ff929c798366feeeb6"
+      },
+      "case_id": "antibody-1bvl-H-cdr1-gap5",
+      "cc89_eligible": true,
+      "expected_control_candidate_sha256": "92b0f74ed41887aa928132935f795a999aac1f8bead69dad5512ba7d8f2e0c5d",
+      "length": 5,
+      "source_id": "1BVL",
+      "status": "eligible",
+      "stratum": "antibody-cdr"
+    },
+    {
+      "artifacts": {
+        "input/normalized.pdb": "7d21df88e82b37e5b9ea18d41de63b5ca860e597681e29d06186cde07b46c76d",
+        "reference.pdb": "4899d6eb9749141c14e09514874d892f03e55d1979f3e971a9e2e4d5dd79fb50",
+        "requests/cc89-seed7.json": "6f5788798f34f547260a19570b7808563e3024360782e53f22a0931b2dd48066"
+      },
+      "case_id": "antibody-1bvl-L-cdr1-gap5",
+      "cc89_eligible": true,
+      "expected_control_candidate_sha256": "344900ec11633a3da5792dee0aab6b638a8760a3fc395772987ac3c0d78a3c48",
+      "length": 5,
+      "source_id": "1BVL",
+      "status": "eligible",
+      "stratum": "antibody-cdr"
+    }
+  ],
+  "control_protocol_sha256": "4eb255c184fd7edf06d929210353e3cd2964dab7d4c5290cbdfd2353087f71f5",
+  "interpretation": "ordinary-adapter confirmation of diagnostic input correction; not independent method acceptance",
+  "no_replacement": true,
+  "public_protenix_workflow_controls": [],
+  "seeds": [
+    7
+  ],
+  "status": "frozen-before-known-sequence-holdout-inference"
+}

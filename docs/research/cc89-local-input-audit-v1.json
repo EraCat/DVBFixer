@@ -1,0 +1,114 @@
+{
+  "arms": {
+    "native": {
+      "per_step_reinjection": false,
+      "s_churn": 200.0,
+      "step_scale": 1.2
+    },
+    "ode-projected": {
+      "per_step_reinjection": true,
+      "s_churn": 0.0,
+      "step_scale": 1.0
+    },
+    "source-native": {
+      "per_step_reinjection": false,
+      "s_churn": 200.0,
+      "step_scale": 1.2
+    },
+    "source-ode-projected": {
+      "per_step_reinjection": true,
+      "s_churn": 0.0,
+      "step_scale": 1.0
+    }
+  },
+  "axis_modes": {
+    "native": "proxy-native",
+    "ode-projected": "proxy-native",
+    "source-native": "source-physical",
+    "source-ode-projected": "source-physical"
+  },
+  "cases": [
+    {
+      "case_id": "general-9wgm-gap5",
+      "conditioned_atoms": 574,
+      "full_axis_residues": 269,
+      "input_sha256": "210db0ba4cf9234fdbba2fa92c37c562604a2b38b045937a30ce58bc813073e8",
+      "local_axis_residues": 82,
+      "local_request_sha256": "4251b7663a2069e8a2639f52212f83352d418836db2af5e00c915c659c1428fe",
+      "local_spans": 4,
+      "preserved_only_atoms": 1457,
+      "reference_sha256": "84fd02721f07f05d54ce92bd203a33fbff39779ed3465009638b5aa984ddd910",
+      "source_request_sha256": "1bc0ac90bbb723c26452ae2af87ed851f5fd2395ad088693f841aa6798cb78f3"
+    },
+    {
+      "case_id": "antibody-1mim-H-cdr1-gap5",
+      "conditioned_atoms": 482,
+      "full_axis_residues": 425,
+      "input_sha256": "9be6cc310b168c983198d66100448f8cc17f11ce4dc65b8a5ac283ae23558402",
+      "local_axis_residues": 64,
+      "local_request_sha256": "bcedf1ced904c555815e3e6d2c6503ec66cd37396268868b06eb5be3a8cfcbcd",
+      "local_spans": 5,
+      "preserved_only_atoms": 2712,
+      "reference_sha256": "7404d35fdb8a418c694fc90e274149768ac0fb24eceec5f552390420c48d7d4b",
+      "source_request_sha256": "744406fef1912bbb4b46bd483de8d7a67c92aec036a93c9a7db41c8bf45d6859"
+    },
+    {
+      "case_id": "antibody-1mim-L-cdr1-gap5",
+      "conditioned_atoms": 582,
+      "full_axis_residues": 425,
+      "input_sha256": "e67d4f36e4dc5e8e4990af1bb06d03463d03392dc3e30125e1300576ff4c252f",
+      "local_axis_residues": 78,
+      "local_request_sha256": "1328923f50a4491621aebb12b586f2b1789ccf105d41a807735457172d0d2a47",
+      "local_spans": 6,
+      "preserved_only_atoms": 2611,
+      "reference_sha256": "7404d35fdb8a418c694fc90e274149768ac0fb24eceec5f552390420c48d7d4b",
+      "source_request_sha256": "bf7f3288682bb2f184ca55ff35994659d3315959c3689c7a169528727bd30534"
+    },
+    {
+      "case_id": "antibody-1bvl-H-cdr1-gap5",
+      "conditioned_atoms": 496,
+      "full_axis_residues": 448,
+      "input_sha256": "11d62c9f22f7ed607ab0599880a41472e15331717bdd296eedbf0fcbac977fc8",
+      "local_axis_residues": 66,
+      "local_request_sha256": "2f5836d315ee1875ffc1368dc2e79a38231fc797d0d75ebc09e63920e08b164e",
+      "local_spans": 5,
+      "preserved_only_atoms": 2954,
+      "reference_sha256": "4899d6eb9749141c14e09514874d892f03e55d1979f3e971a9e2e4d5dd79fb50",
+      "source_request_sha256": "76c3620cb9985b7e48ea281e9fe7581868053784de83650492c48ca7edcae5db"
+    },
+    {
+      "case_id": "antibody-1bvl-L-cdr1-gap5",
+      "conditioned_atoms": 655,
+      "full_axis_residues": 448,
+      "input_sha256": "7d21df88e82b37e5b9ea18d41de63b5ca860e597681e29d06186cde07b46c76d",
+      "local_axis_residues": 86,
+      "local_request_sha256": "4dec2bd6f68630b89438e764557024449d3c0f043ca105daa92d4b091b7cd25c",
+      "local_spans": 6,
+      "preserved_only_atoms": 2785,
+      "reference_sha256": "4899d6eb9749141c14e09514874d892f03e55d1979f3e971a9e2e4d5dd79fb50",
+      "source_request_sha256": "79dfa6b67069996d8f715fa3159dbe8b9533292ca0180976f511ddaa20c99dab"
+    }
+  ],
+  "code_sha256": {
+    "deploy/protpardelle-1c/checkpoint_gap_smoke.py": "b9efeae1754a26e23b985ea5c33ed777c2a662a3c214907fbdb140b1890d9d27",
+    "scripts/audit_cc89_input_frames.py": "4cb2aaac1443023fd0b5456c1cc5b6f3b928393d3d7c76ee5a374b2bbd639d83",
+    "scripts/audit_cc89_local_input.py": "f9ba34cfc5eac1f17745b3c46643b3a6aae530bb81524177ead5b9303fcc3070",
+    "scripts/run_cc89_known_sequence_holdout.py": "3d806a61ae14ba53f40943216b57721fd73c1f8166b34a9eaf6a0fd8d1dde92d",
+    "src/dvbfixer/model/diffusion/geometry.py": "b527d7519162bbba75a7c4571f60a9af7a1f98533bbcfa31a9914d0f57dfe170",
+    "src/dvbfixer/model/diffusion/pdb_materialize.py": "7cf08620f283f3b96b5977843fa2f2505613ee9ee75321e7691ec00e4be4a55e",
+    "src/dvbfixer/model/diffusion/protein_context.py": "47426ef9407a8874990626522481c673c5caaa2a4253bc655ee9c661e87a878e",
+    "src/dvbfixer/model/diffusion/validate.py": "1f5bb86524ca6e600ac63d2487be817562c667a8d6f13e074b52ec870f285342",
+    "test/protpardelle-1c-audit/src/protpardelle/core/models.py": "2ec52fee68368ba3addfa4b46eec70949c6730801f05cb309c8eb5ed22f1f810",
+    "test/protpardelle-1c-audit/src/protpardelle/core/modules.py": "3fe69476e45932c04c56332e09f0e3b2b51cc77f3effe861d93c37d975a529a3"
+  },
+  "device": "cuda",
+  "interpretation": "diagnostic source-context routing after the full-context holdout; not independent acceptance",
+  "no_replacement": true,
+  "public_promotion": false,
+  "reference_policy": "offline only; absent from sampling workspaces",
+  "seed": 7,
+  "status": "frozen-before-local-input-controls",
+  "steps": 500,
+  "timeout_seconds": 600,
+  "torch": "2.6.0+cu124"
+}

@@ -64,3 +64,19 @@ def test_source_position_features_keep_discontinuous_parent_chain_identity(monke
     indices, chains = module.source_position_features(selected)
     assert indices == [1, 2, 3, 4, 5, 206, 208]
     assert chains == [0, 0, 0, 0, 0, 1, 1]
+
+
+def test_local_physical_features_do_not_turn_proxy_fragments_into_new_chains(monkeypatch):
+    from dvbfixer.model.diffusion.contract import ProteinContextPolicy
+
+    monkeypatch.syspath_prepend(str(Path(__file__).resolve().parents[1] / "scripts"))
+    monkeypatch.syspath_prepend(str(Path(__file__).resolve().parent))
+    module = importlib.import_module("audit_cc89_local_input")
+    request, pdb = importlib.import_module("test_protein_context").context_request(partner_y={2: 100})
+    selected = select_protein_context(request, pdb, ProteinContextPolicy(sequence_padding=0))
+    positions, chains = module.physical_positions(selected)
+    assert len(sampling_entities(selected)) == 3  # Three serialization entities.
+    assert chains == [0, 0, 0, 0, 0, 1, 1]  # Only two physical source chains.
+    assert positions == [1, 2, 3, 4, 5, 205, 207]
+    assert positions[-1] - positions[-2] == 2  # Omitted native residue is not a peptide neighbor.
+    assert positions[5] - positions[4] == 200

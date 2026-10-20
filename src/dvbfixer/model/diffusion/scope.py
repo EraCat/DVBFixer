@@ -158,6 +158,8 @@ def assess_diffusion_scope(
     reasons: list[str] = []
     if request.protein_context is not None and request.protein_context.policy.name == "intact-native-segments-v1":
         reasons.append("intact-native-segments-research-only")
+    if request.protein_context is not None and request.protein_context.policy.name == "atom37-terminal-preservation-v1":
+        reasons.append("atom37-terminal-preservation-research-only")
     if request.protein_context is not None and request.protein_context.trajectory_queries is not None:
         reasons.append("trajectory-adaptive-context-research-only")
     requested_profile = next(

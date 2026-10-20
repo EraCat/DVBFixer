@@ -322,6 +322,24 @@ Detailed requirements and acceptance gates are in the
   controls and implement an explicit CUDA-only neutral denoiser chain-phase mode.
 - [x] Confirm all six repaired candidates match causal controls byte-for-byte;
   unchanged generated-only CUDA refinement accepts 6/6 at 0.17–0.25 Å RMSD.
+- [x] Complete the 13-source, 30-mask known-sequence follow-up: 60 cc89 raw and
+  refinement outcomes, 30 MODELLER comparisons, four public Homology/Protenix
+  controls, exact masked-template checks, and independent artifact revalidation.
+- [x] Record the negative broad-scope result without changing thresholds or
+  replacing failures: cc89 37/60 after refinement, including 0/16 CDR outcomes;
+  retain three guarded chirality failures. Public Protenix controls pass 4/4.
+- [x] Audit actual first-attention chain/position features, raw prefit tensors,
+  frame conversions and native oracle round trips; distinguish packing from
+  false peptide adjacency and from whole-complex sampling misuse.
+- [x] Implement explicit CUDA source-physical position features and local-input
+  correction; recheck all 16 original CDR mask/seed pairs with unchanged
+  refinement: 16/16 pass, median backbone RMSD 1.152 Å. Preserve the original
+  negative holdout and label the correction as diagnostic, not independent acceptance.
+- [x] Complete and independently audit all 44 corrected general-protein outcomes:
+  44/44 pass after unchanged refinement, retaining all 37 original passes and
+  recovering seven failures. Combined corrected acceptance is 60/60, zero D-Cα,
+  and exact outside-gap preservation. Record paired raw/final transitions;
+  treat reference RMSD as secondary rather than an acceptance criterion.
 - [ ] Complete prospective long-gap noninferiority and independent review.
 - [ ] Complete wider independent cc89 CUDA acceptance beyond the repaired
   same-seed, two-source diagnostic pilot.
@@ -329,6 +347,8 @@ Detailed requirements and acceptance gates are in the
 
 Evidence: [CUDA expansion completion audit](../research/cuda-expansion-completion.md).
 Follow-up: [cc89 chain-phase diagnosis](../research/cc89-chain-phase-root-cause.md).
+Expanded follow-up: [known-sequence structural holdout](../research/cc89-known-sequence-holdout.md).
+Input correction: [representation audit](../research/cc89-input-representation-audit.md).
 Apple MPS follow-up is deferred until CUDA implementation completes.
 
 ## DDD Documentation Roadmap

@@ -172,6 +172,12 @@ the same development cases, not new independent sources or grounds for public
 scope expansion. See the [paired comparison](cc89-input-correction-comparison.md)
 for every acceptance transition and secondary reference-conformation changes.
 
+The [prospective source-disjoint follow-up](cc89-prospective-holdout.md) now has
+four independently revalidated new sources: 9WW8 passes 4/4 after unchanged
+refinement, and the separately frozen 8EK6/9Z0U/9LDN cohort passes 20/20. Combined
+prospective acceptance is 24/24, zero detectable D-Cα and exact outside-gap atom
+preservation. These new outcomes remain separate from the development recheck.
+
 ## Evidence
 
 - [Full-axis/frame controls](cc89-input-frame-audit-v1.json).

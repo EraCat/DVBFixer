@@ -1,0 +1,1952 @@
+{
+  "cases": [
+    {
+      "artifacts": {
+        "input/normalized.pdb": "a9ac0036145bba64b08d2ffc3c88296898d0ebd92d7673727bbc915c3de61cba",
+        "masked-template.pdb": "0e545987dfdabbe8c66a59c40fafda36f84c09f5538b2512c18830909f29ac3f",
+        "materialized/mosaic_diffusion_input.pdb": "a9ac0036145bba64b08d2ffc3c88296898d0ebd92d7673727bbc915c3de61cba",
+        "materialized/mosaic_diffusion_request.json": "09077c6794b0c6b14c4b931a9c0ca302dbdb7f53a11d995916ffca839cd5fda4",
+        "materialized/selected_template_mosaic.coverage.json": "903f86cb9eedd08c7ab47dccbaad08a2ce6a26dfd10e3461e62e5ef72a875480",
+        "materialized/selected_template_mosaic.pdb": "a9ac0036145bba64b08d2ffc3c88296898d0ebd92d7673727bbc915c3de61cba",
+        "materialized/selected_template_mosaic.pir": "8f9f145898ebcda0e41511237ad6758bda31f0c763bf6cf5ad7efb6b3b9a996c",
+        "materialized/selected_template_mosaic.target.fasta": "7f8fd6857ea39d502a5d25364e723f61a86db4a79722c985b12a3056e2b18a9b",
+        "protenix-materialized/mosaic_diffusion_input.pdb": "a9ac0036145bba64b08d2ffc3c88296898d0ebd92d7673727bbc915c3de61cba",
+        "protenix-materialized/mosaic_diffusion_request.json": "6ec9e7f48b5b9638c091bb27698786d399128e6b951a74a180f1d01cba4f12da",
+        "protenix-materialized/selected_template_mosaic.target.fasta": "7f8fd6857ea39d502a5d25364e723f61a86db4a79722c985b12a3056e2b18a9b",
+        "reference.pdb": "7647fb50de22ebdc47228a02f386a73ede088c7dcfc1ef657ba84e7384ce6d8e",
+        "requests/cc89-seed19.json": "5446940588035a35a17d649bc9e3151320dee862a249d0ed90b1994a5e943282",
+        "requests/cc89-seed7.json": "f640a404a1a6545183285c50e3851eaf6199040b1718e574d6b0f4a56783af62",
+        "requests/protenix-seed7.json": "9874fa9659afc8cb475023951f983b123e93483e5e41cc0d4fca817c6c772ac0",
+        "target.fasta": "7f8fd6857ea39d502a5d25364e723f61a86db4a79722c985b12a3056e2b18a9b",
+        "template-plan.json": "693911056db934fb95a12b4be63a4e499ea5c796724704d1427ae69ab4e09f2a"
+      },
+      "case_id": "prospective-9ww8-gap5",
+      "cc89_eligible": true,
+      "cc89_unsupported_reasons": [],
+      "chain": "A",
+      "fixed_atom_count": 987,
+      "identity_mapping": [
+        {
+          "chain": "A",
+          "mosaic_residue_number": "1",
+          "original_insertion_code": "",
+          "original_residue_number": "6"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "2",
+          "original_insertion_code": "",
+          "original_residue_number": "7"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "3",
+          "original_insertion_code": "",
+          "original_residue_number": "8"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "4",
+          "original_insertion_code": "",
+          "original_residue_number": "9"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "5",
+          "original_insertion_code": "",
+          "original_residue_number": "10"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "6",
+          "original_insertion_code": "",
+          "original_residue_number": "11"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "7",
+          "original_insertion_code": "",
+          "original_residue_number": "12"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "8",
+          "original_insertion_code": "",
+          "original_residue_number": "13"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "9",
+          "original_insertion_code": "",
+          "original_residue_number": "14"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "10",
+          "original_insertion_code": "",
+          "original_residue_number": "15"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "11",
+          "original_insertion_code": "",
+          "original_residue_number": "16"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "12",
+          "original_insertion_code": "",
+          "original_residue_number": "17"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "13",
+          "original_insertion_code": "",
+          "original_residue_number": "18"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "14",
+          "original_insertion_code": "",
+          "original_residue_number": "19"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "15",
+          "original_insertion_code": "",
+          "original_residue_number": "20"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "16",
+          "original_insertion_code": "",
+          "original_residue_number": "21"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "17",
+          "original_insertion_code": "",
+          "original_residue_number": "22"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "18",
+          "original_insertion_code": "",
+          "original_residue_number": "23"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "19",
+          "original_insertion_code": "",
+          "original_residue_number": "24"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "20",
+          "original_insertion_code": "",
+          "original_residue_number": "25"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "21",
+          "original_insertion_code": "",
+          "original_residue_number": "26"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "22",
+          "original_insertion_code": "",
+          "original_residue_number": "27"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "23",
+          "original_insertion_code": "",
+          "original_residue_number": "28"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "24",
+          "original_insertion_code": "",
+          "original_residue_number": "29"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "25",
+          "original_insertion_code": "",
+          "original_residue_number": "30"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "26",
+          "original_insertion_code": "",
+          "original_residue_number": "31"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "27",
+          "original_insertion_code": "",
+          "original_residue_number": "32"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "28",
+          "original_insertion_code": "",
+          "original_residue_number": "33"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "29",
+          "original_insertion_code": "",
+          "original_residue_number": "34"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "30",
+          "original_insertion_code": "",
+          "original_residue_number": "35"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "31",
+          "original_insertion_code": "",
+          "original_residue_number": "36"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "32",
+          "original_insertion_code": "",
+          "original_residue_number": "37"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "33",
+          "original_insertion_code": "",
+          "original_residue_number": "38"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "34",
+          "original_insertion_code": "",
+          "original_residue_number": "39"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "35",
+          "original_insertion_code": "",
+          "original_residue_number": "40"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "36",
+          "original_insertion_code": "",
+          "original_residue_number": "41"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "37",
+          "original_insertion_code": "",
+          "original_residue_number": "42"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "38",
+          "original_insertion_code": "",
+          "original_residue_number": "43"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "39",
+          "original_insertion_code": "",
+          "original_residue_number": "44"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "40",
+          "original_insertion_code": "",
+          "original_residue_number": "45"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "41",
+          "original_insertion_code": "",
+          "original_residue_number": "46"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "42",
+          "original_insertion_code": "",
+          "original_residue_number": "47"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "43",
+          "original_insertion_code": "",
+          "original_residue_number": "48"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "44",
+          "original_insertion_code": "",
+          "original_residue_number": "49"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "45",
+          "original_insertion_code": "",
+          "original_residue_number": "50"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "46",
+          "original_insertion_code": "",
+          "original_residue_number": "51"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "47",
+          "original_insertion_code": "",
+          "original_residue_number": "52"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "48",
+          "original_insertion_code": "",
+          "original_residue_number": "53"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "49",
+          "original_insertion_code": "",
+          "original_residue_number": "54"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "50",
+          "original_insertion_code": "",
+          "original_residue_number": "55"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "51",
+          "original_insertion_code": "",
+          "original_residue_number": "56"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "52",
+          "original_insertion_code": "",
+          "original_residue_number": "57"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "53",
+          "original_insertion_code": "",
+          "original_residue_number": "58"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "54",
+          "original_insertion_code": "",
+          "original_residue_number": "59"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "55",
+          "original_insertion_code": "",
+          "original_residue_number": "60"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "56",
+          "original_insertion_code": "",
+          "original_residue_number": "61"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "57",
+          "original_insertion_code": "",
+          "original_residue_number": "62"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "58",
+          "original_insertion_code": "",
+          "original_residue_number": "63"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "59",
+          "original_insertion_code": "",
+          "original_residue_number": "64"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "60",
+          "original_insertion_code": "",
+          "original_residue_number": "65"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "61",
+          "original_insertion_code": "",
+          "original_residue_number": "66"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "62",
+          "original_insertion_code": "",
+          "original_residue_number": "67"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "63",
+          "original_insertion_code": "",
+          "original_residue_number": "68"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "64",
+          "original_insertion_code": "",
+          "original_residue_number": "69"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "65",
+          "original_insertion_code": "",
+          "original_residue_number": "70"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "66",
+          "original_insertion_code": "",
+          "original_residue_number": "71"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "67",
+          "original_insertion_code": "",
+          "original_residue_number": "72"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "68",
+          "original_insertion_code": "",
+          "original_residue_number": "73"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "69",
+          "original_insertion_code": "",
+          "original_residue_number": "74"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "70",
+          "original_insertion_code": "",
+          "original_residue_number": "75"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "71",
+          "original_insertion_code": "",
+          "original_residue_number": "76"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "72",
+          "original_insertion_code": "",
+          "original_residue_number": "77"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "73",
+          "original_insertion_code": "",
+          "original_residue_number": "78"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "74",
+          "original_insertion_code": "",
+          "original_residue_number": "79"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "75",
+          "original_insertion_code": "",
+          "original_residue_number": "80"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "76",
+          "original_insertion_code": "",
+          "original_residue_number": "81"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "77",
+          "original_insertion_code": "",
+          "original_residue_number": "82"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "78",
+          "original_insertion_code": "",
+          "original_residue_number": "83"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "79",
+          "original_insertion_code": "",
+          "original_residue_number": "84"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "80",
+          "original_insertion_code": "",
+          "original_residue_number": "85"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "81",
+          "original_insertion_code": "",
+          "original_residue_number": "86"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "82",
+          "original_insertion_code": "",
+          "original_residue_number": "87"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "83",
+          "original_insertion_code": "",
+          "original_residue_number": "88"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "84",
+          "original_insertion_code": "",
+          "original_residue_number": "89"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "85",
+          "original_insertion_code": "",
+          "original_residue_number": "90"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "86",
+          "original_insertion_code": "",
+          "original_residue_number": "91"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "87",
+          "original_insertion_code": "",
+          "original_residue_number": "92"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "88",
+          "original_insertion_code": "",
+          "original_residue_number": "93"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "89",
+          "original_insertion_code": "",
+          "original_residue_number": "94"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "90",
+          "original_insertion_code": "",
+          "original_residue_number": "95"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "91",
+          "original_insertion_code": "",
+          "original_residue_number": "96"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "92",
+          "original_insertion_code": "",
+          "original_residue_number": "97"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "93",
+          "original_insertion_code": "",
+          "original_residue_number": "98"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "94",
+          "original_insertion_code": "",
+          "original_residue_number": "99"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "95",
+          "original_insertion_code": "",
+          "original_residue_number": "100"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "96",
+          "original_insertion_code": "",
+          "original_residue_number": "101"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "97",
+          "original_insertion_code": "",
+          "original_residue_number": "102"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "98",
+          "original_insertion_code": "",
+          "original_residue_number": "103"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "99",
+          "original_insertion_code": "",
+          "original_residue_number": "104"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "100",
+          "original_insertion_code": "",
+          "original_residue_number": "105"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "101",
+          "original_insertion_code": "",
+          "original_residue_number": "106"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "102",
+          "original_insertion_code": "",
+          "original_residue_number": "107"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "103",
+          "original_insertion_code": "",
+          "original_residue_number": "108"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "104",
+          "original_insertion_code": "",
+          "original_residue_number": "109"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "105",
+          "original_insertion_code": "",
+          "original_residue_number": "110"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "106",
+          "original_insertion_code": "",
+          "original_residue_number": "111"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "107",
+          "original_insertion_code": "",
+          "original_residue_number": "112"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "108",
+          "original_insertion_code": "",
+          "original_residue_number": "113"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "109",
+          "original_insertion_code": "",
+          "original_residue_number": "114"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "110",
+          "original_insertion_code": "",
+          "original_residue_number": "115"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "111",
+          "original_insertion_code": "",
+          "original_residue_number": "116"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "112",
+          "original_insertion_code": "",
+          "original_residue_number": "117"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "113",
+          "original_insertion_code": "",
+          "original_residue_number": "118"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "114",
+          "original_insertion_code": "",
+          "original_residue_number": "119"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "115",
+          "original_insertion_code": "",
+          "original_residue_number": "120"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "116",
+          "original_insertion_code": "",
+          "original_residue_number": "121"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "117",
+          "original_insertion_code": "",
+          "original_residue_number": "122"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "118",
+          "original_insertion_code": "",
+          "original_residue_number": "123"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "119",
+          "original_insertion_code": "",
+          "original_residue_number": "124"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "120",
+          "original_insertion_code": "",
+          "original_residue_number": "125"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "121",
+          "original_insertion_code": "",
+          "original_residue_number": "126"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "122",
+          "original_insertion_code": "",
+          "original_residue_number": "127"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "123",
+          "original_insertion_code": "",
+          "original_residue_number": "128"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "124",
+          "original_insertion_code": "",
+          "original_residue_number": "129"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "125",
+          "original_insertion_code": "",
+          "original_residue_number": "130"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "126",
+          "original_insertion_code": "",
+          "original_residue_number": "131"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "127",
+          "original_insertion_code": "",
+          "original_residue_number": "132"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "128",
+          "original_insertion_code": "",
+          "original_residue_number": "133"
+        }
+      ],
+      "known_gap_sequence": "ADKRR",
+      "leakage_audit": {
+        "mosaic_input_is_reference_minus_gap": true,
+        "target_sequences_unchanged": true,
+        "template_is_source_minus_gap": true
+      },
+      "length": 5,
+      "local_axis_residues": 54,
+      "original_generated_residues": [
+        [
+          "A",
+          "82",
+          ""
+        ],
+        [
+          "A",
+          "83",
+          ""
+        ],
+        [
+          "A",
+          "84",
+          ""
+        ],
+        [
+          "A",
+          "85",
+          ""
+        ],
+        [
+          "A",
+          "86",
+          ""
+        ]
+      ],
+      "preserved_only_atoms": [],
+      "protein_chain_count": 1,
+      "protein_residue_count": 128,
+      "release_date": "2026-09-23",
+      "source_id": "9WW8",
+      "source_native_validation": {
+        "hard_gate_failures": [],
+        "metrics": [
+          {
+            "name": "outside-atom-identities-missing",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "outside-atom-identities-added",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "outside-residue-names-changed",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "fixed-heavy-atom-rmsd",
+            "unit": "angstrom",
+            "value": 0.0
+          },
+          {
+            "name": "fixed-heavy-atom-max-displacement",
+            "unit": "angstrom",
+            "value": 0.0
+          },
+          {
+            "name": "generated-residues-missing",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "generated-residue-names-wrong",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "generated-heavy-atoms-missing",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "generated-heavy-atoms-unexpected",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "junction-cn-distance-min",
+            "unit": "angstrom",
+            "value": 1.3315378327332656
+          },
+          {
+            "name": "junction-cn-distance-max",
+            "unit": "angstrom",
+            "value": 1.340054849623701
+          },
+          {
+            "name": "generated-region-cn-distance-max",
+            "unit": "angstrom",
+            "value": 1.340054849623701
+          },
+          {
+            "name": "retained-explicit-links-missing",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "retained-explicit-links-unexpected",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "generated-or-junction-bond-length-errors",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "generated-or-junction-bond-angle-errors",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "generated-or-junction-non-planar-amides",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "generated-or-junction-ramachandran-outliers",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "generated-or-junction-sidechain-chi12-outliers",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "severe-steric-overlaps",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "detectable-d-ca",
+            "unit": "count",
+            "value": 0.0
+          }
+        ],
+        "passed": true,
+        "warnings": []
+      },
+      "source_observed_sequences": {
+        "A": "KAFHQLRQLFQQHTARWQHELPDLTKPQYAVMRAIADKPGIEQVALIEAAVSTKATLAEMLARMENRGLVRREHDAADKRRRFVWLTAEGEKVLAAAIPIGDSVDEEFLGRLSAEEQELFMQLVRKMM"
+      },
+      "source_reference_sha256": "901aaba8ebc6ff3a61a7c9da27d48fdcc209f9a8bec34b5c607a5a2098fcc595",
+      "start": 76,
+      "status": "eligible",
+      "stratum": "general-protein"
+    },
+    {
+      "artifacts": {
+        "input/normalized.pdb": "0865421ca5fe863c20370512bb5a7ec09630eb4609dbf7347140f13432096938",
+        "masked-template.pdb": "285fe4056cc8c0a8fdea31b8cba774609fc9e26ebc9f6a2b86b20becf50a3ad5",
+        "materialized/mosaic_diffusion_input.pdb": "0865421ca5fe863c20370512bb5a7ec09630eb4609dbf7347140f13432096938",
+        "materialized/mosaic_diffusion_request.json": "6f40caf045b10ad441daa1f27cb0dbb98af7f872c0b5c97229003be5c7f6a716",
+        "materialized/selected_template_mosaic.coverage.json": "7d64062b1b17ce09a62848dc1ef847b9bf92cc9271103e9412ab2519571b0ab1",
+        "materialized/selected_template_mosaic.pdb": "0865421ca5fe863c20370512bb5a7ec09630eb4609dbf7347140f13432096938",
+        "materialized/selected_template_mosaic.pir": "41a3c115a54fe6c860e8c29d29affafbe3a84d8d22e8eb9ef3e2bbd88801daf0",
+        "materialized/selected_template_mosaic.target.fasta": "7f8fd6857ea39d502a5d25364e723f61a86db4a79722c985b12a3056e2b18a9b",
+        "protenix-materialized/mosaic_diffusion_input.pdb": "0865421ca5fe863c20370512bb5a7ec09630eb4609dbf7347140f13432096938",
+        "protenix-materialized/mosaic_diffusion_request.json": "20f699c45b00d00043ed6e1cd36334e424e9b44cca58faba819a45643fe17a4d",
+        "protenix-materialized/selected_template_mosaic.target.fasta": "7f8fd6857ea39d502a5d25364e723f61a86db4a79722c985b12a3056e2b18a9b",
+        "reference.pdb": "7647fb50de22ebdc47228a02f386a73ede088c7dcfc1ef657ba84e7384ce6d8e",
+        "requests/cc89-seed19.json": "a14df9da775553d86f489516ffdf0a83f1a05ee24fa329a23dccf91884506886",
+        "requests/cc89-seed7.json": "5f04b47e6ab8b9eae6ed5a59072c292ca1e3ef12900c6c386da9dfb89ae1d453",
+        "requests/protenix-seed7.json": "f632eb3a9fe7de966ba412d17448bea3aee695b38712f6063ee17a4c0d5da56b",
+        "target.fasta": "7f8fd6857ea39d502a5d25364e723f61a86db4a79722c985b12a3056e2b18a9b",
+        "template-plan.json": "60ae544cc3731996437fbba910047e7a47c291b9e1406119ac23dea0363aef3a"
+      },
+      "case_id": "prospective-9ww8-gap10",
+      "cc89_eligible": true,
+      "cc89_unsupported_reasons": [],
+      "chain": "A",
+      "fixed_atom_count": 959,
+      "identity_mapping": [
+        {
+          "chain": "A",
+          "mosaic_residue_number": "1",
+          "original_insertion_code": "",
+          "original_residue_number": "6"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "2",
+          "original_insertion_code": "",
+          "original_residue_number": "7"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "3",
+          "original_insertion_code": "",
+          "original_residue_number": "8"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "4",
+          "original_insertion_code": "",
+          "original_residue_number": "9"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "5",
+          "original_insertion_code": "",
+          "original_residue_number": "10"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "6",
+          "original_insertion_code": "",
+          "original_residue_number": "11"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "7",
+          "original_insertion_code": "",
+          "original_residue_number": "12"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "8",
+          "original_insertion_code": "",
+          "original_residue_number": "13"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "9",
+          "original_insertion_code": "",
+          "original_residue_number": "14"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "10",
+          "original_insertion_code": "",
+          "original_residue_number": "15"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "11",
+          "original_insertion_code": "",
+          "original_residue_number": "16"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "12",
+          "original_insertion_code": "",
+          "original_residue_number": "17"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "13",
+          "original_insertion_code": "",
+          "original_residue_number": "18"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "14",
+          "original_insertion_code": "",
+          "original_residue_number": "19"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "15",
+          "original_insertion_code": "",
+          "original_residue_number": "20"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "16",
+          "original_insertion_code": "",
+          "original_residue_number": "21"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "17",
+          "original_insertion_code": "",
+          "original_residue_number": "22"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "18",
+          "original_insertion_code": "",
+          "original_residue_number": "23"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "19",
+          "original_insertion_code": "",
+          "original_residue_number": "24"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "20",
+          "original_insertion_code": "",
+          "original_residue_number": "25"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "21",
+          "original_insertion_code": "",
+          "original_residue_number": "26"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "22",
+          "original_insertion_code": "",
+          "original_residue_number": "27"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "23",
+          "original_insertion_code": "",
+          "original_residue_number": "28"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "24",
+          "original_insertion_code": "",
+          "original_residue_number": "29"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "25",
+          "original_insertion_code": "",
+          "original_residue_number": "30"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "26",
+          "original_insertion_code": "",
+          "original_residue_number": "31"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "27",
+          "original_insertion_code": "",
+          "original_residue_number": "32"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "28",
+          "original_insertion_code": "",
+          "original_residue_number": "33"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "29",
+          "original_insertion_code": "",
+          "original_residue_number": "34"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "30",
+          "original_insertion_code": "",
+          "original_residue_number": "35"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "31",
+          "original_insertion_code": "",
+          "original_residue_number": "36"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "32",
+          "original_insertion_code": "",
+          "original_residue_number": "37"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "33",
+          "original_insertion_code": "",
+          "original_residue_number": "38"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "34",
+          "original_insertion_code": "",
+          "original_residue_number": "39"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "35",
+          "original_insertion_code": "",
+          "original_residue_number": "40"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "36",
+          "original_insertion_code": "",
+          "original_residue_number": "41"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "37",
+          "original_insertion_code": "",
+          "original_residue_number": "42"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "38",
+          "original_insertion_code": "",
+          "original_residue_number": "43"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "39",
+          "original_insertion_code": "",
+          "original_residue_number": "44"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "40",
+          "original_insertion_code": "",
+          "original_residue_number": "45"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "41",
+          "original_insertion_code": "",
+          "original_residue_number": "46"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "42",
+          "original_insertion_code": "",
+          "original_residue_number": "47"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "43",
+          "original_insertion_code": "",
+          "original_residue_number": "48"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "44",
+          "original_insertion_code": "",
+          "original_residue_number": "49"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "45",
+          "original_insertion_code": "",
+          "original_residue_number": "50"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "46",
+          "original_insertion_code": "",
+          "original_residue_number": "51"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "47",
+          "original_insertion_code": "",
+          "original_residue_number": "52"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "48",
+          "original_insertion_code": "",
+          "original_residue_number": "53"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "49",
+          "original_insertion_code": "",
+          "original_residue_number": "54"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "50",
+          "original_insertion_code": "",
+          "original_residue_number": "55"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "51",
+          "original_insertion_code": "",
+          "original_residue_number": "56"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "52",
+          "original_insertion_code": "",
+          "original_residue_number": "57"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "53",
+          "original_insertion_code": "",
+          "original_residue_number": "58"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "54",
+          "original_insertion_code": "",
+          "original_residue_number": "59"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "55",
+          "original_insertion_code": "",
+          "original_residue_number": "60"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "56",
+          "original_insertion_code": "",
+          "original_residue_number": "61"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "57",
+          "original_insertion_code": "",
+          "original_residue_number": "62"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "58",
+          "original_insertion_code": "",
+          "original_residue_number": "63"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "59",
+          "original_insertion_code": "",
+          "original_residue_number": "64"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "60",
+          "original_insertion_code": "",
+          "original_residue_number": "65"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "61",
+          "original_insertion_code": "",
+          "original_residue_number": "66"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "62",
+          "original_insertion_code": "",
+          "original_residue_number": "67"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "63",
+          "original_insertion_code": "",
+          "original_residue_number": "68"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "64",
+          "original_insertion_code": "",
+          "original_residue_number": "69"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "65",
+          "original_insertion_code": "",
+          "original_residue_number": "70"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "66",
+          "original_insertion_code": "",
+          "original_residue_number": "71"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "67",
+          "original_insertion_code": "",
+          "original_residue_number": "72"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "68",
+          "original_insertion_code": "",
+          "original_residue_number": "73"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "69",
+          "original_insertion_code": "",
+          "original_residue_number": "74"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "70",
+          "original_insertion_code": "",
+          "original_residue_number": "75"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "71",
+          "original_insertion_code": "",
+          "original_residue_number": "76"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "72",
+          "original_insertion_code": "",
+          "original_residue_number": "77"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "73",
+          "original_insertion_code": "",
+          "original_residue_number": "78"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "74",
+          "original_insertion_code": "",
+          "original_residue_number": "79"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "75",
+          "original_insertion_code": "",
+          "original_residue_number": "80"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "76",
+          "original_insertion_code": "",
+          "original_residue_number": "81"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "77",
+          "original_insertion_code": "",
+          "original_residue_number": "82"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "78",
+          "original_insertion_code": "",
+          "original_residue_number": "83"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "79",
+          "original_insertion_code": "",
+          "original_residue_number": "84"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "80",
+          "original_insertion_code": "",
+          "original_residue_number": "85"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "81",
+          "original_insertion_code": "",
+          "original_residue_number": "86"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "82",
+          "original_insertion_code": "",
+          "original_residue_number": "87"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "83",
+          "original_insertion_code": "",
+          "original_residue_number": "88"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "84",
+          "original_insertion_code": "",
+          "original_residue_number": "89"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "85",
+          "original_insertion_code": "",
+          "original_residue_number": "90"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "86",
+          "original_insertion_code": "",
+          "original_residue_number": "91"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "87",
+          "original_insertion_code": "",
+          "original_residue_number": "92"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "88",
+          "original_insertion_code": "",
+          "original_residue_number": "93"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "89",
+          "original_insertion_code": "",
+          "original_residue_number": "94"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "90",
+          "original_insertion_code": "",
+          "original_residue_number": "95"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "91",
+          "original_insertion_code": "",
+          "original_residue_number": "96"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "92",
+          "original_insertion_code": "",
+          "original_residue_number": "97"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "93",
+          "original_insertion_code": "",
+          "original_residue_number": "98"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "94",
+          "original_insertion_code": "",
+          "original_residue_number": "99"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "95",
+          "original_insertion_code": "",
+          "original_residue_number": "100"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "96",
+          "original_insertion_code": "",
+          "original_residue_number": "101"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "97",
+          "original_insertion_code": "",
+          "original_residue_number": "102"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "98",
+          "original_insertion_code": "",
+          "original_residue_number": "103"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "99",
+          "original_insertion_code": "",
+          "original_residue_number": "104"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "100",
+          "original_insertion_code": "",
+          "original_residue_number": "105"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "101",
+          "original_insertion_code": "",
+          "original_residue_number": "106"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "102",
+          "original_insertion_code": "",
+          "original_residue_number": "107"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "103",
+          "original_insertion_code": "",
+          "original_residue_number": "108"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "104",
+          "original_insertion_code": "",
+          "original_residue_number": "109"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "105",
+          "original_insertion_code": "",
+          "original_residue_number": "110"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "106",
+          "original_insertion_code": "",
+          "original_residue_number": "111"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "107",
+          "original_insertion_code": "",
+          "original_residue_number": "112"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "108",
+          "original_insertion_code": "",
+          "original_residue_number": "113"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "109",
+          "original_insertion_code": "",
+          "original_residue_number": "114"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "110",
+          "original_insertion_code": "",
+          "original_residue_number": "115"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "111",
+          "original_insertion_code": "",
+          "original_residue_number": "116"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "112",
+          "original_insertion_code": "",
+          "original_residue_number": "117"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "113",
+          "original_insertion_code": "",
+          "original_residue_number": "118"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "114",
+          "original_insertion_code": "",
+          "original_residue_number": "119"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "115",
+          "original_insertion_code": "",
+          "original_residue_number": "120"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "116",
+          "original_insertion_code": "",
+          "original_residue_number": "121"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "117",
+          "original_insertion_code": "",
+          "original_residue_number": "122"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "118",
+          "original_insertion_code": "",
+          "original_residue_number": "123"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "119",
+          "original_insertion_code": "",
+          "original_residue_number": "124"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "120",
+          "original_insertion_code": "",
+          "original_residue_number": "125"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "121",
+          "original_insertion_code": "",
+          "original_residue_number": "126"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "122",
+          "original_insertion_code": "",
+          "original_residue_number": "127"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "123",
+          "original_insertion_code": "",
+          "original_residue_number": "128"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "124",
+          "original_insertion_code": "",
+          "original_residue_number": "129"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "125",
+          "original_insertion_code": "",
+          "original_residue_number": "130"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "126",
+          "original_insertion_code": "",
+          "original_residue_number": "131"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "127",
+          "original_insertion_code": "",
+          "original_residue_number": "132"
+        },
+        {
+          "chain": "A",
+          "mosaic_residue_number": "128",
+          "original_insertion_code": "",
+          "original_residue_number": "133"
+        }
+      ],
+      "known_gap_sequence": "VMRAIADKPG",
+      "leakage_audit": {
+        "mosaic_input_is_reference_minus_gap": true,
+        "target_sequences_unchanged": true,
+        "template_is_source_minus_gap": true
+      },
+      "length": 10,
+      "local_axis_residues": 93,
+      "original_generated_residues": [
+        [
+          "A",
+          "36",
+          ""
+        ],
+        [
+          "A",
+          "37",
+          ""
+        ],
+        [
+          "A",
+          "38",
+          ""
+        ],
+        [
+          "A",
+          "39",
+          ""
+        ],
+        [
+          "A",
+          "40",
+          ""
+        ],
+        [
+          "A",
+          "41",
+          ""
+        ],
+        [
+          "A",
+          "42",
+          ""
+        ],
+        [
+          "A",
+          "43",
+          ""
+        ],
+        [
+          "A",
+          "44",
+          ""
+        ],
+        [
+          "A",
+          "45",
+          ""
+        ]
+      ],
+      "preserved_only_atoms": [],
+      "protein_chain_count": 1,
+      "protein_residue_count": 128,
+      "release_date": "2026-09-23",
+      "source_id": "9WW8",
+      "source_native_validation": {
+        "hard_gate_failures": [],
+        "metrics": [
+          {
+            "name": "outside-atom-identities-missing",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "outside-atom-identities-added",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "outside-residue-names-changed",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "fixed-heavy-atom-rmsd",
+            "unit": "angstrom",
+            "value": 0.0
+          },
+          {
+            "name": "fixed-heavy-atom-max-displacement",
+            "unit": "angstrom",
+            "value": 0.0
+          },
+          {
+            "name": "generated-residues-missing",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "generated-residue-names-wrong",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "generated-heavy-atoms-missing",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "generated-heavy-atoms-unexpected",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "junction-cn-distance-min",
+            "unit": "angstrom",
+            "value": 1.330311617629492
+          },
+          {
+            "name": "junction-cn-distance-max",
+            "unit": "angstrom",
+            "value": 1.3364624947973645
+          },
+          {
+            "name": "generated-region-cn-distance-max",
+            "unit": "angstrom",
+            "value": 1.3495636331792578
+          },
+          {
+            "name": "retained-explicit-links-missing",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "retained-explicit-links-unexpected",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "generated-or-junction-bond-length-errors",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "generated-or-junction-bond-angle-errors",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "generated-or-junction-non-planar-amides",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "generated-or-junction-ramachandran-outliers",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "generated-or-junction-sidechain-chi12-outliers",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "severe-steric-overlaps",
+            "unit": "count",
+            "value": 0.0
+          },
+          {
+            "name": "detectable-d-ca",
+            "unit": "count",
+            "value": 0.0
+          }
+        ],
+        "passed": true,
+        "warnings": []
+      },
+      "source_observed_sequences": {
+        "A": "KAFHQLRQLFQQHTARWQHELPDLTKPQYAVMRAIADKPGIEQVALIEAAVSTKATLAEMLARMENRGLVRREHDAADKRRRFVWLTAEGEKVLAAAIPIGDSVDEEFLGRLSAEEQELFMQLVRKMM"
+      },
+      "source_reference_sha256": "901aaba8ebc6ff3a61a7c9da27d48fdcc209f9a8bec34b5c607a5a2098fcc595",
+      "start": 30,
+      "status": "eligible",
+      "stratum": "general-protein"
+    }
+  ],
+  "interpretation": "prospective source-disjoint test of the frozen corrected mode; geometry/source preservation primary; no parameter tuning or reference selection; antibody framework homology allowed; training membership not independently attested",
+  "no_replacement": true,
+  "producer_sha256": "f0b0fdcd5eb3c979b77cc17e22f3933c11d9c3e12d4099a3b83352d179193c43",
+  "public_protenix_workflow_controls": [],
+  "seeds": [
+    7,
+    19
+  ],
+  "selected_sources": [
+    "9WW8"
+  ],
+  "source_manifest_sha256": "510280f9d5c4be463f564e850198902147c3524c09311611c7c26af1fa9cc828",
+  "status": "frozen-before-known-sequence-holdout-inference"
+}

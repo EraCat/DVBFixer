@@ -1,0 +1,248 @@
+{
+  "apple_mps": "deferred",
+  "checkpoint_sha256": "dfc9895b399ec4497bf6d646502168725f01dcbd55bc0b541fc3e3cc1f2f0483",
+  "code_sha256": {
+    "deploy/protenix-v1/production_runner.py": "64dad27f8c4d3c2848c113e013164465cc52464e5895be4c590672a3a9cc6d54",
+    "deploy/protenix-v1/profile-lock.json": "3fb3661be2b6748650b90bf9b0aaa7a09cbba9accc13253a6c29f644001b5d2e",
+    "deploy/protpardelle-1c/checkpoint_gap_smoke.py": "be1dd7dc2b7fcfbbc71ae436e2f997b2404405febc8adf040540d34ff9d6acff",
+    "scripts/analyze_modeller_benchmark.py": "e2b88a3a0b2ee922d3bdf930c94076bb3a2f558912a049594d2dd4ae271ebbfe",
+    "scripts/build_cc89_prospective_holdout.py": "e746ab8f4eb3999d395f782beaee52fb5f3dedc5245272bcc3ee12e4c8c5f41a",
+    "scripts/materialize_cc89_known_sequence_holdout.py": "d878c2916c46ca8a3fb028c9aeb6c60eb39bf79fba1186d8bae5eaa0cb029110",
+    "scripts/run_a100_relaxation.py": "7958be662397fc38d96437fe97731673a2608a390fbb59bb73592057cdf6f84b",
+    "scripts/run_cc89_known_sequence_holdout.py": "3d806a61ae14ba53f40943216b57721fd73c1f8166b34a9eaf6a0fd8d1dde92d",
+    "scripts/run_context_homology_acceptance.py": "429c42e019eb0d4c765ce9d7fecf47c14918dd7854110775d27a2b2e4aec4bee",
+    "src/dvbfixer/homology.py": "bdc44f81f5e19b26332fbede0ec0fcabf5dc069cedce0d0af9a1c3c405830e01",
+    "src/dvbfixer/homology_plan.py": "d21d53da0c3377329031647ac3a681584e9cd94e1682beffdb8c81a9e778de63",
+    "src/dvbfixer/model/diffusion/benchmark.py": "e6c7e445fd305416e5f6cdaae11517d53217255d595296a225c4733e86b1cd9c",
+    "src/dvbfixer/model/diffusion/boundary_refinement.py": "7d9356fa8b4ee9c07d8a7c3850b1e595325d42c0d526e805f1d19dce6384be30",
+    "src/dvbfixer/model/diffusion/contract.py": "43043f8a7aa2af01c70d236d60477878efae7d26f64bbf90dd5b3a35aa18c6b6",
+    "src/dvbfixer/model/diffusion/geometry.py": "b527d7519162bbba75a7c4571f60a9af7a1f98533bbcfa31a9914d0f57dfe170",
+    "src/dvbfixer/model/diffusion/pdb_materialize.py": "7cf08620f283f3b96b5977843fa2f2505613ee9ee75321e7691ec00e4be4a55e",
+    "src/dvbfixer/model/diffusion/pipeline.py": "74b9a14bd4832f03249da3f4cc8507e7e1ce4f2d8ab903f4b144987b102f6353",
+    "src/dvbfixer/model/diffusion/protein_context.py": "068075ceeef8d1057092f0627fc80309df4dbe9fa24aeae918370f96f954c564",
+    "src/dvbfixer/model/diffusion/publication.py": "16467d8771e404e7f7aae8e37ec70fe9015d60d5dc8eb6f5ec90e2fda1cb9c43",
+    "src/dvbfixer/model/diffusion/reference_metrics.py": "22428d2c7b7af8f5fa3e9885e10ac07a0f3256d22f7d009b163d2165ce5f0e1c",
+    "src/dvbfixer/model/diffusion/runner.py": "762e4a1ce0565d41497a33a77c6fd434989a819854f07a723342cc3ea64f0fef",
+    "src/dvbfixer/model/diffusion/runner_refinement.py": "946204537200a0e0472d0998ecdb447cd78840c7ac641fbf27ef8ef4a9b153a3",
+    "src/dvbfixer/model/diffusion/validate.py": "1f5bb86524ca6e600ac63d2487be817562c667a8d6f13e074b52ec870f285342",
+    "src/dvbfixer/model/diffusion_cli.py": "ec6d8663aa830e16f6afa09536327d452042d3ff1fb03dfa84b9cfe379281bd6",
+    "test/protpardelle-1c-audit/src/protpardelle/core/models.py": "2ec52fee68368ba3addfa4b46eec70949c6730801f05cb309c8eb5ed22f1f810",
+    "test/protpardelle-1c-audit/src/protpardelle/core/modules.py": "3fe69476e45932c04c56332e09f0e3b2b51cc77f3effe861d93c37d975a529a3"
+  },
+  "comparison": "prospective source-disjoint test of the frozen corrected mode; geometry/source preservation primary; no parameter tuning or reference selection; antibody framework homology allowed; training membership not independently attested",
+  "config_sha256": "e9999ace79bf3044351cc982a624fc3459add3a4f91cbf97ff5b437b8942eb9d",
+  "environments": {
+    "raw": {
+      "cuda": "12.4",
+      "gpu": "NVIDIA A100-SXM4-40GB",
+      "torch": "2.6.0+cu124"
+    },
+    "refine": {
+      "cuda_packages": {
+        "nvidia-cuda-cupti-cu12": "12.2.142",
+        "nvidia-cuda-nvcc-cu12": "12.2.140",
+        "nvidia-cuda-nvrtc-cu12": "12.2.140",
+        "nvidia-cuda-runtime-cu12": "12.2.140",
+        "nvidia-cufft-cu12": "11.0.8.103",
+        "nvidia-nvjitlink-cu12": "12.2.140",
+        "openmm-cuda-12": "8.6.1"
+      },
+      "numpy": "2.4.6",
+      "openmm": "8.6.1",
+      "python": "3.13.15"
+    }
+  },
+  "jobs": {
+    "modeller": [],
+    "protenix": [],
+    "raw": [
+      {
+        "case_id": "prospective-8ek6-H-cdr1-gap5",
+        "seed": 7
+      },
+      {
+        "case_id": "prospective-8ek6-H-cdr1-gap5",
+        "seed": 19
+      },
+      {
+        "case_id": "prospective-8ek6-H-cdr3-gap10",
+        "seed": 7
+      },
+      {
+        "case_id": "prospective-8ek6-H-cdr3-gap10",
+        "seed": 19
+      },
+      {
+        "case_id": "prospective-8ek6-L-cdr1-gap5",
+        "seed": 7
+      },
+      {
+        "case_id": "prospective-8ek6-L-cdr1-gap5",
+        "seed": 19
+      },
+      {
+        "case_id": "prospective-8ek6-L-cdr3-gap5",
+        "seed": 7
+      },
+      {
+        "case_id": "prospective-8ek6-L-cdr3-gap5",
+        "seed": 19
+      },
+      {
+        "case_id": "prospective-9z0u-H-cdr1-gap5",
+        "seed": 7
+      },
+      {
+        "case_id": "prospective-9z0u-H-cdr1-gap5",
+        "seed": 19
+      },
+      {
+        "case_id": "prospective-9z0u-H-cdr3-gap10",
+        "seed": 7
+      },
+      {
+        "case_id": "prospective-9z0u-H-cdr3-gap10",
+        "seed": 19
+      },
+      {
+        "case_id": "prospective-9z0u-L-cdr1-gap5",
+        "seed": 7
+      },
+      {
+        "case_id": "prospective-9z0u-L-cdr1-gap5",
+        "seed": 19
+      },
+      {
+        "case_id": "prospective-9z0u-L-cdr3-gap5",
+        "seed": 7
+      },
+      {
+        "case_id": "prospective-9z0u-L-cdr3-gap5",
+        "seed": 19
+      },
+      {
+        "case_id": "prospective-9ldn-gap5",
+        "seed": 7
+      },
+      {
+        "case_id": "prospective-9ldn-gap5",
+        "seed": 19
+      },
+      {
+        "case_id": "prospective-9ldn-gap10",
+        "seed": 7
+      },
+      {
+        "case_id": "prospective-9ldn-gap10",
+        "seed": 19
+      }
+    ],
+    "refine": [
+      {
+        "case_id": "prospective-8ek6-H-cdr1-gap5",
+        "seed": 7
+      },
+      {
+        "case_id": "prospective-8ek6-H-cdr1-gap5",
+        "seed": 19
+      },
+      {
+        "case_id": "prospective-8ek6-H-cdr3-gap10",
+        "seed": 7
+      },
+      {
+        "case_id": "prospective-8ek6-H-cdr3-gap10",
+        "seed": 19
+      },
+      {
+        "case_id": "prospective-8ek6-L-cdr1-gap5",
+        "seed": 7
+      },
+      {
+        "case_id": "prospective-8ek6-L-cdr1-gap5",
+        "seed": 19
+      },
+      {
+        "case_id": "prospective-8ek6-L-cdr3-gap5",
+        "seed": 7
+      },
+      {
+        "case_id": "prospective-8ek6-L-cdr3-gap5",
+        "seed": 19
+      },
+      {
+        "case_id": "prospective-9z0u-H-cdr1-gap5",
+        "seed": 7
+      },
+      {
+        "case_id": "prospective-9z0u-H-cdr1-gap5",
+        "seed": 19
+      },
+      {
+        "case_id": "prospective-9z0u-H-cdr3-gap10",
+        "seed": 7
+      },
+      {
+        "case_id": "prospective-9z0u-H-cdr3-gap10",
+        "seed": 19
+      },
+      {
+        "case_id": "prospective-9z0u-L-cdr1-gap5",
+        "seed": 7
+      },
+      {
+        "case_id": "prospective-9z0u-L-cdr1-gap5",
+        "seed": 19
+      },
+      {
+        "case_id": "prospective-9z0u-L-cdr3-gap5",
+        "seed": 7
+      },
+      {
+        "case_id": "prospective-9z0u-L-cdr3-gap5",
+        "seed": 19
+      },
+      {
+        "case_id": "prospective-9ldn-gap5",
+        "seed": 7
+      },
+      {
+        "case_id": "prospective-9ldn-gap5",
+        "seed": 19
+      },
+      {
+        "case_id": "prospective-9ldn-gap10",
+        "seed": 7
+      },
+      {
+        "case_id": "prospective-9ldn-gap10",
+        "seed": 19
+      }
+    ]
+  },
+  "manifest_sha256": "37a3cacd8483661a09eaa256aaf75a96fa0a6c1fd55db7f4c386edf8701e9113",
+  "modeller": "one public homology automodel; --md-level none --no-loop-refine; default Modeller seed; unconstrained comparator",
+  "modeller_accuracy": "rigidly align on common observed backbone only; disclose missing fixed atoms and score fixed RMSD on the common subset; strict validation still reports all missing atoms and original movement",
+  "no_replacement": true,
+  "public_promotion": false,
+  "public_protenix_timeout_seconds": 1800,
+  "raw_parameters": {
+    "chain_phase_policy": "neutral-v1",
+    "per_step_reinjection": false,
+    "position_feature_policy": "source-physical-v1",
+    "s_churn": 200.0,
+    "step_scale": 1.2,
+    "steps": 500
+  },
+  "reference_policy": "withheld reference absent during raw sampling and CUDA minimization; attach after worker exit",
+  "selection": "report every seed independently; no reference-based candidate selection or outcome-based restart",
+  "solvent": false,
+  "status": "frozen-before-known-sequence-holdout-execution",
+  "supersedes_setup_protocol_sha256": null,
+  "timeouts_seconds": {
+    "modeller": 1800,
+    "protenix": 1950,
+    "raw": 600,
+    "refine": 1800
+  }
+}

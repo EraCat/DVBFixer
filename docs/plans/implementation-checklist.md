@@ -340,6 +340,13 @@ Detailed requirements and acceptance gates are in the
   recovering seven failures. Combined corrected acceptance is 60/60, zero D-Cα,
   and exact outside-gap preservation. Record paired raw/final transitions;
   treat reference RMSD as secondary rather than an acceptance criterion.
+- [x] Freeze and independently revalidate the first source-disjoint corrected-mode
+  check: 9WW8, gaps 5/10, seeds 7/19, 4/4 after unchanged refinement. Keep the
+  source denominator explicit and freeze a separate expanded CDR/general cohort.
+- [x] Complete the frozen 8EK6/9Z0U/9LDN prospective cohort and independent audit:
+  20/20 pass after unchanged refinement. Combined prospective acceptance is
+  24/24 across four new sources, zero detectable D-Cα and exact outside-gap
+  preservation; keep separate from the development recheck.
 - [ ] Complete prospective long-gap noninferiority and independent review.
 - [ ] Complete wider independent cc89 CUDA acceptance beyond the repaired
   same-seed, two-source diagnostic pilot.

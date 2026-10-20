@@ -1,0 +1,1118 @@
+{
+  "artifacts": {
+    "22ID/deposited_source.cif": "6934daea9716970418146ead5d91667cd940ffcb7c4c32641ce61d5e3e6081da",
+    "28RK/deposited_source.cif": "f1a473df2bf29a42c65d1c0715f146f5f1a043fa6af9c7d8e740f5fb96e52906",
+    "28RM/deposited_source.cif": "b4d9900ec1abb0fba83e525a32b54f5bccbc4fd273bce5dd9b7075495c361da3",
+    "29WM/deposited_source.cif": "9a04795aa86edcdf8df4ff7b29e591aa38006e673b7bc39ba6d473b074894033",
+    "9NHV/deposited_source.cif": "a8596a5506b7f6833a083b51bca40fe1cf24cdce078894bc718e735f2f81fc36",
+    "9NIY/deposited_source.cif": "65e9e533a421978c4a529256490a26ce8a6504c7118e477f87459f6cecc509a8",
+    "9T5Q/deposited_source.cif": "9a938e2b4d569b8f9da450ec01a1fc33675e310542a245ebeb9bc2554bae1034",
+    "9WLC/deposited_source.cif": "cd8e24701e06efd62be59496f2bcb935982afac5ad574285c80ef2feac94a4f3",
+    "9WLX/deposited_source.cif": "cee9feae649787371fd110ae66b72922f6aac05c1023c91e678c28f919fd9820",
+    "9WW8/deposited_source.cif": "93771751083585df3db5191bc8961a5cf817a2495f9e2384b86ba1aaad235f73",
+    "9WW8/normalized.pdb": "78b498f986ab5c2921b80e4a14745dcb5b9d2a9f61d19a3a4784cd5871196e8e",
+    "9WW8/reference.pdb": "901aaba8ebc6ff3a61a7c9da27d48fdcc209f9a8bec34b5c607a5a2098fcc595",
+    "9WZ1/deposited_source.cif": "f47e83cb0fc4dcf704f9b30a504d19150e2735abfbe3c77b96a7fd94f58aa762",
+    "9X27/deposited_source.cif": "6ebc6d06bbf06f55c08737973d3d1a38c15ccff0f89115a92f9c62b927b01fb4",
+    "9X7U/deposited_source.cif": "18948664b916417992867a1d8c1dc365f6545303ad446ececb54f16812b61851",
+    "9Y7F/deposited_source.cif": "e7161cc252fa75e61f4b0a962a2f1110492be1e68baa6a769e45273046025030",
+    "9YIR/deposited_source.cif": "e9fb574fa3234d66f83f967b190af793f2fc1ad285bc1667f964323cc1be81c0",
+    "9YP0/deposited_source.cif": "4c9f2add54354c24d9079b5310673a4fb31b5546123cee6b4f6acdca8cb4daee",
+    "9Z0U/deposited_source.cif": "b3f3e25e2e49418c20c570fdffb3b2045b594cc3ff6997fdc210028b61aeaa8f",
+    "9Z0U/normalized.pdb": "598278c10bc391445a78590fa9c324e2f3e26154ce2030775660f491e77ced0f",
+    "9Z0U/reference.pdb": "b97e110b9ccb45aa9d151f2b4818e3dd22511e74f88c3006d89778606d7c3e4b",
+    "9ZR2/deposited_source.cif": "8874881316c99a0d7f6ef1e88d6bd7e365f2473d5e04833e0b7f037c1b14ef38",
+    "antibody-cdr-metadata.json": "df12cee6877072a4b029166a503fb5c3f18cf09f85cbdaa60063bde3cc23215c",
+    "antibody-cdr-query.json": "0ddc215aaa82bbce177adb1e335d3bc0d5e673c803f3708cd0996f8dc36c36ba",
+    "antibody-cdr-response.json": "7975efadb88422914b94198bfb14090755a5ba4c4ba192a537dcf49fd4f60dd2",
+    "antibody-cdr-selected.json": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+    "general-protein-metadata.json": "fe8e371e0317425f60f5689ad46f381199445aded00be96eb4b8e83b8def1d3e",
+    "general-protein-query.json": "5a9308802b67d15e1a3668a88fcdacffea120f8f4f05bab3fe3e01b1eb377b2e",
+    "general-protein-response.json": "2b0a248c899b5f76bc5d6ba784dec68fcddf17a760e021ab662b734db840ec1d",
+    "general-protein-selected.json": "6357295962d2c432c74088e534dc93ca2360026759bebc09fa5c9bce0640ef8a",
+    "screening-protocol.json": "90d6610b5809c64f3e71b21626378b88320f895e2fd6699b4a99518474868ed0"
+  },
+  "cases": [
+    {
+      "chain_counts": {
+        "A": 139,
+        "B": 128,
+        "C": 139,
+        "D": 119,
+        "E": 121,
+        "F": 130,
+        "X": 6,
+        "Y": 6
+      },
+      "entity_id": "29WM_1",
+      "protein_residues": 788,
+      "reasons": [
+        "coordinate-incomplete-polymer-sequence:B",
+        "coordinate-incomplete-polymer-sequence:D",
+        "coordinate-incomplete-polymer-sequence:E",
+        "coordinate-incomplete-polymer-sequence:F",
+        "incomplete-or-duplicate-heavy-atoms:A/119",
+        "incomplete-or-duplicate-heavy-atoms:A/120",
+        "incomplete-or-duplicate-heavy-atoms:A/2",
+        "incomplete-or-duplicate-heavy-atoms:A/36",
+        "incomplete-or-duplicate-heavy-atoms:A/4",
+        "incomplete-or-duplicate-heavy-atoms:A/46",
+        "incomplete-or-duplicate-heavy-atoms:A/47",
+        "incomplete-or-duplicate-heavy-atoms:A/48",
+        "incomplete-or-duplicate-heavy-atoms:A/5",
+        "incomplete-or-duplicate-heavy-atoms:A/50",
+        "incomplete-or-duplicate-heavy-atoms:A/59",
+        "incomplete-or-duplicate-heavy-atoms:A/76",
+        "incomplete-or-duplicate-heavy-atoms:B/123",
+        "incomplete-or-duplicate-heavy-atoms:B/36",
+        "incomplete-or-duplicate-heavy-atoms:B/48",
+        "incomplete-or-duplicate-heavy-atoms:B/5",
+        "incomplete-or-duplicate-heavy-atoms:B/50",
+        "incomplete-or-duplicate-heavy-atoms:B/59",
+        "incomplete-or-duplicate-heavy-atoms:B/63",
+        "incomplete-or-duplicate-heavy-atoms:C/123",
+        "incomplete-or-duplicate-heavy-atoms:C/32",
+        "incomplete-or-duplicate-heavy-atoms:C/36",
+        "incomplete-or-duplicate-heavy-atoms:C/37",
+        "incomplete-or-duplicate-heavy-atoms:C/4",
+        "incomplete-or-duplicate-heavy-atoms:C/48",
+        "incomplete-or-duplicate-heavy-atoms:C/50",
+        "incomplete-or-duplicate-heavy-atoms:C/59",
+        "incomplete-or-duplicate-heavy-atoms:C/63",
+        "incomplete-or-duplicate-heavy-atoms:D/102",
+        "incomplete-or-duplicate-heavy-atoms:D/103",
+        "incomplete-or-duplicate-heavy-atoms:D/122",
+        "incomplete-or-duplicate-heavy-atoms:D/123",
+        "incomplete-or-duplicate-heavy-atoms:D/36",
+        "incomplete-or-duplicate-heavy-atoms:D/53",
+        "incomplete-or-duplicate-heavy-atoms:D/59",
+        "incomplete-or-duplicate-heavy-atoms:D/63",
+        "incomplete-or-duplicate-heavy-atoms:D/76",
+        "incomplete-or-duplicate-heavy-atoms:E/122",
+        "incomplete-or-duplicate-heavy-atoms:E/123",
+        "incomplete-or-duplicate-heavy-atoms:E/17",
+        "incomplete-or-duplicate-heavy-atoms:E/36",
+        "incomplete-or-duplicate-heavy-atoms:E/37",
+        "incomplete-or-duplicate-heavy-atoms:E/4",
+        "incomplete-or-duplicate-heavy-atoms:E/5",
+        "incomplete-or-duplicate-heavy-atoms:E/53",
+        "incomplete-or-duplicate-heavy-atoms:E/59",
+        "incomplete-or-duplicate-heavy-atoms:E/60",
+        "incomplete-or-duplicate-heavy-atoms:E/63",
+        "incomplete-or-duplicate-heavy-atoms:E/64",
+        "incomplete-or-duplicate-heavy-atoms:E/86",
+        "incomplete-or-duplicate-heavy-atoms:F/117",
+        "incomplete-or-duplicate-heavy-atoms:F/123",
+        "incomplete-or-duplicate-heavy-atoms:F/18",
+        "incomplete-or-duplicate-heavy-atoms:F/36",
+        "incomplete-or-duplicate-heavy-atoms:F/4",
+        "incomplete-or-duplicate-heavy-atoms:F/5",
+        "incomplete-or-duplicate-heavy-atoms:F/50",
+        "incomplete-or-duplicate-heavy-atoms:F/59",
+        "incomplete-or-duplicate-heavy-atoms:X/3",
+        "incomplete-or-duplicate-heavy-atoms:X/7",
+        "incomplete-or-duplicate-heavy-atoms:X/8",
+        "incomplete-or-duplicate-heavy-atoms:Y/3",
+        "incomplete-or-duplicate-heavy-atoms:Y/7",
+        "incomplete-or-duplicate-heavy-atoms:Y/8",
+        "native-backbone-break:B/116->123",
+        "native-backbone-break:D/116->121",
+        "native-backbone-break:D/42->53",
+        "native-backbone-break:E/116->122",
+        "native-backbone-break:E/43->53",
+        "native-backbone-break:F/117->123",
+        "whole-source-residue-budget-exceeded-or-empty",
+        "source-preflight-rejected"
+      ],
+      "release_date": "2026-10-07",
+      "sequences": {
+        "A": "GMVMEKPSPLLVGREFVRQYYTLLNQAPDMLHRFYGKNSSYVHGGLDSNGKPADAVYGQKEIHRKVMSQNFTNCHTKIRHVDAHATLNDGVVVQVMGLLSNNNQALRRFMQTFVLAPEGSVANKFYVHNDIFRYQDEVF",
+        "B": "KPSPLLVGREFVRQYYTLLNQAPDMLHRFYGKNSSYVHGGLDSNGKPADAVYGQKEIHRKVMSQNFTNCHTKIRHVDAHATLNDGVVVQVMGLLSNNNQALRRFMQTFVLAPKFYVHNDIFRYQDEVF",
+        "C": "GMVMEKPSPLLVGREFVRQYYTLLNQAPDMLHRFYGKNSSYVHGGLDSNGKPADAVYGQKEIHRKVMSQNFTNCHTKIRHVDAHATLNDGVVVQVMGLLSNNNQALRRFMQTFVLAPEGSVANKFYVHNDIFRYQDEVF",
+        "D": "PSPLLVGREFVRQYYTLLNQAPDMLHRFYGKNSSYVHDAVYGQKEIHRKVMSQNFTNCHTKIRHVDAHATLNDGVVVQVMGLLSNNNQALRRFMQTFVLAPANKFYVHNDIFRYQDEVF",
+        "E": "EKPSPLLVGREFVRQYYTLLNQAPDMLHRFYGKNSSYVHGDAVYGQKEIHRKVMSQNFTNCHTKIRHVDAHATLNDGVVVQVMGLLSNNNQALRRFMQTFVLAPNKFYVHNDIFRYQDEVF",
+        "F": "EKPSPLLVGREFVRQYYTLLNQAPDMLHRFYGKNSSYVHGGLDSNGKPADAVYGQKEIHRKVMSQNFTNCHTKIRHVDAHATLNDGVVVQVMGLLSNNNQALRRFMQTFVLAPEKFYVHNDIFRYQDEVF",
+        "X": "DLVFYD",
+        "Y": "DLVFYD"
+      },
+      "source_id": "29WM",
+      "source_sha256": "9a04795aa86edcdf8df4ff7b29e591aa38006e673b7bc39ba6d473b074894033",
+      "status": "unsupported",
+      "stratum": "general-protein",
+      "supported": false,
+      "unobserved_terminal_tails": [
+        {
+          "chain": "A",
+          "declared_sequence_length": 141,
+          "first_observed_label_seq": 1,
+          "last_observed_label_seq": 139
+        },
+        {
+          "chain": "C",
+          "declared_sequence_length": 141,
+          "first_observed_label_seq": 1,
+          "last_observed_label_seq": 139
+        },
+        {
+          "chain": "X",
+          "declared_sequence_length": 8,
+          "first_observed_label_seq": 1,
+          "last_observed_label_seq": 6
+        },
+        {
+          "chain": "Y",
+          "declared_sequence_length": 8,
+          "first_observed_label_seq": 1,
+          "last_observed_label_seq": 6
+        }
+      ],
+      "water_residues": 0
+    },
+    {
+      "chain_counts": {
+        "A": 200,
+        "B": 240,
+        "C": 274,
+        "D": 98,
+        "P": 9
+      },
+      "entity_id": "9YIR_4",
+      "protein_residues": 821,
+      "reasons": [
+        "incomplete-or-duplicate-heavy-atoms:A/148",
+        "incomplete-or-duplicate-heavy-atoms:A/163",
+        "incomplete-or-duplicate-heavy-atoms:A/168",
+        "incomplete-or-duplicate-heavy-atoms:A/194",
+        "incomplete-or-duplicate-heavy-atoms:A/23",
+        "incomplete-or-duplicate-heavy-atoms:A/41",
+        "incomplete-or-duplicate-heavy-atoms:A/54",
+        "incomplete-or-duplicate-heavy-atoms:A/55",
+        "incomplete-or-duplicate-heavy-atoms:A/6",
+        "incomplete-or-duplicate-heavy-atoms:A/67",
+        "incomplete-or-duplicate-heavy-atoms:A/68",
+        "incomplete-or-duplicate-heavy-atoms:A/71",
+        "incomplete-or-duplicate-heavy-atoms:A/79",
+        "incomplete-or-duplicate-heavy-atoms:A/97",
+        "incomplete-or-duplicate-heavy-atoms:B/1",
+        "incomplete-or-duplicate-heavy-atoms:B/115",
+        "incomplete-or-duplicate-heavy-atoms:B/129",
+        "incomplete-or-duplicate-heavy-atoms:B/15",
+        "incomplete-or-duplicate-heavy-atoms:B/16",
+        "incomplete-or-duplicate-heavy-atoms:B/161",
+        "incomplete-or-duplicate-heavy-atoms:B/172",
+        "incomplete-or-duplicate-heavy-atoms:B/175",
+        "incomplete-or-duplicate-heavy-atoms:B/177",
+        "incomplete-or-duplicate-heavy-atoms:B/182",
+        "incomplete-or-duplicate-heavy-atoms:B/216",
+        "incomplete-or-duplicate-heavy-atoms:B/217",
+        "incomplete-or-duplicate-heavy-atoms:B/219",
+        "incomplete-or-duplicate-heavy-atoms:B/222",
+        "incomplete-or-duplicate-heavy-atoms:B/223",
+        "incomplete-or-duplicate-heavy-atoms:B/26",
+        "incomplete-or-duplicate-heavy-atoms:B/60",
+        "incomplete-or-duplicate-heavy-atoms:B/63",
+        "incomplete-or-duplicate-heavy-atoms:B/65",
+        "incomplete-or-duplicate-heavy-atoms:B/70",
+        "incomplete-or-duplicate-heavy-atoms:B/92",
+        "incomplete-or-duplicate-heavy-atoms:C/106",
+        "incomplete-or-duplicate-heavy-atoms:C/108",
+        "incomplete-or-duplicate-heavy-atoms:C/110",
+        "incomplete-or-duplicate-heavy-atoms:C/111",
+        "incomplete-or-duplicate-heavy-atoms:C/128",
+        "incomplete-or-duplicate-heavy-atoms:C/154",
+        "incomplete-or-duplicate-heavy-atoms:C/17",
+        "incomplete-or-duplicate-heavy-atoms:C/181",
+        "incomplete-or-duplicate-heavy-atoms:C/186",
+        "incomplete-or-duplicate-heavy-atoms:C/19",
+        "incomplete-or-duplicate-heavy-atoms:C/197",
+        "incomplete-or-duplicate-heavy-atoms:C/222",
+        "incomplete-or-duplicate-heavy-atoms:C/225",
+        "incomplete-or-duplicate-heavy-atoms:C/226",
+        "incomplete-or-duplicate-heavy-atoms:C/227",
+        "incomplete-or-duplicate-heavy-atoms:C/232",
+        "incomplete-or-duplicate-heavy-atoms:C/268",
+        "incomplete-or-duplicate-heavy-atoms:C/273",
+        "incomplete-or-duplicate-heavy-atoms:C/43",
+        "incomplete-or-duplicate-heavy-atoms:C/44",
+        "incomplete-or-duplicate-heavy-atoms:C/46",
+        "incomplete-or-duplicate-heavy-atoms:C/58",
+        "incomplete-or-duplicate-heavy-atoms:C/90",
+        "incomplete-or-duplicate-heavy-atoms:D/16",
+        "incomplete-or-duplicate-heavy-atoms:D/17",
+        "incomplete-or-duplicate-heavy-atoms:D/19",
+        "incomplete-or-duplicate-heavy-atoms:D/45",
+        "incomplete-or-duplicate-heavy-atoms:D/47",
+        "incomplete-or-duplicate-heavy-atoms:D/48",
+        "incomplete-or-duplicate-heavy-atoms:D/50",
+        "incomplete-or-duplicate-heavy-atoms:D/58",
+        "incomplete-or-duplicate-heavy-atoms:D/74",
+        "incomplete-or-duplicate-heavy-atoms:D/75",
+        "whole-source-residue-budget-exceeded-or-empty",
+        "source-preflight-rejected"
+      ],
+      "release_date": "2026-09-16",
+      "sequences": {
+        "A": "QEVTQIPAALSVPEGENLVLNCSFTDSAIYNLQWFRQDPGKGLTSLLLIQSSQREQTSGRLNASLDKSSGRSTLYIAASQPGDSATYLCAVDTGGFKTIFGAGTRLFVKAYIQNPDPAVYQLRDSKSSDKFVCLFTDFDSQIQVSQSKDSDVYITDKCVLDMRSMDFKSNSAVAWSQKSDFTCANAFQNSIIPEDTFFPS",
+        "B": "QVTQNPRYLITVTGKKLTVTCSQNMNHEYMSWYRQDPGLGLRQIYYSMNVEVTDKGDVPEGYKVSRKEKRNFPLILESPSPNQTSLYFCASSSGDGNYGYTFGSGTRLTVVEDLKNVFPPEVAVFEPSKAEISRTQKATLVCLATGFYPPHVELSWWVNGKEVHDGVCTDPQPLKEQPALQDSRYALSSRLRVSATFWQDPRNHFRCQVQFYGLSENDEWTQDRAKPVTQIVSAEAWGRA",
+        "C": "SHSMRYFFTSVSRPGRGEPRFIAVGYVDDTQFVRFDSDAASQKMEPRAPWIEQEGPEYWDQETRNMKAHSQTDRANLGTLRGYYNQSEDGSHTIQIMYGCDVGPDGRFLRGYRQDAYDGKDYIALNEDLRSWTAADMAAQITKRKWEAVHAAEQRRVYLEGRCVDGLRRYLENGKETLQRTDPPKTHMTHHPISDHEATLRCWALGFYPAEITLTWQRDGEDQTQDTELVETRPAGDGTFQKWAAVVVPSGEEQRYTCHVQHEGLPKPLTLRWE",
+        "D": "QRTPKIQVYSRHPAENGKSNFLNCYVSGFHPSDIEVDLLKNGERIEKVEHSDLSFSKDWSFYLLYYTEFTPTEKDEYACRVNHVTLSQPKIVKWDRDM",
+        "P": "QVDYYGLYY"
+      },
+      "source_id": "9YIR",
+      "source_sha256": "e9fb574fa3234d66f83f967b190af793f2fc1ad285bc1667f964323cc1be81c0",
+      "status": "unsupported",
+      "stratum": "general-protein",
+      "supported": false,
+      "unobserved_terminal_tails": [
+        {
+          "chain": "A",
+          "declared_sequence_length": 213,
+          "first_observed_label_seq": 1,
+          "last_observed_label_seq": 200
+        },
+        {
+          "chain": "B",
+          "declared_sequence_length": 252,
+          "first_observed_label_seq": 3,
+          "last_observed_label_seq": 242
+        },
+        {
+          "chain": "C",
+          "declared_sequence_length": 275,
+          "first_observed_label_seq": 2,
+          "last_observed_label_seq": 275
+        },
+        {
+          "chain": "D",
+          "declared_sequence_length": 100,
+          "first_observed_label_seq": 3,
+          "last_observed_label_seq": 100
+        }
+      ],
+      "water_residues": 25
+    },
+    {
+      "chain_counts": {
+        "A": 134,
+        "B": 134
+      },
+      "entity_id": "28RK_1",
+      "protein_residues": 268,
+      "reasons": [
+        "alternate-conformers:A/90",
+        "alternate-conformers:B/34",
+        "alternate-conformers:B/88",
+        "alternate-conformers:B/93",
+        "incomplete-or-duplicate-heavy-atoms:A/90",
+        "incomplete-or-duplicate-heavy-atoms:B/34",
+        "incomplete-or-duplicate-heavy-atoms:B/88",
+        "incomplete-or-duplicate-heavy-atoms:B/93",
+        "source-preflight-rejected"
+      ],
+      "release_date": "2026-09-16",
+      "sequences": {
+        "A": "ACGLVASNLNLKPGECLRVRGEVAPDAKSFVLNLGKDSNNLCLHFNPRFNAHGDANTIVCNSKDGGAWGTEQREAVFPFQPGSVAEVCITFDQANLTVKLPDGYEFKFPNRLNLEAINYMAADGDFKIKCVAFD",
+        "B": "ACGLVASNLNLKPGECLRVRGEVAPDAKSFVLNLGKDSNNLCLHFNPRFNAHGDANTIVCNSKDGGAWGTEQREAVFPFQPGSVAEVCITFDQANLTVKLPDGYEFKFPNRLNLEAINYMAADGDFKIKCVAFD"
+      },
+      "source_id": "28RK",
+      "source_sha256": "f1a473df2bf29a42c65d1c0715f146f5f1a043fa6af9c7d8e740f5fb96e52906",
+      "status": "unsupported",
+      "stratum": "general-protein",
+      "supported": false,
+      "unobserved_terminal_tails": [
+        {
+          "chain": "A",
+          "declared_sequence_length": 137,
+          "first_observed_label_seq": 4,
+          "last_observed_label_seq": 137
+        },
+        {
+          "chain": "B",
+          "declared_sequence_length": 137,
+          "first_observed_label_seq": 4,
+          "last_observed_label_seq": 137
+        }
+      ],
+      "water_residues": 81
+    },
+    {
+      "chain_counts": {
+        "H": 218,
+        "L": 219
+      },
+      "chain_map": {
+        "H": "H",
+        "L": "L"
+      },
+      "entity_id": "9Z0U_2",
+      "maximum_historical_target_overlap": 0.8045454545454546,
+      "observed_sequences": {
+        "H": "EVQLQQSGPELVKPGASVKISCKTSGYTFTEYTIHWVKQSHGESLEWIGGINPNDGGTIYNQKFKGKATLTVDKSSKTAYMELRSLTSEDSAVFYCARGPSARFPYWGQGTLVTVSAAKTTPPSVYPLAPGSAAQTNSMVTLGCLVKGYFPEPVTVTWNSGSLSSGVHTFPAVLQSDLYTLSSSVTVPSSTWPSETVTCNVAHPASSTKVDKKIVPRC",
+        "L": "DVVMTQTPLTLSVTIQQPASISCKSSQSLLDSDQKTYLNWLLQRPQQSPKRLIYLVSKLDSGVPDRFTGSGSGTDFTLKISRVEAEDLGVYYCWQGTHFPRTFGGGTKLEIKRADAAPTVSIFPPSSEQLTSGGASVVCFLNNFYPKDINVKWKIDGSERQNGVLNSWTDQDSKDSTYSMSSTLTLTKDEYERHNSYTCEATHKTSTSPIVKSFNRNEC"
+      },
+      "preparation": {
+        "alternative_conformer_atoms_removed": 0,
+        "conformer_policy": "blank and A only; reject if any observed residue disappears or selected context is incomplete",
+        "hydrogens_removed": 0,
+        "native_breaks": [],
+        "water_atoms_removed": 289
+      },
+      "protein_residues": 437,
+      "reasons": [
+        "general target overlaps historical sequences"
+      ],
+      "reference_sha256": "b97e110b9ccb45aa9d151f2b4818e3dd22511e74f88c3006d89778606d7c3e4b",
+      "release_date": "2026-10-14",
+      "sequences": {
+        "H": "EVQLQQSGPELVKPGASVKISCKTSGYTFTEYTIHWVKQSHGESLEWIGGINPNDGGTIYNQKFKGKATLTVDKSSKTAYMELRSLTSEDSAVFYCARGPSARFPYWGQGTLVTVSAAKTTPPSVYPLAPGSAAQTNSMVTLGCLVKGYFPEPVTVTWNSGSLSSGVHTFPAVLQSDLYTLSSSVTVPSSTWPSETVTCNVAHPASSTKVDKKIVPRC",
+        "L": "DVVMTQTPLTLSVTIQQPASISCKSSQSLLDSDQKTYLNWLLQRPQQSPKRLIYLVSKLDSGVPDRFTGSGSGTDFTLKISRVEAEDLGVYYCWQGTHFPRTFGGGTKLEIKRADAAPTVSIFPPSSEQLTSGGASVVCFLNNFYPKDINVKWKIDGSERQNGVLNSWTDQDSKDSTYSMSSTLTLTKDEYERHNSYTCEATHKTSTSPIVKSFNRNEC"
+      },
+      "source_id": "9Z0U",
+      "source_sha256": "b3f3e25e2e49418c20c570fdffb3b2045b594cc3ff6997fdc210028b61aeaa8f",
+      "status": "unsupported",
+      "stratum": "general-protein",
+      "supported": true,
+      "target_chain": "H",
+      "unobserved_terminal_tails": [],
+      "water_residues": 289
+    },
+    {
+      "chain_counts": {
+        "A": 124,
+        "B": 27
+      },
+      "entity_id": "9Y7F_1",
+      "protein_residues": 151,
+      "reasons": [
+        "alternate-conformers:A/121",
+        "alternate-conformers:A/17",
+        "alternate-conformers:A/74",
+        "coordinate-incomplete-polymer-sequence:B",
+        "incomplete-or-duplicate-heavy-atoms:A/121",
+        "incomplete-or-duplicate-heavy-atoms:A/17",
+        "incomplete-or-duplicate-heavy-atoms:A/74",
+        "native-backbone-break:B/277->282",
+        "source-preflight-rejected"
+      ],
+      "release_date": "2026-09-16",
+      "sequences": {
+        "A": "QVQLQESGGGLVQDGGSLRLSCVASGFIFDDYAIGWFRQAPGKEREFVAAISWNGLSTRYADSVKGRFTISRDNAKIAVYLQMDNLTPDDTARYYCTMRAWSENTGNFASRGQGTQVTVSSHHH",
+        "B": "CFRNNETLESIMNTLESEEDFRKYFCS"
+      },
+      "source_id": "9Y7F",
+      "source_sha256": "e7161cc252fa75e61f4b0a962a2f1110492be1e68baa6a769e45273046025030",
+      "status": "unsupported",
+      "stratum": "general-protein",
+      "supported": false,
+      "unobserved_terminal_tails": [
+        {
+          "chain": "A",
+          "declared_sequence_length": 127,
+          "first_observed_label_seq": 1,
+          "last_observed_label_seq": 124
+        }
+      ],
+      "water_residues": 82
+    },
+    {
+      "chain_counts": {
+        "A": 216,
+        "B": 208,
+        "C": 219,
+        "D": 217
+      },
+      "entity_id": "9WLC_2",
+      "protein_residues": 860,
+      "reasons": [
+        "alternate-conformers:A/223",
+        "alternate-conformers:A/64",
+        "alternate-conformers:A/98",
+        "alternate-conformers:C/155",
+        "alternate-conformers:C/223",
+        "alternate-conformers:C/90",
+        "alternate-conformers:D/130",
+        "coordinate-incomplete-polymer-sequence:B",
+        "coordinate-incomplete-polymer-sequence:D",
+        "incomplete-or-duplicate-heavy-atoms:A/223",
+        "incomplete-or-duplicate-heavy-atoms:A/64",
+        "incomplete-or-duplicate-heavy-atoms:A/98",
+        "incomplete-or-duplicate-heavy-atoms:C/155",
+        "incomplete-or-duplicate-heavy-atoms:C/223",
+        "incomplete-or-duplicate-heavy-atoms:C/90",
+        "incomplete-or-duplicate-heavy-atoms:D/130",
+        "native-backbone-break:B/177->185",
+        "native-backbone-break:B/241->243",
+        "native-backbone-break:D/180->183",
+        "whole-source-residue-budget-exceeded-or-empty",
+        "source-preflight-rejected"
+      ],
+      "release_date": "2026-09-09",
+      "sequences": {
+        "A": "DVLMTQTPLSLPVSLGDQASISCRTSQSIVHSNGDTYLEWFLKKPGQSPKLLIYKVFNRFSGVPDRFSGSGSGTDFTLRISRVEAEDLGVYYCFQASHVPWTFGGGTKLEIKRADAAPTVSIFPPSSEQLTSGGASVVCFLNNFYPKDINVKWKIDGSERQNGVLNSWTDQDSKDSTYSMSSTLTLTKDEYERHNSYTCEATHKTSTSPIVKSFNR",
+        "B": "EVQLQQSGPELVKPGASVKISCKTSGYTFTEYTLHWVKQSHGKSLEWIGGIYPYDGSTKYNQKFKDRATVTVDRSSSTAFVALRSLTSEDSAVYYCARARPFFYAMDFWGQGTSITVSSAKTTPPSVYPLAPSSVTLGCLVKGYFPESVTVTWNSGSLSSSVHTFPALLQSGLYTMSSSVTVPSSTWPSTVTCSVAHPASSTTVDKKL",
+        "C": "SDVLMTQTPLSLPVSLGDQASISCRTSQSIVHSNGDTYLEWFLKKPGQSPKLLIYKVFNRFSGVPDRFSGSGSGTDFTLRISRVEAEDLGVYYCFQASHVPWTFGGGTKLEIKRADAAPTVSIFPPSSEQLTSGGASVVCFLNNFYPKDINVKWKIDGSERQNGVLNSWTDQDSKDSTYSMSSTLTLTKDEYERHNSYTCEATHKTSTSPIVKSFNRNE",
+        "D": "SEVQLQQSGPELVKPGASVKISCKTSGYTFTEYTLHWVKQSHGKSLEWIGGIYPYDGSTKYNQKFKDRATVTVDRSSSTAFVALRSLTSEDSAVYYCARARPFFYAMDFWGQGTSITVSSAKTTPPSVYPLAPGCGTGSSVTLGCLVKGYFPESVTVTWNSGSLSSSVHTFPALLQSGLYTMSSSVTVPSSTWPSQTVTCSVAHPASSTTVDKKLAK"
+      },
+      "source_id": "9WLC",
+      "source_sha256": "cd8e24701e06efd62be59496f2bcb935982afac5ad574285c80ef2feac94a4f3",
+      "status": "unsupported",
+      "stratum": "general-protein",
+      "supported": false,
+      "unobserved_terminal_tails": [
+        {
+          "chain": "A",
+          "declared_sequence_length": 220,
+          "first_observed_label_seq": 2,
+          "last_observed_label_seq": 217
+        },
+        {
+          "chain": "C",
+          "declared_sequence_length": 220,
+          "first_observed_label_seq": 1,
+          "last_observed_label_seq": 219
+        }
+      ],
+      "water_residues": 339
+    },
+    {
+      "chain_counts": {
+        "A": 142,
+        "B": 141
+      },
+      "entity_id": "9ZR2_1",
+      "protein_residues": 283,
+      "reasons": [
+        "coordinate-incomplete-polymer-sequence:B",
+        "native-backbone-break:B/95->98",
+        "source-preflight-rejected"
+      ],
+      "release_date": "2026-10-07",
+      "sequences": {
+        "A": "MSELRIELENAIKNLGIHDYRVDKPEQIVSEIKEIYVNGNPRTWWLSLKHRQYVFSYTDNSGYKNISQIVSKQLNESNVINKHIFLIADEDNEQIYVYNVPLNSLPEIIENCRYFEYYVADHELSWLICENDHGDLIVCSTI",
+        "B": "NMSELRIELENAIKNLGIHDYRVDKPEQIVSEIKEIYVNGNPRTWWLSLKHRQYVFSYTDNSGYKNISQIVSKQLNESNVINKHIFLIADEEQIYVYNVPLNSLPEIIENCRYFEYYVADHELSWLICENDHGDLIVCSTI"
+      },
+      "source_id": "9ZR2",
+      "source_sha256": "8874881316c99a0d7f6ef1e88d6bd7e365f2473d5e04833e0b7f037c1b14ef38",
+      "status": "unsupported",
+      "stratum": "general-protein",
+      "supported": false,
+      "unobserved_terminal_tails": [
+        {
+          "chain": "A",
+          "declared_sequence_length": 148,
+          "first_observed_label_seq": 6,
+          "last_observed_label_seq": 147
+        }
+      ],
+      "water_residues": 33
+    },
+    {
+      "chain_counts": {
+        "A": 138,
+        "B": 138,
+        "C": 138,
+        "D": 138
+      },
+      "entity_id": "9WZ1_1",
+      "protein_residues": 552,
+      "reasons": [
+        "incomplete-or-duplicate-heavy-atoms:A/13",
+        "whole-source-residue-budget-exceeded-or-empty",
+        "source-preflight-rejected"
+      ],
+      "release_date": "2026-10-07",
+      "sequences": {
+        "A": "MDVFYPVVVTKEDGTYYGCIVDFDKFEDGEINYYATFGDSMEEAVSNLRETLGLHLADFLDVRKKFPEPSKVEDVKLKENQYLYILSVDPVYEVAKVTNALKKKTLTIPVWLDILAQEKNLNFSQILQKALKKELGIE",
+        "B": "MDVFYPVVVTKEDGTYYGCIVDFDKFEDGEINYYATFGDSMEEAVSNLRETLGLHLADFLDVRKKFPEPSKVEDVKLKENQYLYILSVDPVYEVAKVTNALKKKTLTIPVWLDILAQEKNLNFSQILQKALKKELGIE",
+        "C": "MDVFYPVVVTKEDGTYYGCIVDFDKFEDGEINYYATFGDSMEEAVSNLRETLGLHLADFLDVRKKFPEPSKVEDVKLKENQYLYILSVDPVYEVAKVTNALKKKTLTIPVWLDILAQEKNLNFSQILQKALKKELGIE",
+        "D": "MDVFYPVVVTKEDGTYYGCIVDFDKFEDGEINYYATFGDSMEEAVSNLRETLGLHLADFLDVRKKFPEPSKVEDVKLKENQYLYILSVDPVYEVAKVTNALKKKTLTIPVWLDILAQEKNLNFSQILQKALKKELGIE"
+      },
+      "source_id": "9WZ1",
+      "source_sha256": "f47e83cb0fc4dcf704f9b30a504d19150e2735abfbe3c77b96a7fd94f58aa762",
+      "status": "unsupported",
+      "stratum": "general-protein",
+      "supported": false,
+      "unobserved_terminal_tails": [],
+      "water_residues": 506
+    },
+    {
+      "chain_counts": {
+        "A": 226,
+        "B": 211,
+        "G": 64,
+        "H": 226,
+        "I": 65,
+        "L": 211
+      },
+      "entity_id": "9NHV_1",
+      "protein_residues": 1003,
+      "reasons": [
+        "alternate-conformers:A/17",
+        "alternate-conformers:A/18",
+        "alternate-conformers:A/188",
+        "alternate-conformers:A/189",
+        "alternate-conformers:A/195",
+        "alternate-conformers:A/196",
+        "alternate-conformers:A/22",
+        "alternate-conformers:B/182",
+        "alternate-conformers:H/186",
+        "alternate-conformers:H/188",
+        "alternate-conformers:H/189",
+        "alternate-conformers:H/35",
+        "alternate-conformers:H/36",
+        "alternate-conformers:L/114",
+        "alternate-conformers:L/115",
+        "alternate-conformers:L/168",
+        "alternate-conformers:L/169",
+        "incomplete-or-duplicate-heavy-atoms:A/188",
+        "incomplete-or-duplicate-heavy-atoms:A/195",
+        "incomplete-or-duplicate-heavy-atoms:B/182",
+        "incomplete-or-duplicate-heavy-atoms:G/324",
+        "incomplete-or-duplicate-heavy-atoms:G/372",
+        "incomplete-or-duplicate-heavy-atoms:H/186",
+        "incomplete-or-duplicate-heavy-atoms:H/188",
+        "incomplete-or-duplicate-heavy-atoms:H/35",
+        "incomplete-or-duplicate-heavy-atoms:I/324",
+        "incomplete-or-duplicate-heavy-atoms:I/372",
+        "incomplete-or-duplicate-heavy-atoms:L/168",
+        "whole-source-residue-budget-exceeded-or-empty",
+        "source-preflight-rejected"
+      ],
+      "release_date": "2026-09-09",
+      "sequences": {
+        "A": "VQLVESGGGLVKPGGSLRLSCAASGFTFSLYSMTWVRQAPGKGLEWVSSISTSSSYIYYADSVKGRFTISRDNAKKTLYLHMNSLRAEDTAVYYCARDRGTALRNFEWSDASDIWGQGTKVTVSSASTKGPSVFPLAPSSKSTSGGTAALGCLVKDYFPEPVTVSWNSGALTSGVHTFPAVLQSSGLYSLSSVVTVPSSSLGTQTYICNVNHKPSNTKVDKKVEPK",
+        "B": "EIVLTQSPGTLSLSPGERATLSCRASQSLNSNYLAWYQQKPGQAPRLLIYGASSRATGIPDRFSGSGSGTDFTLTISRLEPEDFAVYYCQQYGNSHTFGQGTKVEIKRTVAAPSVFIFPPSDEQLKSGTASVVCLLNNFYPREAKVQWKVDNALQSGNSQESVTEQDSKDSTYSLSSTLTLSKADYEKHKVYACEVTQGTTSVTKSFNRGE",
+        "G": "EPSDKHIKEYLNKIQNSLSTEWSPCSVTCGNGIQVRIKPGSANKPKDELDYANDIEKKICKMEK",
+        "H": "VQLVESGGGLVKPGGSLRLSCAASGFTFSLYSMTWVRQAPGKGLEWVSSISTSSSYIYYADSVKGRFTISRDNAKKTLYLHMNSLRAEDTAVYYCARDRGTALRNFEWSDASDIWGQGTKVTVSSASTKGPSVFPLAPSSKSTSGGTAALGCLVKDYFPEPVTVSWNSGALTSGVHTFPAVLQSSGLYSLSSVVTVPSSSLGTQTYICNVNHKPSNTKVDKKVEPK",
+        "I": "EPSDKHIKEYLNKIQNSLSTEWSPCSVTCGNGIQVRIKPGSANKPKDELDYANDIEKKICKMEKC",
+        "L": "EIVLTQSPGTLSLSPGERATLSCRASQSLNSNYLAWYQQKPGQAPRLLIYGASSRATGIPDRFSGSGSGTDFTLTISRLEPEDFAVYYCQQYGNSHTFGQGTKVEIKRTVAAPSVFIFPPSDEQLKSGTASVVCLLNNFYPREAKVQWKVDNALQSGNSQESVTEQDSKDSTYSLSSTLTLSKADYEKHKVYACEVTQGTTSVTKSFNRGE"
+      },
+      "source_id": "9NHV",
+      "source_sha256": "a8596a5506b7f6833a083b51bca40fe1cf24cdce078894bc718e735f2f81fc36",
+      "status": "unsupported",
+      "stratum": "general-protein",
+      "supported": false,
+      "unobserved_terminal_tails": [
+        {
+          "chain": "A",
+          "declared_sequence_length": 229,
+          "first_observed_label_seq": 2,
+          "last_observed_label_seq": 227
+        },
+        {
+          "chain": "B",
+          "declared_sequence_length": 212,
+          "first_observed_label_seq": 1,
+          "last_observed_label_seq": 211
+        },
+        {
+          "chain": "G",
+          "declared_sequence_length": 73,
+          "first_observed_label_seq": 1,
+          "last_observed_label_seq": 64
+        },
+        {
+          "chain": "H",
+          "declared_sequence_length": 229,
+          "first_observed_label_seq": 2,
+          "last_observed_label_seq": 227
+        },
+        {
+          "chain": "I",
+          "declared_sequence_length": 73,
+          "first_observed_label_seq": 1,
+          "last_observed_label_seq": 65
+        },
+        {
+          "chain": "L",
+          "declared_sequence_length": 212,
+          "first_observed_label_seq": 1,
+          "last_observed_label_seq": 211
+        }
+      ],
+      "water_residues": 445
+    },
+    {
+      "chain_counts": {
+        "C": 63,
+        "D": 56,
+        "H": 226,
+        "L": 214
+      },
+      "entity_id": "9NIY_2",
+      "protein_residues": 559,
+      "reasons": [
+        "alternate-conformers:C/371",
+        "alternate-conformers:C/372",
+        "alternate-conformers:H/150",
+        "alternate-conformers:H/151",
+        "alternate-conformers:H/161",
+        "alternate-conformers:H/162",
+        "alternate-conformers:H/177",
+        "alternate-conformers:H/178",
+        "alternate-conformers:H/179",
+        "alternate-conformers:H/180",
+        "alternate-conformers:H/189",
+        "alternate-conformers:L/168",
+        "alternate-conformers:L/169",
+        "incomplete-or-duplicate-heavy-atoms:C/371",
+        "incomplete-or-duplicate-heavy-atoms:H/150",
+        "incomplete-or-duplicate-heavy-atoms:H/161",
+        "incomplete-or-duplicate-heavy-atoms:H/177",
+        "incomplete-or-duplicate-heavy-atoms:H/179",
+        "incomplete-or-duplicate-heavy-atoms:L/168",
+        "whole-source-residue-budget-exceeded-or-empty",
+        "source-preflight-rejected"
+      ],
+      "release_date": "2026-09-09",
+      "sequences": {
+        "C": "SDKHIKEYLNKIQNSLSTEWSPCSVTCGNGIQVRIKPGSANKPKDELDYANDIEKKICKMEKC",
+        "D": "TTYKLVINGKTLKGETTTEAVDAATAEKVFKQYANDNGVDGEWTYDDATKTFTVTE",
+        "H": "EVQLLESGGGLVQPGGSLRLSCAASGFTFSNHAMSWVRQAPGKGLQWVSAISGSGDRTYYADSVKGRFTISRDNSKNTLYLQMNSLRADDTAVYYCAKDQGGYSIYPLGMDVWGQGTTVTVSSASTKGPSVFPLAPSSKSTSGGTAALGCLVKDYFPEPVTVSWNSGALTSGVHTFPAVLQSSGLYSLSSVVTVPSSSLGTQTYICNVNHKPSNTKVDKKVEPKSC",
+        "L": "DIQMTQSPSSLSASVGDRVTITCQASQDISNYLIWYQQKPGKAPKLLIYDASNLETGVPSRFSGSGSGTHFTFTISSLQPEDIATYYCQQFDNLPLTFGGGTKVEIKRTVAAPSVFIFPPSDEQLKSGTASVVCLLNNFYPREAKVQWKVDNALQSGNSQESVTEQDSKDSTYSLSSTLTLSKADYEKHKVYACEVTHQGLSSPVTKSFNRGEC"
+      },
+      "source_id": "9NIY",
+      "source_sha256": "65e9e533a421978c4a529256490a26ce8a6504c7118e477f87459f6cecc509a8",
+      "status": "unsupported",
+      "stratum": "general-protein",
+      "supported": false,
+      "unobserved_terminal_tails": [
+        {
+          "chain": "C",
+          "declared_sequence_length": 73,
+          "first_observed_label_seq": 3,
+          "last_observed_label_seq": 65
+        }
+      ],
+      "water_residues": 474
+    },
+    {
+      "chain_counts": {
+        "A": 396,
+        "B": 400,
+        "C": 127,
+        "I": 126
+      },
+      "entity_id": "9T5Q_2",
+      "protein_residues": 1049,
+      "reasons": [
+        "coordinate-incomplete-polymer-sequence:A",
+        "coordinate-incomplete-polymer-sequence:B",
+        "incomplete-or-duplicate-heavy-atoms:A/797",
+        "incomplete-or-duplicate-heavy-atoms:B/797",
+        "incomplete-or-duplicate-heavy-atoms:B/806",
+        "incomplete-or-duplicate-heavy-atoms:C/-1",
+        "native-backbone-break:A/528->536",
+        "native-backbone-break:B/528->533",
+        "whole-source-residue-budget-exceeded-or-empty",
+        "source-preflight-rejected"
+      ],
+      "release_date": "2026-09-02",
+      "sequences": {
+        "A": "RQLNLNNEWTLDKLRQRLTKNAQDKLELHLFMLSGIPDTVFDLVELEVLKLELIPDVTIPPSIAQLTGLKELWLYHTAAKIEAPALAFLRENLRALHIKFTDIKEIPLWIYSLKTLEELHLTGNLSVIDGLRELKRLKVLRLKSNLSKLPQVVTDVGVHLQKLSINNEGTKLIVLNSLKKMVNLTELELIRCDLERIPHSIFSLHNLQEIDLKDNNLKTIEEIISFQHLHRLTCLKLWYNHIAYIPIQIGNLTNLERLYLNRNKIEKIPTQLFYCRKLRYLDLSHNNLTFLPADIGLLQNLQNLAVTANRIEALPPELFQCRKLRALHLGNNVLQSLPSRVGELTNLTQIELRGNRLECLPVELGECPLLKRSGLVVEEDLFSTLPPEVKERLWRA",
+        "B": "RQLNLNNEWTLDKLRQRLTKNAQDKLELHLFMLSGIPDTVFDLVELEVLKLELIPDVTIPPSIAQLTGLKELWLYHTAAKIEAPALAFLRENLRALHIKFTDIKEIPLWIYSLKTLEELHLTGNLSRYIVIDGLRELKRLKVLRLKSNLSKLPQVVTDVGVHLQKLSINNEGTKLIVLNSLKKMVNLTELELIRCDLERIPHSIFSLHNLQEIDLKDNNLKTIEEIISFQHLHRLTCLKLWYNHIAYIPIQIGNLTNLERLYLNRNKIEKIPTQLFYCRKLRYLDLSHNNLTFLPADIGLLQNLQNLAVTANRIEALPPELFQCRKLRALHLGNNVLQSLPSRVGELTNLTQIELRGNRLECLPVELGECPLLKRSGLVVEEDLFSTLPPEVKERLWRAD",
+        "C": "PSQVQLVESGGGSVQAGGSLRLSCAASGYIYQIEYLGWFRQAPGKEREGVAALATWNGQTYYADSVKGRFTVSLDNAKNTVYLQMNSLKPEDTALYYCAAAYEGDTSPLYYEEYGYWGQGTQVTVSA",
+        "I": "SQVQLVESGGGSVQAGGSLRLSCAASGYIYQIEYLGWFRQAPGKEREGVAALATWNGQTYYADSVKGRFTVSLDNAKNTVYLQMNSLKPEDTALYYCAAAYEGDTSPLYYEEYGYWGQGTQVTVSA"
+      },
+      "source_id": "9T5Q",
+      "source_sha256": "9a938e2b4d569b8f9da450ec01a1fc33675e310542a245ebeb9bc2554bae1034",
+      "status": "unsupported",
+      "stratum": "general-protein",
+      "supported": false,
+      "unobserved_terminal_tails": [
+        {
+          "chain": "C",
+          "declared_sequence_length": 128,
+          "first_observed_label_seq": 2,
+          "last_observed_label_seq": 128
+        },
+        {
+          "chain": "I",
+          "declared_sequence_length": 128,
+          "first_observed_label_seq": 3,
+          "last_observed_label_seq": 128
+        }
+      ],
+      "water_residues": 838
+    },
+    {
+      "chain_counts": {
+        "A": 128
+      },
+      "chain_map": {
+        "A": "A"
+      },
+      "entity_id": "9WW8_1",
+      "maximum_historical_target_overlap": 0.23595505617977527,
+      "observed_sequences": {
+        "A": "KAFHQLRQLFQQHTARWQHELPDLTKPQYAVMRAIADKPGIEQVALIEAAVSTKATLAEMLARMENRGLVRREHDAADKRRRFVWLTAEGEKVLAAAIPIGDSVDEEFLGRLSAEEQELFMQLVRKMM"
+      },
+      "preparation": {
+        "alternative_conformer_atoms_removed": 0,
+        "conformer_policy": "blank and A only; reject if any observed residue disappears or selected context is incomplete",
+        "hydrogens_removed": 1046,
+        "native_breaks": [],
+        "water_atoms_removed": 59
+      },
+      "protein_residues": 128,
+      "reasons": [],
+      "reference_sha256": "901aaba8ebc6ff3a61a7c9da27d48fdcc209f9a8bec34b5c607a5a2098fcc595",
+      "release_date": "2026-09-23",
+      "sequences": {
+        "A": "KAFHQLRQLFQQHTARWQHELPDLTKPQYAVMRAIADKPGIEQVALIEAAVSTKATLAEMLARMENRGLVRREHDAADKRRRFVWLTAEGEKVLAAAIPIGDSVDEEFLGRLSAEEQELFMQLVRKMM"
+      },
+      "source_id": "9WW8",
+      "source_sha256": "93771751083585df3db5191bc8961a5cf817a2495f9e2384b86ba1aaad235f73",
+      "status": "source-eligible",
+      "stratum": "general-protein",
+      "supported": true,
+      "target_chain": "A",
+      "unobserved_terminal_tails": [
+        {
+          "chain": "A",
+          "declared_sequence_length": 143,
+          "first_observed_label_seq": 6,
+          "last_observed_label_seq": 133
+        }
+      ],
+      "water_residues": 59
+    },
+    {
+      "chain_counts": {
+        "A": 224,
+        "B": 225,
+        "C": 117,
+        "D": 117
+      },
+      "entity_id": "9X27_1",
+      "protein_residues": 683,
+      "reasons": [
+        "native-backbone-break:A/64->68",
+        "native-backbone-break:B/64->68",
+        "noncanonical-or-undeclared-polymer-sequence:A",
+        "noncanonical-or-undeclared-polymer-sequence:B",
+        "nonprotein-or-noncanonical:A/CRO66",
+        "nonprotein-or-noncanonical:B/CRO66",
+        "nonstandard-covalent-protein-link:covale1",
+        "nonstandard-covalent-protein-link:covale2",
+        "nonstandard-covalent-protein-link:covale3",
+        "nonstandard-covalent-protein-link:covale4",
+        "whole-source-residue-budget-exceeded-or-empty",
+        "source-preflight-rejected"
+      ],
+      "release_date": "2026-10-07",
+      "sequences": {
+        "A": "SKGEELFTGVVPILVELDGDVNGHKFSVSGEGEGDATYGKLTLKFICTTGKLPVPWPTLVTTLVQCFSRYPDHMKQHDFFKSAMPEGYVQERTIFFKDDGNYKTRAEVKFEGDTLVNRIELKGIDFKEDGNILGHKLEYNYNSHNVYIMADKQKNGIKVNFKIRHNIEDGSVQLADHYQQNTPIGDGPVLLPDNHYLSTQSALSKDPNEKRDHMVLLEFVTAAG",
+        "B": "SKGEELFTGVVPILVELDGDVNGHKFSVSGEGEGDATYGKLTLKFICTTGKLPVPWPTLVTTLVQCFSRYPDHMKQHDFFKSAMPEGYVQERTIFFKDDGNYKTRAEVKFEGDTLVNRIELKGIDFKEDGNILGHKLEYNYNSHNVYIMADKQKNGIKVNFKIRHNIEDGSVQLADHYQQNTPIGDGPVLLPDNHYLSTQSALSKDPNEKRDHMVLLEFVTAAGI",
+        "C": "GGSVQLVESGGALVQPGGSLRLSCAASGFPVNRYSMKWYRQAPGREREWVAGMSSAGDRSSYEDSVRGRFTISRDDARNTVYLQMNSLRPEDTAVYYCNVNVGFEYWGQGTQVTVSS",
+        "D": "GGSVQLVESGGALVQPGGSLRLSCAASGFPVNRYSMKWYRQAPGREREWVAGMSSAGDRSSYEDSVRGRFTISRDDARNTVYLQMNSLRPEDTAVYYCNVNVGFEYWGQGTQVTVSS"
+      },
+      "source_id": "9X27",
+      "source_sha256": "6ebc6d06bbf06f55c08737973d3d1a38c15ccff0f89115a92f9c62b927b01fb4",
+      "status": "unsupported",
+      "stratum": "general-protein",
+      "supported": false,
+      "unobserved_terminal_tails": [],
+      "water_residues": 78
+    },
+    {
+      "chain_counts": {
+        "A": 185
+      },
+      "entity_id": "9YP0_1",
+      "protein_residues": 185,
+      "reasons": [
+        "alternate-conformers:A/180",
+        "alternate-conformers:A/184",
+        "alternate-conformers:A/5",
+        "incomplete-or-duplicate-heavy-atoms:A/180",
+        "incomplete-or-duplicate-heavy-atoms:A/184",
+        "incomplete-or-duplicate-heavy-atoms:A/5",
+        "native-backbone-break:A/99->101",
+        "noncanonical-or-undeclared-polymer-sequence:A",
+        "nonprotein-or-noncanonical:A/OCS100",
+        "nonstandard-covalent-protein-link:covale1",
+        "nonstandard-covalent-protein-link:covale2",
+        "source-preflight-rejected"
+      ],
+      "release_date": "2026-09-09",
+      "sequences": {
+        "A": "SEKAEYEKRAEGVKEIYEVYYETGKKLAEEYPDATVNLVNYDNSHFYLELETPEGTVIVDGDENQYPVVTKDGKKTVDEEAKEKLKEIAEKYDIDLSTTLIRSLAIVQAYWETRNGKAPVRLYTEGTGVPRQEVAEANLSGKIYKKDDKSKYLKVTGAWRPDGVLTLNLLDPEGNVLASYTIRYG"
+      },
+      "source_id": "9YP0",
+      "source_sha256": "4c9f2add54354c24d9079b5310673a4fb31b5546123cee6b4f6acdca8cb4daee",
+      "status": "unsupported",
+      "stratum": "general-protein",
+      "supported": false,
+      "unobserved_terminal_tails": [],
+      "water_residues": 54
+    },
+    {
+      "chain_counts": {
+        "A": 132,
+        "B": 132,
+        "C": 138,
+        "D": 132
+      },
+      "entity_id": "28RM_1",
+      "protein_residues": 534,
+      "reasons": [
+        "alternate-conformers:A/44",
+        "alternate-conformers:A/68",
+        "alternate-conformers:A/8",
+        "alternate-conformers:B/68",
+        "alternate-conformers:B/8",
+        "alternate-conformers:C/22",
+        "alternate-conformers:C/44",
+        "alternate-conformers:C/68",
+        "alternate-conformers:C/8",
+        "alternate-conformers:C/95",
+        "alternate-conformers:D/20",
+        "alternate-conformers:D/44",
+        "alternate-conformers:D/68",
+        "alternate-conformers:D/8",
+        "alternate-conformers:D/95",
+        "incomplete-or-duplicate-heavy-atoms:A/44",
+        "incomplete-or-duplicate-heavy-atoms:A/68",
+        "incomplete-or-duplicate-heavy-atoms:A/8",
+        "incomplete-or-duplicate-heavy-atoms:B/68",
+        "incomplete-or-duplicate-heavy-atoms:B/8",
+        "incomplete-or-duplicate-heavy-atoms:C/22",
+        "incomplete-or-duplicate-heavy-atoms:C/44",
+        "incomplete-or-duplicate-heavy-atoms:C/68",
+        "incomplete-or-duplicate-heavy-atoms:C/8",
+        "incomplete-or-duplicate-heavy-atoms:C/95",
+        "incomplete-or-duplicate-heavy-atoms:D/20",
+        "incomplete-or-duplicate-heavy-atoms:D/44",
+        "incomplete-or-duplicate-heavy-atoms:D/68",
+        "incomplete-or-duplicate-heavy-atoms:D/8",
+        "incomplete-or-duplicate-heavy-atoms:D/95",
+        "whole-source-residue-budget-exceeded-or-empty",
+        "source-preflight-rejected"
+      ],
+      "release_date": "2026-09-16",
+      "sequences": {
+        "A": "PHKSSLPEGIRPGTVLRIRGLVPPNASRFHVNLLCGEEQGSDAALHFNPRLDTSEVVFNSKEQGSWGREERGPGVPFQRGQPFEVLIIASDDGFKAVVGDAQYHHFRHRLPLARVRLVEVGGDVQLDSVRIF",
+        "B": "PHKSSLPEGIRPGTVLRIRGLVPPNASRFHVNLLCGEEQGSDAALHFNPRLDTSEVVFNSKEQGSWGREERGPGVPFQRGQPFEVLIIASDDGFKAVVGDAQYHHFRHRLPLARVRLVEVGGDVQLDSVRIF",
+        "C": "AMASNVPHKSSLPEGIRPGTVLRIRGLVPPNASRFHVNLLCGEEQGSDAALHFNPRLDTSEVVFNSKEQGSWGREERGPGVPFQRGQPFEVLIIASDDGFKAVVGDAQYHHFRHRLPLARVRLVEVGGDVQLDSVRIF",
+        "D": "PHKSSLPEGIRPGTVLRIRGLVPPNASRFHVNLLCGEEQGSDAALHFNPRLDTSEVVFNSKEQGSWGREERGPGVPFQRGQPFEVLIIASDDGFKAVVGDAQYHHFRHRLPLARVRLVEVGGDVQLDSVRIF"
+      },
+      "source_id": "28RM",
+      "source_sha256": "b4d9900ec1abb0fba83e525a32b54f5bccbc4fd273bce5dd9b7075495c361da3",
+      "status": "unsupported",
+      "stratum": "general-protein",
+      "supported": false,
+      "unobserved_terminal_tails": [
+        {
+          "chain": "A",
+          "declared_sequence_length": 139,
+          "first_observed_label_seq": 8,
+          "last_observed_label_seq": 139
+        },
+        {
+          "chain": "B",
+          "declared_sequence_length": 139,
+          "first_observed_label_seq": 8,
+          "last_observed_label_seq": 139
+        },
+        {
+          "chain": "C",
+          "declared_sequence_length": 139,
+          "first_observed_label_seq": 2,
+          "last_observed_label_seq": 139
+        },
+        {
+          "chain": "D",
+          "declared_sequence_length": 139,
+          "first_observed_label_seq": 8,
+          "last_observed_label_seq": 139
+        }
+      ],
+      "water_residues": 111
+    },
+    {
+      "chain_counts": {
+        "A": 274,
+        "B": 100,
+        "C": 9,
+        "D": 274,
+        "E": 100,
+        "F": 9
+      },
+      "entity_id": "9X7U_2",
+      "protein_residues": 766,
+      "reasons": [
+        "whole-source-residue-budget-exceeded-or-empty",
+        "source-preflight-rejected"
+      ],
+      "release_date": "2026-09-23",
+      "sequences": {
+        "A": "SHSMRYFFTSVSRPGRGEPRFIAVGYVDDTQFVRFDSDAASQRMEPRAPWIEQEGPEYWDGETRKVKAHSQTHRVDLGTLRGYYNQSEAGSHTVQRMYGCDVGSDWRFLRGYHQYAYDGKDYIALKEDLRSWTAADMAAQTTKHKWEAAHVAEQLRAYLEGTCVEWLRRYLENGKETLQRTDAPKTHMTHHAVSDHEATLRCWALSFYPAEITLTWQRDGEDQTQDTELVETRPAGDGTFQKWAAVVVPSGQEQRYTCHVQHEGLPKPLTLRWE",
+        "B": "MIQRTPKIQVYSRHPAENGKSNFLNCYVSGFHPSDIEVDLLKNGERIEKVEHSDLSFSKDWSFYLLYYTEFTPTEKDEYACRVNHVTLSQPKIVKWDRDM",
+        "C": "AMDLGIHKV",
+        "D": "SHSMRYFFTSVSRPGRGEPRFIAVGYVDDTQFVRFDSDAASQRMEPRAPWIEQEGPEYWDGETRKVKAHSQTHRVDLGTLRGYYNQSEAGSHTVQRMYGCDVGSDWRFLRGYHQYAYDGKDYIALKEDLRSWTAADMAAQTTKHKWEAAHVAEQLRAYLEGTCVEWLRRYLENGKETLQRTDAPKTHMTHHAVSDHEATLRCWALSFYPAEITLTWQRDGEDQTQDTELVETRPAGDGTFQKWAAVVVPSGQEQRYTCHVQHEGLPKPLTLRWE",
+        "E": "MIQRTPKIQVYSRHPAENGKSNFLNCYVSGFHPSDIEVDLLKNGERIEKVEHSDLSFSKDWSFYLLYYTEFTPTEKDEYACRVNHVTLSQPKIVKWDRDM",
+        "F": "AMDLGIHKV"
+      },
+      "source_id": "9X7U",
+      "source_sha256": "18948664b916417992867a1d8c1dc365f6545303ad446ececb54f16812b61851",
+      "status": "unsupported",
+      "stratum": "general-protein",
+      "supported": false,
+      "unobserved_terminal_tails": [
+        {
+          "chain": "A",
+          "declared_sequence_length": 276,
+          "first_observed_label_seq": 3,
+          "last_observed_label_seq": 276
+        },
+        {
+          "chain": "D",
+          "declared_sequence_length": 276,
+          "first_observed_label_seq": 3,
+          "last_observed_label_seq": 276
+        }
+      ],
+      "water_residues": 1259
+    },
+    {
+      "chain_counts": {
+        "A": 198,
+        "B": 191
+      },
+      "entity_id": "22ID_1",
+      "protein_residues": 389,
+      "reasons": [
+        "coordinate-incomplete-polymer-sequence:B",
+        "native-backbone-break:B/206->214",
+        "source-preflight-rejected"
+      ],
+      "release_date": "2026-09-23",
+      "sequences": {
+        "A": "RFDEYYRCYPIIMAPGAERPELNYGSKIFLPPSALEKVSKLHVQWPIMLELINGAKGRHTHAGVLEFVAEEGRAYIPQWMMQTLQLDVGDMIQVKTTSLELAQMVKLQPQDVNFLEISDPRAVLERVFRNFAALTKGDVFNFEYNDEIYEVAVLDVKPETEKMGVSMIETDVSVEFAPPVGDYNIQKESTLHLVLRLR",
+        "B": "RFDEYYRCYPIIMAPGAERPELNYGSKIFLPPSALEKVSKLHVQWPIMLELINGAKGRHTHAGVLEFVAEEGRAYIPQWMMQTLQLDVGDMIQVKTTSLELAQMVKLQPQDVNFLEISDPRAVLERVFRNFAALTKGDVFNFEYNDEIYEVAVLDVKPETEKMGVSMIETDVSVEFAPPVGDYLHLVLRLR"
+      },
+      "source_id": "22ID",
+      "source_sha256": "6934daea9716970418146ead5d91667cd940ffcb7c4c32641ce61d5e3e6081da",
+      "status": "unsupported",
+      "stratum": "general-protein",
+      "supported": false,
+      "unobserved_terminal_tails": [
+        {
+          "chain": "A",
+          "declared_sequence_length": 203,
+          "first_observed_label_seq": 4,
+          "last_observed_label_seq": 201
+        }
+      ],
+      "water_residues": 158
+    },
+    {
+      "chain_counts": {
+        "A": 119,
+        "B": 119,
+        "C": 119,
+        "D": 119,
+        "E": 119,
+        "F": 119
+      },
+      "entity_id": "9WLX_1",
+      "protein_residues": 714,
+      "reasons": [
+        "whole-source-residue-budget-exceeded-or-empty",
+        "source-preflight-rejected"
+      ],
+      "release_date": "2026-09-09",
+      "sequences": {
+        "A": "DPASMRTLLIRYILWRNDGDPSYYNDDFKKLILFDELVDDDDVCTLIKNMRMTLSDGPLLDRLNQPVNNVEDVKRMIAISAKVARDIGRRSEIRWEDSFTILFRMIEKYFDDLMTDLYG",
+        "B": "DPASMRTLLIRYILWRNDGDPSYYNDDFKKLILFDELVDDDDVCTLIKNMRMTLSDGPLLDRLNQPVNNVEDVKRMIAISAKVARDIGRRSEIRWEDSFTILFRMIEKYFDDLMTDLYG",
+        "C": "DPASMRTLLIRYILWRNDGDPSYYNDDFKKLILFDELVDDDDVCTLIKNMRMTLSDGPLLDRLNQPVNNVEDVKRMIAISAKVARDIGRRSEIRWEDSFTILFRMIEKYFDDLMTDLYG",
+        "D": "DPASMRTLLIRYILWRNDGDPSYYNDDFKKLILFDELVDDDDVCTLIKNMRMTLSDGPLLDRLNQPVNNVEDVKRMIAISAKVARDIGRRSEIRWEDSFTILFRMIEKYFDDLMTDLYG",
+        "E": "DPASMRTLLIRYILWRNDGDPSYYNDDFKKLILFDELVDDDDVCTLIKNMRMTLSDGPLLDRLNQPVNNVEDVKRMIAISAKVARDIGRRSEIRWEDSFTILFRMIEKYFDDLMTDLYG",
+        "F": "DPASMRTLLIRYILWRNDGDPSYYNDDFKKLILFDELVDDDDVCTLIKNMRMTLSDGPLLDRLNQPVNNVEDVKRMIAISAKVARDIGRRSEIRWEDSFTILFRMIEKYFDDLMTDLYG"
+      },
+      "source_id": "9WLX",
+      "source_sha256": "cee9feae649787371fd110ae66b72922f6aac05c1023c91e678c28f919fd9820",
+      "status": "unsupported",
+      "stratum": "general-protein",
+      "supported": false,
+      "unobserved_terminal_tails": [
+        {
+          "chain": "A",
+          "declared_sequence_length": 129,
+          "first_observed_label_seq": 9,
+          "last_observed_label_seq": 127
+        },
+        {
+          "chain": "B",
+          "declared_sequence_length": 129,
+          "first_observed_label_seq": 9,
+          "last_observed_label_seq": 127
+        },
+        {
+          "chain": "C",
+          "declared_sequence_length": 129,
+          "first_observed_label_seq": 9,
+          "last_observed_label_seq": 127
+        },
+        {
+          "chain": "D",
+          "declared_sequence_length": 129,
+          "first_observed_label_seq": 9,
+          "last_observed_label_seq": 127
+        },
+        {
+          "chain": "E",
+          "declared_sequence_length": 129,
+          "first_observed_label_seq": 9,
+          "last_observed_label_seq": 127
+        },
+        {
+          "chain": "F",
+          "declared_sequence_length": 129,
+          "first_observed_label_seq": 9,
+          "last_observed_label_seq": 127
+        }
+      ],
+      "water_residues": 320
+    }
+  ],
+  "protocol": {
+    "antibody_sequence_policy": "reject exact previously observed target sequence; framework homology allowed and disclosed; require paired IMGT H and K/L",
+    "criteria": "X-ray <=2.5A; whole canonical protein model <=512 residues; complete heavy atoms; no altlocs, internal breaks or nonwater heterogens; terminal tails disclosed",
+    "download_limit_per_stratum": 32,
+    "general_sequence_policy": "maximum historical/selected target overlap <=0.30 under existing >=80-residue/80%-coverage local-alignment rule",
+    "history_sha256": {
+      "cc89-known-sequence-holdout-v2.json": "e59f06789105eddf4cd66f855058b26aa2fe796b09ed38301738470e8690f0a3",
+      "clean-protein-expanded-sources.json": "134cd7f52270a8410f51107da3741910827ddd02e42de0200c3d04fb35336c11",
+      "cuda-calibration-sources.json": "d5b74cd8eeb4bd665e04c9ebadc9f76cfb0dba6fc71db3e954bb1a7589b494ed",
+      "known-sequence-antibody-sources-v1.json": "cd02cae23fd9f1f33b9048d999cbf5f9218943c55f5e35a5452376b56e83c592",
+      "relaxation-holdout-sources-blosum62.json": "3afd3a01de890ec93aa81f5d4a3f0fbb101e6160be97519dc4ba37203c33cab2"
+    },
+    "mask_lengths": [
+      5,
+      10
+    ],
+    "maximum_cif_bytes": 10000000,
+    "no_replacement": true,
+    "primary_endpoint": "existing geometry/source-preservation acceptance after unchanged CUDA refinement",
+    "producer_sha256": "51889a8edc180d70c75734a1895d667c1b7aef224490ec5d449b0b71fde25198",
+    "query_rows_per_stratum": 500,
+    "reference_rmsd": "secondary only; never a gate or selection criterion",
+    "release_window": [
+      "2026-09-01",
+      "2026-10-19"
+    ],
+    "seeds": [
+      7,
+      19
+    ],
+    "selected_source_limits": {
+      "antibody-cdr": 2,
+      "general-protein": 4
+    },
+    "selection": "RCSB 30%-identity representatives; SHA256 rank; new distinct source IDs; no outcome replacement",
+    "status": "fixed-before-source-screening-and-inference",
+    "training_membership_independently_attested": false
+  }
+}

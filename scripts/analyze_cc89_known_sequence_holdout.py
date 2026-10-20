@@ -5,18 +5,23 @@ from __future__ import annotations
 
 import argparse
 import csv
+import hashlib
 import json
 import shutil
 from collections import Counter
 from pathlib import Path
 from statistics import median
 
+import numpy as np
 from analyze_a100_relaxation import equivalent, outside_records
 from materialize_cc89_known_sequence_holdout import assert_mask_only, atom_records
 from run_cc89_known_sequence_holdout import ROOT, STAGES, evaluate, sha, verify_inventory
 
 from dvbfixer.model.diffusion.contract import DiffusionRequest, RunnerResult, SamplerTrace
-from dvbfixer.model.diffusion.protein_context import validate_context_source
+from dvbfixer.model.diffusion.protein_context import (
+    source_context_position_features,
+    validate_context_source,
+)
 from dvbfixer.model.diffusion.publication import read_published_bundle
 from dvbfixer.model.diffusion.validate import validate_runner_result
 
@@ -85,7 +90,9 @@ def audit_inputs(args, manifest):
         source_rows = {}
         for item in case["identity_mapping"]:
             source_rows[(item["chain"], item["mosaic_residue_number"], "")] = (item["chain"], item["original_residue_number"], item["original_insertion_code"])
-        if case["stratum"] == "general-protein":
+        if getattr(args, "source_pool", None) is not None:
+            original_reference = args.source_pool / case["source_id"] / "reference.pdb"
+        elif case["stratum"] == "general-protein":
             original_reference = args.clean_cohort / "cases" / f"{case['source_id'].lower()}-gap5-seed7" / "reference.pdb"
         else:
             original_reference = args.antibody_sources / case["source_id"] / "reference.pdb"
@@ -138,6 +145,12 @@ def validate_job(args, protocol, case, stage, job):
         trace = SamplerTrace.from_json((root / validated.candidate.sampler_trace_artifact.path).read_text())
         if "cc89-chain-phase=neutral-v1" not in trace.patch_identity or trace.device != "cuda" or not trace.fallback_disabled or trace.denoising_update_count != 500:
             raise ValueError("cc89 holdout trace lacks pinned CUDA/phase evidence")
+        if any(option.name == "cc89_position_features" and option.value == "source-physical-v1" for option in request.backend_options):
+            positions, chains = source_context_position_features(request)
+            digest = hashlib.sha256(np.asarray((positions, chains), dtype="<i8").tobytes()).hexdigest()
+            if ("cc89-position-features=source-physical-v1" not in trace.patch_identity
+                    or f"cc89-position-features-sha256={digest}" not in result.backend_provenance.deterministic_flags):
+                raise ValueError("cc89 holdout lacks matching physical source-position provenance")
         validate_background(root, request, validated.candidate.coordinate_artifact.path)
         row["coordinate_origin"] = "raw-retained" if stage == "refine" and validated.candidate.coordinate_artifact.path.startswith("raw/") else stage
         row["postprocessing_failures"] = validated.candidate.postprocessing_failures
@@ -204,6 +217,10 @@ def analyze(args):
     protocol = json.loads(args.protocol.read_text())
     if protocol["manifest_sha256"] != sha(args.manifest):
         raise ValueError("holdout manifest/protocol mismatch")
+    if getattr(args, "source_manifest", None) is not None:
+        if args.source_pool is None or manifest["source_manifest_sha256"] != sha(args.source_manifest):
+            raise ValueError("prospective source manifest/pool binding mismatch")
+        verify_inventory(args.source_pool, json.loads(args.source_manifest.read_text())["artifacts"])
     audit_inputs(args, manifest)
     cases = {c["case_id"]: c for c in manifest["cases"]}
     stages = {stage: [validate_job(args, protocol, cases[job["case_id"]], stage, job) for job in protocol["jobs"][stage]] for stage in STAGES}
@@ -242,6 +259,8 @@ def main():
     analysis.add_argument("--visual", type=Path)
     analysis.add_argument("--clean-cohort", type=Path, default=ROOT / ".artifacts/clean-protein-expanded-cohort-v2")
     analysis.add_argument("--antibody-sources", type=Path, default=ROOT / ".artifacts/known-sequence-antibody-sources-v1")
+    analysis.add_argument("--source-pool", type=Path)
+    analysis.add_argument("--source-manifest", type=Path)
     analysis.add_argument("--allow-partial", action="store_true")
     args = parser.parse_args()
     for name, value in vars(args).copy().items():

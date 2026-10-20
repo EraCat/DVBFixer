@@ -49,6 +49,11 @@ acceptance is 60/60, with zero detectable D-Cα and exact outside-gap atom-recor
 preservation. Geometry/source preservation is the primary outcome; reference RMSD
 is a secondary conformation descriptor, not an acceptance gate.
 See [the input audit](../research/cc89-input-representation-audit.md).
+The [source-disjoint prospective follow-up](../research/cc89-prospective-holdout.md)
+passes 4/4 on its first new general-protein source, 9WW8. A separate frozen
+8EK6/9Z0U/9LDN cohort now passes 20/20 after unchanged refinement. Combined
+prospective acceptance is 24/24 on four new sources, zero detectable D-Cα and
+exact outside-gap preservation; this remains a bounded source-disjoint check.
 
 **Expanded known-sequence holdout:** all 154 planned jobs on 13 X-ray source
 structures are complete and independently revalidated. Under the explicit

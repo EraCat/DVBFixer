@@ -93,6 +93,11 @@ best-effort summaries; consult `git log` for exact provenance.
 
 ### Fixed
 
+- Kept Doctor and diffusion contract imports usable without OpenMM by deferring
+  scientific execution re-exports; retained the public execution API and added
+  fresh-process import-boundary regression coverage.
+- Updated Vite/Vitest and vulnerable transitive GUI dependencies; the locked
+  dependency tree passes `npm audit` without lowering the CI audit threshold.
 - Deferred optional Torch/reinjection imports in Protenix research helpers so
   pure helpers can run in the core environment; made simulated Linux preflight
   tests independent of the actual host's cgroup RAM limits.

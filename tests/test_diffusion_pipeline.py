@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import hashlib
+import importlib
 import json
 from dataclasses import replace
 from pathlib import Path
@@ -39,6 +40,29 @@ from dvbfixer.model.diffusion.trace import build_sampler_trace
 
 FIXTURE = Path(__file__).parent / "fixtures" / "8cz8" / "8cz8_a_u.pdb"
 GENERATED_NUMBERS = tuple(str(number) for number in range(65, 70))
+
+
+def test_lazy_package_reexports_preserve_execution_api() -> None:
+    import dvbfixer.model.diffusion as diffusion
+
+    exports = {
+        "pipeline": (
+            "BUNDLE_INDEX_SCHEMA_VERSION", "DiffusionPipelineError",
+            "DiffusionPipelineOutcome", "publish_diffusion_bundle", "run_diffusion_pipeline",
+        ),
+        "scope": ("DiffusionScopeError", "ScopeAdmission", "assess_diffusion_scope"),
+        "validate": (
+            "CandidateValidation", "DiffusionValidationError", "ValidationThresholds",
+            "build_validated_result", "validate_runner_result",
+        ),
+    }
+    for module_name, names in exports.items():
+        module = importlib.import_module(f"dvbfixer.model.diffusion.{module_name}")
+        for name in names:
+            assert name in diffusion.__all__
+            assert getattr(diffusion, name) is getattr(module, name)
+    with pytest.raises(AttributeError, match="has no attribute"):
+        getattr(diffusion, "not_an_export")
 
 
 def _digest(data: bytes) -> str:

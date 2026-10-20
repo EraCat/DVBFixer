@@ -1,5 +1,8 @@
 """Backend-neutral contracts for experimental diffusion gap reconstruction."""
 
+from importlib import import_module
+from typing import TYPE_CHECKING, Any
+
 from dvbfixer.model.diffusion.benchmark import (
     REPEATABILITY_RMSD_MAX_ANGSTROM,
     BenchmarkOutcome,
@@ -56,13 +59,6 @@ from dvbfixer.model.diffusion.masks import (
     build_diffusion_masks,
     build_sequence_placement,
 )
-from dvbfixer.model.diffusion.pipeline import (
-    BUNDLE_INDEX_SCHEMA_VERSION,
-    DiffusionPipelineError,
-    DiffusionPipelineOutcome,
-    publish_diffusion_bundle,
-    run_diffusion_pipeline,
-)
 from dvbfixer.model.diffusion.preflight import (
     DIFFUSION_PREFLIGHT_SCHEMA_VERSION,
     DIFFUSION_PROFILES,
@@ -101,18 +97,51 @@ from dvbfixer.model.diffusion.sampler import (
     SamplingAblationMode,
     assess_sampler_conformance,
 )
-from dvbfixer.model.diffusion.scope import (
-    DiffusionScopeError,
-    ScopeAdmission,
-    assess_diffusion_scope,
-)
-from dvbfixer.model.diffusion.validate import (
-    CandidateValidation,
-    DiffusionValidationError,
-    ValidationThresholds,
-    build_validated_result,
-    validate_runner_result,
-)
+
+if TYPE_CHECKING:
+    from dvbfixer.model.diffusion.pipeline import (
+        BUNDLE_INDEX_SCHEMA_VERSION,
+        DiffusionPipelineError,
+        DiffusionPipelineOutcome,
+        publish_diffusion_bundle,
+        run_diffusion_pipeline,
+    )
+    from dvbfixer.model.diffusion.scope import (
+        DiffusionScopeError,
+        ScopeAdmission,
+        assess_diffusion_scope,
+    )
+    from dvbfixer.model.diffusion.validate import (
+        CandidateValidation,
+        DiffusionValidationError,
+        ValidationThresholds,
+        build_validated_result,
+        validate_runner_result,
+    )
+
+# Importing contracts or Doctor must not require an installed scientific stack.
+# Preserve the public re-exports, but load OpenMM-backed execution on demand.
+_LAZY_EXPORTS = {
+    "pipeline": (
+        "BUNDLE_INDEX_SCHEMA_VERSION", "DiffusionPipelineError",
+        "DiffusionPipelineOutcome", "publish_diffusion_bundle", "run_diffusion_pipeline",
+    ),
+    "scope": ("DiffusionScopeError", "ScopeAdmission", "assess_diffusion_scope"),
+    "validate": (
+        "CandidateValidation", "DiffusionValidationError", "ValidationThresholds",
+        "build_validated_result", "validate_runner_result",
+    ),
+}
+
+
+def __getattr__(name: str) -> Any:
+    for module_name, exports in _LAZY_EXPORTS.items():
+        if name in exports:
+            value = getattr(import_module(f"{__name__}.{module_name}"), name)
+            globals()[name] = value
+            return value
+    raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
+
 
 __all__ = [
     "DIFFUSION_PROVENANCE_SCHEMA_VERSION",

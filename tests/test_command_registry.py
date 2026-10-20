@@ -1,5 +1,8 @@
 from __future__ import annotations
 
+import subprocess
+import sys
+
 from dvbfixer.batch import OUTPUT_SUFFIXES
 from dvbfixer.cli import COMMANDS
 from dvbfixer.command_registry import (
@@ -84,6 +87,32 @@ def test_gui_schema_excludes_doctor_diffusion_options() -> None:
         "--diffusion-model",
         "--diffusion-timeout",
     }
+
+
+def test_doctor_and_diffusion_contracts_import_without_scientific_backends() -> None:
+    code = '''
+import importlib.abc
+import sys
+
+class BlockScientificImports(importlib.abc.MetaPathFinder):
+    def find_spec(self, fullname, path=None, target=None):
+        if fullname.split(".")[0] in {"openmm", "pdbfixer", "modeller", "torch"}:
+            raise AssertionError("unexpected scientific import: " + fullname)
+
+sys.meta_path.insert(0, BlockScientificImports())
+from dvbfixer.model.diffusion import DIFFUSION_SCHEMA_VERSION, RunnerLimits
+from dvbfixer.model.diffusion.contract import DiffusionRequest
+from dvbfixer.doctor import parse_args
+from scripts.gen_gui_spec import command_schema
+
+assert DIFFUSION_SCHEMA_VERSION > 0
+assert callable(DiffusionRequest)
+assert callable(RunnerLimits)
+assert parse_args([]).diffusion_model is None
+assert command_schema("doctor", "Installation diagnostics")["name"] == "doctor"
+assert "dvbfixer.model.diffusion.pipeline" not in sys.modules
+'''
+    subprocess.run([sys.executable, "-B", "-c", code], check=True, timeout=30)
 
 
 def test_component_commands_keep_gui_paths_workspace_scoped() -> None:

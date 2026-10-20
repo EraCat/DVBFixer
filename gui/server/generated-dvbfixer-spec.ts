@@ -445,12 +445,13 @@ export const GENERATED_COMMANDS = [
         "label": "Diffusion Context",
         "type": "select",
         "group": "Diffusion options",
-        "help": "Experimental shared protein context selection; engine capabilities are checked (default: none/legacy path)",
+        "help": "Protein context: auto uses local for Protpardelle CUDA and the legacy path for other profiles (default: auto)",
         "required": false,
         "repeatable": false,
         "multi": false,
-        "default": "none",
+        "default": "auto",
         "options": [
+          "auto",
           "none",
           "local",
           "full"
@@ -3546,12 +3547,13 @@ export const GENERATED_COMMANDS = [
         "label": "Diffusion Context",
         "type": "select",
         "group": "Backend",
-        "help": "Experimental shared protein conditioning policy; engine capabilities are checked (default: none)",
+        "help": "Protein context: auto uses local for Protpardelle CUDA and the legacy path for other profiles (default: auto)",
         "required": false,
         "repeatable": false,
         "multi": false,
-        "default": "none",
+        "default": "auto",
         "options": [
+          "auto",
           "none",
           "local",
           "full"
@@ -4485,12 +4487,13 @@ export const GENERATED_COMMANDS = [
         "label": "Diffusion Context",
         "type": "select",
         "group": "Model step",
-        "help": "Experimental shared protein conditioning policy; engine capabilities are checked (default: none)",
+        "help": "Protein context: auto uses local for Protpardelle CUDA and the legacy path for other profiles (default: auto)",
         "required": false,
         "repeatable": false,
         "multi": false,
-        "default": "none",
+        "default": "auto",
         "options": [
+          "auto",
           "none",
           "local",
           "full"

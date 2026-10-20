@@ -87,8 +87,8 @@ def parse_args(argv=None):
     model_grp.add_argument("--diffusion-timeout", type=float, default=900.0,
                            help="Diffusion runner timeout in seconds (default: 900)")
     model_grp.add_argument("--diffusion-work-parent", help="Existing parent for private diffusion workspaces")
-    model_grp.add_argument("--diffusion-context", choices=["none", "local", "full"], default="none",
-                           help="Experimental shared protein conditioning policy; engine capabilities are checked (default: none)")
+    model_grp.add_argument("--diffusion-context", choices=["auto", "none", "local", "full"], default="auto",
+                           help="Protein context: auto uses local for Protpardelle CUDA and the legacy path for other profiles (default: auto)")
     model_grp.add_argument("--diffusion-resume", action="store_true",
                            help="Reuse a verified model bundle matching the current scientific request")
     model_grp.add_argument("--fasta", help="FASTA file with complete sequence(s) for model step")

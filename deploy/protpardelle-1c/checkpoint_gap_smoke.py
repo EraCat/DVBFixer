@@ -932,6 +932,15 @@ def _run_staged(
     request = DiffusionRequest.from_json(request_path.read_text(encoding="utf-8"))
     _require_chain_phase_policy(request, device_name, chain_phase_policy)
     _require_position_feature_policy(request, device_name, position_feature_policy, chain_phase_policy)
+    cuda_production = any(option.name == "profile" and option.value == "protpardelle-1c-cuda" for option in request.backend_options)
+    if cuda_production:
+        from dvbfixer.model.diffusion.protein_context import validate_cuda_cc89_request
+
+        validate_cuda_cc89_request(request)
+        if (device_name.split(":", 1)[0] != "cuda" or steps != 500 or step_scale != 1.2
+                or s_churn != 200.0 or per_step_reinjection or replacement_guidance
+                or position_feature_policy != "source-physical-v1" or chain_phase_policy != "neutral-v1"):
+            raise ValueError("public CUDA cc89 requires its frozen numerical policy")
     if request.candidate_count != 1 or len(request.seeds) != 1:
         raise ValueError("cc89 benchmark requires one candidate")
     if any(
@@ -1257,6 +1266,7 @@ def _run_staged(
         output_dir / "sampler-trace.json",
         build_sampler_trace(
             profile=(
+                "protpardelle-1c-cuda" if cuda_production else
                 "protpardelle-1c-mps"
                 if production_profile
                 else "protpardelle-1c-research"

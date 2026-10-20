@@ -92,6 +92,21 @@ class DiffusionProfileMetadata:
 
 
 DIFFUSION_PROFILES = {
+    "protpardelle-1c-cuda": DiffusionProfileMetadata(
+        profile="protpardelle-1c-cuda",
+        status="experimental-local-context-accepted",
+        evidence_labels=("experimental", "source-disjoint-24-of-24", "no-per-step-reinjection"),
+        engine="Protpardelle-1c",
+        source_revision="ee378400f25b801fa481028000f9060183d7fb4c",
+        patch_identity="cc89-neutral-v1;source-physical-v1;callback-patch-v1",
+        expected_checkpoint_sha256="dfc9895b399ec4497bf6d646502168725f01dcbd55bc0b541fc3e3cc1f2f0483",
+        sampling_platform="Linux amd64 / NVIDIA CUDA 12.4",
+        refinement_platform="OpenMM CUDA",
+        runner_protocol_version=DIFFUSION_RUNNER_PROTOCOL_VERSION,
+        contract_schema_version=DIFFUSION_SCHEMA_VERSION,
+        fallback_policy="disabled; no profile, device, or MODELLER fallback",
+        training_membership_status="not-independently-attested",
+    ),
     "protenix-v1-cuda": DiffusionProfileMetadata(
         profile="protenix-v1-cuda",
         status="production-wrapper-frozen-cohort-replayed-deployment-pending",
@@ -145,6 +160,12 @@ class _RuntimeExpectation:
 
 
 _PROFILE_RUNTIME_EXPECTATIONS = {
+    "protpardelle-1c-cuda": _RuntimeExpectation(
+        platform="linux", architectures=frozenset({"x86_64", "amd64"}),
+        python_version="3.12", framework_version="2.6.0",
+        device_prefix="cuda:",
+        environment_identity="linux-amd64;cc89-cuda-v1;python=3.12;torch=2.6.0+cu124;refinement=openmm-8.6.1-cuda",
+    ),
     "protenix-v1-cuda": _RuntimeExpectation(
         platform="linux",
         architectures=frozenset({"x86_64", "amd64"}),
@@ -517,7 +538,7 @@ def invoke_runner_preflight(
         (report.facts.python_version == runtime.python_version, AdapterPreflightCode.INCOMPATIBLE_PYTHON, "runner Python version is incompatible"),
         (report.facts.environment_identity == runtime.environment_identity, AdapterPreflightCode.INCOMPATIBLE_ENVIRONMENT, "runner environment identity is incompatible"),
         (report.facts.framework_version == runtime.framework_version, AdapterPreflightCode.INCOMPATIBLE_FRAMEWORK, "runner framework version is incompatible"),
-        (report.facts.accelerator_available, AdapterPreflightCode.MISSING_CUDA if profile == "protenix-v1-cuda" else AdapterPreflightCode.MISSING_MPS, "runner accelerator is unavailable"),
+        (report.facts.accelerator_available, AdapterPreflightCode.MISSING_CUDA if runtime.device_prefix.startswith("cuda") else AdapterPreflightCode.MISSING_MPS, "runner accelerator is unavailable"),
         (report.facts.effective_device.startswith(runtime.device_prefix), AdapterPreflightCode.INCOMPATIBLE_DEVICE, "runner effective device is incompatible"),
         (report.facts.sampling_platform == metadata.sampling_platform, AdapterPreflightCode.INCOMPATIBLE_PLATFORM, "runner sampling platform is incompatible"),
         (report.facts.fallback_disabled, AdapterPreflightCode.FALLBACK_ENABLED, "runner fallback is not disabled"),

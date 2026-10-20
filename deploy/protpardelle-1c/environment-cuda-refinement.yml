@@ -1,0 +1,20 @@
+name: dvbfixer-protpardelle-cuda-refinement
+channels:
+  - conda-forge
+dependencies:
+  - python=3.13.15
+  - pip=25.2
+  - pip:
+      - numpy==2.4.6
+      - scipy==1.18.1
+      - biopython==1.88
+      - MDAnalysis==2.10.0
+      - psutil==7.2.2
+      - openmm==8.6.1
+      - openmm-cuda-12==8.6.1
+      - nvidia-cuda-cupti-cu12==12.2.142
+      - nvidia-cuda-nvcc-cu12==12.2.140
+      - nvidia-cuda-nvrtc-cu12==12.2.140
+      - nvidia-cuda-runtime-cu12==12.2.140
+      - nvidia-cufft-cu12==11.0.8.103
+      - nvidia-nvjitlink-cu12==12.2.140

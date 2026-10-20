@@ -5,6 +5,11 @@ combinations rechecked: 16 CDR and 44 general-protein outcomes. All 60 pass the
 existing geometry/source-preservation gates after unchanged refinement. This is
 not independent confirmatory acceptance.
 
+Subsequent integration: the bounded corrected mode now ships as the experimental
+public [`protpardelle-1c-cuda` profile](../../deploy/protpardelle-1c/README.md#public-linuxnvidia-cuda-profile).
+The historical diagnostic controls below remain research evidence; the public
+profile admits one CYS-free internal 5–10-residue gap and its fixed local policy.
+
 ## Corrected interpretation
 
 The earlier full-input CDR median of 14.50 Å was not a valid general assessment

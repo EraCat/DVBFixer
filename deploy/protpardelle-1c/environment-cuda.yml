@@ -1,0 +1,31 @@
+name: dvbfixer-protpardelle-cuda
+channels:
+  - conda-forge
+dependencies:
+  - python=3.12.14
+  - pip=25.2
+  - numpy=2.5.3
+  - scipy=1.18.1
+  - openmm=8.6.1
+  - pip:
+      - --extra-index-url https://download.pytorch.org/whl/cu124
+      - torch==2.6.0+cu124
+      - biopython==1.85
+      - biotite==1.7.1
+      - MDAnalysis==2.10.0
+      - psutil==7.2.2
+      - dm-tree==0.1.10
+      - einops==0.8.2
+      - huggingface-hub==1.33.0
+      - hydra-core==1.3.7
+      - jaxtyping==0.3.11
+      - ml-collections==1.1.0
+      - modelcif==1.8
+      - omegaconf==2.3.1
+      - pandas==3.0.6
+      - ProDy==2.6.1
+      - PyYAML==6.0.3
+      - tqdm==4.70.1
+      - transformers==5.17.0
+      - typer==0.27.2
+      - wandb==0.30.0

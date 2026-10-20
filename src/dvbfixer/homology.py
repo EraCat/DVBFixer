@@ -651,8 +651,8 @@ def parse_args(argv=None):
                          help='Parent directory for the private runner workspace')
     backend.add_argument('--diffusion-resume', action='store_true',
                          help='Reuse a verified bundle matching the current mosaic request')
-    backend.add_argument('--diffusion-context', choices=['none', 'local', 'full'], default='none',
-                         help='Experimental shared protein conditioning policy; engine capabilities are checked (default: none)')
+    backend.add_argument('--diffusion-context', choices=['auto', 'none', 'local', 'full'], default='auto',
+                         help='Protein context: auto uses local for Protpardelle CUDA and the legacy path for other profiles (default: auto)')
     backend.add_argument('--diffusion-regenerate-covered', action='store_true',
                          help='Opt in to bounded regeneration of covered substitutions and short uncovered windows')
     backend.add_argument('--diffusion-edit-flanks', type=int, choices=range(1, 6), default=1,

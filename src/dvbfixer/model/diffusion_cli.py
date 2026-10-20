@@ -40,7 +40,7 @@ from dvbfixer.model.diffusion.masks import (
 )
 from dvbfixer.model.diffusion.pipeline import run_diffusion_pipeline
 from dvbfixer.model.diffusion.preflight import invoke_runner_preflight
-from dvbfixer.model.diffusion.runner import RunnerLimits
+from dvbfixer.model.diffusion.runner import DiffusionRunnerError, RunnerLimits
 from dvbfixer.model.diffusion.runtime import (
     DiffusionRuntimeError,
     resolve_diffusion_runtime,
@@ -428,6 +428,11 @@ def run_diffusion_model(args: argparse.Namespace) -> None:
 
     with ExitStack() as resources:
         model_input = input_path
+        if runtime.profile == "protpardelle-1c-cuda" and any(
+            line.startswith("HETATM") and line[17:20].strip() not in {"HOH", "WAT", "DOD"}
+            for line in input_path.read_text(encoding="utf-8").splitlines()
+        ):
+            raise DiffusionCliError("Protpardelle CUDA requires canonical protein input without nonwater heterogens")
         if frozen_request is None and not args.keep_heterogens:
             from dvbfixer.model.pipeline import _strip_hetatm_lines
 
@@ -463,8 +468,21 @@ def run_diffusion_model(args: argparse.Namespace) -> None:
             )
         else:
             request = frozen_request
-        context_mode = getattr(args, "diffusion_context", "none")
-        if context_mode != "none":
+        context_mode = getattr(args, "diffusion_context", "auto")
+        if runtime.profile == "protpardelle-1c-cuda":
+            from dvbfixer.model.diffusion.protein_context import (
+                ProteinContextError,
+                prepare_cuda_cc89_request,
+                validate_cuda_cc89_request,
+            )
+
+            try:
+                if frozen_request is not None:
+                    validate_cuda_cc89_request(request)
+                request = prepare_cuda_cc89_request(request, model_input.read_bytes(), context_mode)
+            except ProteinContextError as exc:
+                raise DiffusionCliError(f"unsupported CUDA cc89 input: {exc}") from exc
+        elif context_mode not in {"none", "auto"}:
             from dvbfixer.model.diffusion.contract import ProteinContextPolicy
             from dvbfixer.model.diffusion.protein_context import (
                 ProteinContextError,
@@ -503,7 +521,7 @@ def run_diffusion_model(args: argparse.Namespace) -> None:
             )
             print(f"Reused verified diffusion bundle {output_path} ({published.status})")
             return
-        if runtime.model == "protpardelle" and len(request.target_sequences) > 1:
+        if runtime.model == "protpardelle" and runtime.profile != "protpardelle-1c-cuda" and len(request.target_sequences) > 1:
             sampled_chains = tuple(dict.fromkeys(gap.chain for gap in request.gaps))
             print(
                 "WARNING: Protpardelle will reconstruct gaps using "
@@ -530,14 +548,19 @@ def run_diffusion_model(args: argparse.Namespace) -> None:
             "--profile",
             runtime.profile,
         )
-        outcome = run_diffusion_pipeline(
-            request,
-            command,
-            source_root=source_root,
-            work_parent=work_parent,
-            destination_bundle=output_path,
-            limits=RunnerLimits(timeout_seconds=args.diffusion_timeout),
-        )
+        try:
+            outcome = run_diffusion_pipeline(
+                request,
+                command,
+                source_root=source_root,
+                work_parent=work_parent,
+                destination_bundle=output_path,
+                limits=RunnerLimits(timeout_seconds=args.diffusion_timeout),
+            )
+        except DiffusionRunnerError as exc:
+            if exc.diagnostics and exc.diagnostics.stderr:
+                print(exc.diagnostics.stderr)
+            raise DiffusionCliError(str(exc)) from exc
         if outcome.published_bundle is None:
             raise DiffusionCliError(
                 outcome.message or f"diffusion ended with {outcome.status.value}"

@@ -115,6 +115,14 @@ describe('homology project materialization', () => {
     expect(() => parseFasta('>A\nAA\n>A\nGG\n')).toThrow(/unique/)
   })
 
+  it('preserves profile-default and explicit disabled context choices', () => {
+    for (const mode of ['auto', 'none']) {
+      expect(validatedModelArgs({ '--backend': 'diffusion', '--diffusion-model': 'protpardelle', '--diffusion-context': mode })).toEqual([
+        '--backend', 'diffusion', '--diffusion-seed', '7', '--diffusion-model', 'protpardelle', '--diffusion-context', mode,
+      ])
+    }
+  })
+
   it('extracts target sequences from PDB SEQRES and mmCIF atom_site records', () => {
     const root = temporaryDirectory()
     const pdb = path.join(root, 'target.pdb')

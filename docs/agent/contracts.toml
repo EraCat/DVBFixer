@@ -335,7 +335,7 @@ producers = [
 ]
 consumers = [
   "src/dvbfixer/model/pipeline.py::main",
-  "explicit Protenix CUDA and Protpardelle MPS protocol runners",
+  "explicit Protenix CUDA and Protpardelle CUDA and MPS protocol runners",
   "downstream minimize through the published candidate DatRecord",
 ]
 identity_keys = [
@@ -356,9 +356,10 @@ test_files = [
   "tests/test_diffusion_runner_refinement.py",
   "tests/test_diffusion_scope.py",
   "tests/test_diffusion_validate.py",
+  "tests/test_cc89_cuda_profile.py",
 ]
 known_divergences = [
   "Model, sequential batch/resume, ZBS, Homology, and GUI expose scoped experimental diffusion; wider scientific strata require separate acceptance.",
   "Atomic directory rename assumes one local filesystem; durability still depends on host filesystem semantics.",
-  "Long gaps 13-50 and adaptive/rich cc89 context remain research-only; geometry acceptance alone does not establish withheld-coordinate accuracy. Apple MPS expansion is deferred until CUDA implementation completes.",
+  "CUDA cc89 admits one CYS-free internal 5-10 gap with its frozen local/physical-position policy and isolated CUDA refinement. Long gaps, adaptive/full-context cc89 and joint gap-bearing chains remain research-only. Geometry acceptance alone does not establish withheld-coordinate accuracy; MPS expansion is separate.",
 ]

@@ -5,6 +5,8 @@ from __future__ import annotations
 import hashlib
 from pathlib import Path
 
+import numpy as np
+
 from dvbfixer.model.diffusion.contract import (
     DIFFUSION_SCHEMA_VERSION,
     ArtifactReference,
@@ -152,6 +154,17 @@ def validate_sampler_trace_context(
     )
     if expected_profile is not None and trace.profile != expected_profile:
         raise DiffusionContractError("sampler trace changed the requested profile")
+    if expected_profile == "protpardelle-1c-cuda":
+        from dvbfixer.model.diffusion.protein_context import (
+            source_context_position_features,
+            validate_cuda_cc89_request,
+        )
+
+        validate_cuda_cc89_request(request)
+        positions, chains = source_context_position_features(request)
+        digest = hashlib.sha256(np.asarray((positions, chains), dtype="<i8").tobytes()).hexdigest()
+        if f"cc89-position-features-sha256={digest}" not in provenance.deterministic_flags:
+            raise DiffusionContractError("CUDA cc89 source-position provenance mismatch")
     if (
         trace.engine_repository != provenance.engine_repository
         or trace.engine_revision != provenance.engine_revision

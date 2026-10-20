@@ -23,9 +23,17 @@ class Backend:
     engine_python_subdir: str
     kalign_sha256: str | None = None
     mps: bool = False
+    cuda_cc89: bool = False
 
 
 BACKENDS = {
+    "protpardelle-cuda": Backend(
+        "deploy/protpardelle-1c/cuda_runner.py",
+        "dvbfixer-diffusion-protpardelle-1c-cuda",
+        "dfc9895b399ec4497bf6d646502168725f01dcbd55bc0b541fc3e3cc1f2f0483",
+        "src",
+        cuda_cc89=True,
+    ),
     "protpardelle": Backend(
         "deploy/protpardelle-1c/production_runner.py",
         "dvbfixer-diffusion-protpardelle-1c-mps",
@@ -57,6 +65,8 @@ def main() -> None:
     )
     parser.add_argument("model", choices=tuple(BACKENDS))
     parser.add_argument("checkpoint", type=Path)
+    parser.add_argument("--refinement-python", type=Path,
+                        help="Separate Python 3.13/OpenMM CUDA runtime required by Protpardelle CUDA")
     parser.add_argument(
         "--engine-root",
         type=Path,
@@ -70,7 +80,7 @@ def main() -> None:
     args = parser.parse_args()
 
     repository = Path(__file__).resolve().parent.parent
-    backend = BACKENDS[args.model]
+    backend = BACKENDS["protpardelle-cuda" if args.model == "protpardelle" and sys.platform == "linux" else args.model]
     runner = repository / backend.runner
     checkpoint = args.checkpoint.expanduser().resolve()
     if not runner.is_file():
@@ -109,6 +119,14 @@ def main() -> None:
                 "unset PYTORCH_MPS_HIGH_WATERMARK_RATIO PYTORCH_MPS_LOW_WATERMARK_RATIO",
             )
         )
+    extra_arguments = ()
+    if backend.cuda_cc89:
+        if args.refinement_python is None:
+            parser.error("--refinement-python is required for Protpardelle CUDA")
+        refinement_python = args.refinement_python.expanduser().absolute()
+        if not refinement_python.is_file() or not os.access(refinement_python, os.X_OK):
+            parser.error("refinement Python must be executable")
+        extra_arguments = ("--refinement-python", str(refinement_python))
     command = " ".join(
         shlex.quote(value)
         for value in (
@@ -116,6 +134,7 @@ def main() -> None:
             str(runner),
             "--checkpoint",
             str(checkpoint),
+            *extra_arguments,
         )
     )
     contents = "\n".join(("#!/bin/sh", *environment, f'exec {command} "$@"', ""))

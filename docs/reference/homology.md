@@ -13,7 +13,7 @@ usage: dvbfixer homology [-h] [--template TEMPLATE]
                          [--diffusion-timeout DIFFUSION_TIMEOUT]
                          [--diffusion-work-parent DIFFUSION_WORK_PARENT]
                          [--diffusion-resume]
-                         [--diffusion-context {none,local,full}]
+                         [--diffusion-context {auto,none,local,full}]
                          [--diffusion-regenerate-covered]
                          [--diffusion-edit-flanks {1,2,3,4,5}]
                          [--alignment ALIGNMENT] [--salign] [-n NUM_MODELS]
@@ -56,9 +56,9 @@ Backend:
                         Parent directory for the private runner workspace
   --diffusion-resume    Reuse a verified bundle matching the current mosaic
                         request
-  --diffusion-context {none,local,full}
-                        Experimental shared protein conditioning policy;
-                        engine capabilities are checked (default: none)
+  --diffusion-context {auto,none,local,full}
+                        Protein context: auto uses local for Protpardelle CUDA
+                        and the legacy path for other profiles (default: auto)
   --diffusion-regenerate-covered
                         Opt in to bounded regeneration of covered
                         substitutions and short uncovered windows

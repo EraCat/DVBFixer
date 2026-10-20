@@ -34,6 +34,12 @@ class _RuntimeSpec:
 _RUNTIME_SPECS = (
     _RuntimeSpec(
         model="protpardelle",
+        profile="protpardelle-1c-cuda",
+        executable="dvbfixer-diffusion-protpardelle-1c-cuda",
+        platforms=(("linux", "x86_64"), ("linux", "amd64")),
+    ),
+    _RuntimeSpec(
+        model="protpardelle",
         profile="protpardelle-1c-mps",
         executable="dvbfixer-diffusion-protpardelle-1c-mps",
         platforms=(("darwin", "arm64"),),

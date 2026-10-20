@@ -5,6 +5,69 @@ protocol runner for Protpardelle-1c revision
 `ee378400f25b801fa481028000f9060183d7fb4c`. MODELLER remains the default and
 production-supported backend.
 
+## Public Linux/NVIDIA CUDA profile
+
+`protpardelle-1c-cuda` is available through `model`, mosaic-first `homology`,
+their existing batch/ZBS adapters, and the GUI's **Protpardelle** selection.
+It supports **one CYS-free internal gap of 5–10 residues**, a whole canonical-protein
+source of at most **512 residues**, and the fixed source-only local context
+policy. Surrounding protein chains are retained. Terminal OXT stays preserved-only;
+nonwater heterogens, terminal generation, joint/multiple gaps, adaptive context,
+and full-complex neural sampling are outside this profile.
+
+`--diffusion-context auto` is the CLI/GUI default: local for this profile, legacy
+behavior for existing MPS/Protenix profiles. Explicit `none` or `full` is rejected
+by CUDA cc89 rather than silently changed. Sampling uses 500 native-conditioning
+updates, neutral denoiser chain phase, physical source sequence positions, and
+the unchanged generated-only CUDA refinement in a separate process. All observed
+atoms outside the gap remain fixed. There is no CPU/MPS/MODELLER fallback.
+
+Create the two environments separately from core DVBFixer:
+
+```bash
+micromamba create -f deploy/protpardelle-1c/environment-cuda.yml
+micromamba create -f deploy/protpardelle-1c/environment-cuda-refinement.yml
+git clone https://github.com/ProteinDesignLab/protpardelle-1c.git "$PROTPARDELLE_ROOT"
+git -C "$PROTPARDELLE_ROOT" checkout ee378400f25b801fa481028000f9060183d7fb4c
+git -C "$PROTPARDELLE_ROOT" apply --recount \
+  "$DVBFIXER_ROOT/deploy/protpardelle-1c/per-step-callback.patch"
+```
+
+The callback is disabled by the public sampling policy; its pinned source matches
+the audited CUDA environment. Use a clean checkout without Python bytecode or extra
+modules. The launcher disables bytecode writes. Keep the operator-provided cc89
+checkpoint beside `model_params/configs/cc89.yaml`; use its digest from the table
+below. Set `REFINEMENT_PYTHON` to the **venv/environment path**, not the resolved
+target of a Python symlink. Register from the sampling environment:
+
+```bash
+micromamba run -n dvbfixer-protpardelle-cuda python \
+  "$DVBFIXER_ROOT/scripts/install_diffusion_backend.py" protpardelle "$CHECKPOINT" \
+  --engine-root "$PROTPARDELLE_ROOT" --refinement-python "$REFINEMENT_PYTHON"
+
+dvbfixer model gapped.pdb --fasta target.fasta --backend diffusion \
+  --diffusion-model protpardelle -o repaired_bundle
+
+dvbfixer homology target.fasta --template-plan template-plan.json \
+  --backend diffusion --diffusion-model protpardelle -o repaired
+```
+
+The installer supplies core DVBFixer's source via `PYTHONPATH`; do not install
+core dependencies into these environments. The sampling environment's NumPy 2.5
+is isolated on Python 3.12 and does not change core's NumPy `<2.5` constraint.
+The refiner isolates PATH and CUDA library discovery from the host environment.
+Preflight verifies checkpoint/config/source identity, PyTorch CUDA and an actual
+OpenMM CUDA force kernel before sampling. Bundles require a filesystem supporting
+atomic no-replace directory publication. The integration acceptance passed on
+native `/tmp`; the current workspace filesystem rejected that atomic operation.
+
+Public acceptance: **5/5 candidates across four model/Homology workflows**,
+including two seeds in one model request and digest-verified resume. All pass
+independent geometry/source checks with zero D-Cα and byte-identical outside-gap
+atom records. See [the acceptance report](../../docs/research/cc89-public-cuda-acceptance.md).
+These are public-integration checks on previously studied sources, not a new
+scientific holdout. MPS behavior and the default MODELLER backend are unchanged.
+
 ## CUDA rich-context chain-phase diagnosis
 
 The private CUDA adapter accepts explicit
@@ -12,8 +75,8 @@ The private CUDA adapter accepts explicit
 `BackendOption("cc89_chain_phase", "neutral-v1")`. This neutralizes the cc89
 denoiser's extra rotary chain-phase term while retaining the sampler's chain
 indices, residue-index breaks, motif entities, and source mappings. The default
-is `native`; this research intervention is not enabled for MPS or exposed as a
-public profile.
+is `native`; MPS remains unchanged, while the public CUDA profile above explicitly
+requires the neutral policy.
 
 On the frozen three-case/six-output diagnostic cohort, the change reduces raw
 gap RMSD from 11–20 Å to 0.35–0.89 Å, and unchanged generated-only CUDA refinement

@@ -13,8 +13,10 @@ from dvbfixer.domain.structure_identity import allocate_chain_ids
 from dvbfixer.model.diffusion.contract import (
     ArtifactReference,
     AtomIdentity,
+    BackendOption,
     ContextCoordinate,
     DiffusionRequest,
+    GapKind,
     ProteinContextEvidence,
     ProteinContextPlan,
     ProteinContextPolicy,
@@ -35,6 +37,65 @@ from dvbfixer.model.diffusion.scope import (
 
 class ProteinContextError(ValueError):
     """Required context is incomplete, incompatible, or exceeds the engine budget."""
+
+
+CUDA_CC89_PROFILE = "protpardelle-1c-cuda"
+CUDA_CC89_CONTEXT = ProteinContextPolicy(
+    name="atom37-terminal-preservation-v1", target_flanks=8,
+    same_chain_spatial=True, partner_mode="local",
+)
+CUDA_CC89_OPTIONS = (
+    BackendOption("cc89_chain_phase", "neutral-v1"),
+    BackendOption("cc89_position_features", "source-physical-v1"),
+)
+
+
+def is_cuda_cc89(request: DiffusionRequest) -> bool:
+    return any(option.name == "profile" and option.value == CUDA_CC89_PROFILE for option in request.backend_options)
+
+
+def prepare_cuda_cc89_request(request: DiffusionRequest, pdb: bytes, context_mode: str) -> DiffusionRequest:
+    """Apply the public CUDA profile's declared local context, never a fallback."""
+    if context_mode not in {"auto", "local"}:
+        raise ProteinContextError("protpardelle-1c-cuda requires --diffusion-context auto|local")
+    if request.protein_context is None:
+        request = select_protein_context(request, pdb, CUDA_CC89_CONTEXT)
+    options = list(request.backend_options)
+    for required in CUDA_CC89_OPTIONS:
+        existing = next((option for option in options if option.name == required.name), None)
+        if existing is not None and existing != required:
+            raise ProteinContextError("CUDA cc89 numerical policy conflicts with the frozen profile")
+        if existing is None:
+            options.append(required)
+    request = replace(request, backend_options=tuple(options))
+    validate_cuda_cc89_request(request)
+    validate_context_source(request, pdb)
+    return request
+
+
+def validate_cuda_cc89_request(request: DiffusionRequest) -> None:
+    """Public scope is narrower than the research adapter's tensor capacity."""
+    if not is_cuda_cc89(request):
+        raise ProteinContextError("CUDA cc89 request must declare its profile")
+    if len(request.gaps) != 1 or request.gaps[0].gap_kind is not GapKind.INTERNAL:
+        raise ProteinContextError("CUDA cc89 supports one internal gap per request")
+    if not 5 <= len(request.gaps[0].generated_residues) <= 10:
+        raise ProteinContextError("CUDA cc89 supports internal gaps of 5-10 residues")
+    gap = request.gaps[0]
+    sequence = next(target.sequence for target in request.target_sequences if target.chain == gap.chain)
+    if "C" in sequence[gap.target_interval.start:gap.target_interval.stop]:
+        raise ProteinContextError("CUDA cc89 gap support is limited to CYS-free windows")
+    if request.heterogen_contexts:
+        raise ProteinContextError("CUDA cc89 supports canonical protein inputs only")
+    if sum(len(target.sequence) for target in request.target_sequences) > 512:
+        raise ProteinContextError("CUDA cc89 whole-source budget is 512 protein residues")
+    plan = request.protein_context
+    if (plan is None or plan.policy != CUDA_CC89_CONTEXT or plan.trajectory_queries is not None
+            or plan.retained_conditioning or plan.previous_plan_sha256 is not None):
+        raise ProteinContextError("CUDA cc89 requires the frozen source-only local context policy")
+    if any(option not in request.backend_options for option in CUDA_CC89_OPTIONS):
+        raise ProteinContextError("CUDA cc89 requires neutral phase and physical source positions")
+    source_context_position_features(request)
 
 
 def source_coordinates(request: DiffusionRequest, pdb: bytes) -> dict[AtomIdentity, np.ndarray]:
@@ -417,6 +478,8 @@ def validate_context_source(request: DiffusionRequest, pdb: bytes) -> None:
 
 def validate_context_capability(request: DiffusionRequest, model: str) -> None:
     """Reject engine-incompatible plans before preflight or checkpoint loading."""
+    if is_cuda_cc89(request):
+        validate_cuda_cc89_request(request)
     if request.protein_context is None:
         if model == "protenix" and (len(request.target_sequences) != 1 or len(request.gaps) != 1):
             raise ProteinContextError("Protenix multiple chains or gaps require explicit --diffusion-context local|full")
@@ -434,7 +497,7 @@ def validate_context_capability(request: DiffusionRequest, model: str) -> None:
     if len({gap.chain for gap in request.gaps}) != 1:
         raise ProteinContextError("Protpardelle explicit context does not support joint gap-bearing chains")
     spans = request.protein_context.spans
-    if len({span.chain for span in spans}) != len(spans):
+    if not is_cuda_cc89(request) and len({span.chain for span in spans}) != len(spans):
         raise ProteinContextError("Protpardelle explicit context does not support discontiguous source-chain entities")
     if len(spans) > 26:
         raise ProteinContextError("Protpardelle explicit context supports at most 26 engine chains")

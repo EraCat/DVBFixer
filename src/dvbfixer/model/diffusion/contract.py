@@ -835,6 +835,16 @@ class SamplerTrace:
                 raise DiffusionContractError(
                     "Apple profile requires MPS with fallback disabled"
                 )
+        if self.profile == "protpardelle-1c-cuda":
+            if (not self.sampler_evidence_complete or not self.device.startswith("cuda")
+                    or not self.fallback_disabled or self.denoising_update_count != 500
+                    or self.callback_update_count or self.steps
+                    or self.capabilities.supports_per_step_reinjection()
+                    or not self.final_fixed_coordinate_restoration
+                    or self.protein_context_evidence is None
+                    or "cc89-chain-phase=neutral-v1" not in self.patch_identity
+                    or "cc89-position-features=source-physical-v1" not in self.patch_identity):
+                raise DiffusionContractError("CUDA cc89 profile lacks its frozen sampler/context evidence")
 
     def to_dict(self) -> dict[str, Any]:
         return _encode(self)

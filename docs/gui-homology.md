@@ -20,6 +20,13 @@ its bundle artifacts; a scientifically rejected candidate is labeled as
 rejected rather than reported as a successful model. The server still requires
 an independently installed, preflight-compatible runner for the selected model.
 
+On Linux/NVIDIA, installed Protpardelle uses `protpardelle-1c-cuda`. **Protein
+context → Profile default** selects its fixed local context automatically. The
+initial CUDA slice is one CYS-free internal gap of 5–10 residues in canonical
+protein sources of at most 512 residues. Explicit Legacy/none or Full is rejected
+for this profile; the GUI forwards the choice without silently changing it.
+See the [CUDA setup](../deploy/protpardelle-1c/README.md#public-linuxnvidia-cuda-profile).
+
 The GUI runs scientific bundle publication in private native temporary storage,
 then verifies transport digests before copying results into the owning workspace
 and re-reading the manifest for registration. Publication rank determines the

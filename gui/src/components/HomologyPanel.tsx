@@ -876,9 +876,9 @@ export function HomologyPanel() {
                 <TextField sx={toolbarControlSx} size="small" type="number" label="Seed" value={project.modelOptions['--diffusion-seed'] ?? 7}
                   onChange={event => update({ modelOptions: { ...project.modelOptions, '--diffusion-seed': Number(event.target.value) } })} />
                 <FormControl size="small" sx={toolbarControlSx}><InputLabel>Protein context</InputLabel>
-                  <Select label="Protein context" value={project.modelOptions['--diffusion-context'] ?? 'none'}
+                  <Select label="Protein context" value={project.modelOptions['--diffusion-context'] ?? 'auto'}
                     onChange={event => update({ modelOptions: { ...project.modelOptions, '--diffusion-context': event.target.value } })}>
-                    <MenuItem value="none">Legacy / none</MenuItem><MenuItem value="local">Local (experimental)</MenuItem><MenuItem value="full">Full (experimental)</MenuItem>
+                    <MenuItem value="auto">Profile default</MenuItem><MenuItem value="none">Legacy / none</MenuItem><MenuItem value="local">Local (experimental)</MenuItem><MenuItem value="full">Full (experimental)</MenuItem>
                   </Select>
                 </FormControl>
                 <FormControl size="small" sx={toolbarControlSx}><InputLabel>Covered edits</InputLabel>

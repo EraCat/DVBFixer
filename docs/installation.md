@@ -152,6 +152,10 @@ checkpoints and never falls back to another profile or MODELLER.
   [`deploy/protenix-v1/README.md`](../deploy/protenix-v1/README.md). The portable
   wrapper and one public-CLI reconstruction passed on the pinned NVIDIA host;
   the frozen 231-case production-wrapper replay remains pending.
+- Linux/NVIDIA `protpardelle-1c-cuda`: follow the
+  [CUDA setup](../deploy/protpardelle-1c/README.md#public-linuxnvidia-cuda-profile).
+  Sampling and refinement use separate pinned environments. The profile provides
+  automatic local context for one internal 5–10-residue gap in canonical proteins.
 - Native Apple Silicon `protpardelle-1c-mps`: follow
   [`deploy/protpardelle-1c/README.md`](../deploy/protpardelle-1c/README.md) and
   use its pinned arm64 environment. Set `PYTORCH_ENABLE_MPS_FALLBACK=0` before

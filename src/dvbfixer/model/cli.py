@@ -90,8 +90,8 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         help="Reuse an existing digest-verified bundle only when its scientific request matches",
     )
     diffusion.add_argument(
-        "--diffusion-context", choices=("none", "local", "full"), default="none",
-        help="Experimental shared protein context selection; engine capabilities are checked (default: none/legacy path)",
+        "--diffusion-context", choices=("auto", "none", "local", "full"), default="auto",
+        help="Protein context: auto uses local for Protpardelle CUDA and the legacy path for other profiles (default: auto)",
     )
     diffusion.add_argument(
         "--diffusion-heterogen-smiles",

@@ -123,8 +123,8 @@ export function validatedModelArgs(options: Record<string, unknown> | null | und
     }
     args.push('--backend', 'diffusion', '--diffusion-seed', String(seed))
     if (values['--diffusion-model']) args.push('--diffusion-model', String(values['--diffusion-model']))
-    if (values['--diffusion-context'] !== undefined && values['--diffusion-context'] !== 'none') {
-      if (!['local', 'full'].includes(String(values['--diffusion-context']))) throw new Error('--diffusion-context has an unsupported value')
+    if (values['--diffusion-context'] !== undefined) {
+      if (!['auto', 'none', 'local', 'full'].includes(String(values['--diffusion-context']))) throw new Error('--diffusion-context has an unsupported value')
       args.push('--diffusion-context', String(values['--diffusion-context']))
     }
     if (values['--diffusion-regenerate-covered'] !== undefined) {

@@ -348,6 +348,10 @@ Detailed requirements and acceptance gates are in the
   24/24 across four new sources, zero detectable D-Cα and exact outside-gap
   preservation; keep separate from the development recheck.
 - [ ] Complete prospective long-gap noninferiority and independent review.
+- [x] Expose corrected cc89 as the public Linux/NVIDIA `protpardelle-1c-cuda`
+  profile for one internal 5–10-residue gap, automatic fixed-policy local context,
+  isolated CUDA refinement, CLI/GUI routing, exact bundle validation and resume.
+  Public model/Homology integration accepts 5/5 candidates across four workflows.
 - [ ] Complete wider independent cc89 CUDA acceptance beyond the repaired
   same-seed, two-source diagnostic pilot.
 - [ ] Complete larger independently reviewed context/CDR and Homology edit cohorts.

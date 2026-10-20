@@ -36,6 +36,17 @@
 
 ## Current Expansion Baseline
 
+**Public cc89 CUDA slice:** `protpardelle-1c-cuda` is now exposed through installed
+runtime discovery, CLI and GUI. `auto` context selects the corrected fixed local
+policy; the admitted slice is one internal 5–10-residue gap, canonical proteins,
+at most 512 whole-source residues. Sampling and CUDA refinement use separate
+environments/processes. Four public model/Homology workflows accept 5/5 candidates,
+including multi-seed publication and verified resume; independent audit confirms
+zero D-Cα and exact outside-gap records. This does not expose full-complex neural
+sampling or joint gap-bearing chains, or change the MPS profile/MODELLER default.
+See the [public acceptance](../research/cc89-public-cuda-acceptance.md) and
+[deployment instructions](../../deploy/protpardelle-1c/README.md#public-linuxnvidia-cuda-profile).
+
 **Input-representation correction:** actual attention/RoPE audits retain chain
 position breaks, but the full Fab/ASU denoising axis and proxy-fragment position
 features were inappropriate for the local repair experiment. Explicit local

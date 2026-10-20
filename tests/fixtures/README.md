@@ -31,6 +31,7 @@ verify that none of the source fixtures changed accidentally.
 | `overlap/8dis_t_u.pdb` | `test/overlap/8dis_t_u.pdb` | Coordinate-identical chains `d`/`D` caused by missing MODEL/ENDMDL separators |
 | `insertion_codes/{7K8S.pdb,7K8S.fasta}` | RCSB PDB entry 7K8S coordinate and FASTA downloads | Antibody heavy-chain insertion-code diffusion benchmark (`H/82A`-`H/82C`) |
 | `protein_context/{1UBQ,1TIM,1A3N}.pdb` | Unmodified RCSB PDB downloads on 2026-10-14 from `https://files.rcsb.org/download/<ID>.pdb` | Frozen protein-context expansion: ubiquitin nonlocal-contact strata, triosephosphate-isomerase dimer, and hemoglobin protein interface |
+| `cc89_apple_handoff/{9WW8,8EK6,9Z0U}.{pdb,fasta}`, `manifest.json` | Whole observed protein references and unchanged FASTAs from the independently audited prospective cc89 cohorts; per-source RCSB CIF URLs and hashes are bound by the manifest and linked cohort manifests | Fresh-clone Apple handoff: four source-only masks, seeds 7/19; no Linux archives or checkpoint needed to materialize inputs |
 
 The protein-context materializer derives protein-only, heavy-atom inputs from
 these deposited sources. Heterogens (including 1A3N hemes) are excluded explicitly;
@@ -38,6 +39,13 @@ this is a protein-context mechanism study, not acceptance for complete hemoglobi
 chemistry. Low/high contact counts are structural proxies, not measured solvent
 accessibility. Derived masks, controls, and outcomes live in ignored evidence
 archives; only deposited source inputs and frozen manifests are tracked.
+
+The Apple handoff sources are the already-normalized experimental input frames:
+protein heavy atoms only, water/H excluded, original observed chain sequences and
+coordinates retained, residue IDs densely mapped by the audited mosaic builder.
+They are not generated model outputs. `scripts/prepare_apple_cc89_handoff.py`
+recreates masked inputs and separates evaluation references. See
+[`docs/plans/apple-cc89-handoff.md`](../../docs/plans/apple-cc89-handoff.md).
 
 ## 8UCD molecule retention and connectivity
 

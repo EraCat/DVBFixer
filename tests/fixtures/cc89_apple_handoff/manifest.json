@@ -1,0 +1,82 @@
+{
+  "artifacts": {
+    "8EK6.fasta": "eab396a235831c1c885e06b3683d13c92ffd1f1b7fdd97bc761194bb406f3e50",
+    "8EK6.pdb": "c98d8cbea6257a3c2bebde91839085dde97a119c89eb7a5ef966e94679b56f6f",
+    "9WW8.fasta": "7f8fd6857ea39d502a5d25364e723f61a86db4a79722c985b12a3056e2b18a9b",
+    "9WW8.pdb": "7647fb50de22ebdc47228a02f386a73ede088c7dcfc1ef657ba84e7384ce6d8e",
+    "9Z0U.fasta": "c884b04c4ed807183762cfb1b115cd223777a065fa6156bc0f82f0746f094bbc",
+    "9Z0U.pdb": "e27228bb317258902c989c46088ddaca6eaf6bc911cff1bdd7f0ce56c9b8ca4a"
+  },
+  "baseline_commit": "cb43db6",
+  "cases": [
+    {
+      "case_id": "prospective-9ww8-gap5",
+      "chain": "A",
+      "length": 5,
+      "linux_manifest": "docs/research/cc89-prospective-holdout-v2.json",
+      "linux_manifest_sha256": "9fbc3baae2a3679ce9c2e39abb45dea9f6331d7a8bc7059ce6faf5ccaad7c3d0",
+      "source_id": "9WW8",
+      "start": 76,
+      "stratum": "general-protein"
+    },
+    {
+      "case_id": "prospective-9ww8-gap10",
+      "chain": "A",
+      "length": 10,
+      "linux_manifest": "docs/research/cc89-prospective-holdout-v2.json",
+      "linux_manifest_sha256": "9fbc3baae2a3679ce9c2e39abb45dea9f6331d7a8bc7059ce6faf5ccaad7c3d0",
+      "source_id": "9WW8",
+      "start": 30,
+      "stratum": "general-protein"
+    },
+    {
+      "case_id": "prospective-8ek6-H-cdr1-gap5",
+      "chain": "H",
+      "length": 5,
+      "linux_manifest": "docs/research/cc89-prospective-holdout-v3.json",
+      "linux_manifest_sha256": "37a3cacd8483661a09eaa256aaf75a96fa0a6c1fd55db7f4c386edf8701e9113",
+      "source_id": "8EK6",
+      "start": 26,
+      "stratum": "antibody-cdr"
+    },
+    {
+      "case_id": "prospective-9z0u-H-cdr3-gap10",
+      "chain": "H",
+      "length": 10,
+      "linux_manifest": "docs/research/cc89-prospective-holdout-v3.json",
+      "linux_manifest_sha256": "37a3cacd8483661a09eaa256aaf75a96fa0a6c1fd55db7f4c386edf8701e9113",
+      "source_id": "9Z0U",
+      "start": 96,
+      "stratum": "antibody-cdr"
+    }
+  ],
+  "checkpoint_sha256": "dfc9895b399ec4497bf6d646502168725f01dcbd55bc0b541fc3e3cc1f2f0483",
+  "engine_revision": "ee378400f25b801fa481028000f9060183d7fb4c",
+  "reference_policy": "evaluation only; never copy into a neural/refinement worker",
+  "seeds": [
+    7,
+    19
+  ],
+  "selection_policy": "frozen public CUDA integration controls; no new holdout or reference-based seed selection",
+  "sources": {
+    "8EK6": {
+      "coordinate_policy": "whole observed canonical-protein source; water/H excluded; dense mosaic numbering; no generated coordinates",
+      "fasta": "8EK6.fasta",
+      "pdb": "8EK6.pdb",
+      "upstream_url": "https://files.rcsb.org/download/8EK6.cif"
+    },
+    "9WW8": {
+      "coordinate_policy": "whole observed canonical-protein source; water/H excluded; dense mosaic numbering; no generated coordinates",
+      "fasta": "9WW8.fasta",
+      "pdb": "9WW8.pdb",
+      "upstream_url": "https://files.rcsb.org/download/9WW8.cif"
+    },
+    "9Z0U": {
+      "coordinate_policy": "whole observed canonical-protein source; water/H excluded; dense mosaic numbering; no generated coordinates",
+      "fasta": "9Z0U.fasta",
+      "pdb": "9Z0U.pdb",
+      "upstream_url": "https://files.rcsb.org/download/9Z0U.cif"
+    }
+  },
+  "status": "frozen-before-corrected-MPS-inference"
+}

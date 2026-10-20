@@ -1,5 +1,10 @@
 # Small Diffusion And Apple Silicon Experiment Plan
 
+**Current restart point:** [corrected cc89 Apple handoff](apple-cc89-handoff.md),
+prepared after public CUDA baseline `cb43db6`. The historical MPS studies below
+predate neutral chain phase and physical source positions. Preserve that baseline;
+the corrected mode needs its own explicit MPS port and hardware acceptance.
+
 - Status: active research; Linux selection and 231-case descriptive follow-up
   complete, Apple Silicon portability handoff next.
 - Scope owner: Structure Preparation bounded context.

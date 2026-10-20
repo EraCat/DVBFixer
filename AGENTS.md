@@ -47,6 +47,7 @@ non-canonical residues.
 | Reconstruction/modeling backend research | [`docs/research/reconstruction-and-modeling-backends.md`](docs/research/reconstruction-and-modeling-backends.md) |
 | Force-field selection matrix | [`docs/force-fields.md`](docs/force-fields.md) |
 | Tracked structural test inputs, provenance, and checksums | [`tests/fixtures/README.md`](tests/fixtures/README.md) |
+| Corrected cc89 Apple Silicon restart, portable controls, and remaining MPS port | [`docs/plans/apple-cc89-handoff.md`](docs/plans/apple-cc89-handoff.md) |
 
 ## Environment
 

@@ -104,6 +104,12 @@ see the [paired comparison](../../docs/research/cc89-input-correction-comparison
 
 ## Apple Silicon preparation
 
+For the **new corrected local-input port**, start with the
+[Apple handoff](../../docs/plans/apple-cc89-handoff.md). It includes portable
+tracked controls and the exact remaining research-mode gates. The instructions
+below describe the historical public MPS baseline; they do not enable the new
+CUDA-corrected policy on MPS or establish its acceptance there.
+
 Use a native arm64 Python environment and apply the Apple patch to the clean,
 pinned upstream checkout:
 

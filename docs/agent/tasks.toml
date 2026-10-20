@@ -332,6 +332,7 @@ test_files = [
   "tests/test_known_sequence_holdout.py",
   "tests/test_cc89_prospective_holdout.py",
   "tests/test_cc89_cuda_profile.py",
+  "tests/test_apple_cc89_handoff.py",
   "tests/test_sequence_alignment.py",
   "tests/test_protenix_research_scripts.py",
   "tests/test_protpardelle_research_scripts.py",

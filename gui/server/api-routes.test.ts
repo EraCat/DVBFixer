@@ -10,7 +10,7 @@ import { assertDvbfixerAvailable } from './cli-preflight'
 // Route composition is independent of a developer's activated scientific env.
 // cli-preflight.test.ts separately verifies the actual probe/error contract.
 vi.mock('./cli-preflight', () => ({ assertDvbfixerAvailable: vi.fn() }))
-beforeEach(() => { vi.mocked(assertDvbfixerAvailable).mockReset().mockReturnValue('dvbfixer 0.9.0') })
+beforeEach(() => { vi.mocked(assertDvbfixerAvailable).mockReset().mockReturnValue('dvbfixer 0.9.1') })
 
 const temporaryDirectories: string[] = []
 

@@ -4,7 +4,7 @@
 
 `dvbfixer` uses OpenMM's bundled force fields for every energy-based step (`prepare`, `minimize`, `protonate`, `pull`, `zbs`). To spare you from typing raw XML paths, all of those tools accept a short-name alias via `--ff <name>`, and by default they auto-detect the right FF from the input's residue names.
 
-`top` (GROMACS topology generation) uses a **different** short-name namespace — see [Two `--ff` namespaces](#two---ff-namespaces) below.
+`top` (GROMACS topology generation) uses a **different** short-name namespace — see [Two `--ff` namespaces](#two---ff-namespaces-side-by-side) below.
 
 ## `--ff` for OpenMM-using tools
 

@@ -32,7 +32,8 @@ Runtime validation and OpenAPI are generated from the same TypeBox schemas in
 `gui/openapi.json` and `gui/src/generated/dvbfixer-api.ts` are checked-in
 artifacts. Run `cd gui && npm run gen:openapi` after a schema change;
 `npm run check:openapi` enforces synchronization in CI. The GUI uses the
-generated client for job requests and the authenticated transport for SSE.
+generated client for managed jobs and synchronous naming requests, and the
+authenticated transport for SSE.
 
 ## Managed Workflows
 
@@ -118,7 +119,12 @@ It accepts an artifact ID, never a filesystem path, and resolves the artifact
 inside the named workspace with traversal and symlink containment checks.
 `target.forceField` accepts `amber`, `amber19sb`, or `charmm`. The two AMBER
 values are distinct naming dialects; `amber19sb` matches the bundled ff19SB RTP
-cap and terminal names.
+cap and terminal names under the `gromacs` profile. `target.profile` accepts
+`gromacs` or `standard` and is required by the API request schema (the CLI defaults
+to `gromacs`). `standard` selects native force-field names and normalizes supported
+consumer aliases. It is a naming operation, not force-field parameterization or
+a general inverse for arbitrary naming schemes; see the
+[naming guide](commands/atom-names.md#naming-profiles).
 
 ```json
 {
@@ -145,7 +151,8 @@ case-sensitive chain, residue-number, and insertion-code identity. V1 accepts
 PDB artifacts (`.pdb` or `.ent`) only. The artifact must be a visible workspace
 `structure` whose contained source resolves to a regular file. Extension
 matching is case-insensitive. The server generates an output name when one is
-omitted.
+omitted, including the selected force field and profile in the default filename.
+The GUI's Atom Names Run action calls this endpoint, never `/jobs`.
 
 A successful conversion returns `201` and registers exactly one new structure
 artifact. Its manifest metadata records the source artifact ID, request options,

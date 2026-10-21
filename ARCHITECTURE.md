@@ -27,8 +27,11 @@ exact PDB instance and atomically publishes a whole-PDB/provenance bundle. The
 `component-info` and `reconstruct-component` commands expose those opt-in
 boundaries; no existing preparation default or MD adapter changed.
 
-`model --backend diffusion` is an explicit experimental path for one canonical
-protein chain with one internal gap. `model/diffusion_cli.py` builds the request;
+`model --backend diffusion` is an explicit experimental path with profile-specific
+scope: internal gaps and, on admitted Protpardelle profiles, multi-chain or terminal
+reconstruction. The [model guide](docs/commands/model.md#experimental-diffusion-scope)
+is the current scope reference; the original single-gap boundary in ADR 0011 is
+historical. `model/diffusion_cli.py` builds the request;
 `model/diffusion/` owns scope admission, the versioned external-runner boundary,
 independent validation, provenance, and atomic directory-bundle publication.
 The Protenix CUDA and Protpardelle MPS runners live in separate environments
@@ -51,7 +54,7 @@ for task-to-symbol navigation, contracts, invariants, and safe delegation.
 
 ```
 src/dvbfixer/
-├── cli.py              103 lines   — single entry point, dispatches to subcommand main()
+├── cli.py                         — entry point, runtime options and subcommand dispatch
 ├── command_registry.py            — authoritative public command/module/category/batch/output metadata
 ├── cli_types.py                   — shared argparse numeric and structured-selector validators
 ├── force_field_naming.py          — pure typed PDB naming conversion application service
@@ -60,72 +63,64 @@ src/dvbfixer/
 ├── pdb_component_reconstruction.py — strict PDB instance mapping/materialization and atomic bundles
 ├── domain/                        — scientific value objects and policies: structure identity,
 │                                     nonprotein reconstruction, parameterization routing, and force-field naming
-├── __init__.py          24 lines   — __version__, MDAnalysis warning filters
+├── __init__.py                    — __version__, MDAnalysis warning filters
 │
 │   STRUCTURE PREP PIPELINE (composable subcommands)
-├── split_chains.py     719 lines   — empirical chain splitting (gap / dist / numbering)
-├── renumber.py         620 lines   — SEQRES-based renumbering, removes insertion codes
+├── split_chains.py                — empirical chain splitting; assembly dispatch
+├── biological_assembly.py         — REMARK 350 parsing, BIOMT transforms, assembly rendering
+├── renumber.py                    — FASTA/SEQRES and antibody numbering
 ├── model/                         — default Modeller loop/gap rebuilding plus the explicit
 │                                     experimental diffusion CLI and isolated diffusion package
-├── prepare/           3278 lines   — PDBFixer wrapper + BioLuminate-style H placement (package:
-│                                     cli.py 133, __init__.py 56, pipeline.py 1411, glycan.py 1105,
-│                                     mutations.py 573)
-├── minimize/          2597 lines   — OpenMM minimization + optional xtb/obminimize refine
-│                                     (package: cli.py 125, __init__.py 60, pipeline.py 1545,
-│                                     refine.py 867)
-├── prep_backend.py    1017 lines   — tleap+reduce deterministic prep backend (`--backend
-│                                     tleap-reduce`, opt-in on `prepare`/`zbs`; see the
-│                                     Structure Preparation agent context)
-├── protonate.py       1333 lines   — PROPKA3 pKa-based protonation
-├── pull.py             658 lines   — bond pulling via OpenMM mass=0 partial min
-├── rename.py           105 lines   — text-based variant → canonical name
-├── puppet.py           101 lines   — strip to backbone polyglycine
-├── zbs.py              484 lines   — full pipeline (renumber→model→prepare→minimize) + --align-to-input
+├── prepare/                       — missing-atom/H repair, glycans, SMILES and mutations
+├── minimize/                      — restrained OpenMM minimization; optional post-refinement
+├── prep_backend.py                — opt-in pure-protein tleap+reduce preparation
+├── protonate.py                   — PROPKA/Reduce protonation and H repair
+├── pull.py                        — geometry-only bond pulling via partial minimization
+├── rename.py                      — text-based variant → canonical residue names
+├── atom_names.py                  — non-destructive naming CLI and bounded JSON report
+├── puppet.py                      — strip to backbone polyglycine
+├── zbs.py                         — renumber→model→prepare→minimize orchestration
 │
 │   FF / TOPOLOGY GENERATION
-├── top/               4148 lines   — RTP-based GROMACS topology (AMBER + CHARMM) (package:
-│                                     cli.py 96, __init__.py 37, ff_data.py 349, writers.py 542,
-│                                     acpype.py 125, types.py 52 — shared dataclasses, glycan.py
-│                                     292 — glycan/glycolipid link detection, topology_builder.py
-│                                     1358 — TopologyBuilder, pipeline.py 1297 — CLI orchestration
-│                                     + PDB I/O only; split from a single ~2900-line pipeline.py
-│                                     in 0.7.15; see `top/__init__.py`)
-├── rtp_parser.py       261 lines   — parses GROMACS RTP/ARN/R2B/TDB/ATP files
-├── acpype_export.py   1010 lines   — ACPYPE-based GMX topology (OpenMM→ParmEd→ACPYPE)
-├── ffutils/           3324 lines   — shared FF selection (package: __init__.py 737 —
-│                                     FF_ALIASES + resolve_ff, sanitize_protein_hetatm, GLYCAM
-│                                     helpers, explain_template_error, create_forcefield_with_openff;
-│                                     geometry.py 1232 — chirality invariant, misplaced-H repair;
-│                                     variants.py 376; ff_names.py 486; dat.py 234 — DatRecord;
-│                                     ligand_valence.py 259 — ionizable-group + alkene overrides)
+├── top/                           — RTP-based GROMACS topology; types, glycan detection,
+│                                     topology_builder, writers and pipeline orchestration
+├── rtp_parser.py                  — GROMACS RTP/ARN/R2B/TDB/ATP parsing
+├── acpype_export.py               — OpenMM→ParmEd→ACPYPE topology export
+├── ffutils/                      — FF selection, GLYCAM helpers, geometry/chirality,
+│                                     variants, naming adapter, DatRecord and ligand valence
 │
 │   GLYCAN / SMALL-MOLECULE TOOLS
-├── glycam.py          1134 lines   — bidirectional PDB/CHARMM ↔ GLYCAM nomenclature converter
-├── transplant.py       886 lines   — graft residues between PDBs (Kabsch align)
-├── parametrize.py     1179 lines   — GAFF2 small molecule (antechamber→tleap→ParmEd); RESP via Gaussian / PSI4-subprocess / PySCF
-├── lig_params.py       413 lines   — on-the-fly GAFF2+AM1-BCC template generation for unknown ligands (feeds `minimize --parametrize-ligands`)
-├── cluster.py         1184 lines   — glycosidic torsion clustering from MD trajectory
+├── glycam.py                      — PDB/CHARMM ↔ GLYCAM nomenclature conversion
+├── transplant.py                  — residue grafting with Kabsch alignment
+├── parametrize.py                 — GAFF2 and AM1-BCC/RESP small-molecule parameterization
+├── lig_params.py                  — on-demand GAFF2 ligand template generation
+├── component_info.py              — authoritative CCD chemistry/completeness CLI
+├── reconstruct_component.py       — isolated Class A component reconstruction CLI
+├── cluster.py                     — glycosidic torsion clustering from MD trajectories
 │
 │   ANTIBODY / HOMOLOGY
-├── homology.py         773 lines   — multi-template homology with ANARCI antibody mode
-├── antibody.py         377 lines   — antibody-scheme numbering (Kabat/Chothia/IMGT/Martin/Aho) via ANARCI + embedded EU C-domain references
+├── homology.py                    — multi-template homology orchestration
+├── homology_plan.py               — shared-frame template mosaics and masks
+├── msa.py                         — external MAFFT, MUSCLE 5 and Clustal Omega adapters
+├── salign.py                      — Biopython fitting; optional Modeller SALIGN
+├── antibody.py                    — antibody-scheme numbering and EU references
 │
 │   SHARED HELPERS
-├── pdbutils/           785 lines   — CONECT record remapping + inference (package: inference.py
-│                                     637 — OpenBabel ConnectTheDots + domain overrides for
-│                                     SS/glycosidic/glycosylation; io.py 109;
-│                                     _materialise_inferred_pdb temp-file bridge)
-├── align.py            280 lines   — internal Kabsch superposition (sequence-paired via Bio.Align.PairwiseAligner); line-level PDB rewrite preserves SEQRES/CONECT/all non-ATOM records
-├── conect.py           100 lines   — standalone `dvbfixer conect` subcommand wrapping the pdbutils inference
+├── pdbutils/                      — CONECT remapping/inference, identity and coordinate checks
+├── sequence_alignment.py          — shared affine semi-global sequence placement
+├── structure_input.py             — CLI-boundary CIF normalization and identity mapping
+├── runtime.py                     — fd-level stdout/stderr capture and diagnostic summaries
+├── batch.py                       — directory execution, resume and output isolation
+├── align.py                       — sequence-paired Kabsch fitting with header preservation
+├── conect.py                      — standalone CONECT inference CLI
 │
 │   DIAGNOSTIC / QA
-└── diagnose/          1923 lines   — `dvbfixer diagnose` structure-quality report; three check
-                                      families (structural / chemistry / steric); report-only.
-                                      See docs/commands/diagnose.md.
+├── doctor.py                      — environment, executable and backend diagnostics
+└── diagnose/                      — report-only structural, chemistry and steric checks
 ```
 
-Line counts are exact (`wc -l`) as of 0.7.15; re-run `wc -l src/dvbfixer/*.py src/dvbfixer/*/*.py`
-before trusting them verbatim in a much later session — they drift with every refactor.
+This is a responsibility map, not an exhaustive file inventory. Stale per-file
+line counts have been removed; use the source and agent task map for exact symbols.
 
 ## Data flow
 

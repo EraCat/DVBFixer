@@ -102,9 +102,15 @@ idempotent. Naming conversion changes representation only: it does not select
 protonation, parameterize a molecule, or prove force-field template/bond
 compatibility.
 
+The public CLI, GUI and V1 API expose both `gromacs` (the unchanged default for
+CLI/GUI) and native `standard` naming profiles. Native rules normalize supported
+AMBER/CHARMM and GROMACS aliases; they do not infer missing atoms or construct
+CHARMM terminal patches. See the [naming contract](commands/atom-names.md).
+
 Existing prepare, minimize, and protonate callers use
 `ffutils.ff_names.apply_variants_to_pdb_text`, an atomic in-place compatibility
-adapter over the pure service. The V1 naming API uses the pure service and
+adapter over the pure service. The V1 naming API invokes `dvbfixer atom-names`,
+which calls the pure service, and
 publishes a new workspace artifact without mutating the source.
 
 ## Integration limits
@@ -125,9 +131,10 @@ Engine setup and fallback behavior still live in `minimize/pipeline.py` and
 `lig_params.py`. See [relaxation research](research/whole-complex-relaxation.md)
 for proposed regularization architecture and validation criteria, and the
 [reconstruction/modeling backend research](research/reconstruction-and-modeling-backends.md)
-for atom-completion, loop, homology, and diffusion comparisons. A narrow,
-explicit `model --backend diffusion` CLI is experimental for one canonical
-protein chain and one internal gap; its scope, runner, validation, and atomic
+for atom-completion, loop, homology, and diffusion comparisons. The explicit
+`model --backend diffusion` CLI remains experimental, with profile-specific
+internal-gap, multi-chain and terminal admission described in the
+[model guide](commands/model.md#experimental-diffusion-scope). Its scope, runner, validation, and atomic
 bundle boundary remain in `model/diffusion*`, not in the domain package. Static
 profile metadata and the typed, bounded runner preflight report also live at
 that backend-neutral boundary; `doctor` is only their CLI presentation adapter.

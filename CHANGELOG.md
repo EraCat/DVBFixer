@@ -8,6 +8,41 @@ Backfilled from git history — commits before v0.3.0 are grouped by
 feature area rather than by strict release. Older entries are
 best-effort summaries; consult `git log` for exact provenance.
 
+## [0.9.1] — 2026-10-21
+
+### Added
+
+- Added native force-field naming through `atom-names --profile standard` for
+  AMBER, Amber19SB, and CHARMM, alongside the existing GROMACS profile, across
+  CLI, GUI, and the V1 naming API.
+- Added workspace file category icons, persistent format badges, and tooltips
+  with full paths and recorded provenance; workspace drag-and-drop imports
+  files into the active project.
+- Added a GUI startup CLI prerequisite check and automatic browser opening for
+  the development server.
+
+### Changed
+
+- Unified GUI controls, toolbar spacing, action placement, keyboard focus, and
+  button dimensions in a shared theme/layout contract, documented in the GUI
+  design system.
+- Separated diagnostic/output report previews from independently scrollable run
+  logs; output and status remain scoped to the selected tool and workspace.
+- Replaced PDB-only workspace filtering with a structure-only filter that also
+  retains CIF/mmCIF and other recognized structural formats.
+
+### Fixed
+
+- Routed GUI Atom Names execution through its synchronous naming-conversion
+  endpoint instead of the managed-job endpoint, including dry runs and overrides.
+- Corrected GUI force-field abbreviations from `Ff` to `FF` and preserved other
+  known acronyms in generated field labels.
+- Updated current guides to match the implemented GUI, naming profiles, startup
+  requirements, and CLI diagnostic behavior.
+- Kept the acronym-label regression dependency-light for CI and pinned the exact
+  seeded-rebuild comparison to Reference arithmetic, while retaining default-
+  platform chirality/clash checks and unchanged production platform selection.
+
 ## [0.9.0] — 2026-10-20
 
 ### Added
@@ -1234,8 +1269,8 @@ matching).
   `AttributeError: 'Parameters' object has no attribute '__annotations__'`.
   `environment.yml` / `pyproject.toml` pin `python >=3.11,<3.14` to
   keep the env on 3.12/3.13 where propka works — do not loosen it.
-  Documented in [CLAUDE.md](../CLAUDE.md) and
-  [docs/known-issues.md](known-issues.md).
+  Documented in [CLAUDE.md](CLAUDE.md) and
+  [docs/known-issues.md](docs/known-issues.md).
 
 - **micromamba env creation fails on macOS Docker host bind mounts.**
   When `MAMBA_ROOT_PREFIX` lives under a host bind mount such as
@@ -1249,8 +1284,8 @@ matching).
   dereferencing them), and no micromamba flag dereferences or skips
   them. Workaround: create the env + package cache on the container's
   native overlay filesystem (`export MAMBA_ROOT_PREFIX=/opt/mamba`).
-  Documented in [docs/known-issues.md](known-issues.md) and
-  [docs/installation.md](installation.md).
+  Documented in [docs/known-issues.md](docs/known-issues.md) and
+  [docs/installation.md](docs/installation.md).
 
 ## [0.7.7] — 2026-07
 

@@ -19,7 +19,7 @@ public command therefore updates all three surfaces from the same contract.
 
 | Command | What it does | Workflow group |
 |---------|--------------|----------------|
-| [`atom-names`](atom-names.md) | Convert PDB residue and atom names for legacy AMBER, Amber19SB, or CHARMM GROMACS consumers without modifying the source | Utilities |
+| [`atom-names`](atom-names.md) | Convert PDB residue/atom names for native AMBER/CHARMM or bundled GROMACS dialects without modifying the source | Utilities |
 | [`cluster`](cluster.md) | Glycan conformational clustering from MD trajectories (GFDB-style) | Analysis |
 | [`component-info`](component-info.md) | Query wwPDB CCD chemistry and compare heavy-atom completeness | Topology & chemistry |
 | [`conect`](conect.md) | Infer missing CONECT records (SS, glycosidic, glycosylation) into a PDB | Utilities |

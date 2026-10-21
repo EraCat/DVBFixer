@@ -8,13 +8,13 @@ describe('GUI CLI startup prerequisite', () => {
   beforeEach(() => {
     vi.mocked(spawnSync).mockReset()
     vi.mocked(spawnSync).mockReturnValue({
-      pid: 1, output: [], stdout: 'dvbfixer 0.9.0\n', stderr: '', status: 0, signal: null,
+      pid: 1, output: [], stdout: 'dvbfixer 0.9.1\n', stderr: '', status: 0, signal: null,
     })
   })
 
   it('checks the CLI version with no scientific work or shell', () => {
     const environment = { PATH: '/active-environment/bin' }
-    expect(assertDvbfixerAvailable(environment)).toBe('dvbfixer 0.9.0')
+    expect(assertDvbfixerAvailable(environment)).toBe('dvbfixer 0.9.1')
     expect(spawnSync).toHaveBeenCalledWith('dvbfixer', ['--version'], {
       env: environment, encoding: 'utf8', timeout: 5000, maxBuffer: 64 * 1024,
     })

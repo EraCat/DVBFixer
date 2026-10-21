@@ -588,6 +588,13 @@ The full suite needs the scientific stack and external executables from
 `environment.yml`. Structural inputs and companion FASTAs are tracked under
 `tests/fixtures/`; update `MANIFEST.sha256` whenever an input asset changes.
 
+Exact seeded-rebuild coordinate comparisons pin PDBFixer to OpenMM Reference in
+the test only. Default-platform geometry tests still exercise automatic backend
+selection. Do not infer bit-identical coordinates across CPU/GPU numerical
+backends from an integrator seed, or force a production platform to satisfy a
+test. CI's lightweight naming/registry tests must not import every scientific
+command parser merely to inspect generated labels.
+
 ## Session preferences
 
 - **Always pass `--no-solvent`** on every dev iteration of `minimize` /

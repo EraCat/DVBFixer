@@ -31,9 +31,10 @@ timeout (`DVBFIXER_MAX_OUTPUT_BYTES` and `DVBFIXER_TIMEOUT_MS`).
 - **Interactions table** -- computed H-bonds, ionic, disulfide, hydrophobic,
   pi-stacking, and more with chain pair filtering; auto-filters when Show
   Interface is active
-- **DVBfixer panel** -- every current CLI tool, generated from argparse and
-  grouped by workflow and argument section; runs persist across panel reloads,
-  stream status, capture bounded logs, and can be cancelled
+- **DVBfixer panel** -- current CLI tools generated from argparse and grouped by
+  workflow and argument section. Managed jobs persist across panel reloads,
+  stream status, capture bounded logs, and can be cancelled; Atom Names uses a
+  separate synchronous naming-conversion request.
 - **Homology workspace** -- persistent target/template projects, MAFFT,
   MUSCLE 5, or Clustal Omega MSA, manual gap editing, license-free Biopython
   structural fitting grouped by target chain (with optional Modeller SALIGN), template
@@ -41,13 +42,15 @@ timeout (`DVBFIXER_MAX_OUTPUT_BYTES` and `DVBFIXER_TIMEOUT_MS`).
 - **Workspaces** -- each workspace owns its files, generated runs/logs,
   active A/B structures, workflow inputs/results, and Homology workflows
 - **Workspace file browser** -- alternating rows, Shift/Cmd multi-selection,
-  drag-handle and arrow reordering, PDB-only filtering, rename/download/trash
-  context actions, and a dedicated read-only Text Files tab
+  drag-handle and arrow reordering, structure-only filtering, category icons and
+  format badges, rename/download/trash context actions, and a dedicated read-only
+  Text Files tab
 - **Library** -- an ordered list of workspaces; the active workspace's files
   appear in the separate Workspace panel
 - **Dockable panels** -- drag panels to rearrange, "+" button to spawn any
   panel into any tabset
-- **Local files** -- upload your own .pdb or .mmcif files into either viewer
+- **Local files** -- import files into Workspace or drag and drop them onto it;
+  load imported structures into either viewer
 
 The viewer renders in the browser. Workspace uploads, managed DVBFixer jobs,
 and their logs are handled by the Node server. With the
@@ -76,10 +79,21 @@ to move it to trash. Workspace trash is stored under
 
 Library workspaces and Workspace files can be reordered from their drag
 handles; the insertion marker shows the future position. The Workspace toolbar
-can hide non-PDB files without changing their stored order. A file context menu
+can show only structures without changing their stored order. CIF/mmCIF, PDB,
+and other recognized structural formats stay visible; **Show all files** restores
+the other files. Both selection and arrow reordering use the same visible rows.
+A file context menu
 downloads the original file, while a workspace download produces a `.tar.gz`
 archive. Structure metadata is stored on the workspace artifact and edited in
 Info with revision-aware autosave.
+
+Each file row shows a category icon on the left and a format badge on the right.
+The format comes from the actual file path, not the editable display name, so
+renaming a PDB to a label without an extension does not hide its format. Recorded
+artifact metadata distinguishes reports from generic data/settings even when
+both are JSON. The tooltip gives the full workspace-relative path and recorded
+creating command/source; unknown provenance is not guessed. Color is supplemental
+to the icon shape and text, not the only type indicator.
 
 The Homology Target tab parses FASTA/PIR or protein chains from a workspace
 PDB/mmCIF file. **+ Add new** creates a template selector, using the active
@@ -103,14 +117,16 @@ length; the toolbar adds or removes full gap columns.
 
 ## Install & run
 
-Use Node.js 22 or newer. For the Python/scientific backends, follow the
-[installation guide](../docs/installation.md); viewer-only mode does not need
-the scientific environment.
+Use Node.js 22 or newer and an available `dvbfixer` CLI. For the Python/scientific
+backends, follow the [installation guide](../docs/installation.md). Both development
+and standalone hosting run `dvbfixer --version` before serving requests; they stop
+with environment-activation instructions if the probe fails. The GUI does not
+automatically choose a scientific environment. A successful version probe does
+not guarantee that every optional scientific backend or license is installed.
 
 ### Install and start
 
-Create the repository's DVBfixer environment and install the package when you
-want to run scientific workflows. Viewer-only use can skip these Python steps.
+Create the repository's DVBfixer environment and install the package:
 
 ```
 micromamba create -f environment.yml
@@ -140,11 +156,12 @@ Start the development server directly with Vite:
 ```
 cd gui
 npm ci
-micromamba activate dvbfixer   # optional for viewer-only use
+micromamba activate dvbfixer
 npm run dev
 ```
 
-Open http://localhost:5173. Build the browser client and standalone Node server
+The development server opens http://localhost:5173 automatically outside test/CI
+mode; open it manually if the browser does not launch. Build the browser client and standalone Node server
 with `npm run build`; run the build with `npm start`.
 
 **Override DVBFixer** if it's not on PATH (e.g. wrapped in micromamba):
@@ -154,7 +171,8 @@ export DVBFIXER_EXECUTABLE="micromamba"
 export DVBFIXER_ARGS='["run", "-n", "dvbfixer", "dvbfixer"]'
 ```
 
-The DVBFixer tab is usable even without the scientific environment, but command execution will fail until `dvbfixer` is available.
+Set executable overrides before starting the server; the startup probe uses the
+same executable and argument prefix as subsequent workflow requests.
 
 In the Model command's **Sequences per chain** editor, residues present in the
 loaded coordinates retain structure-presence styling while sequences are
@@ -188,8 +206,8 @@ and Zustand. Host-neutral API composition is in
 | Alignment           | Pairwise Needleman-Wunsch (BLOSUM62) across chains, incl. across structure A and B; click number row to pick the same column on both sides |
 | Elements            | Categorized tree (polymer/ligand/ion/water) with per-component visibility + per-chain Show Interface |
 | Interactions        | Computed non-covalent + covalent contacts, filterable by type and chain pair |
-| DVBfixer            | Generated CLI forms with managed queued/running state, bounded logs, restore-after-reload, and Cancel |
-| Homology            | Target → templates → editable MSA and masks → Modeller project workflow |
+| DVBfixer            | Generated CLI forms, managed workflow status/logs/Cancel, and synchronous Atom Names conversion |
+| Homology            | Target → templates → editable MSA and masks → Modeller (default) or explicit experimental diffusion workflow |
 | Library             | Ordered workspace list with rename, archive download, and recoverable trash |
 | Workspace           | Active-workspace files with A/B loading, import, filtering, reordering, download, rename, and recoverable trash |
 | Info                | Editable artifact metadata and structure statistics with revision-aware autosave |
@@ -207,19 +225,33 @@ and flag schema is generated by `../scripts/gen_gui_spec.py` from the argparse
 parsers, including repeatable and multi-value options. For exact CLI flags, see
 the generated [command reference](../docs/reference/index.md).
 
-Commands run as workspace-scoped managed jobs. The panel shows queued,
+Commands other than Atom Names run as workspace-scoped managed jobs. The panel shows queued,
 running, succeeded, failed, or cancelled state; restores an active job after a
 panel/page reload; streams status with polling fallback; and displays captured
 stdout/stderr when the job finishes. Only one job can run in a workspace at a
 time. **Cancel** stops the active process, and successful outputs are added to
 Workspace and loaded into viewer A when they are structures.
 
+Atom Names calls the dedicated V1 naming endpoint with the selected workspace
+artifact ID. **Target FF** selects AMBER, Amber19SB, or CHARMM; **Profile** selects
+`gromacs` (default) or native `standard` naming. **Dry Run** returns a report without
+registering an output. The GUI reads an optional selected variant-overrides JSON
+artifact and sends its array inline. Successful conversions register one new
+structure and refresh Workspace; synchronous conversions do not create managed
+job history or a Cancel action. See the [naming guide](../docs/commands/atom-names.md).
+
+Status and output belong to the selected tool and workspace. Diagnostic/output
+report previews and console logs occupy separate labelled scroll regions;
+stderr is not automatically treated as an error. Atom Names displays its
+synchronous response inline, not as a nonexistent downloadable report file.
+
 ## Workspace management
 
 The **Library** contains workspaces only. Create, activate, reorder, rename,
 download, or move a workspace to recoverable trash there. The separate
 **Workspace** panel lists files owned by the active workspace. Import local
-files from its header or the global Upload button; generated DVBfixer and
+files with **Import files** in its header, by dropping files onto Workspace, or
+with **Import structure** in the global toolbar; generated DVBfixer and
 Homology outputs are registered in the same manifest automatically.
 
 When two 3D viewers are open, the `A` / `B` selector in Workspace chooses the
@@ -239,10 +271,10 @@ routes are not served.
 | Activate workspace           | Click a workspace in Library                                 |
 | Load workspace structure     | Click a structure file in Workspace                          |
 | Choose target viewer         | `A` / `B` selector in the Workspace header                   |
-| Filter workspace files       | **Hide non-PDB files** / **Show non-PDB files**              |
+| Filter workspace files       | **Show structures only** / **Show all files** (includes CIF/mmCIF structures) |
 | Reorder workspaces/files     | Drag the row handle to the insertion marker; arrows move selected files |
 | Download                     | Context menu → **Download**; workspaces download as `.tar.gz` archives |
-| Load your own file           | Click Upload in the top bar                                  |
+| Load your own file           | **Import files** in Workspace, drop files there, or **Import structure** in the top bar |
 | Toggle camera sync (A ↔ B)   | Link icon in the top bar                                     |
 | Rotate 3D                    | Left-click drag                                              |
 | Zoom                         | Scroll wheel                                                 |
@@ -255,7 +287,7 @@ routes are not served.
 | Show Interface               | Network/hub icon next to a chain in Elements (zooms to 5 Å contact zone, filters Interactions) |
 | Focus interaction            | Click a row in the Interactions panel                        |
 | Run a DVBFixer command       | Pick the sub-tab, set the input file, click Run              |
-| Cancel a DVBFixer command    | Click **Cancel** while the job is queued or running          |
+| Cancel a DVBFixer command    | Click **Cancel** while a managed job is queued or running (not synchronous Atom Names) |
 | Duplicate a panel            | Click "+" on any tabset header                               |
 | Clear 3D markers             | Tap empty space in 3D                                        |
 | Clear everything             | Press Escape                                                 |

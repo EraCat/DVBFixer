@@ -1,7 +1,12 @@
 # CIF structure input
 
-DVBfixer accepts `.cif` and `.mmcif` anywhere a command accepts a molecular
-structure. Existing PDB inputs are unchanged and structure outputs remain PDB.
+DVBfixer normalizes `.cif` and `.mmcif` at the CLI boundary for commands that
+enable structure normalization. Existing PDB inputs are unchanged. `atom-names`
+deliberately accepts legacy PDB (`.pdb`/`.ent`) only; `component-info` and
+`reconstruct-component` have their own documented authority/input boundaries and
+do not use this automatic normalization. See the [command index](commands/index.md).
+Outputs follow each command's contract: PDB structure files, reports, topologies,
+or directory bundles; accepting CIF does not add CIF output.
 
 PDBx/mmCIF files are read with Gemmi and converted once to a temporary PDB in
 the command's output/work directory. The existing scientific pipeline then

@@ -340,7 +340,9 @@ which shows up as CDR-anchor residues no longer matching the input crystal
 coordinates. `dvbfixer model` now installs a `_PinnedLoopModel` subclass
 that clips `insertion_ext=0, deletion_ext=0` so only the gap residues
 themselves move. Downstream `dvbfixer minimize` then refines everything
-under AMBER/CHARMM anyway, so no fidelity is lost.
+under AMBER/CHARMM. This pinning covers loop-refinement MD, not the initial
+whole-model automodel optimization; it is not an exact fixed-coordinate guarantee
+for the complete MODELLER pipeline.
 
 Escape hatch (rarely needed):
 

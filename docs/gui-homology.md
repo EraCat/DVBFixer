@@ -76,7 +76,11 @@ Helper inputs, manifests, fitted intermediates, and stdout/stderr logs remain
 on disk but are hidden from ordinary file pickers. Visible files can be
 renamed, reordered, selected with Shift or Cmd/Ctrl, downloaded, and moved to
 recoverable workspace trash. Drag handles show the insertion position, and the
-Workspace toolbar can hide non-PDB files without changing their stored order.
+Workspace toolbar switches between **Show structures only** and **Show all files**
+without changing stored order. The structure filter retains CIF/mmCIF as well as
+PDB and other recognized structure formats. Category icons, format badges, and
+path/provenance tooltips identify files even when their display names omit an
+extension. Use **Import files** or drop local files onto Workspace to import them.
 Library workspace downloads are `.tar.gz` archives. Text-like artifacts open
 in the read-only **Text Files** tab.
 

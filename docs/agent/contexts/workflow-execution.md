@@ -22,14 +22,17 @@ Current behavior covers synchronous CLI dispatch, directory batch execution,
 the in-process ZBS pipeline, CIF normalization at the CLI boundary, revisioned
 GUI workspaces, and managed jobs hosted through shared Node route composition.
 
-The current HTTP routes are authenticated local application infrastructure, not
-a supported internet-facing production API. Static bearer principals,
+The HTTP routes are authenticated application infrastructure with a documented
+single-host Ubuntu/systemd deployment profile behind a TLS proxy. Target-host
+acceptance is still required before public exposure. Static bearer principals,
 manifest-backed workspace authorization, the first versioned route, and OpenAPI
 are implemented. Restrictive CORS, bounded imports, workspace accounting, and a
 process-wide FIFO child limit are also implemented. A bounded pre-authentication
 direct-client request limiter protects every API route. Versioned managed jobs,
 durable audit events, and same-host cross-process coordination are implemented.
-Privileged OS-limit acceptance and multi-host scheduling remain outstanding.
+The reference privileged OS-limit profile passed CI acceptance; each deployment
+still needs its own host/TLS/resource-enforcement acceptance. Multi-host scheduling
+remains unsupported. See [deployment](../../deployment.md).
 
 ## Capabilities
 
@@ -41,7 +44,7 @@ Privileged OS-limit acceptance and multi-host scheduling remain outstanding.
 | ZBS stage orchestration | implemented | `zbs.py::_run_pipeline` | aborts at the failing stage; existing intermediates can remain |
 | Revisioned workspace manifests | implemented | `workspace-api.ts`, `workspace-lock.ts` | same-host writers serialize and stale client revisions return 409; locks are not distributed |
 | Persisted, cancellable local jobs | implemented | `managed-jobs.ts`, `workspace-lock.ts` | capped logs and state persist; same-host processes share run locks, cancellation markers, and SSE polling |
-| Duplicate synchronous GUI command route | removed | `api-routes.ts` | callers use versioned managed jobs |
+| Duplicate synchronous GUI command route | removed | `api-routes.ts` | callers use versioned managed jobs; naming retains its dedicated synchronous V1 endpoint |
 | Versioned production workflow API | partial | `managed-jobs.ts`, `naming-api.ts` | versioned routes ship; target-host public acceptance is pending |
 
 ## Entry Points

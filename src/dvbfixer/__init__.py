@@ -1,6 +1,6 @@
 """dvbfixer — PDB structure preparation tools."""
 
-__version__ = "0.9.0"
+__version__ = "0.9.1"
 
 # Silence MDAnalysis's "Unknown element" chatter — Reduce and tleap
 # occasionally emit atom lines with a blank element column (77-78);

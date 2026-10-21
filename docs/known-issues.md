@@ -211,7 +211,12 @@
 
 - **Hydrogen handling in minimize**: By default, existing hydrogens are kept. Use `--rebuild-h` to strip and re-add via OpenMM (needed when protonation state changes). When AMBER protonation names (GLH, HIE, CYX, etc.) are detected in the input PDB, they are passed as `variants` to `addHydrogens` to ensure correct protonation hydrogens.
 
-- **OpenMM normalizes AMBER names**: `PDBFile` reader converts GLH→GLU, HIE→HIS, CYX→CYS. The minimize tool reads raw PDB text first to capture original names. `PDBFile.writeFile` also writes standard names, so a final protonate text-based rename is needed to restore AMBER names.
+- **OpenMM normalizes AMBER names**: `PDBFile` may fold variants such as
+  GLH/HIE/CYX into parent residue names. Minimize captures raw variant identity
+  before loading, then the shared naming adapter restores requested output names
+  after serialization. A separate `protonate` run is not needed merely to restore
+  names. Use the relevant command's `--atom-naming` policy, or the non-destructive
+  [`atom-names`](commands/atom-names.md) converter for an existing PDB.
 
 - **Pull valence checking**: The `pull` tool validates bonds before and after pulling. Pre-pull: checks valence (bond count vs element max), warns about unusual element pairs. Post-pull: checks convergence (distance vs target), bond length range, and steric clashes within the pulling residues. All checks are warnings only — they do not prevent the operation.
 
@@ -229,10 +234,15 @@
 
 - **PDBFixer sidechain rebuild can flip Cα chirality (fixed 0.6.2)**: `PDBFixer.addMissingAtoms()` rebuilds missing sidechain heavy atoms from ideal AMBER templates. When only the backbone (N, CA, C, O) is present in the input, the template alignment sometimes picks the D configuration — putting CB on the wrong side of the CA-N-C plane. Branched-Cβ residues (VAL, ILE, THR) are the highest-risk case. `dvbfixer.ffutils.geometry.fix_ca_chirality` runs immediately after `addMissingAtoms` in `prepare` and `minimize` and reflects any D-CB back to L via a plane-mirror. Zero-cost when the input is clean.
 
-- **LYN hydrogen naming across three FF conventions (0.6.3)**: There are TWO conventions in play, and dvbfixer navigates both.
+- **LYN hydrogen naming across three FF conventions (0.6.3)**: the force-field
+  template, hydrogen-placement definition and consumer dialect must be distinguished.
   - **OpenMM ff14SB** (`protein.ff14SB.xml`): LYN uses `HZ2 + HZ3` (HZ1 absent). Needed for `createSystem` to match the LYN template.
   - **OpenMM `hydrogens.xml`**: gates HZ3 under `variant="LYS"` — a quirk that makes `Modeller.addHydrogens(variants=['LYN'])` produce `HZ1 + HZ2` instead. `dvbfixer.ffutils.variants.fix_lyn_hz_naming` renames `HZ1 → HZ3` post-`addHydrogens` to satisfy ff14SB during OpenMM operations.
-  - **GROMACS amber99sb-ildn** (`aminoacids.rtp` + `.hdb`): LYN uses `HZ1 + HZ2`. `pdb2gmx -ff amber99sb-ildn` fails on ff14SB-named input. Since 0.6.3 dvbfixer's final user-visible PDB writes (prepare / minimize / protonate) rename `HZ3 → HZ1` on LYN so the output loads cleanly into GROMACS. Intermediate temp writes keep ff14SB for OpenMM compatibility.
+  - **GROMACS amber99sb-ildn** (`aminoacids.rtp` + `.hdb`): LYN uses `HZ1 + HZ2`.
+    Default GROMACS-profile final writes rename `HZ3 → HZ1`; native `standard`
+    AMBER output retains `HZ2 + HZ3`. Intermediate OpenMM writes retain native
+    ff14SB names. Choose the output profile for the intended consumer rather than
+    assuming every final PDB uses the GROMACS dialect.
   Sub-agent survey (Jul 2026) verified LYN is the ONLY protein atom-name difference between ff14SB and GROMACS amber99sb-ildn for standard residues plus HID/HIE/HIP/CYX/CYM/ASH/GLH/LYN.
 
 - **Water + ion mismatch causes LINCS failure**: Prior to the `--ion-set` flag, `dvbfixer top --water` only changed the water moleculetype while keeping bundled Aqvist Na⁺/Dang Cl⁻ ions regardless of water choice. Combining OPC water with Dang Cl⁻ caused Cl⁻ to over-attract to protein cations; in a real user case a 4× trastuzumab + OPC system saw atomic pressure crash to −9000 bar in 10 ps of NPT and LINCS died at step 8027. Now `--ion-set auto` (default) picks the matched set: TIP3P→JC-TIP3P, SPC/E→JC-SPCE, TIP4P-Ew→JC-TIP4P-Ew, OPC→Li-Merz HFE-OPC. Pass `--ion-set dang-legacy` only when reproducing pre-flag runs.
@@ -252,7 +262,20 @@
 
   Net effect verified on real fixtures: a glycoprotein `zbs --no-solvent` run went from 68-86 non-bonded contacts < 1.5 Å to zero, reaching the real whole-system minimize with no fallback at all. A residual, real `openmmforcefields`/OpenMM limitation remains for non-covalent ligands: `Modeller.addHydrogens()`'s own internal `createSystem` call can raise `KeyError` (not `ValueError`) when its temporary re-matching invokes a dynamically-registered GAFF2 generator — caught alongside `ValueError`, but the affected ligand still ends up on the strip-and-splice path (with a much smaller residual clash than before, since the fallback no longer strips the ligand's already-correct hydrogens).
 
-- **Non-deterministic D-Cα drift in `minimize`, partially fixed in 0.7.12 and merged into `main`:** `PDBFixer.addMissingAtoms(seed=None)` uses unseeded internal Langevin dynamics to resolve clashes when rebuilding a missing sidechain (see `ARCHITECTURE.md`'s "Seeded rebuild" section) — this genuinely made rebuilt sidechains vary run to run on the same input, occasionally surviving as D-Cα into `minimize`. Fixed by `dvbfixer.ffutils.geometry.rebuild_missing_atoms_with_retry`, wired into all 5 `addMissingAtoms()` call sites. Verified: 11 truncated LYS residues in `tests/fixtures/8cz8/8cz8_t_u.pdb` chain E now rebuild to bit-identical, clash-free, L-chiral coordinates across repeated `prepare` runs. **However, a second, independent source of run-to-run variation remains** inside `minimize`'s own full-system energy minimization — confirmed by running the exact same `zbs` command 5× on the same input: in 1 of 5 runs, `SER212` (a residue with ZERO missing atoms, never touched by `addMissingAtoms`) still drifted to D-Cα. Most likely OpenMM's CPU-platform multi-threaded force summation (non-associative floating point across thread counts) tipping a borderline residue's local minimum one way or the other. `minimize`'s existing unconditional reflect/re-minimize/force-reflect safety net still guarantees a zero-D-Cα final structure in every case observed (5/5 runs completed with a correct final structure) — this is a reduction in how OFTEN that safety net has to fire, and a fix for its most identifiable root cause, not a claim of full end-to-end determinism. Deliberately NOT fixed by forcing OpenMM's `DeterministicForces` CPU platform property globally — the user considered and rejected that as insufficient on its own ("if we'll have a D-isomere problem we couldn't resolve it through re-run pipeline": determinism without a way to prevent the bad outcome in the first place just removes the lucky-escape option). A follow-up session would need to actually investigate why `minimize`'s local energy landscape is bistable for these residues, not just make the outcome deterministic.
+- **Seeded rebuild versus whole-system determinism:** the unseeded missing-
+  sidechain rebuild was fixed in 0.7.12 by
+  `ffutils.geometry.rebuild_missing_atoms_with_retry`, used by all rebuild call
+  sites. The 11 truncated LYS regression in `tests/fixtures/8cz8/8cz8_t_u.pdb`
+  reproduces identical rebuilds on the fixed Reference backend, with a separate
+  default-platform test checking clash-free L chirality. That result does not imply
+  bit-identical whole-system minimization: platform/thread-dependent floating-
+  point effects can still change relaxed coordinates. Historical reports of
+  minimization-induced inversion predate the signed-volume chirality guard
+  introduced in 0.7.23. Current minimize protects initially-L centres, uses
+  reflection only for emergency recovery, and aborts output if L geometry is
+  not restored. Do not treat rerunning until a lucky L result appears as a
+  workaround. See [chirality protection](commands/minimize.md) and the
+  [architecture](../ARCHITECTURE.md).
 
 - **HETATM ligand resSeq colliding with a gap-filled protein residue, causing coordinate cross-contamination (fixed 0.7.15)**: on an input with no SEQRES records, the standalone `renumber.py` numbers ATOM and HETATM residues in one shared sequential space, with no isolation between the two. If `model`'s FASTA-aware gap-fill later expands a chain (e.g. an unresolved C-terminal loop), a HETATM ligand's naive resSeq can land exactly on a newly-created protein residue's resSeq. `minimize`'s legacy strip-and-splice position-restore merge, keyed too loosely, then silently overwrote the ligand's colliding atoms with the protein residue's minimized coordinates — the tracked fatty-acid regression under `tests/fixtures/lipid/` showed an atom teleported tens of Å away. Fixed in `model/renumber.py`'s `build_resnum_mapping` (detects the collision and renumbers the HETATM clear of it, with a `WARNING`); hardened minimize's restore key to `(chain, resid, insertion code, parent resname, atom name)` as defense-in-depth against future collisions.
 

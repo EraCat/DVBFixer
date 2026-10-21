@@ -96,7 +96,8 @@ verifies naming transformations, not chemical template or bond compatibility.
 ## API Phase 2: Dedicated CLI Adapter
 
 - [x] Add `dvbfixer atom-names` with one input and one explicit output.
-- [x] Add `--target-ff {amber,amber19sb,charmm}` and `--profile gromacs`.
+- [x] Add `--target-ff {amber,amber19sb,charmm}` and `--profile {gromacs,standard}`
+  (native profile exposed publicly in 0.9.1; GROMACS remains the default).
 - [x] Support variant overrides from JSON, `--dry-run`, and `--report-json`.
 - [x] Call the pure naming service and keep the command distinct from `rename` and `convert`.
 - [x] Register the command and regenerate CLI and GUI command references.

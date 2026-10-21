@@ -124,5 +124,26 @@ stderr container.
    from `gui/` for an application-wide styling change. Use narrow tests while
    iterating; do not silently trigger a full scientific test run.
 
+## Workspace file identity and filtering
+
+[`ArtifactFileIdentity`](../gui/src/components/ArtifactFileIdentity.tsx) renders
+one compact row cell: category icon (18 px), flexible ellipsized display name,
+and a persistent outlined format chip (24 px high, 52–88 px wide). Category uses
+recorded artifact metadata when available and recognizable path extensions as a
+fallback. Format always comes from the actual path, never the editable name.
+Icon shape, accessible category label and badge text must remain useful without
+color; do not use error/warning colors simply to distinguish file types.
+
+The tooltip preserves the complete case-sensitive workspace path and recorded
+command/source provenance. Unknown provenance stays explicitly unknown. A format
+badge is presentation, not proof that every viewer/backend accepts that format.
+
+**Show structures only / Show all files** is an outlined toggle action. The
+structure-only filter includes CIF/mmCIF and other recognized structure formats,
+not just `.pdb`. Rendering, range selection and arrow reordering share the same
+visible list; switching the filter must not reorder files or unhide internal
+bookkeeping artifacts. Classification/filtering policy lives in
+[`artifact-presentation.ts`](../gui/src/lib/artifact-presentation.ts).
+
 See also the [GUI overview](../gui/README.md) and
 [Homology workspace guide](gui-homology.md).

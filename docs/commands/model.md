@@ -16,7 +16,13 @@ Writes a `.dat` file recording all atoms in rebuilt gap residues. This is merged
 
 **Key behaviour:**
 - **Robust multi-chain handling** — chains are reordered before Modeller so disjoint file-order blocks sharing a chain ID (ATOM protein + HETATM glycans split by other chains) are grouped into one contiguous segment. Fixes silent glycan drops (e.g. 3ry6 chain C, FcgRI chain A).
-- **Deterministic residue numbering** — gap-fill residues are numbered from input resseq jumps (not from `align2d`'s score-based placement). N-terminal extras extend backward, internal gaps fill between input neighbours, C-terminal extras extend forward — all via `first_resseq + N - K`. Mutation-tolerant via Needleman-Wunsch fallback. HETATMs attached to a protein chain keep their original resseqs.
+- **Deterministic residue numbering** — gap-fill residues use the shared affine
+  sequence placement and input residue anchors rather than a greedy repeated-
+  residue match. N-terminal extras extend backward; internal gaps fill forward
+  from the left anchor. If the deposited numbering reserved insufficient room,
+  downstream residue numbers shift with a warning instead of colliding.
+  HETATMs preserve original numbers unless gap filling creates a protein-number
+  collision, in which case they are renumbered clear of the protein range.
 - **`--fasta` headers must encode chain IDs**: `>chain_X`, `>PDBID_X` (e.g. `>1abc_A`), or `>X`. Matched by ID, not file order. Clear error if unparseable.
 - **Shared affine sequence alignment** — terminal trimming, Modeller PIR correction, and residue restoration use the same semi-global alignment. Reference N/C overhangs are terminal; only gaps between the first and last observed anchors are internal modelable gaps. This prevents repeated residues near a terminus from creating a spurious long loop.
 - **Plain-language Modeller diagnostics** — common errors (BLK alignment, sequence difference, unknown residue type) get a clear cause + remediation alongside the raw Modeller message.

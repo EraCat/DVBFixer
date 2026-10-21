@@ -33,6 +33,7 @@ import { apiFetch, downloadApiBlob, openApiBlob } from '../lib/api-client'
 import { useWorkspaceImportStore } from '../stores/workspaceImportStore'
 import { actionGroupSx, panelToolbarSx } from '../ui/layout'
 import { ArtifactFileIdentity } from './ArtifactFileIdentity'
+import { visibleWorkspaceArtifacts } from '../lib/artifact-presentation'
 
 export function ProjectLibrary({ mode = 'library' }: { mode?: 'library' | 'workspace' }) {
   const uploadRef = useRef<HTMLInputElement>(null)
@@ -61,7 +62,7 @@ export function ProjectLibrary({ mode = 'library' }: { mode?: 'library' | 'works
   const [draggedWorkspace, setDraggedWorkspace] = useState<string | null>(null)
   const [draggedArtifact, setDraggedArtifact] = useState<string | null>(null)
   const [dropMarker, setDropMarker] = useState<{ kind: 'workspace' | 'artifact'; id: string; position: 'before' | 'after' } | null>(null)
-  const [showNonPdb, setShowNonPdb] = useState(true)
+  const [structuresOnly, setStructuresOnly] = useState(false)
   const plugin = useStructureStore(state => state.plugin)
   const secondaryPlugin = useStructureStore(state => state.secondaryPlugin)
   const setFileName = useStructureStore(state => state.setFileName)
@@ -230,13 +231,14 @@ export function ProjectLibrary({ mode = 'library' }: { mode?: 'library' | 'works
     try { await useWorkspaceStore.getState().save() } catch (reason: any) { setError(reason.message || String(reason)) }
   }
 
+  const visibleArtifacts = visibleWorkspaceArtifacts(active?.artifacts || [], structuresOnly)
+
   const reorderSelected = async (direction: -1 | 1) => {
     if (!active || !selectedArtifacts.size) return
-    const visible = active.artifacts.filter(item => !item.hidden && (showNonPdb || /\.pdb$/i.test(item.file)))
     updateWorkspace({
       artifacts: reorderVisibleArtifacts(
         active.artifacts,
-        visible.map(item => item.id),
+        visibleArtifacts.map(item => item.id),
         selectedArtifacts,
         direction,
       ),
@@ -307,7 +309,7 @@ export function ProjectLibrary({ mode = 'library' }: { mode?: 'library' | 'works
     {mode === 'workspace' && active && <>
       <Box sx={panelToolbarSx}><Typography variant="caption" sx={{ fontWeight: 700, color: 'text.secondary' }}>FILES</Typography>
         <Divider orientation="vertical" flexItem sx={{ mx: 1 }} />
-        <Button size="small" variant="outlined" onClick={() => setShowNonPdb(show => !show)}>{showNonPdb ? 'Hide non-PDB files' : 'Show non-PDB files'}</Button>
+        <Button size="small" variant="outlined" aria-pressed={structuresOnly} onClick={() => setStructuresOnly(only => !only)}>{structuresOnly ? 'Show all files' : 'Show structures only'}</Button>
         {!!selectedArtifacts.size && <Typography variant="caption" color="primary">{selectedArtifacts.size} selected</Typography>}
         <Box sx={actionGroupSx}>
           <Tooltip title="Move selected files up"><span><IconButton aria-label="Move selected files up" size="small" disabled={!selectedArtifacts.size} onClick={() => reorderSelected(-1)}><ArrowUpwardIcon fontSize="inherit" /></IconButton></span></Tooltip>
@@ -315,7 +317,7 @@ export function ProjectLibrary({ mode = 'library' }: { mode?: 'library' | 'works
         </Box>
       </Box>
       <List dense disablePadding sx={{ flex: 1, overflow: 'auto' }}>
-        {active.artifacts.filter(artifact => !artifact.hidden && (showNonPdb || /\.pdb$/i.test(artifact.file))).map((artifact, index, visible) => <ListItemButton key={artifact.id} selected={selectedArtifacts.has(artifact.id)}
+        {visibleArtifacts.map((artifact, index, visible) => <ListItemButton key={artifact.id} selected={selectedArtifacts.has(artifact.id)}
           onDragOver={event => { event.preventDefault(); event.stopPropagation(); event.dataTransfer.dropEffect = 'move'; const rect = event.currentTarget.getBoundingClientRect(); setDropMarker({ kind: 'artifact', id: artifact.id, position: event.clientY < rect.top + rect.height / 2 ? 'before' : 'after' }) }}
           onDragLeave={event => { if (!event.currentTarget.contains(event.relatedTarget as Node | null)) setDropMarker(null) }}
           onDrop={event => { event.preventDefault(); event.stopPropagation(); const position = dropMarker?.kind === 'artifact' && dropMarker.id === artifact.id ? dropMarker.position : 'before'; if (draggedArtifact) moveArtifact(draggedArtifact, artifact.id, position).catch(() => {}); setDraggedArtifact(null); setDropMarker(null) }}

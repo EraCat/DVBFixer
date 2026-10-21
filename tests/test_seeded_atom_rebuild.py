@@ -67,7 +67,7 @@ def _extract_lys_sidechain_coords(pdb_text: str, chain: str = "E") -> dict:
 
 @pytest.mark.slow
 def test_prepare_rebuilds_truncated_lys_deterministically(
-    eightcz8_dir: Path, tmp_workdir: Path,
+    eightcz8_dir: Path, tmp_workdir: Path, monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     """Every truncated LYS sidechain must be (a) fully rebuilt and (b)
     bit-identical across independent `prepare` runs on the same input.
@@ -79,7 +79,21 @@ def test_prepare_rebuilds_truncated_lys_deterministically(
     the unseeded clash-escape MD could still make it non-deterministic.
     This test only passes once both are fixed.
     """
-    from dvbfixer.prepare.pipeline import main as prepare_main
+    from openmm import Platform
+    from pdbfixer import PDBFixer
+
+    import dvbfixer.prepare.pipeline as pipeline
+
+    # Exact equality tests the seeded algorithm on a fixed numerical backend.
+    # An automatically selected single-precision OpenCL device can differ at
+    # PDB rounding boundaries even with identical seeds. Do not change the
+    # production platform or loosen the coordinate assertion to hide that.
+    class ReferencePDBFixer(PDBFixer):
+        def __init__(self, *args, **kwargs):
+            kwargs["platform"] = Platform.getPlatformByName("Reference")
+            super().__init__(*args, **kwargs)
+
+    monkeypatch.setattr(pipeline, "PDBFixer", ReferencePDBFixer)
 
     src = eightcz8_dir / "8cz8_t_u.pdb"
     assert src.is_file(), f"tracked fixture missing: {src}"
@@ -87,7 +101,7 @@ def test_prepare_rebuilds_truncated_lys_deterministically(
     runs = []
     for i in range(2):
         out = tmp_workdir / f"prep_{i}.pdb"
-        prepare_main([str(src), "-o", str(out), "--strip-heterogens"])
+        pipeline.main([str(src), "-o", str(out), "--strip-heterogens"])
         assert out.exists()
         runs.append(_extract_lys_sidechain_coords(out.read_text()))
 

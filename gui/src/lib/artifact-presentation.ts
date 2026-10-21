@@ -3,6 +3,13 @@ import type { WorkspaceArtifact } from '../stores/workspaceStore'
 export type ArtifactCategory = 'structure' | 'sequence' | 'alignment' | 'table' | 'report' | 'log' | 'settings' | 'data' | 'other'
 type ArtifactIdentity = Pick<WorkspaceArtifact, 'file' | 'kind' | 'artifactType' | 'command' | 'namingProvenance'>
 
+/** Share the same visible rows between rendering, selection and reordering. */
+export function visibleWorkspaceArtifacts<T extends ArtifactIdentity & { hidden?: boolean }>(
+  artifacts: readonly T[], structuresOnly: boolean,
+): T[] {
+  return artifacts.filter(artifact => !artifact.hidden && (!structuresOnly || artifactPresentation(artifact).category === 'structure'))
+}
+
 const LABELS: Record<ArtifactCategory, string> = {
   structure: 'Structure', sequence: 'Sequence', alignment: 'Alignment', table: 'Table',
   report: 'Report', log: 'Log', settings: 'Settings', data: 'Data', other: 'File',

@@ -2,7 +2,7 @@
 
 A suite of Python CLI tools for preparing PDB and CIF structural biology files. Handles common issues with structures from MD simulations and structural databases: missing chain IDs, antibody insertion codes, missing loops/residues, loop rebuilding with Modeller, multi-template homology modeling, energy minimization with selective restraints, protonation state assignment, GROMACS topology generation, GLYCAM glycoprotein transplanting, small molecule parametrization (GAFF2), and glycan conformational clustering from MD trajectories.
 
-Current release: **0.9.0**.
+Current release: **0.9.1**.
 
 This README is the root of a manual-style documentation tree. Each subcommand has its own page under [`docs/commands/`](docs/commands/index.md); the [pipelines](docs/pipelines.md) page collects end-to-end recipes. For design notes see [`ARCHITECTURE.md`](ARCHITECTURE.md) and the focused [scientific domain model](docs/domain-model.md); for opinionated recipes and gotchas see [`BEST_PRACTICES.md`](BEST_PRACTICES.md).
 
@@ -27,7 +27,9 @@ The complete workflow is documented in the
 [GUI Homology guide](docs/gui-homology.md).
 The [DVBFixer API guide](docs/api.md) covers workspace-scoped managed jobs,
 the synchronous naming conversion, authentication, and OpenAPI.
-The GUI requires Node.js 22 or newer.
+The GUI requires Node.js 22 or newer and a `dvbfixer` executable that passes the
+startup `--version` check. Activate the installed environment before starting it;
+the development server opens the browser automatically outside test/CI mode.
 
 ```bash
 cd gui
@@ -75,7 +77,7 @@ chemistry backends.
 | [`minimize`](docs/commands/minimize.md) | Energy minimization with selective restraints, optional xtb/obminimize refinement |
 | [`protonate`](docs/commands/protonate.md) | PROPKA3 pKa prediction + AMBER residue renaming + H repair |
 | [`rename`](docs/commands/rename.md) | Canonicalize residue names (AMBER/CHARMM/MSE → standard PDB) |
-| [`atom-names`](docs/commands/atom-names.md) | Convert PDB residue and atom names for legacy AMBER, Amber19SB, or CHARMM GROMACS consumers without modifying the source |
+| [`atom-names`](docs/commands/atom-names.md) | Convert PDB residue/atom names for native AMBER/CHARMM or bundled GROMACS dialects without modifying the source |
 | [`top`](docs/commands/top.md) | GROMACS topology from PDB/GRO (AMBER, CHARMM, or ACPYPE pipeline) |
 | [`transplant`](docs/commands/transplant.md) | Transplant molecules between PDB structures (GLYCAM glycoprotein workflow) |
 | [`convert`](docs/commands/convert.md) | Convert between PDB/AMBER/GLYCAM and CHARMM naming (sugars + protonation variants) |
@@ -114,7 +116,7 @@ dvbfixer zbs --input-dir structures --output-dir fixed \
 Supported commands are `split`, `renumber`, `model`, `pull`, `prepare`,
 `minimize`, `protonate`, `rename`, `convert`, `conect`, `puppet`, `diagnose`,
 and `zbs`. The remaining tools (`top`, `transplant`, `cluster`, `parametrize`,
-`component-info`, `reconstruct-component`, `homology`, `msa`, `salign`, and
+`atom-names`, `component-info`, `reconstruct-component`, `homology`, `msa`, `salign`, and
 `doctor`) remain explicit single-run workflows
 because they have no per-structure directory operation. Every tool states its
 status in its own `--help` and command guide; see the complete
@@ -133,9 +135,9 @@ rather than execution failures and points to the per-structure report.
 Every command accepts `--log-file PATH`. DVBFixer appends a versioned UTC run
 header and tees stdout/stderr from Python and child tools to that file while
 retaining normal terminal output. Warning/error lines receive prominent plain
-markers in logs and colored markers on interactive terminals. Every run ends
-with a deduplicated diagnostic summary, including an explicit zero-count block
-for clean runs.
+markers in logs and colored markers on interactive terminals. Runs with detected
+warnings/errors end with a deduplicated diagnostic summary, including on exception
+cleanup; clean runs do not emit an empty diagnostic banner.
 
 `renumber`, `model`, and `zbs` accept `--number-from-1`. It shifts each final
 chain so the first retained protein residue is 1 while preserving internal

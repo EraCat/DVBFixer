@@ -49,6 +49,23 @@ Babel. Both are installed by `environment.yml`, and pip installations declare
 environment with `python -c "import gemmi; from openbabel import openbabel"`.
 If only PDB input is used, the conversion layer is not invoked.
 
+## AmberTools and MolProbity Reduce
+
+The `tleap-reduce` preparation backend requires both `tleap` (AmberTools) and
+the `reduce` executable (MolProbity). `environment.yml` declares `ambertools`
+and `reduce` separately; an existing environment containing `tleap` is not proof
+that Reduce is installed. Repair an incomplete environment with:
+
+```bash
+micromamba install -n dvbfixer -c conda-forge -c bioconda ambertools reduce
+micromamba run -n dvbfixer dvbfixer doctor
+```
+
+Missing Reduce is fatal for the explicitly selected `tleap-reduce` backend.
+Legacy preparation reports the missing optional Reduce step and falls back to
+its documented input-H/tautomer policy; that warning does not establish that the
+external tool ran successfully.
+
 ## Multiple-sequence alignment executables
 
 `dvbfixer msa`, `dvbfixer homology --template-plan`, and the GUI Homology
@@ -206,7 +223,7 @@ Confirm that the installed executable and package metadata agree:
 
 ```bash
 dvbfixer --version
-# dvbfixer 0.9.0
+# dvbfixer 0.9.1
 ```
 
 Or without activating the environment:

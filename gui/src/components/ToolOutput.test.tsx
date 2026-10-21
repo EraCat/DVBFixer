@@ -8,7 +8,7 @@ describe('tool output presentation', () => {
     expect(markup).toContain('Output &amp; diagnostics')
     expect(markup).toContain('Diagnose: 0 errors, 2 warnings')
     expect(markup).toContain('Diagnostics &amp; messages (stderr)')
-    expect(markup).toContain('aria-label="Tool output and diagnostics"')
+    expect(markup).toContain('aria-label="Run log"')
     expect(markup).toContain('tabindex="0"')
     expect(markup).toContain('overflow:auto')
     expect(markup).not.toContain('#fff5f5')
@@ -29,7 +29,9 @@ describe('tool output presentation', () => {
   })
 
   it('explains an empty run instead of hiding the output block', () => {
-    expect(renderToStaticMarkup(<ToolOutput stdout="" stderr="" />)).toContain('This run produced no console output or report file.')
+    const markup = renderToStaticMarkup(<ToolOutput stdout="" stderr="" />)
+    expect(markup).toContain('This run produced no report file.')
+    expect(markup).toContain('This run produced no console output.')
   })
 
   it('previews an output report even when both process streams are empty', () => {
@@ -48,14 +50,18 @@ describe('tool output presentation', () => {
     expect(markup).toContain('Open in Text Files')
   })
 
-  it('places diagnostics before the report and separates sections visibly', () => {
+  it('renders the diagnostic report and run log in two independent scroll regions', () => {
     const markup = renderToStaticMarkup(<ToolOutput stdout="Saved file" stderr="Diagnostic messages"
       reports={[{ file: 'diagnose.txt', text: 'Report body', truncated: false }]} />)
-    const diagnostics = markup.indexOf('Diagnostics &amp; messages (stderr)')
     const report = markup.indexOf('Report · diagnose.txt')
-    expect(diagnostics).toBeGreaterThan(-1)
-    expect(report).toBeGreaterThan(diagnostics)
+    const diagnostics = markup.indexOf('Diagnostics &amp; messages (stderr)')
+    expect(report).toBeGreaterThan(-1)
+    expect(diagnostics).toBeGreaterThan(report)
     expect(markup.indexOf('Standard output')).toBeGreaterThan(report)
-    expect(markup.slice(diagnostics, report)).toContain('MuiDivider-root')
+    expect(markup).toContain('aria-label="Diagnostic report"')
+    expect(markup).toContain('aria-label="Run log"')
+    expect(markup.match(/role="region"/g)).toHaveLength(2)
+    expect(markup.match(/tabindex="0"/g)).toHaveLength(2)
+    expect(markup.slice(report, diagnostics)).toContain('aria-label="Run log"')
   })
 })

@@ -1,12 +1,17 @@
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
-import Stack from '@mui/material/Stack'
 import Divider from '@mui/material/Divider'
 import OpenInNewIcon from '@mui/icons-material/OpenInNew'
 import type { ToolReportPreview } from '../lib/tool-output'
 
 type OutputStream = 'stdout' | 'stderr'
+
+const scrollBlockSx = {
+  maxHeight: 'min(30vh, 280px)', minHeight: 64, overflow: 'auto', bgcolor: 'background.default',
+  border: 1, borderColor: 'divider', borderRadius: 1,
+  '&:focus-visible': { outline: '2px solid', outlineColor: 'primary.main' },
+}
 
 export function ToolOutput({ stdout, stderr, reports = [], outputFile, onOpenFile, onOpenLog }: {
   stdout: string
@@ -16,6 +21,7 @@ export function ToolOutput({ stdout, stderr, reports = [], outputFile, onOpenFil
   outputFile?: string
   onOpenFile?: (file: string) => void
 }) {
+  const reportTitle = reports.some(report => /diagnose/i.test(report.file)) ? 'Diagnostic report' : 'Output report'
   const streamSection = (stream: OutputStream, text: string) => text ? <Box key={stream} sx={{ p: 1 }}>
     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 0.5 }}>
       <Typography variant="caption" color="text.secondary" sx={{ fontWeight: 600 }}>
@@ -37,13 +43,8 @@ export function ToolOutput({ stdout, stderr, reports = [], outputFile, onOpenFil
     <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mb: 0.5 }}>
       Reports and progress messages are not necessarily errors. Check the run status above.
     </Typography>
-    <Stack role="region" aria-label="Tool output and diagnostics" tabIndex={0}
-      spacing={1} divider={<Divider flexItem sx={{ borderBottomWidth: 2 }} />} sx={{
-      maxHeight: 'min(40vh, 360px)', overflow: 'auto', bgcolor: 'background.default',
-      border: 1, borderColor: 'divider', borderRadius: 1,
-      '&:focus-visible': { outline: '2px solid', outlineColor: 'primary.main' },
-    }}>
-      {streamSection('stderr', stderr)}
+    <Typography variant="caption" sx={{ display: 'block', fontWeight: 700, mb: 0.5 }}>{reportTitle}</Typography>
+    <Box role="region" aria-label={reportTitle} tabIndex={0} sx={scrollBlockSx}>
       {reports.map(report => <Box key={report.file} sx={{ p: 1 }}>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 0.5 }}>
           <Typography variant="caption" sx={{ fontWeight: 600, overflowWrap: 'anywhere' }}>
@@ -71,10 +72,18 @@ export function ToolOutput({ stdout, stderr, reports = [], outputFile, onOpenFil
         <Typography variant="caption" sx={{ overflowWrap: 'anywhere' }}>Output file · {outputFile.split('/').pop()}</Typography>
         {onOpenFile && <Button size="small" onClick={() => onOpenFile(outputFile)} sx={{ ml: 'auto', whiteSpace: 'nowrap', fontSize: '0.65rem' }}>Open in Text Files</Button>}
       </Box>}
-      {!stdout && !stderr && !reports.length && !outputFile && <Typography variant="caption" color="text.secondary" sx={{ display: 'block', p: 1 }}>
-        This run produced no console output or report file.
+      {!reports.length && !outputFile && <Typography variant="caption" color="text.secondary" sx={{ display: 'block', p: 1 }}>
+        This run produced no report file.
       </Typography>}
+    </Box>
+    <Typography variant="caption" sx={{ display: 'block', fontWeight: 700, mt: 1.5, mb: 0.5 }}>Run log</Typography>
+    <Box role="region" aria-label="Run log" tabIndex={0} sx={scrollBlockSx}>
+      {streamSection('stderr', stderr)}
+      {stderr && stdout && <Divider />}
       {streamSection('stdout', stdout)}
-    </Stack>
+      {!stdout && !stderr && <Typography variant="caption" color="text.secondary" sx={{ display: 'block', p: 1 }}>
+        This run produced no console output.
+      </Typography>}
+    </Box>
   </Box>
 }

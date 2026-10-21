@@ -98,6 +98,8 @@ best-effort summaries; consult `git log` for exact provenance.
   fresh-process import-boundary regression coverage.
 - Updated Vite/Vitest and vulnerable transitive GUI dependencies; the locked
   dependency tree passes `npm audit` without lowering the CI audit threshold.
+- Made Homology diffusion dispatch tests independent of installed ML launchers,
+  covering explicit Protenix and legacy Protpardelle profile selection.
 - Deferred optional Torch/reinjection imports in Protenix research helpers so
   pure helpers can run in the core environment; made simulated Linux preflight
   tests independent of the actual host's cgroup RAM limits.

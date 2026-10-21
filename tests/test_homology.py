@@ -46,10 +46,33 @@ def test_unrelated_modeller_error_is_not_hidden():
         )
 
 
+@pytest.mark.parametrize(("model", "profile"), [
+    ("protenix", "protenix-v1-cuda"),
+    ("protpardelle", "protpardelle-1c-mps"),
+])
 def test_homology_diffusion_dispatches_materialized_mosaic_with_ownership(
     tmp_path,
     monkeypatch,
+    model,
+    profile,
 ):
+    from dvbfixer.model.diffusion.runtime import DiffusionRuntime
+
+    # This tests dispatch/ownership, not deployment discovery. CI has no ML
+    # launchers; a developer's installed launcher must not decide test behavior.
+    runtime = DiffusionRuntime(model, profile, str(tmp_path / "unused-runner"))
+    monkeypatch.setattr(
+        "dvbfixer.model.diffusion.runtime._installed_runner", lambda _name: None,
+    )
+    selected_models = []
+
+    def resolve_runtime(selected_model):
+        selected_models.append(selected_model)
+        return runtime
+
+    monkeypatch.setattr(
+        "dvbfixer.model.diffusion.runtime.resolve_diffusion_runtime", resolve_runtime,
+    )
     template = tmp_path / "template.pdb"
     template.write_text(
         "ATOM      1  CA  ALA A   1       1.000   0.000   0.000  1.00 20.00           C  \n"
@@ -97,12 +120,16 @@ def test_homology_diffusion_dispatches_materialized_mosaic_with_ownership(
         str(plan),
         "--backend",
         "diffusion",
+        "--diffusion-model",
+        model,
         "-o",
         str(tmp_path / "model"),
     ])
 
     assert len(captured) == 1
+    assert selected_models == [model]
     args, request = captured[0]
+    assert args.diffusion_model == model
     assert Path(args.input).name == "mosaic_diffusion_input.pdb"
     assert request.target_sequences[0].sequence == "ASGGA"
     assert [(item.target_index, item.template_id) for item in request.template_ownership] == [

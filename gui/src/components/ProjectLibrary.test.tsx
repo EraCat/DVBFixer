@@ -41,4 +41,11 @@ describe('Workspace import control', () => {
   it('keeps file import out of the workspace switcher', () => {
     expect(renderToStaticMarkup(<ProjectLibrary />)).not.toContain('Import files</button>')
   })
+
+  it('explains that A/B selects the structure viewer, not the workspace', () => {
+    const markup = renderToStaticMarkup(<ProjectLibrary mode="workspace" />)
+    expect(markup).toContain('aria-label="Target 3D viewer"')
+    expect(markup).toContain('title="Open selected structures in 3D viewer A"')
+    expect(markup).toContain('3D viewer B (open the B tab first)')
+  })
 })

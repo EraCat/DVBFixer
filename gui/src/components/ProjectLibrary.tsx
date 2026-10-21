@@ -253,9 +253,12 @@ export function ProjectLibrary({ mode = 'library' }: { mode?: 'library' | 'works
           event.target.value = ''
           void importFiles(files)
         }} />
-        <ToggleButtonGroup size="small" exclusive value={loadTarget} onChange={(_event, value) => value && setLoadTarget(value)} sx={{ ml: 'auto', '& .MuiToggleButton-root': { minHeight: 24, py: 0, px: 1, fontSize: '0.68rem' } }}>
-          <ToggleButton value="primary">A</ToggleButton><ToggleButton value="secondary" disabled={!secondaryPlugin}>B</ToggleButton>
-        </ToggleButtonGroup>
+        <Tooltip title="Choose the 3D viewer in which selected structures open. This does not switch workspaces.">
+          <ToggleButtonGroup aria-label="Target 3D viewer" size="small" exclusive value={loadTarget} onChange={(_event, value) => value && setLoadTarget(value)} sx={{ ml: 'auto', '& .MuiToggleButton-root': { minHeight: 24, py: 0, px: 1, fontSize: '0.68rem' } }}>
+            <ToggleButton value="primary" title="Open selected structures in 3D viewer A" aria-label="Open selected structures in viewer A">A</ToggleButton>
+            <ToggleButton value="secondary" disabled={!secondaryPlugin} title="Open selected structures in 3D viewer B (open the B tab first)" aria-label="Open selected structures in viewer B">B</ToggleButton>
+          </ToggleButtonGroup>
+        </Tooltip>
         <Tooltip title={active ? `Import files into ${active.name}` : 'Select a workspace to import files'}>
           <span>
             <Button variant="outlined" size="small" disabled={!active || active.effectiveRole === 'reader' || loading || importing}

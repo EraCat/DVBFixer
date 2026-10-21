@@ -34,9 +34,11 @@ primary candidate. Rejected bundles remain inspectable but have no automatic
 primary output and are labeled `[rejected]`. Node does not duplicate scientific
 validation, fitting, or materialization. Covered substitutions remain fail closed.
 
-Target, Templates, Alignment, and Model use the same compact toolbar geometry:
-32-pixel controls, consistent action widths and spacing, and an opaque panel
-background without toolbar outline boxes. The two Mol* viewers display the
+Target, Templates, Alignment, and Model follow the same
+[GUI design system](gui-design-system.md): 32-pixel controls, consistent action
+widths/spacing and wrapping, and an opaque panel background without toolbar
+outline boxes. Dimensions and button variants live in the shared theme and
+`gui/src/ui/layout.ts`, not per-stage overrides. The two Mol* viewers display the
 basename of their independently loaded structure directly over the viewport;
 the full workspace path remains available as the label title.
 

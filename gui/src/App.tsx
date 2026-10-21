@@ -25,6 +25,7 @@ import BiotechIcon from '@mui/icons-material/Biotech'
 import SettingsIcon from '@mui/icons-material/Settings'
 import LinkIcon from '@mui/icons-material/Link'
 import LinkOffIcon from '@mui/icons-material/LinkOff'
+import AddIcon from '@mui/icons-material/Add'
 import IconButton from '@mui/material/IconButton'
 import Tooltip from '@mui/material/Tooltip'
 import { MolstarViewer } from './components/MolstarViewer'
@@ -49,6 +50,7 @@ import { useCameraSync } from './hooks/useCameraSync'
 import { useWorkspaceStore } from './stores/workspaceStore'
 import { DEFAULT_MAIN_PANELS, PANEL_DEFINITIONS } from './app-panels'
 import { focusTextViewer } from './lib/focus-text-viewer'
+import { compactIconButtonSx, toolbarSx } from './ui/layout'
 
 const PANEL_ICONS = {
   viewer: ViewInArIcon, viewer2: ViewInArIcon, sequence: TextSnippetIcon,
@@ -230,30 +232,19 @@ function App() { // @dsp obj-a1000002
   const onRenderTabSet = useCallback((node: TabSetNode | BorderNode, renderValues: ITabSetRenderValues) => {
     if (node instanceof TabSetNode) {
       renderValues.stickyButtons.push(
-        <button
+        <IconButton
           key="add-tab"
           className="flexlayout__tab_toolbar_button"
           title="Add panel"
+          aria-label="Add panel"
           onClick={(e) => {
             setMenuAnchor(e.currentTarget)
             setMenuTabSetId(node.getId())
           }}
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            width: 20,
-            height: 20,
-            border: 'none',
-            background: 'transparent',
-            cursor: 'pointer',
-            fontSize: 16,
-            fontWeight: 300,
-            padding: 0,
-          }}
+          sx={compactIconButtonSx}
         >
-          +
-        </button>
+          <AddIcon />
+        </IconButton>
       )
     }
   }, [])
@@ -262,7 +253,7 @@ function App() { // @dsp obj-a1000002
     <div style={{ display: 'flex', flexDirection: 'column', height: '100vh', overflow: 'hidden' }}>
       <WorkspaceFileDrop />
       <AppBar position="static" elevation={0} sx={{ bgcolor: 'background.paper', borderBottom: 1, borderColor: 'divider', flexShrink: 0 }}>
-        <Toolbar variant="dense" sx={{ minHeight: 36, gap: 2 }}>
+        <Toolbar variant="dense" disableGutters sx={toolbarSx}>
           <Typography variant="subtitle2" sx={{ fontWeight: 700, letterSpacing: 2, textTransform: 'uppercase', fontSize: '0.7rem', color: '#1D3261' }}>
             DVBfixer GUI
           </Typography>
@@ -271,7 +262,7 @@ function App() { // @dsp obj-a1000002
           {error && <Typography variant="caption" sx={{ color: 'error.main' }}>{error}</Typography>}
           {fileName && (
             <>
-              <Typography variant="caption" sx={{ color: '#1D3261', fontFamily: 'monospace', whiteSpace: 'nowrap' }}>
+              <Typography variant="caption" title={fileName} noWrap sx={{ color: 'text.secondary', fontFamily: 'monospace', minWidth: 0, maxWidth: '35vw' }}>
                 {fileName}
               </Typography>
               <Box sx={{ width: '1px', height: 16, bgcolor: '#1D3261', flexShrink: 0 }} />
@@ -280,10 +271,11 @@ function App() { // @dsp obj-a1000002
           {plugin && secondaryPlugin && (
             <Tooltip title={cameraSyncEnabled ? 'Camera sync ON — viewers move together (click to unlink)' : 'Camera sync OFF (click to link)'}>
               <IconButton
+                aria-label="Synchronize viewer cameras"
+                aria-pressed={cameraSyncEnabled}
                 size="small"
                 onClick={() => setCameraSyncEnabled(!cameraSyncEnabled)}
                 sx={{
-                  p: 0.5,
                   color: cameraSyncEnabled ? 'primary.main' : 'text.secondary',
                   bgcolor: cameraSyncEnabled ? 'action.selected' : 'transparent',
                 }}

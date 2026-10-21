@@ -4,6 +4,7 @@ import Typography from '@mui/material/Typography'
 import Divider from '@mui/material/Divider'
 import OpenInNewIcon from '@mui/icons-material/OpenInNew'
 import type { ToolReportPreview } from '../lib/tool-output'
+import { inlineActionSx } from '../ui/layout'
 
 type OutputStream = 'stdout' | 'stderr'
 
@@ -23,12 +24,12 @@ export function ToolOutput({ stdout, stderr, reports = [], outputFile, onOpenFil
 }) {
   const reportTitle = reports.some(report => /diagnose/i.test(report.file)) ? 'Diagnostic report' : 'Output report'
   const streamSection = (stream: OutputStream, text: string) => text ? <Box key={stream} sx={{ p: 1 }}>
-    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 0.5 }}>
+    <Box sx={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 1, mb: 0.5 }}>
       <Typography variant="caption" color="text.secondary" sx={{ fontWeight: 600 }}>
         {stream === 'stdout' ? 'Standard output' : 'Diagnostics & messages (stderr)'}
       </Typography>
       {onOpenLog && <Button size="small" endIcon={<OpenInNewIcon sx={{ fontSize: 12 }} />}
-        onClick={() => onOpenLog(stream)} sx={{ ml: 'auto', py: 0, fontSize: '0.65rem', whiteSpace: 'nowrap' }}>
+        onClick={() => onOpenLog(stream)} sx={{ ...inlineActionSx, ml: 'auto' }}>
         Open in Text Files
       </Button>}
     </Box>
@@ -46,13 +47,13 @@ export function ToolOutput({ stdout, stderr, reports = [], outputFile, onOpenFil
     <Typography variant="caption" sx={{ display: 'block', fontWeight: 700, mb: 0.5 }}>{reportTitle}</Typography>
     <Box role="region" aria-label={reportTitle} tabIndex={0} sx={scrollBlockSx}>
       {reports.map(report => <Box key={report.file} sx={{ p: 1 }}>
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 0.5 }}>
+        <Box sx={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 1, mb: 0.5 }}>
           <Typography variant="caption" sx={{ fontWeight: 600, overflowWrap: 'anywhere' }}>
             Report · {report.file.split('/').pop()}
           </Typography>
           {onOpenFile && <Button size="small" onClick={() => onOpenFile(report.file)}
             endIcon={<OpenInNewIcon sx={{ fontSize: 12 }} />}
-            sx={{ ml: 'auto', py: 0, fontSize: '0.65rem', whiteSpace: 'nowrap' }}>
+            sx={{ ...inlineActionSx, ml: 'auto' }}>
             Open in Text Files
           </Button>}
         </Box>
@@ -68,9 +69,9 @@ export function ToolOutput({ stdout, stderr, reports = [], outputFile, onOpenFil
           </Typography>}
         </>}
       </Box>)}
-      {outputFile && !reports.some(report => report.file === outputFile) && <Box sx={{ p: 1, display: 'flex', alignItems: 'center', gap: 1 }}>
+      {outputFile && !reports.some(report => report.file === outputFile) && <Box sx={{ p: 1, display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 1 }}>
         <Typography variant="caption" sx={{ overflowWrap: 'anywhere' }}>Output file · {outputFile.split('/').pop()}</Typography>
-        {onOpenFile && <Button size="small" onClick={() => onOpenFile(outputFile)} sx={{ ml: 'auto', whiteSpace: 'nowrap', fontSize: '0.65rem' }}>Open in Text Files</Button>}
+        {onOpenFile && <Button size="small" onClick={() => onOpenFile(outputFile)} sx={{ ...inlineActionSx, ml: 'auto' }}>Open in Text Files</Button>}
       </Box>}
       {!reports.length && !outputFile && <Typography variant="caption" color="text.secondary" sx={{ display: 'block', p: 1 }}>
         This run produced no report file.

@@ -1,5 +1,6 @@
 import { useCallback, useState, useEffect } from 'react'
 import Box from '@mui/material/Box'
+import { compactIconButtonSx } from '../ui/layout'
 import Typography from '@mui/material/Typography'
 import IconButton from '@mui/material/IconButton'
 import Collapse from '@mui/material/Collapse'
@@ -253,9 +254,10 @@ export function ElementsTable() {
               }}
             >
               <IconButton
+                aria-label={`Toggle ${cfg.label} visibility`}
                 size="small"
                 onClick={(e) => { e.stopPropagation(); toggleCategoryVisibility(cat) }}
-                sx={{ p: 0.25, mr: 0.25 }}
+                sx={{ ...compactIconButtonSx, mr: 0.5 }}
               >
                 {allHidden
                   ? <VisibilityOffIcon sx={{ fontSize: 14, color: 'text.secondary' }} />
@@ -294,9 +296,10 @@ export function ElementsTable() {
                       }}
                     >
                       <IconButton
+                        aria-label={`Toggle chain ${chain.chainId} visibility`}
                         size="small"
                         onClick={(e) => { e.stopPropagation(); toggleVisibility(comp.ref, comp.isHidden) }}
-                        sx={{ p: 0.25, mr: 0.5 }}
+                        sx={{ ...compactIconButtonSx, mr: 0.5 }}
                       >
                         {comp.isHidden
                           ? <VisibilityOffIcon sx={{ fontSize: 13, color: 'text.secondary' }} />
@@ -331,11 +334,13 @@ export function ElementsTable() {
                         return (
                           <Tooltip title={tooltipLabel} placement="top">
                             <IconButton
+                              aria-label={tooltipLabel}
+                              aria-pressed={isActive}
                               size="small"
                               onClick={(e) => { e.stopPropagation(); handleInterfaceClick(chain.chainId, cat) }}
                               sx={isActive
                                 ? {
-                                    p: 0.25, ml: 0.5,
+                                    ...compactIconButtonSx, ml: 0.5,
                                     bgcolor: 'primary.main',
                                     color: 'primary.contrastText',
                                     border: '1px solid',
@@ -344,7 +349,7 @@ export function ElementsTable() {
                                     '&:hover': { bgcolor: 'primary.dark' },
                                   }
                                 : {
-                                    p: 0.25, ml: 0.5,
+                                    ...compactIconButtonSx, ml: 0.5,
                                     color: 'text.secondary',
                                     bgcolor: 'transparent',
                                     border: '1px solid transparent',

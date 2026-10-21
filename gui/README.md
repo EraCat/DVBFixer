@@ -4,6 +4,10 @@ Local graphical workspace for DVBfixer, protein structures, multiple alignment,
 and homology modeling. It runs in the browser with a Node backend hosted by
 Vite during development or by the bundled standalone server.
 
+Control dimensions, button variants, alignment, wrapping and accessibility follow
+the [GUI design system](../docs/gui-design-system.md). Shared MUI defaults live
+in `src/theme.ts`; reusable toolbar/action geometry lives in `src/ui/layout.ts`.
+
 The backend invokes `dvbfixer` from `PATH` by default. Configure an alternate
 binary with `DVBFIXER_EXECUTABLE` and an optional fixed JSON argument array in
 `DVBFIXER_ARGS`; subprocesses have bounded captured output and a configurable

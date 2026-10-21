@@ -32,7 +32,7 @@ export function ChainSelector({ value, onChange }: { value?: string | null; onCh
       <Select
         value={value ?? ''}
         onChange={(e) => onChange?.(e.target.value)}
-        sx={{ fontSize: '0.75rem', height: 28 }}
+        inputProps={{ 'aria-label': 'Protein chain' }}
       >
         {chains.map((c) => (
           <MenuItem key={c.id} value={c.id} sx={{ fontSize: '0.75rem' }}>

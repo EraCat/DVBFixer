@@ -94,11 +94,10 @@ export function FileLoader() { // @dsp obj-a1000005
       <Button
         variant="outlined"
         size="small"
-        startIcon={<UploadFileIcon sx={{ fontSize: 14 }} />}
+        startIcon={<UploadFileIcon />}
         onClick={() => inputRef.current?.click()}
-        sx={{ fontSize: '0.7rem', py: 0.25, px: 1 }}
       >
-        Upload {secondaryPlugin ? `→ ${loadTargetSlot === 'secondary' ? 'B' : 'A'}` : ''}
+        Import structure {secondaryPlugin ? `→ ${loadTargetSlot === 'secondary' ? 'B' : 'A'}` : ''}
       </Button>
       <input
         ref={inputRef}

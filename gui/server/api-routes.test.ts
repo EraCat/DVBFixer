@@ -1,10 +1,16 @@
-import { afterEach, describe, expect, it } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import fs from 'node:fs'
 import os from 'node:os'
 import path from 'node:path'
 import { apiPlugin } from './api-plugin'
 import { readServiceVersion, registerApiRoutes } from './api-routes'
 import type { ApiMiddleware } from './http-types'
+import { assertDvbfixerAvailable } from './cli-preflight'
+
+// Route composition is independent of a developer's activated scientific env.
+// cli-preflight.test.ts separately verifies the actual probe/error contract.
+vi.mock('./cli-preflight', () => ({ assertDvbfixerAvailable: vi.fn() }))
+beforeEach(() => { vi.mocked(assertDvbfixerAvailable).mockReset().mockReturnValue('dvbfixer 0.9.0') })
 
 const temporaryDirectories: string[] = []
 
@@ -63,6 +69,18 @@ describe('host-neutral API composition', () => {
 
     expect(mounts).toContain('/api/v1')
     expect(mounts).toContain('/api/workspaces')
+    expect(assertDvbfixerAvailable).toHaveBeenCalledOnce()
+  })
+
+  it('does not initialize routes when the CLI startup prerequisite fails', () => {
+    const projectRoot = temp()
+    const { host, mounts } = registrar()
+    vi.mocked(assertDvbfixerAvailable).mockImplementation(() => { throw new Error('CLI unavailable') })
+    const plugin = apiPlugin({})
+    expect(() => plugin.configureServer?.({
+      config: { root: projectRoot }, middlewares: host.middlewares,
+    } as never)).toThrow('CLI unavailable')
+    expect(mounts).toEqual([])
   })
 
   it('rejects remotely bound Vite API hosting without authentication', () => {

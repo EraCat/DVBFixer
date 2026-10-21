@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
 import Box from '@mui/material/Box'
+import { controlWrapperSx, panelToolbarSx } from '../ui/layout'
 import Typography from '@mui/material/Typography'
 import Chip from '@mui/material/Chip'
 import CircularProgress from '@mui/material/CircularProgress'
@@ -405,20 +406,20 @@ export function InteractionsPanel() {
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
-      <Box sx={{ px: 1, py: 0.5, borderBottom: 1, borderColor: 'divider', display: 'flex', flexWrap: 'wrap', gap: 0.5, alignItems: 'center' }}>
+      <Box sx={panelToolbarSx}>
         <Tooltip title="Recompute interactions">
-          <span style={{ display: 'inline-flex', height: 22 }}>
-            <IconButton size="small" onClick={compute} disabled={loading} sx={{ p: 0.25, width: 22, height: 22 }}>
+          <Box component="span" sx={controlWrapperSx}>
+            <IconButton aria-label="Recompute interactions" size="small" onClick={compute} disabled={loading}>
               <RefreshIcon sx={{ fontSize: 14 }} />
             </IconButton>
-          </span>
+          </Box>
         </Tooltip>
         <Tooltip title="Select all interaction residues and zoom">
-          <span style={{ display: 'inline-flex', height: 22 }}>
-            <IconButton size="small" onClick={focusAllFiltered} disabled={filteredRows.length === 0} sx={{ p: 0.25, width: 22, height: 22 }}>
+          <Box component="span" sx={controlWrapperSx}>
+            <IconButton aria-label="Focus interaction residues" size="small" onClick={focusAllFiltered} disabled={filteredRows.length === 0}>
               <CenterFocusStrongIcon sx={{ fontSize: 14 }} />
             </IconButton>
-          </span>
+          </Box>
         </Tooltip>
         {loading && <CircularProgress size={12} />}
         {Array.from(typeCounts.entries()).map(([type, count]) => (
@@ -428,8 +429,6 @@ export function InteractionsPanel() {
             size="small"
             onClick={() => toggleFilter(type)}
             sx={{
-              height: 18,
-              fontSize: '0.55rem',
               fontWeight: 600,
               bgcolor: filters.has(type) ? `${TYPE_COLORS[type] ?? '#5a607a'}25` : 'transparent',
               color: filters.has(type) ? TYPE_COLORS[type] ?? '#5a607a' : 'text.secondary',
@@ -448,7 +447,7 @@ export function InteractionsPanel() {
                 value={chainPairA}
                 onChange={(e) => setChainPairA(e.target.value)}
                 displayEmpty
-                sx={{ fontSize: '0.7rem', height: 22, '& .MuiSelect-select': { py: 0.25, px: 0.75 } }}
+                inputProps={{ 'aria-label': 'First interaction chain' }}
               >
                 <MenuItem value="" sx={{ fontSize: '0.7rem' }}>Any</MenuItem>
                 {sortedChains.map(c => (
@@ -462,7 +461,7 @@ export function InteractionsPanel() {
                 value={chainPairB}
                 onChange={(e) => setChainPairB(e.target.value)}
                 displayEmpty
-                sx={{ fontSize: '0.7rem', height: 22, '& .MuiSelect-select': { py: 0.25, px: 0.75 } }}
+                inputProps={{ 'aria-label': 'Second interaction chain' }}
               >
                 <MenuItem value="" sx={{ fontSize: '0.7rem' }}>Any</MenuItem>
                 {sortedChains.map(c => (
@@ -495,7 +494,7 @@ export function InteractionsPanel() {
                   key={partner}
                   label={`↔ ${partner} (${count})`}
                   size="small"
-                  sx={{ height: 16, fontSize: '0.6rem', fontWeight: 600, '& .MuiChip-label': { px: 0.5 } }}
+                  sx={{ fontWeight: 600 }}
                 />
               ))}
             </>

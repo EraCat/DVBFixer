@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import Box from '@mui/material/Box'
+import { formActionRowSx } from '../ui/layout'
 import Typography from '@mui/material/Typography'
 import TextField from '@mui/material/TextField'
 import Paper from '@mui/material/Paper'
@@ -142,13 +143,13 @@ export function StructureInfo() {
       </Typography>
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, mt: 0.5, mb: 2 }}>
         <TextField label="Name" value={meta.name} onChange={(e) => setMeta({ name: e.target.value })} fullWidth />
-        <Box sx={{ display: 'flex', gap: 1 }}>
+        <Box sx={formActionRowSx}>
           <TextField
             select
             label="IgG Subtype"
             value={meta.iggSubtype ?? ''}
             onChange={(e) => setMeta({ iggSubtype: e.target.value })}
-            sx={{ flex: 1 }}
+            sx={{ flex: '1 1 140px', minWidth: 0 }}
           >
             {IGG_SUBTYPES.map(opt => (
               <MenuItem key={opt || '__empty__'} value={opt}>{opt || <em>— none —</em>}</MenuItem>
@@ -159,7 +160,7 @@ export function StructureInfo() {
             value={meta.allotype ?? ''}
             onChange={(e) => setMeta({ allotype: e.target.value })}
             placeholder="e.g. G1m17,1 or nG1m1"
-            sx={{ flex: 1 }}
+            sx={{ flex: '1 1 140px', minWidth: 0 }}
           />
         </Box>
       </Box>
@@ -290,22 +291,22 @@ function EquivalentChainsSection() {
 
   return (
     <Box sx={{ mb: 2 }}>
-      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 0.5 }}>
+      <Box sx={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 1, mb: 1 }}>
         <Typography variant="caption" sx={{ color: 'text.secondary', fontWeight: 600, textTransform: 'uppercase', letterSpacing: 1 }}>
           Equivalent chains
         </Typography>
         {override !== undefined && (
-          <Chip label="manual" size="small" color="warning" sx={{ height: 14, fontSize: '0.55rem' }} />
+          <Chip label="manual" size="small" color="warning" />
         )}
         <Box sx={{ flex: 1 }} />
         {!editing && (
           <>
-            <Button size="small" onClick={startEditing} sx={{ fontSize: '0.65rem', minWidth: 0, px: 1 }}>
+            <Button size="small" variant="outlined" onClick={startEditing}>
               Edit groups
             </Button>
             {override !== undefined && (
               <Tooltip title="Discard manual grouping and use sequence-identity auto-detection">
-                <Button size="small" onClick={resetToAuto} sx={{ fontSize: '0.65rem', minWidth: 0, px: 1 }}>
+                <Button size="small" onClick={resetToAuto}>
                   Reset
                 </Button>
               </Tooltip>
@@ -314,10 +315,10 @@ function EquivalentChainsSection() {
         )}
         {editing && (
           <>
-            <Button size="small" onClick={cancelEditing} sx={{ fontSize: '0.65rem', minWidth: 0, px: 1 }}>
+            <Button size="small" onClick={cancelEditing}>
               Cancel
             </Button>
-            <Button size="small" variant="contained" onClick={saveDrafts} sx={{ fontSize: '0.65rem', minWidth: 0, px: 1 }}>
+            <Button size="small" variant="contained" onClick={saveDrafts}>
               Save
             </Button>
           </>
@@ -341,7 +342,7 @@ function EquivalentChainsSection() {
                 size="small"
                 color={missing ? 'error' : 'primary'}
                 variant={missing ? 'outlined' : 'filled'}
-                sx={{ height: 20, fontWeight: 600 }}
+                sx={{ fontWeight: 600 }}
               />
             )
           })}
@@ -360,7 +361,7 @@ function EquivalentChainsSection() {
             Unique:
           </Typography>
           {singletons.map(id => (
-            <Chip key={id} label={id} size="small" variant="outlined" sx={{ height: 18, fontSize: '0.65rem' }} />
+            <Chip key={id} label={id} size="small" variant="outlined" />
           ))}
         </Box>
       )}
@@ -378,9 +379,8 @@ function EquivalentChainsSection() {
                 onChange={(e) => setDrafts(d => d.map((v, i) => i === idx ? e.target.value : v))}
                 placeholder="e.g. H, I"
                 fullWidth
-                sx={{ '& .MuiInputBase-input': { fontSize: '0.75rem', py: 0.5 } }}
               />
-              <IconButton size="small" onClick={() => setDrafts(d => d.filter((_, i) => i !== idx))} sx={{ p: 0.5 }}>
+              <IconButton aria-label={`Remove chain group ${idx + 1}`} size="small" onClick={() => setDrafts(d => d.filter((_, i) => i !== idx))}>
                 <DeleteOutlineIcon sx={{ fontSize: 16 }} />
               </IconButton>
             </Box>
@@ -389,7 +389,7 @@ function EquivalentChainsSection() {
             size="small"
             startIcon={<AddIcon sx={{ fontSize: 14 }} />}
             onClick={() => setDrafts(d => [...d, ''])}
-            sx={{ alignSelf: 'flex-start', fontSize: '0.65rem' }}
+            sx={{ alignSelf: 'flex-start' }}
           >
             Add group
           </Button>

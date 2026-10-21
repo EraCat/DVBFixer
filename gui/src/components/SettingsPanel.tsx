@@ -54,8 +54,8 @@ export function SettingsPanel() {
         <Typography variant="caption" sx={{ color: 'text.secondary', fontWeight: 600, textTransform: 'uppercase', letterSpacing: 1 }}>
           Alignment
         </Typography>
-        <Paper variant="outlined" sx={{ p: 1.5, mt: 0.5, display: 'flex', alignItems: 'flex-start', gap: 1.5 }}>
-          <Box sx={{ flex: 1 }}>
+        <Paper variant="outlined" sx={{ p: 1.5, mt: 0.5, display: 'flex', flexWrap: 'wrap', alignItems: 'flex-start', gap: 1.5 }}>
+          <Box sx={{ flex: '1 1 160px', minWidth: 0 }}>
             <Typography variant="body2" sx={{ fontSize: '0.8rem' }}>
               Source label
             </Typography>
@@ -70,10 +70,11 @@ export function SettingsPanel() {
             exclusive
             value={alignmentLabelMode}
             onChange={(_e, v) => v && setAlignmentLabelMode(v)}
-            sx={{ flexShrink: 0, mt: 0.25 }}
+            sx={{ flexShrink: 0 }}
+            aria-label="Alignment source label"
           >
-            <ToggleButton value="file" sx={{ fontSize: '0.7rem', py: 0.25, px: 1 }}>File</ToggleButton>
-            <ToggleButton value="name" sx={{ fontSize: '0.7rem', py: 0.25, px: 1 }}>Name</ToggleButton>
+            <ToggleButton value="file">File</ToggleButton>
+            <ToggleButton value="name">Name</ToggleButton>
           </ToggleButtonGroup>
         </Paper>
       </Box>

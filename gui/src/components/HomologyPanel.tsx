@@ -30,6 +30,12 @@ import { bestMatchingChainId, chainIdentityLabel, targetSequences } from '../lib
 import { residueClass, RESIDUE_CLASS_COLORS } from '../lib/residue-codes'
 import { apiFetch } from '../lib/api-client'
 import { structureMetaFromArtifact } from '../lib/workspace-metadata'
+import {
+  workflowToolbarSx as homologyToolbarSx, panelToolbarSx as projectToolbarSx,
+  controlSx as toolbarControlSx, wideControlSx as targetSourceControlSx,
+  actionTooltipWrapperSx as toolbarTooltipWrapperSx, primaryActionSx, compactIconButtonSx,
+  actionGroupSx,
+} from '../ui/layout'
 
 interface TemplateSelection {
   id: string
@@ -70,37 +76,7 @@ interface EngineStatus { available: boolean; path: string | null }
 interface ParsedChain { id: string; length: number; sequence: string }
 interface TransientAlignmentSelection { anchor: number; columns: number[] }
 
-const homologyToolbarSx = {
-  display: 'flex', gap: 1, alignItems: 'center', flexWrap: 'wrap',
-  px: 1, py: 0.5, minHeight: 40,
-  '& .MuiButton-root': { width: 160, minWidth: 160, height: 32, flexShrink: 0 },
-  '& .MuiFormControl-root': { width: 160, minWidth: 160, flexShrink: 0 },
-  '& .MuiInputBase-root': { height: 32 },
-  '& .MuiInputLabel-root:not(.MuiInputLabel-shrink)': {
-    transform: 'translate(14px, 5px) scale(1)',
-  },
-  '& .MuiInputLabel-root.MuiInputLabel-shrink': {
-    transform: 'translate(14px, -8px) scale(0.75)',
-  },
-  '& .MuiSelect-select, & .MuiInputBase-input': {
-    display: 'flex', alignItems: 'center', py: '5px', boxSizing: 'border-box',
-  },
-  '& .MuiIconButton-root': { width: 32, height: 32, flexShrink: 0 },
-} as const
-
-const projectToolbarSx = {
-  px: 1, py: 0.75, display: 'flex', gap: 1, alignItems: 'center',
-  minHeight: 48, borderBottom: 1, borderColor: 'divider',
-  '& .MuiInputBase-root': { height: 32 },
-  '& .MuiIconButton-root': { width: 32, height: 32 },
-} as const
-
-const toolbarControlSx = { width: 160, minWidth: 160 } as const
-const targetSourceControlSx = { width: 320, minWidth: 320 } as const
-const toolbarTooltipWrapperSx = {
-  display: 'inline-flex', width: 160, height: 32, flexShrink: 0,
-} as const
-const primaryActionSx = { width: 160, minWidth: 160, height: 32, alignSelf: 'center' } as const
+// All four workflow stages share the application's toolbar/control geometry.
 
 
 function targetChainIds(fasta: string): string[] {
@@ -657,17 +633,17 @@ export function HomologyPanel() {
   return (
     <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
       <Box sx={projectToolbarSx}>
-        <FormControl size="small" sx={{ width: 220, minWidth: 220 }}>
+        <FormControl size="small" sx={toolbarControlSx}>
           <InputLabel>Project</InputLabel>
           <Select label="Project" value={project.id} onChange={event => loadProject(event.target.value)}>
             {projects.map(item => <MenuItem key={item.id} value={item.id}>{item.name}</MenuItem>)}
           </Select>
         </FormControl>
-        <TextField size="small" sx={{ width: 220 }} label="Project name" value={project.name} onChange={event => update({ name: event.target.value })} />
-        <Tooltip title="New project"><IconButton onClick={createProject}><AddIcon /></IconButton></Tooltip>
+        <TextField size="small" sx={targetSourceControlSx} label="Project name" value={project.name} onChange={event => update({ name: event.target.value })} />
         <Typography variant="caption" color="text.secondary" sx={{ ml: 'auto' }}>{saved ? 'Saved' : 'Saving…'}</Typography>
+        <Tooltip title="New project"><IconButton aria-label="New project" onClick={createProject}><AddIcon /></IconButton></Tooltip>
       </Box>
-      <Tabs value={tab} onChange={(_event, value) => setTab(value)} sx={{ minHeight: 30, borderBottom: 1, borderColor: 'divider', '& .MuiTab-root': { minHeight: 30, py: 0.25, px: 1.25, fontSize: '0.72rem', textTransform: 'none' } }}>
+      <Tabs value={tab} onChange={(_event, value) => setTab(value)} variant="scrollable" scrollButtons="auto" sx={{ borderBottom: 1, borderColor: 'divider' }}>
         <Tab label="1. Target" /><Tab label="2. Templates" /><Tab label="3. Alignment" /><Tab label="4. Model" />
       </Tabs>
       <Box sx={{ flex: 1, overflow: 'auto', p: 1.5 }}>
@@ -685,7 +661,7 @@ export function HomologyPanel() {
                 </Select>
               </FormControl>
               <Tooltip title={targetSource && !targetSourceSupported ? 'This file type does not contain a supported protein sequence' : 'Parse protein sequences into Target FASTA'}>
-                <Box component="span" sx={toolbarTooltipWrapperSx}><Button sx={primaryActionSx} variant="outlined" onClick={parseTargetSource} disabled={!targetSource || !targetSourceSupported || busy !== ''}>Parse sequence</Button></Box>
+                <Box component="span" sx={{ ...toolbarTooltipWrapperSx, ml: 'auto' }}><Button sx={primaryActionSx} variant="outlined" onClick={parseTargetSource} disabled={!targetSource || !targetSourceSupported || busy !== ''}>Parse sequence</Button></Box>
               </Tooltip>
             </Box>
             {!!parsePreview.length && <Box sx={{ border: 1, borderColor: 'divider', borderRadius: 1, p: 1 }}>
@@ -711,7 +687,6 @@ export function HomologyPanel() {
         {tab === 1 && (
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
             <Box sx={homologyToolbarSx}>
-              <Button startIcon={<AddIcon />} variant="outlined" onClick={addTemplate}>Add new</Button>
               <FormControl size="small" sx={toolbarControlSx}>
                 <InputLabel>Target chain</InputLabel>
                 <Select label="Target chain" value={activeTargetChain} disabled={!targetChains.length}
@@ -719,8 +694,6 @@ export function HomologyPanel() {
                   {targetChains.map(chain => <MenuItem key={chain} value={chain}>{chain}</MenuItem>)}
                 </Select>
               </FormControl>
-              <Button startIcon={<AccountTreeIcon />} variant="outlined" onClick={() => callProjectAction('salign')} disabled={busy !== '' || project.templates.length < 2}>Structural align</Button>
-              <Button sx={primaryActionSx} variant="contained" onClick={() => callProjectAction('align')} disabled={busy !== '' || !targetChains.length || !project.templates.length}>Generate MSA</Button>
               <FormControl size="small" sx={toolbarControlSx}>
                 <InputLabel>MSA engine</InputLabel>
                 <Select label="MSA engine" value={project.engine} onChange={event => update({ engine: event.target.value as HomologyProject['engine'] })}>
@@ -729,18 +702,23 @@ export function HomologyPanel() {
                   <MenuItem value="clustalo" disabled={engines.clustalo?.available === false}>Clustal Omega{engines.clustalo?.available === false ? ' (missing)' : ''}</MenuItem>
                 </Select>
               </FormControl>
+              <Box sx={actionGroupSx}>
+                <Button startIcon={<AddIcon />} variant="outlined" onClick={addTemplate}>Add new</Button>
+                <Button startIcon={<AccountTreeIcon />} variant="outlined" onClick={() => callProjectAction('salign')} disabled={busy !== '' || project.templates.length < 2}>Structural align</Button>
+                <Button sx={primaryActionSx} variant="contained" onClick={() => callProjectAction('align')} disabled={busy !== '' || !targetChains.length || !project.templates.length}>Generate MSA</Button>
+              </Box>
             </Box>
             {visibleTemplates.map(template => (
-              <Box key={template.id} sx={{ display: 'grid', gridTemplateColumns: 'minmax(280px, 1fr) minmax(180px, 260px) 40px', gap: 1, alignItems: 'center' }}>
-                <FormControl size="small"><InputLabel>Structure</InputLabel><Select label="Structure" value={template.file} onChange={event => changeTemplateFile(template, event.target.value)}>
+              <Box key={template.id} sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, alignItems: 'center' }}>
+                <FormControl size="small" sx={{ flex: '1 1 240px', minWidth: 0 }}><InputLabel>Structure</InputLabel><Select label="Structure" value={template.file} onChange={event => changeTemplateFile(template, event.target.value)}>
                   {artifacts.filter(item => item.kind === 'structure').map(item => <MenuItem key={item.file} value={item.file}>{item.name || item.file}</MenuItem>)}
                 </Select></FormControl>
-                <FormControl size="small"><InputLabel>Chain</InputLabel><Select label="Chain" value={template.chain} onChange={event => updateTemplate(template.id, { chain: event.target.value })}>
+                <FormControl size="small" sx={{ flex: '1 1 160px', minWidth: 0 }}><InputLabel>Chain</InputLabel><Select label="Chain" value={template.chain} onChange={event => updateTemplate(template.id, { chain: event.target.value })}>
                   {(chainsByFile[template.file] || []).map(chain => <MenuItem key={chain.id} value={chain.id}>
                     {chainIdentityLabel(chain.id, chain.length, targetSequenceByChain[template.targetChain] || '', chain.sequence)}
                   </MenuItem>)}
                 </Select></FormControl>
-                <IconButton onClick={() => update({ templates: project.templates.filter(item => item.id !== template.id) })}><DeleteIcon /></IconButton>
+                <Tooltip title="Remove template"><IconButton aria-label="Remove template" onClick={() => update({ templates: project.templates.filter(item => item.id !== template.id) })}><DeleteIcon /></IconButton></Tooltip>
               </Box>
             ))}
           </Box>
@@ -748,32 +726,25 @@ export function HomologyPanel() {
 
         {tab === 2 && (
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
-            <Box sx={{
-              ...homologyToolbarSx,
-              minHeight: 27,
-              py: 0,
-              '& .MuiButton-root': { ...homologyToolbarSx['& .MuiButton-root'], height: 24 },
-              '& .MuiIconButton-root': { ...homologyToolbarSx['& .MuiIconButton-root'], width: 24, height: 24 },
-              '& .MuiInputBase-root': { height: 24 },
-              '& .MuiInputLabel-root:not(.MuiInputLabel-shrink)': { transform: 'translate(14px, 1px) scale(1)' },
-              '& .MuiSelect-select, & .MuiInputBase-input': { py: '1px' },
-            }}>
+            <Box sx={homologyToolbarSx}>
               <input ref={alignmentImportRef} hidden type="file" accept=".fasta,.fa,.faa,.aln" onChange={event => importAlignment(event.target.files?.[0])} />
               {targetChains.length > 1 && <FormControl size="small" sx={{ minWidth: 180 }}><InputLabel>Target chain</InputLabel>
                 <Select label="Target chain" value={activeTargetChain} onChange={event => setActiveTargetChain(event.target.value)}>
                   {targetChains.map(chain => <MenuItem key={chain} value={chain}>{chain}</MenuItem>)}
                 </Select>
               </FormControl>}
-              <Tooltip title="Undo alignment edit"><span><IconButton disabled={!undo.length} onClick={undoAlignment}><UndoIcon /></IconButton></span></Tooltip>
-              <Tooltip title="Redo alignment edit"><span><IconButton disabled={!redo.length} onClick={redoAlignment}><RedoIcon /></IconButton></span></Tooltip>
+              <Tooltip title="Undo alignment edit"><span><IconButton aria-label="Undo alignment edit" disabled={!undo.length} onClick={undoAlignment}><UndoIcon /></IconButton></span></Tooltip>
+              <Tooltip title="Redo alignment edit"><span><IconButton aria-label="Redo alignment edit" disabled={!redo.length} onClick={redoAlignment}><RedoIcon /></IconButton></span></Tooltip>
               <Tooltip title={selectionSyncEnabled ? 'Alignment and 3D residue selections are linked; click to unlock' : 'Alignment and 3D residue selections are independent; click to link'}>
-                <IconButton onClick={() => setSelectionSyncEnabled(enabled => !enabled)} color={selectionSyncEnabled ? 'primary' : 'default'}>
+                <IconButton aria-label="Link alignment and 3D selections" aria-pressed={selectionSyncEnabled} onClick={() => setSelectionSyncEnabled(enabled => !enabled)} color={selectionSyncEnabled ? 'primary' : 'default'}>
                   {selectionSyncEnabled ? <LinkIcon /> : <LinkOffIcon />}
                 </IconButton>
               </Tooltip>
-              <Button onClick={() => callProjectAction('align')} disabled={busy !== ''}>Reset from {project.engine}</Button>
-              <Button onClick={() => alignmentImportRef.current?.click()}>Import aligned FASTA</Button>
-              <Button onClick={exportAlignment} disabled={!project.alignmentGroups.length}>Export alignment</Button>
+              <Box sx={actionGroupSx}>
+                <Button onClick={() => callProjectAction('align')} disabled={busy !== ''}>Reset from {project.engine}</Button>
+                <Button variant="outlined" onClick={() => alignmentImportRef.current?.click()}>Import aligned FASTA</Button>
+                <Button variant="outlined" onClick={exportAlignment} disabled={!project.alignmentGroups.length}>Export alignment</Button>
+              </Box>
             </Box>
             {!project.alignmentGroups.length && <Alert severity="info">Generate an alignment from the Templates tab.</Alert>}
             {project.alignmentGroups.map((group, groupIndex) => {
@@ -784,7 +755,7 @@ export function HomologyPanel() {
               const activeColumn = Object.values(selection)[0]?.anchor ?? 0
               return (
                 <Box key={group.chainId} sx={{ border: 1, borderColor: lengths.size === 1 ? 'divider' : 'error.main', borderRadius: 1 }}>
-                  <Box sx={{ px: 1, py: 0.75, display: 'flex', alignItems: 'center', gap: 1, borderBottom: 1, borderColor: 'divider' }}>
+                  <Box sx={projectToolbarSx}>
                     <Typography variant="subtitle2">Target chain {group.chainId} · {group.rows[0]?.sequence.length || 0} columns</Typography>
                     <Button size="small" onClick={() => addGapColumn(groupIndex, activeColumn)}>Add gap column</Button>
                     <Button size="small" onClick={() => removeGapColumn(groupIndex, activeColumn)}
@@ -810,8 +781,8 @@ export function HomologyPanel() {
                           <Box sx={{ display: 'flex', alignItems: 'center', minWidth: 'max-content' }}>
                             <Box sx={{ position: 'sticky', left: 0, zIndex: 2, bgcolor: 'background.paper', width: ALIGNMENT_LABEL_WIDTH, flexShrink: 0, px: 1, display: 'flex', alignItems: 'center', gap: 0.25, overflow: 'hidden' }}>
                               <Chip size="small" color={row.kind === 'target' ? 'primary' : 'default'} label={rowLabel} sx={{ maxWidth: 220 }} />
-                              <Tooltip title="Move selected gap left"><span><Button size="small" sx={{ minWidth: 24, px: 0.25 }} onClick={() => moveGap(groupIndex, row, -1)}>←</Button></span></Tooltip>
-                              <Tooltip title="Move selected gap right"><span><Button size="small" sx={{ minWidth: 24, px: 0.25 }} onClick={() => moveGap(groupIndex, row, 1)}>→</Button></span></Tooltip>
+                              <Tooltip title="Move selected gap left"><span><Button aria-label="Move selected gap left" size="small" sx={compactIconButtonSx} onClick={() => moveGap(groupIndex, row, -1)}>←</Button></span></Tooltip>
+                              <Tooltip title="Move selected gap right"><span><Button aria-label="Move selected gap right" size="small" sx={compactIconButtonSx} onClick={() => moveGap(groupIndex, row, 1)}>→</Button></span></Tooltip>
                             </Box>
                             {Array.from(row.sequence).map((character, column) => {
                               const mode = group.maskModes?.[row.id] || (masks.length ? 'ranges' : 'all')
@@ -898,7 +869,7 @@ export function HomologyPanel() {
                   </Select>
                 </FormControl>}
               </>}
-              <Button sx={primaryActionSx} variant="contained"
+              <Button sx={{ ...primaryActionSx, ml: 'auto' }} variant="contained"
                 onClick={runModel} disabled={busy !== '' || !project.alignmentGroups.length}>Run {(project.modelOptions['--backend'] ?? 'modeller') === 'diffusion' ? 'Diffusion' : 'Modeller'}</Button>
             </Box>
             <Typography variant="caption" color="text.secondary">

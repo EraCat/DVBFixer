@@ -4,6 +4,7 @@ import CircularProgress from '@mui/material/CircularProgress'
 import Typography from '@mui/material/Typography'
 import { useWorkspaceStore, workspaceFileUrl } from '../stores/workspaceStore'
 import { apiFetch } from '../lib/api-client'
+import { panelToolbarSx } from '../ui/layout'
 
 export function TextFileViewer() {
   const preview = useWorkspaceStore(state => state.textPreview)
@@ -24,7 +25,7 @@ export function TextFileViewer() {
 
   if (!preview) return <Box sx={{ p: 2 }}><Typography variant="caption" color="text.secondary">Open a text-like workspace file to preview it here.</Typography></Box>
   return <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-    <Typography variant="caption" sx={{ px: 1, py: 0.5, borderBottom: 1, borderColor: 'divider', fontWeight: 700 }}>{preview.name} · {preview.file}</Typography>
+    <Box sx={panelToolbarSx}><Typography variant="caption" sx={{ fontWeight: 700, overflowWrap: 'anywhere', minWidth: 0 }}>{preview.name} · {preview.file}</Typography></Box>
     {loading ? <CircularProgress size={18} sx={{ m: 2 }} /> : error ? <Typography color="error" sx={{ p: 1 }}>{error}</Typography> :
       <Box component="pre" sx={{ m: 0, p: 1.5, flex: 1, overflow: 'auto', whiteSpace: 'pre', fontFamily: 'ui-monospace, monospace', fontSize: 12, lineHeight: 1.45 }}>{text}</Box>}
   </Box>

@@ -31,6 +31,7 @@ import { reorderVisibleArtifacts } from '../lib/workspace-order'
 import { structureMetaFromArtifact } from '../lib/workspace-metadata'
 import { apiFetch, downloadApiBlob, openApiBlob } from '../lib/api-client'
 import { useWorkspaceImportStore } from '../stores/workspaceImportStore'
+import { actionGroupSx, panelToolbarSx } from '../ui/layout'
 
 export function ProjectLibrary({ mode = 'library' }: { mode?: 'library' | 'workspace' }) {
   const uploadRef = useRef<HTMLInputElement>(null)
@@ -243,32 +244,34 @@ export function ProjectLibrary({ mode = 'library' }: { mode?: 'library' | 'works
   }
 
   return <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-    <Box sx={{ px: 1, py: 0, height: 36, boxSizing: 'border-box', flexShrink: 0, borderBottom: 1, borderColor: 'divider', display: 'flex', gap: 0.5, alignItems: 'center' }}>
-      <Typography variant="caption" noWrap title={active?.name} sx={{ fontWeight: 700, textTransform: 'uppercase', letterSpacing: 1, minWidth: 0 }}>{mode === 'library' ? 'Workspace' : active?.name || 'Workspace'}</Typography>
+    <Box sx={panelToolbarSx}>
+      <Typography variant="caption" noWrap title={active?.name} sx={{ fontWeight: 700, textTransform: 'uppercase', letterSpacing: 1, minWidth: 0, flex: '1 1 100px' }}>{mode === 'library' ? 'Workspace' : active?.name || 'Workspace'}</Typography>
       {mode === 'library' ? (
-        <Tooltip title="New workspace"><IconButton size="small" sx={{ ml: 'auto' }} onClick={() => createWorkspace()}><AddIcon fontSize="small" /></IconButton></Tooltip>
+        <Tooltip title="New workspace"><IconButton aria-label="New workspace" size="small" sx={{ ml: 'auto' }} onClick={() => createWorkspace()}><AddIcon fontSize="small" /></IconButton></Tooltip>
       ) : <>
         <input ref={uploadRef} hidden multiple type="file" onChange={event => {
           const files = Array.from(event.target.files || [])
           event.target.value = ''
           void importFiles(files)
         }} />
-        <Tooltip title="Choose the 3D viewer in which selected structures open. This does not switch workspaces.">
-          <ToggleButtonGroup aria-label="Target 3D viewer" size="small" exclusive value={loadTarget} onChange={(_event, value) => value && setLoadTarget(value)} sx={{ ml: 'auto', '& .MuiToggleButton-root': { minHeight: 24, py: 0, px: 1, fontSize: '0.68rem' } }}>
-            <ToggleButton value="primary" title="Open selected structures in 3D viewer A" aria-label="Open selected structures in viewer A">A</ToggleButton>
-            <ToggleButton value="secondary" disabled={!secondaryPlugin} title="Open selected structures in 3D viewer B (open the B tab first)" aria-label="Open selected structures in viewer B">B</ToggleButton>
-          </ToggleButtonGroup>
-        </Tooltip>
-        <Tooltip title={active ? `Import files into ${active.name}` : 'Select a workspace to import files'}>
-          <span>
-            <Button variant="outlined" size="small" disabled={!active || active.effectiveRole === 'reader' || loading || importing}
-              startIcon={<UploadFileIcon sx={{ fontSize: 16 }} />}
-              onClick={() => uploadRef.current?.click()}
-              sx={{ height: 28, px: 1, whiteSpace: 'nowrap', fontSize: '0.7rem' }}>
-              {importing ? 'Importing…' : 'Import files'}
-            </Button>
-          </span>
-        </Tooltip>
+        <Box sx={actionGroupSx}>
+          <Tooltip title="Choose the 3D viewer in which selected structures open. This does not switch workspaces.">
+            <ToggleButtonGroup aria-label="Target 3D viewer" size="small" exclusive value={loadTarget} onChange={(_event, value) => value && setLoadTarget(value)}>
+              <ToggleButton value="primary" title="Open selected structures in 3D viewer A" aria-label="Open selected structures in viewer A">A</ToggleButton>
+              <ToggleButton value="secondary" disabled={!secondaryPlugin} title="Open selected structures in 3D viewer B (open the B tab first)" aria-label="Open selected structures in viewer B">B</ToggleButton>
+            </ToggleButtonGroup>
+          </Tooltip>
+          <Tooltip title={active ? `Import files into ${active.name}` : 'Select a workspace to import files'}>
+            <span>
+              <Button variant="outlined" size="small" disabled={!active || active.effectiveRole === 'reader' || loading || importing}
+                startIcon={<UploadFileIcon />}
+                onClick={() => uploadRef.current?.click()}
+              >
+                {importing ? 'Importing…' : 'Import files'}
+              </Button>
+            </span>
+          </Tooltip>
+        </Box>
       </>}
     </Box>
     {error && <Typography variant="caption" color="error" sx={{ px: 1, py: 0.5 }}>{error}</Typography>}
@@ -301,13 +304,13 @@ export function ProjectLibrary({ mode = 'library' }: { mode?: 'library' | 'works
       </ListItemButton>)}
     </List>}
     {mode === 'workspace' && active && <>
-      <Box sx={{ px: 1, borderBottom: 1, borderColor: 'divider', display: 'flex', alignItems: 'center' }}><Typography variant="caption" sx={{ fontWeight: 700, color: 'text.secondary' }}>FILES</Typography>
+      <Box sx={panelToolbarSx}><Typography variant="caption" sx={{ fontWeight: 700, color: 'text.secondary' }}>FILES</Typography>
         <Divider orientation="vertical" flexItem sx={{ mx: 1 }} />
         <Button size="small" onClick={() => setShowNonPdb(show => !show)}>{showNonPdb ? 'Hide non-PDB files' : 'Show non-PDB files'}</Button>
         {!!selectedArtifacts.size && <Typography variant="caption" color="primary">{selectedArtifacts.size} selected</Typography>}
-        <Box sx={{ ml: 'auto', display: 'flex' }}>
-          <Tooltip title="Move selected files up"><span><IconButton size="small" disabled={!selectedArtifacts.size} onClick={() => reorderSelected(-1)}><ArrowUpwardIcon fontSize="inherit" /></IconButton></span></Tooltip>
-          <Tooltip title="Move selected files down"><span><IconButton size="small" disabled={!selectedArtifacts.size} onClick={() => reorderSelected(1)}><ArrowDownwardIcon fontSize="inherit" /></IconButton></span></Tooltip>
+        <Box sx={actionGroupSx}>
+          <Tooltip title="Move selected files up"><span><IconButton aria-label="Move selected files up" size="small" disabled={!selectedArtifacts.size} onClick={() => reorderSelected(-1)}><ArrowUpwardIcon fontSize="inherit" /></IconButton></span></Tooltip>
+          <Tooltip title="Move selected files down"><span><IconButton aria-label="Move selected files down" size="small" disabled={!selectedArtifacts.size} onClick={() => reorderSelected(1)}><ArrowDownwardIcon fontSize="inherit" /></IconButton></span></Tooltip>
         </Box>
       </Box>
       <List dense disablePadding sx={{ flex: 1, overflow: 'auto' }}>
@@ -348,7 +351,7 @@ export function ProjectLibrary({ mode = 'library' }: { mode?: 'library' | 'works
         {!active.artifacts.length && <Box sx={{ p: 2, textAlign: 'center' }}><Typography variant="caption" color="text.secondary">Import files to begin.</Typography></Box>}
       </List>
     </>}
-    <Button size="small" onClick={() => refresh()} sx={{ m: 0.5 }}>Refresh</Button>
+    <Box sx={{ ...actionGroupSx, p: 1, width: '100%', boxSizing: 'border-box', justifyContent: 'flex-end' }}><Button size="small" variant="outlined" onClick={() => refresh()}>Refresh</Button></Box>
     <Menu open={!!contextMenu} onClose={() => setContextMenu(null)} anchorReference="anchorPosition"
       anchorPosition={contextMenu ? { top: contextMenu.mouseY, left: contextMenu.mouseX } : undefined}>
       <MenuItem onClick={() => {

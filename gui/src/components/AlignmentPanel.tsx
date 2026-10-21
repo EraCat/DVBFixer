@@ -15,6 +15,7 @@ import { useWorkspaceStore } from '../stores/workspaceStore'
 import { workspaceArtifactNameMap } from '../lib/workspace-metadata'
 import { threeToOne } from '../lib/residue-codes'
 import { alignSequences, chainToSequence } from '../lib/alignment'
+import { actionGroupSx, controlSx, panelToolbarSx } from '../ui/layout'
 import {
   selectResiduesInViewer,
   clearSelection,
@@ -373,32 +374,32 @@ export function AlignmentPanel() {
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
       {/* Toolbar */}
-      <Box sx={{ px: 1, py: 0.5, borderBottom: 1, borderColor: 'divider', display: 'flex', alignItems: 'center', gap: 1, flexWrap: 'wrap' }}>
+      <Box sx={panelToolbarSx}>
         <ChainPicker label="A" value={keyA} onChange={setKeyA} options={options} />
         <ChainPicker label="B" value={keyB} onChange={setKeyB} options={options} />
 
         <Tooltip title="Zoom each viewer to its selection">
           <span style={{ display: 'inline-flex' }}>
-            <IconButton size="small" onClick={handleFocus} disabled={selA.size === 0 && selB.size === 0} sx={{ p: 0.25 }}>
+            <IconButton aria-label="Focus aligned selections" size="small" onClick={handleFocus} disabled={selA.size === 0 && selB.size === 0}>
               <CenterFocusStrongIcon sx={{ fontSize: 14 }} />
             </IconButton>
           </span>
         </Tooltip>
         <Tooltip title="Clear selection (both sides)">
           <span style={{ display: 'inline-flex' }}>
-            <IconButton size="small" onClick={handleClear} disabled={selA.size === 0 && selB.size === 0} sx={{ p: 0.25 }}>
+            <IconButton aria-label="Clear alignment selection" size="small" onClick={handleClear} disabled={selA.size === 0 && selB.size === 0}>
               <ClearIcon sx={{ fontSize: 14 }} />
             </IconButton>
           </span>
         </Tooltip>
 
         {alignment && (
-          <Box sx={{ display: 'flex', gap: 0.5, ml: 'auto', flexWrap: 'wrap' }}>
-            <Chip label={`Identity ${alignment.identity}/${alignment.length} (${((alignment.identity / alignment.length) * 100).toFixed(1)}%)`} size="small" sx={{ height: 18, fontSize: '0.6rem' }} />
-            <Chip label={`Similarity ${alignment.similarity}/${alignment.length} (${((alignment.similarity / alignment.length) * 100).toFixed(1)}%)`} size="small" sx={{ height: 18, fontSize: '0.6rem' }} />
-            <Chip label={`Score ${alignment.score}`} size="small" sx={{ height: 18, fontSize: '0.6rem' }} />
+          <Box sx={actionGroupSx}>
+            <Chip label={`Identity ${alignment.identity}/${alignment.length} (${((alignment.identity / alignment.length) * 100).toFixed(1)}%)`} size="small" />
+            <Chip label={`Similarity ${alignment.similarity}/${alignment.length} (${((alignment.similarity / alignment.length) * 100).toFixed(1)}%)`} size="small" />
+            <Chip label={`Score ${alignment.score}`} size="small" />
             {(selA.size > 0 || selB.size > 0) && (
-              <Chip label={`Sel A:${selA.size} · B:${selB.size}`} size="small" color="primary" sx={{ height: 18, fontSize: '0.6rem' }} />
+              <Chip label={`Sel A:${selA.size} · B:${selB.size}`} size="small" color="primary" />
             )}
           </Box>
         )}
@@ -473,11 +474,11 @@ function ChainPicker({
   return (
     <>
       <Typography variant="caption" sx={{ fontWeight: 700, color: 'primary.main' }}>{label}:</Typography>
-      <FormControl size="small" sx={{ minWidth: 170 }}>
+      <FormControl size="small" sx={controlSx}>
         <Select
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          sx={{ fontSize: '0.7rem', height: 22, '& .MuiSelect-select': { py: 0.25, px: 0.75 } }}
+          inputProps={{ 'aria-label': `Alignment chain ${label}` }}
         >
           {fromA.length > 0 && (
             <ListSubheader sx={{ fontSize: '0.6rem', lineHeight: '20px', color: 'primary.main', fontWeight: 700 }}>

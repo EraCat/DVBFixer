@@ -22,6 +22,7 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight'
 import { useStructureStore } from '../stores/structureStore'
 import { computeClashes, type Clash } from '../lib/clash-detection'
 import { showClashAndFocus, clearClashSticks } from '../lib/molstar-helpers'
+import { compactIconButtonSx, panelToolbarSx } from '../ui/layout'
 
 type SeverityFilter = 'all' | 'bad' | 'severe'
 
@@ -182,7 +183,7 @@ export function ClashesPanel() {
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%', minHeight: 0, overflow: 'hidden' }}>
       {/* Header */}
-      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, px: 1.5, py: 0.75, borderBottom: 1, borderColor: 'divider', flexShrink: 0, flexWrap: 'wrap' }}>
+      <Box sx={panelToolbarSx}>
         <Typography variant="caption" sx={{ fontWeight: 700, color: 'text.secondary', textTransform: 'uppercase', letterSpacing: 1 }}>
           Clashes
         </Typography>
@@ -191,14 +192,12 @@ export function ClashesPanel() {
           size="small"
           color={counts.bad > 0 ? 'warning' : 'default'}
           variant="outlined"
-          sx={{ height: 18, fontSize: '0.65rem' }}
         />
         <Chip
           label={`${counts.severe} severe`}
           size="small"
           color={counts.severe > 0 ? 'error' : 'default'}
           variant="outlined"
-          sx={{ height: 18, fontSize: '0.65rem' }}
         />
 
         <Box sx={{ flex: 1 }} />
@@ -208,7 +207,7 @@ export function ClashesPanel() {
           exclusive
           value={severity}
           onChange={(_e, v: SeverityFilter | null) => v && setSeverity(v)}
-          sx={{ '& .MuiToggleButton-root': { fontSize: '0.6rem', py: 0, px: 0.75, height: 22 } }}
+          aria-label="Clash severity filter"
         >
           <ToggleButton value="all">All</ToggleButton>
           <ToggleButton value="bad">Bad</ToggleButton>
@@ -221,7 +220,6 @@ export function ClashesPanel() {
             size="small"
             selected={groupByResidue}
             onChange={() => setGroupByResidue(g => !g)}
-            sx={{ fontSize: '0.6rem', py: 0, px: 0.75, height: 22 }}
           >
             Group
           </ToggleButton>
@@ -236,19 +234,20 @@ export function ClashesPanel() {
               const v = parseFloat(e.target.value)
               if (Number.isFinite(v) && v >= 0) setMinOverlap(v)
             }}
-            slotProps={{ htmlInput: { step: 0.1, min: 0, style: { width: 44, fontSize: '0.7rem', padding: '2px 4px' } } }}
+            sx={{ width: 80 }}
+            slotProps={{ htmlInput: { step: 0.1, min: 0, 'aria-label': 'Minimum overlap in Å' } }}
           />
         </Tooltip>
 
         <Tooltip title="Clear highlight">
           <span>
-            <IconButton size="small" onClick={handleClearHighlight} disabled={!activeId} sx={{ p: 0.25 }}>
+            <IconButton aria-label="Clear clash highlight" size="small" onClick={handleClearHighlight} disabled={!activeId}>
               <ClearIcon sx={{ fontSize: 16 }} />
             </IconButton>
           </span>
         </Tooltip>
         <Tooltip title="Recompute">
-          <IconButton size="small" onClick={compute} sx={{ p: 0.25 }}>
+          <IconButton aria-label="Recompute clashes" size="small" onClick={compute}>
             <RefreshIcon sx={{ fontSize: 16 }} />
           </IconButton>
         </Tooltip>
@@ -377,9 +376,11 @@ export function ClashesPanel() {
                     >
                       <TableCell sx={{ py: 0.25, p: 0, width: 28 }}>
                         <IconButton
+                          aria-label={isOpen ? 'Collapse residue pair' : 'Expand residue pair'}
+                          aria-expanded={isOpen}
                           size="small"
                           onClick={(e) => { e.stopPropagation(); toggleExpanded(g.key) }}
-                          sx={{ p: 0.25 }}
+                          sx={compactIconButtonSx}
                         >
                           {isOpen
                             ? <ExpandMoreIcon sx={{ fontSize: 16 }} />

@@ -32,6 +32,7 @@ import { workflowOptionActive, workflowValues } from '../lib/workflow-backend-op
 import { ToolOutput } from './ToolOutput'
 import { loadToolReports, type ToolReportPreview } from '../lib/tool-output'
 import { orderToolTabs } from '../lib/tool-tab-order'
+import { actionGroupSx, controlSx, formActionRowSx, panelToolbarSx, primaryActionSx, wideControlSx } from '../ui/layout'
 
 // Re-declare the spec types here (mirrors server/dvbfixer-spec.ts) so the
 // frontend doesn't have to import server/. The actual spec is fetched at
@@ -663,8 +664,8 @@ export function DVBFixerPanel() {
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
-      <Box sx={{ px: 1, py: 0.75, borderBottom: 1, borderColor: 'divider' }}>
-        <FormControl size="small" sx={{ minWidth: 230 }}>
+      <Box sx={panelToolbarSx}>
+        <FormControl size="small" sx={controlSx}>
           <InputLabel sx={{ fontSize: '0.75rem' }}>Workflow group</InputLabel>
           <Select
             label="Workflow group"
@@ -683,9 +684,7 @@ export function DVBFixerPanel() {
         variant="scrollable"
         scrollButtons="auto"
         sx={{
-          minHeight: 30,
           borderBottom: 1, borderColor: 'divider',
-          '& .MuiTab-root': { minHeight: 30, py: 0.5, fontSize: '0.7rem', textTransform: 'none', fontWeight: 600 },
         }}
       >
         {visibleCommands.map(c => (<Tab key={c.name} label={c.label} />))}
@@ -699,14 +698,14 @@ export function DVBFixerPanel() {
               {activeCmd.description}
             </Typography>
 
-            <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 1, flexWrap: 'wrap' }}>
+            <Box sx={formActionRowSx}>
               {activeCmd.inputs.map((input, index) => {
                 const multiple = input.multi || input.nargs === '+' || input.nargs === '*'
                 const current = index === 0 && !multiple
                   ? inputFile
                   : (inputsByCommand[activeCmd.name]?.[input.dest] ?? (multiple ? [] : ''))
                 return (
-                  <FormControl key={input.dest} size="small" sx={{ minWidth: 240 }}>
+                  <FormControl key={input.dest} size="small" sx={{ ...wideControlSx, flex: '1 1 240px' }}>
                     <InputLabel sx={{ fontSize: '0.75rem' }}>{input.label}</InputLabel>
                     <Select
                       multiple={multiple}
@@ -730,8 +729,20 @@ export function DVBFixerPanel() {
                 )
               })}
 
-              <Box sx={{ height: 40, display: 'flex', alignItems: 'center', transform: 'translateY(-3px)' }}>
+              <Box sx={actionGroupSx}>
+                <Tooltip title="Reload command specs (pick up new DVBFixer subcommands without page reload)">
+                  <IconButton aria-label="Reload command specifications" size="small" onClick={() => { fetchSpec(); reloadWorkspace().catch(() => {}) }}>
+                    <RefreshIcon />
+                  </IconButton>
+                </Tooltip>
+                {jobActive && job?.command === activeCmd.name && (
+                  <Button color="error" variant="outlined" disabled={cancelling} onClick={cancelJob}
+                    startIcon={cancelling ? <CircularProgress size={12} /> : <CancelIcon />}>
+                    {cancelling ? 'Cancelling…' : 'Cancel'}
+                  </Button>
+                )}
                 <Button
+                  sx={primaryActionSx}
                   variant="contained"
                   size="small"
                   disabled={jobActive || submitting || activeCmd.inputs.some((input, index) => input.required && (
@@ -744,36 +755,14 @@ export function DVBFixerPanel() {
                   Run {activeCmd.label}
                 </Button>
               </Box>
-
-              {jobActive && job?.command === activeCmd.name && (
-                <Button
-                  size="small"
-                  color="error"
-                  variant="outlined"
-                  disabled={cancelling}
-                  onClick={cancelJob}
-                  startIcon={cancelling ? <CircularProgress size={12} /> : <CancelIcon sx={{ fontSize: 16 }} />}
-                >
-                  {cancelling ? 'Cancelling…' : 'Cancel'}
-                </Button>
-              )}
-
-              <Box sx={{ height: 40, display: 'flex', alignItems: 'center', transform: 'translateY(-3px)' }}>
-                <Tooltip title="Reload command specs (pick up new DVBFixer subcommands without page reload)">
-                  <IconButton size="small" onClick={() => { fetchSpec(); reloadWorkspace().catch(() => {}) }}>
-                    <RefreshIcon sx={{ fontSize: 16 }} />
-                  </IconButton>
-                </Tooltip>
-              </Box>
-
-              {toolJob && (
-                <Chip
-                  label={managedJobStatusLabel(toolJob)}
-                  color={toolJob.status === 'succeeded' ? 'success' : toolJob.status === 'failed' ? 'error' : toolJob.status === 'cancelled' ? 'default' : 'info'}
-                  size="small"
-                />
-              )}
             </Box>
+            {toolJob && <Box sx={{ display: 'flex', alignItems: 'center' }}>
+              <Chip
+                label={managedJobStatusLabel(toolJob)}
+                color={toolJob.status === 'succeeded' ? 'success' : toolJob.status === 'failed' ? 'error' : toolJob.status === 'cancelled' ? 'default' : 'info'}
+                size="small"
+              />
+            </Box>}
 
             {error && <Alert severity="error" sx={{ py: 0.25, fontSize: '0.75rem' }}>{error}</Alert>}
 
@@ -806,7 +795,7 @@ export function DVBFixerPanel() {
              *  passed via --fasta. */}
             {activeCmd.name === 'model' && (
               <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                <Box sx={{ ...formActionRowSx, alignItems: 'center' }}>
                   <Typography variant="caption" sx={{ fontWeight: 700, color: 'text.secondary' }}>
                     Sequences per chain (--fasta)
                   </Typography>

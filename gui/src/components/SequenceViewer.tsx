@@ -1,5 +1,6 @@
 import { useCallback, useRef, useEffect, useState } from 'react'
 import Box from '@mui/material/Box'
+import { actionGroupSx, panelToolbarSx } from '../ui/layout'
 import Typography from '@mui/material/Typography'
 import Chip from '@mui/material/Chip'
 import Tooltip from '@mui/material/Tooltip'
@@ -182,15 +183,15 @@ export function SequenceViewer({ initialChainId }: { initialChainId?: string } =
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
       {/* Toolbar */}
-      <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, px: 1, py: 0.5, borderBottom: 1, borderColor: 'divider' }}>
+      <Box sx={panelToolbarSx}>
         <ChainSelector value={activeChainId} onChange={setLocalChainId} />
         <Tooltip title="Zoom to selected residues in 3D view" placement="bottom">
           <span>
             <IconButton
+              aria-label="Zoom to selected residues"
               size="small"
               onClick={handleZoom}
               disabled={selectedResidues.size === 0}
-              sx={{ p: 0.5 }}
             >
               <ZoomInIcon sx={{ fontSize: 16 }} />
             </IconButton>
@@ -199,10 +200,10 @@ export function SequenceViewer({ initialChainId }: { initialChainId?: string } =
         <Tooltip title="Clear selection (Esc)" placement="bottom">
           <span>
             <IconButton
+              aria-label="Clear residue selection"
               size="small"
               onClick={handleClear}
               disabled={selectedResidues.size === 0}
-              sx={{ p: 0.5 }}
             >
               <ClearIcon sx={{ fontSize: 16 }} />
             </IconButton>
@@ -226,33 +227,20 @@ export function SequenceViewer({ initialChainId }: { initialChainId?: string } =
               value={numberingMode}
               exclusive
               onChange={(_e, v) => { if (v) setNumberingMode(v) }}
-              sx={{
-                mr: 1,
-                '& .MuiToggleButton-root': {
-                  fontSize: '0.65rem',
-                  fontWeight: 600,
-                  py: 0,
-                  px: 0.75,
-                  height: 20,
-                  lineHeight: 1,
-                  textTransform: 'none',
-                  border: '1px solid',
-                  borderColor: 'divider',
-                },
-              }}
+              aria-label="Residue numbering mode"
             >
               <ToggleButton value="structure">Structure</ToggleButton>
               <ToggleButton value="order">Sequence</ToggleButton>
             </ToggleButtonGroup>
           </span>
         </Tooltip>
-        <Box sx={{ display: 'flex', gap: 0.5 }}>
+        <Box sx={actionGroupSx}>
           {Object.entries(CLASS_COLORS).filter(([k]) => k !== 'other').map(([label, color]) => (
             <Chip
               key={label}
               label={label}
               size="small"
-              sx={{ height: 16, fontSize: '0.5rem', bgcolor: `${color}20`, color, '& .MuiChip-label': { px: 0.5 } }}
+              sx={{ bgcolor: `${color}20`, color }}
             />
           ))}
         </Box>

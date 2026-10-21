@@ -187,7 +187,7 @@ export function AuthGate({ children, showLogout = true }: AuthGateProps) {
                   },
                 }}
               />
-              <Button disabled={busy || !tokenInput.trim()} fullWidth sx={{ height: 38, mt: 2 }} type="submit" variant="contained">
+              <Button disabled={busy || !tokenInput.trim()} fullWidth sx={{ mt: 2 }} type="submit" variant="contained">
                 {busy ? <CircularProgress color="inherit" size={20} /> : 'Continue'}
               </Button>
             </Box>

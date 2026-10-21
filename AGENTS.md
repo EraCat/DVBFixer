@@ -46,6 +46,7 @@ non-canonical residues.
 | Relaxation research and proposed benchmarks | [`docs/research/whole-complex-relaxation.md`](docs/research/whole-complex-relaxation.md) |
 | Reconstruction/modeling backend research | [`docs/research/reconstruction-and-modeling-backends.md`](docs/research/reconstruction-and-modeling-backends.md) |
 | Force-field selection matrix | [`docs/force-fields.md`](docs/force-fields.md) |
+| GUI button, control, and toolbar layout rules | [`docs/gui-design-system.md`](docs/gui-design-system.md) |
 | Tracked structural test inputs, provenance, and checksums | [`tests/fixtures/README.md`](tests/fixtures/README.md) |
 | Corrected cc89 Apple Silicon restart, portable controls, and remaining MPS port | [`docs/plans/apple-cc89-handoff.md`](docs/plans/apple-cc89-handoff.md) |
 
@@ -672,12 +673,15 @@ The full suite needs the scientific stack and external executables from
   line recognized as WARNING/ERROR, keep log files free of ANSI escapes, and
   emit the deduplicated diagnostic summary even when execution exits through
   an exception. Do not replace it with Python-only logging interception.
-- **Homology toolbar geometry is centralized in `HomologyPanel.tsx`.** Target,
-  Templates, Alignment, and Model controls use `homologyToolbarSx` and the
-  shared 160x32 control/action dimensions. Compact 32 px MUI inputs require the
-  custom label transforms and input padding in that shared style. Toolbars use
-  an opaque `background.paper` without outline boxes. Avoid one-off sizes that
-  reintroduce inconsistent alignment.
+- **GUI control geometry is centralized in `gui/src/theme.ts` and
+  `gui/src/ui/layout.ts`.** Follow `docs/gui-design-system.md`: ordinary buttons,
+  inputs, toggles and icon actions are 32 px; workflow actions are 160x32.
+  Compact 24 px actions are only for dense data rows, inline report links and
+  docking chrome. Target/Templates/Alignment/Model all use the shared workflow
+  toolbar, with input label transforms/padding supplied by the theme. Toolbars
+  wrap, align controls without `translateY` patches and use opaque
+  `background.paper` without outline boxes. Keep primary actions right-aligned,
+  labelled and keyboard-accessible; preserve scientific residue-grid geometry.
 - **The Mol* viewport filename is a React overlay, not a Mol* state-tree
   label.** `MolstarViewer` reads the slot-specific `fileName` from the structure
   store, shows its basename without intercepting pointer events, and retains

@@ -259,15 +259,24 @@ export function ProjectLibrary({ mode = 'library' }: { mode?: 'library' | 'works
 
   return <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
     <Box sx={{ px: 1, py: 0, height: 36, boxSizing: 'border-box', flexShrink: 0, borderBottom: 1, borderColor: 'divider', display: 'flex', gap: 0.5, alignItems: 'center' }}>
-      <Typography variant="caption" sx={{ fontWeight: 700, textTransform: 'uppercase', letterSpacing: 1 }}>{mode === 'library' ? 'Workspace' : active?.name || 'Workspace'}</Typography>
+      <Typography variant="caption" noWrap title={active?.name} sx={{ fontWeight: 700, textTransform: 'uppercase', letterSpacing: 1, minWidth: 0 }}>{mode === 'library' ? 'Workspace' : active?.name || 'Workspace'}</Typography>
       {mode === 'library' ? (
         <Tooltip title="New workspace"><IconButton size="small" sx={{ ml: 'auto' }} onClick={() => createWorkspace()}><AddIcon fontSize="small" /></IconButton></Tooltip>
       ) : <>
         <input ref={uploadRef} hidden multiple type="file" onChange={event => importFiles(event.target.files)} />
-        <Tooltip title="Import files into active workspace"><span><IconButton size="small" disabled={!active} onClick={() => uploadRef.current?.click()}><UploadFileIcon fontSize="small" /></IconButton></span></Tooltip>
         <ToggleButtonGroup size="small" exclusive value={loadTarget} onChange={(_event, value) => value && setLoadTarget(value)} sx={{ ml: 'auto', '& .MuiToggleButton-root': { minHeight: 24, py: 0, px: 1, fontSize: '0.68rem' } }}>
           <ToggleButton value="primary">A</ToggleButton><ToggleButton value="secondary" disabled={!secondaryPlugin}>B</ToggleButton>
         </ToggleButtonGroup>
+        <Tooltip title={active ? `Import files into ${active.name}` : 'Select a workspace to import files'}>
+          <span>
+            <Button variant="outlined" size="small" disabled={!active || loading}
+              startIcon={<UploadFileIcon sx={{ fontSize: 16 }} />}
+              onClick={() => uploadRef.current?.click()}
+              sx={{ height: 28, px: 1, whiteSpace: 'nowrap', fontSize: '0.7rem' }}>
+              Import files
+            </Button>
+          </span>
+        </Tooltip>
       </>}
     </Box>
     {error && <Typography variant="caption" color="error" sx={{ px: 1, py: 0.5 }}>{error}</Typography>}

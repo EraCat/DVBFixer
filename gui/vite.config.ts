@@ -10,6 +10,9 @@ export default defineConfig(({ mode }) => ({
     // or start the development API while collecting unit tests.
     ...(mode === 'test' ? [] : [apiPlugin()]),
   ],
+  server: {
+    open: mode !== 'test' && !process.env.CI,
+  },
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),

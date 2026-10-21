@@ -9,5 +9,6 @@ describe('Vite test isolation', () => {
       plugin && typeof plugin === 'object' && 'name' in plugin ? [plugin.name] : [])
     if (mode === 'test') expect(names).not.toContain(apiPlugin().name)
     else expect(names).toContain(apiPlugin().name)
+    expect(config.server?.open).toBe(mode !== 'test' && !process.env.CI)
   })
 })

@@ -32,6 +32,7 @@ import { structureMetaFromArtifact } from '../lib/workspace-metadata'
 import { apiFetch, downloadApiBlob, openApiBlob } from '../lib/api-client'
 import { useWorkspaceImportStore } from '../stores/workspaceImportStore'
 import { actionGroupSx, panelToolbarSx } from '../ui/layout'
+import { ArtifactFileIdentity } from './ArtifactFileIdentity'
 
 export function ProjectLibrary({ mode = 'library' }: { mode?: 'library' | 'workspace' }) {
   const uploadRef = useRef<HTMLInputElement>(null)
@@ -306,7 +307,7 @@ export function ProjectLibrary({ mode = 'library' }: { mode?: 'library' | 'works
     {mode === 'workspace' && active && <>
       <Box sx={panelToolbarSx}><Typography variant="caption" sx={{ fontWeight: 700, color: 'text.secondary' }}>FILES</Typography>
         <Divider orientation="vertical" flexItem sx={{ mx: 1 }} />
-        <Button size="small" onClick={() => setShowNonPdb(show => !show)}>{showNonPdb ? 'Hide non-PDB files' : 'Show non-PDB files'}</Button>
+        <Button size="small" variant="outlined" onClick={() => setShowNonPdb(show => !show)}>{showNonPdb ? 'Hide non-PDB files' : 'Show non-PDB files'}</Button>
         {!!selectedArtifacts.size && <Typography variant="caption" color="primary">{selectedArtifacts.size} selected</Typography>}
         <Box sx={actionGroupSx}>
           <Tooltip title="Move selected files up"><span><IconButton aria-label="Move selected files up" size="small" disabled={!selectedArtifacts.size} onClick={() => reorderSelected(-1)}><ArrowUpwardIcon fontSize="inherit" /></IconButton></span></Tooltip>
@@ -346,7 +347,7 @@ export function ProjectLibrary({ mode = 'library' }: { mode?: 'library' | 'works
             sx={{ display: 'inline-flex', cursor: 'grab', color: 'text.disabled', mr: 0.5, '&:active': { cursor: 'grabbing' } }}>
             <DragIndicatorIcon sx={{ fontSize: 16 }} />
           </Box>
-          <ListItemText primary={artifact.name} />
+          <ArtifactFileIdentity artifact={artifact} />
         </ListItemButton>)}
         {!active.artifacts.length && <Box sx={{ p: 2, textAlign: 'center' }}><Typography variant="caption" color="text.secondary">Import files to begin.</Typography></Box>}
       </List>

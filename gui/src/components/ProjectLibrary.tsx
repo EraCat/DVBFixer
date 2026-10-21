@@ -30,9 +30,12 @@ import { useSelectionStore } from '../stores/selectionStore'
 import { reorderVisibleArtifacts } from '../lib/workspace-order'
 import { structureMetaFromArtifact } from '../lib/workspace-metadata'
 import { apiFetch, downloadApiBlob, openApiBlob } from '../lib/api-client'
+import { useWorkspaceImportStore } from '../stores/workspaceImportStore'
 
 export function ProjectLibrary({ mode = 'library' }: { mode?: 'library' | 'workspace' }) {
   const uploadRef = useRef<HTMLInputElement>(null)
+  const importFiles = useWorkspaceImportStore(state => state.importFiles)
+  const importing = useWorkspaceImportStore(state => state.importing)
   const workspaces = useWorkspaceStore(state => state.workspaces)
   const active = useWorkspaceStore(state => state.active)
   const loading = useWorkspaceStore(state => state.loading)
@@ -112,24 +115,6 @@ export function ProjectLibrary({ mode = 'library' }: { mode?: 'library' | 'works
     if (secondary && secondaryPlugin) await loadArtifact(workspace, secondary, 'secondary')
     else { setSecondaryFileName(null); if (secondaryPlugin) await secondaryPlugin.clear() }
   }, [activate, loadArtifact, plugin, secondaryPlugin, setFileName, setSecondaryFileName])
-
-  const importFiles = async (files: FileList | null) => {
-    if (!active || !files?.length) return
-    setLoading(true); setError(null)
-    try {
-      await saveWorkspace()
-      for (const file of Array.from(files)) {
-        const response = await apiFetch(`/api/workspaces/${encodeURIComponent(active.id)}/import`, {
-          method: 'POST', headers: { 'X-File-Name': encodeURIComponent(file.name) }, body: file,
-        })
-        const body = await response.json().catch(() => ({}))
-        if (!response.ok) throw new Error(body.error || `Import failed: ${file.name}`)
-      }
-      await reloadWorkspace()
-      await refresh()
-    } catch (reason: any) { setError(reason.message || String(reason)) }
-    finally { setLoading(false); if (uploadRef.current) uploadRef.current.value = '' }
-  }
 
   const removeContextItem = async (target: NonNullable<typeof contextMenu>) => {
     setContextMenu(null)
@@ -263,17 +248,21 @@ export function ProjectLibrary({ mode = 'library' }: { mode?: 'library' | 'works
       {mode === 'library' ? (
         <Tooltip title="New workspace"><IconButton size="small" sx={{ ml: 'auto' }} onClick={() => createWorkspace()}><AddIcon fontSize="small" /></IconButton></Tooltip>
       ) : <>
-        <input ref={uploadRef} hidden multiple type="file" onChange={event => importFiles(event.target.files)} />
+        <input ref={uploadRef} hidden multiple type="file" onChange={event => {
+          const files = Array.from(event.target.files || [])
+          event.target.value = ''
+          void importFiles(files)
+        }} />
         <ToggleButtonGroup size="small" exclusive value={loadTarget} onChange={(_event, value) => value && setLoadTarget(value)} sx={{ ml: 'auto', '& .MuiToggleButton-root': { minHeight: 24, py: 0, px: 1, fontSize: '0.68rem' } }}>
           <ToggleButton value="primary">A</ToggleButton><ToggleButton value="secondary" disabled={!secondaryPlugin}>B</ToggleButton>
         </ToggleButtonGroup>
         <Tooltip title={active ? `Import files into ${active.name}` : 'Select a workspace to import files'}>
           <span>
-            <Button variant="outlined" size="small" disabled={!active || loading}
+            <Button variant="outlined" size="small" disabled={!active || active.effectiveRole === 'reader' || loading || importing}
               startIcon={<UploadFileIcon sx={{ fontSize: 16 }} />}
               onClick={() => uploadRef.current?.click()}
               sx={{ height: 28, px: 1, whiteSpace: 'nowrap', fontSize: '0.7rem' }}>
-              Import files
+              {importing ? 'Importing…' : 'Import files'}
             </Button>
           </span>
         </Tooltip>

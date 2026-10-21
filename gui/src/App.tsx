@@ -30,6 +30,7 @@ import Tooltip from '@mui/material/Tooltip'
 import { MolstarViewer } from './components/MolstarViewer'
 import { SequenceViewer } from './components/SequenceViewer'
 import { FileLoader } from './components/FileLoader'
+import { WorkspaceFileDrop } from './components/WorkspaceFileDrop'
 import { ProjectLibrary, WorkspacePanel } from './components/ProjectLibrary'
 import { StructureInfo } from './components/StructureInfo'
 import { ElementsTable } from './components/ElementsTable'
@@ -265,6 +266,7 @@ function App() { // @dsp obj-a1000002
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100vh', overflow: 'hidden' }}>
+      <WorkspaceFileDrop />
       <AppBar position="static" elevation={0} sx={{ bgcolor: 'background.paper', borderBottom: 1, borderColor: 'divider', flexShrink: 0 }}>
         <Toolbar variant="dense" sx={{ minHeight: 36, gap: 2 }}>
           <Typography variant="subtitle2" sx={{ fontWeight: 700, letterSpacing: 2, textTransform: 'uppercase', fontSize: '0.7rem', color: '#1D3261' }}>

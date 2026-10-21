@@ -47,4 +47,15 @@ describe('tool output presentation', () => {
     expect(markup).toContain('Preview unavailable: HTTP 404')
     expect(markup).toContain('Open in Text Files')
   })
+
+  it('places diagnostics before the report and separates sections visibly', () => {
+    const markup = renderToStaticMarkup(<ToolOutput stdout="Saved file" stderr="Diagnostic messages"
+      reports={[{ file: 'diagnose.txt', text: 'Report body', truncated: false }]} />)
+    const diagnostics = markup.indexOf('Diagnostics &amp; messages (stderr)')
+    const report = markup.indexOf('Report · diagnose.txt')
+    expect(diagnostics).toBeGreaterThan(-1)
+    expect(report).toBeGreaterThan(diagnostics)
+    expect(markup.indexOf('Standard output')).toBeGreaterThan(report)
+    expect(markup.slice(diagnostics, report)).toContain('MuiDivider-root')
+  })
 })

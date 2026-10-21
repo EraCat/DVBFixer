@@ -18,6 +18,7 @@ import {
 import { parseAccessLogConfig, type AccessLogConfig } from './request-observability'
 import { parseMetricsConfig, type MetricsConfig } from './metrics'
 import { parseAuditLogConfig, type AuditLogConfig } from './audit-log'
+import { assertDvbfixerAvailable } from './cli-preflight'
 
 export interface StandaloneConfig {
   host: string
@@ -273,6 +274,7 @@ export function createStandaloneServer(config: StandaloneConfig): StandaloneServ
 }
 
 async function main(): Promise<void> {
+  assertDvbfixerAvailable()
   const instance = createStandaloneServer(loadStandaloneConfig())
   const address = await instance.start()
   console.log(`DVBFixer server listening on http://${address.address}:${address.port}`)

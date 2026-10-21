@@ -202,6 +202,8 @@ describe('DVBfixer runner', () => {
       undefined, 'nonzero-exit', 'timeout', 'cancelled', 'spawn-error', undefined,
     ])
     expect(results.at(-1)).toMatchObject({ code: 0, started: true })
+    expect(results[4].stderr).toContain('DVBFIXER_EXECUTABLE')
+    expect(results[4].stderr).toContain('Activate the dvbfixer environment')
   }, 15_000)
 
   it('strictly validates and initializes the concurrency configuration', async () => {

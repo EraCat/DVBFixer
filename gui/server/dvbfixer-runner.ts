@@ -149,11 +149,11 @@ export interface DvbfixerRunOptions {
   onStart?: () => void
 }
 
-function commandConfiguration(): { executable: string; prefix: string[] } {
-  const executable = process.env.DVBFIXER_EXECUTABLE || 'dvbfixer'
+export function commandConfiguration(environment: NodeJS.ProcessEnv = process.env): { executable: string; prefix: string[] } {
+  const executable = environment.DVBFIXER_EXECUTABLE || 'dvbfixer'
   let prefix: unknown = []
-  if (process.env.DVBFIXER_ARGS) {
-    try { prefix = JSON.parse(process.env.DVBFIXER_ARGS) } catch {
+  if (environment.DVBFIXER_ARGS) {
+    try { prefix = JSON.parse(environment.DVBFIXER_ARGS) } catch {
       throw new Error('DVBFIXER_ARGS must be a JSON array of strings')
     }
   }
@@ -168,6 +168,13 @@ function appendBounded(current: string, chunk: Buffer, limit: number): string {
   const remaining = limit - Buffer.byteLength(current)
   const text = chunk.subarray(0, remaining).toString()
   return current + text + (chunk.length > remaining ? '\n[output truncated]\n' : '')
+}
+
+function spawnErrorMessage(error: unknown): string {
+  if (error && typeof error === 'object' && 'code' in error && error.code === 'ENOENT') {
+    return `${String(error)}\nDVBfixer CLI could not start. Activate the dvbfixer environment before starting the GUI, or set DVBFIXER_EXECUTABLE to its executable path. Check that the working directory also exists.`
+  }
+  return String(error)
 }
 
 export function runDvbfixerArgs(
@@ -288,14 +295,14 @@ export function runDvbfixerArgs(
         if (settled) return
         child = spawn(executable, commandArgs, { cwd, detached: process.platform !== 'win32' })
       } catch (error) {
-        terminationReason = String(error)
+        terminationReason = spawnErrorMessage(error)
         finish(-1, 'spawn-error')
         return
       }
       child.stdout?.on('data', (data: Buffer) => { stdout = appendBounded(stdout, data, maxOutputBytes) })
       child.stderr?.on('data', (data: Buffer) => { stderr = appendBounded(stderr, data, maxOutputBytes) })
       child.on('error', error => {
-        terminationReason = String(error)
+        terminationReason = spawnErrorMessage(error)
         finish(-1, 'spawn-error')
       })
       child.on('close', code => {

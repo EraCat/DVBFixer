@@ -4,6 +4,10 @@ import os from 'node:os'
 import path from 'node:path'
 
 const dataRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'dvbfixer-standalone-smoke-'))
+// This checks the Node host, not scientific execution; CI builds it without the
+// scientific environment. Supply an explicit version-only CLI test double.
+const cliStub = path.join(dataRoot, 'cli-version.cjs')
+fs.writeFileSync(cliStub, 'if (process.argv[2] !== "--version") process.exit(1); console.log("dvbfixer 0.0.0 (host smoke stub)")\n')
 const child = spawn(process.execPath, ['--enable-source-maps', 'dist-server/server.js'], {
   cwd: path.resolve(import.meta.dirname, '..'),
   env: {
@@ -11,6 +15,8 @@ const child = spawn(process.execPath, ['--enable-source-maps', 'dist-server/serv
     DVBFIXER_HOST: '127.0.0.1',
     DVBFIXER_PORT: '0',
     DVBFIXER_GUI_DATA_DIR: dataRoot,
+    DVBFIXER_EXECUTABLE: process.execPath,
+    DVBFIXER_ARGS: JSON.stringify([cliStub]),
   },
   stdio: ['ignore', 'pipe', 'pipe'],
 })

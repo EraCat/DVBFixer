@@ -9,6 +9,7 @@ import { parseStorageQuotaSettings } from './storage-quota'
 import { parseRateLimitConfig } from './rate-limit'
 import { parseAccessLogConfig } from './request-observability'
 import { parseMetricsConfig } from './metrics'
+import { assertDvbfixerAvailable } from './cli-preflight'
 
 export { runDvbfixer } from './dvbfixer-runner'
 export { buildArgs } from './command-args'
@@ -19,6 +20,7 @@ export function apiPlugin(environment: NodeJS.ProcessEnv = process.env): Plugin 
   return {
     name: 'tarantino-api',
     configureServer(server) {
+      assertDvbfixerAvailable(environment)
       const authConfig = parseAuthConfig(environment)
       const corsAllowedOrigins = parseCorsAllowedOrigins(environment)
       const storageQuota = parseStorageQuotaSettings(environment)

@@ -71,7 +71,7 @@ function successfulRunner(options: {
       status: 'success',
       tool: { name: 'dvbfixer', version: '0.8.5' },
       request: {
-        targetForceField, profile: 'gromacs', dryRun: Boolean(options.dryRun), variantOverrides: [],
+        targetForceField, profile: args[args.indexOf('--profile') + 1], dryRun: Boolean(options.dryRun), variantOverrides: [],
       },
       output: { path: output, written: !options.dryRun, bytes: outputBytes.length, sha256: digest },
       result: {
@@ -222,6 +222,22 @@ describe('naming conversion application boundary', () => {
     expect(result.statusCode).toBe(201)
     const output = loadWorkspace(dataRoot, 'workspace-a').artifacts[1]
     expect(output.namingProvenance?.targetForceField).toBe('amber19sb')
+  })
+
+  it.each(['amber', 'amber19sb', 'charmm'] as const)('publishes and reloads native %s naming provenance', async forceField => {
+    const dataRoot = temp()
+    workspace(dataRoot)
+    const runner = vi.fn(successfulRunner())
+    const nativeRequest: NamingConversionRequest = {
+      ...request, target: { forceField, profile: 'standard' }, outputName: undefined,
+    }
+    const result = await executeNamingConversion(dataRoot, 'workspace-a', nativeRequest, runner)
+    const args = runner.mock.calls[0][1]
+    expect(args[args.indexOf('--profile') + 1]).toBe('standard')
+    expect(result.statusCode).toBe(201)
+    expect(result.response.outputArtifact?.name).toMatch(new RegExp(`_${forceField}_standard\\.pdb$`))
+    expect(loadWorkspace(dataRoot, 'workspace-a').artifacts[1].namingProvenance)
+      .toMatchObject({ targetForceField: forceField, profile: 'standard' })
   })
 
   it('returns a dry-run report without changing the manifest or retaining output', async () => {

@@ -18,7 +18,7 @@ export const NamingConversionRequestSchema = Type.Object({
     forceField: Type.Union([
       Type.Literal('amber'), Type.Literal('amber19sb'), Type.Literal('charmm'),
     ]),
-    profile: Type.Literal('gromacs'),
+    profile: Type.Union([Type.Literal('gromacs'), Type.Literal('standard')]),
   }, { additionalProperties: false }),
   variantOverrides: Type.Optional(Type.Array(VariantOverrideSchema, { maxItems: 10_000 })),
   outputName: Type.Optional(Type.String({
@@ -75,7 +75,7 @@ export const NamingCliReportSchema = Type.Object({
     targetForceField: Type.Union([
       Type.Literal('amber'), Type.Literal('amber19sb'), Type.Literal('charmm'),
     ]),
-    profile: Type.Literal('gromacs'),
+    profile: Type.Union([Type.Literal('gromacs'), Type.Literal('standard')]),
     dryRun: Type.Boolean(),
     variantOverrides: Type.Array(VariantOverrideSchema),
   }, { additionalProperties: false }),

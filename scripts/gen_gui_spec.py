@@ -36,6 +36,7 @@ FIELD_LABELS = {
     "protassign": "ProtAssign",
     "protassign_binary": "ProtAssign Binary",
     "extra_ff": "Extra Force Field",
+    "target_ff": "Target FF",
 }
 LABEL_ACRONYMS = {
     "fasta": "FASTA",
@@ -107,7 +108,7 @@ def _field(action: argparse.Action, group: str, exclusive_group: str | None = No
     )
     label = (
         _humanize_option(flag)
-        if label_from_option else FIELD_LABELS.get(action.dest, action.dest.replace("_", " ").title())
+        if label_from_option else FIELD_LABELS.get(action.dest, _humanize_option(action.dest.replace("_", "-")))
     )
     result = {
         "flag": flag,

@@ -7,8 +7,9 @@
 ```
 usage: dvbfixer atom-names [-h] -o OUTPUT [--variant-overrides JSON]
                            [--report-json JSON] --target-ff
-                           {amber,amber19sb,charmm} [--profile {gromacs}]
-                           [--dry-run] [-v] [--log-file PATH]
+                           {amber,amber19sb,charmm}
+                           [--profile {gromacs,standard}] [--dry-run] [-v]
+                           [--log-file PATH]
                            input
 
 Convert PDB atom and residue names without modifying the source file.
@@ -28,7 +29,9 @@ Input / output:
 Naming conversion:
   --target-ff {amber,amber19sb,charmm}
                         Target force-field naming dialect
-  --profile {gromacs}   Target consumer naming profile
+  --profile {gromacs,standard}
+                        Target naming profile: gromacs for bundled GROMACS
+                        dialects; standard for native force-field names
   --dry-run             Validate and report without writing output
 
 Diagnostics:

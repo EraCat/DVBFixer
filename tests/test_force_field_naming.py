@@ -569,3 +569,72 @@ def test_variant_mappings_repeat_without_changes(
     second = _convert(first.pdb_text, target=target, profile=profile)
     assert second.pdb_text == first.pdb_text
     assert not any(asdict(second.summary).values())
+
+
+@pytest.fixture(scope="module")
+def native_templates():
+    app = pytest.importorskip("openmm.app")
+    return (
+        app.ForceField("amber14/protein.ff14SB.xml")._templates,
+        app.ForceField("charmm36.xml")._templates,
+    )
+
+
+@pytest.mark.parametrize("residue", [
+    "ALA", "ARG", "ASN", "ASP", "CYS", "GLN", "GLU", "GLY", "HYP", "ILE",
+    "LEU", "LYS", "MET", "PHE", "PRO", "SER", "THR", "TRP", "TYR", "VAL",
+])
+@pytest.mark.parametrize("target", list(ForceFieldTarget))
+def test_standard_protein_names_match_independent_native_templates(native_templates, residue, target):
+    amber, charmm = native_templates
+    source, expected = (amber, charmm) if target is ForceFieldTarget.CHARMM else (charmm, amber)
+    text = "".join(_atom(index, atom.name, residue) for index, atom in enumerate(source[residue].atoms, 1))
+    result = _convert(text, target=target)
+    lines = result.pdb_text.splitlines()
+    assert {line[12:16].strip() for line in lines} == set(expected[residue].atomIndices)
+    assert [line[21:] for line in lines] == [line[21:] for line in text.splitlines()]
+    assert _convert(result.pdb_text, target=target).pdb_text == result.pdb_text
+
+    # Consumer-specific output must also be usable as a native conversion input.
+    # Surround the internal template with anchors: a lone residue would be
+    # classified as N-terminal by the existing GROMACS profile (H -> H1).
+    amber_text = _atom(100, "N", "ALA", number=0)
+    amber_text += "".join(_atom(index, atom.name, residue) for index, atom in enumerate(amber[residue].atoms, 1))
+    amber_text += _atom(101, "N", "ALA", number=2)
+    consumer = _convert(amber_text, target=target, profile=NamingProfile.GROMACS)
+    restored = _convert(consumer.pdb_text, target=target)
+    assert {line[12:16].strip() for line in restored.pdb_text.splitlines() if line[22:26].strip() == "1"} == set(expected[residue].atomIndices)
+
+
+@pytest.mark.parametrize("target", [ForceFieldTarget.AMBER, ForceFieldTarget.AMBER19SB])
+@pytest.mark.parametrize(("residue", "names", "expected"), [
+    ("SER", ["HB1", "HB2"], ["HB3", "HB2"]),
+    ("ACE", ["HH31", "HH32", "HH33"], ["H1", "H2", "H3"]),
+    ("NME", ["CH3", "HH31", "HH32", "HH33"], ["C", "H1", "H2", "H3"]),
+    ("ALA", ["OC2", "OC1"], ["O", "OXT"]),
+    ("ALA", ["HT1", "HT2", "HT3", "OT1", "OT2"], ["H1", "H2", "H3", "O", "OXT"]),
+    ("DA", ["H2'1", "H2'2", "H5'1", "H5'2"], ["H2'", "H2''", "H5'", "H5''"]),
+])
+def test_standard_amber_restores_recognized_consumer_aliases(target, residue, names, expected):
+    text = "".join(_atom(index, name, residue) for index, name in enumerate(names, 1))
+    first = _convert(text, target=target)
+    assert [line[12:16].strip() for line in first.pdb_text.splitlines()] == expected
+    assert _convert(first.pdb_text, target=target).pdb_text == first.pdb_text
+
+
+def test_standard_charmm_uses_native_terminal_names():
+    names = ["H1", "H2", "H3", "O", "OXT"]
+    text = "".join(_atom(index, name, "ALA") for index, name in enumerate(names, 1))
+    first = _convert(text)
+    assert [line[12:16].strip() for line in first.pdb_text.splitlines()] == ["HT1", "HT2", "HT3", "OT1", "OT2"]
+    assert _convert(first.pdb_text).pdb_text == first.pdb_text
+
+
+@pytest.mark.parametrize("target", list(ForceFieldTarget))
+def test_standard_proline_terminal_names(target):
+    names = ["H1", "H2"]  # GROMACS PRO: native AMBER H3 -> H1.
+    text = "".join(_atom(index, name, "PRO") for index, name in enumerate(names, 1))
+    expected = ["HN2", "HN1"] if target is ForceFieldTarget.CHARMM else ["H3", "H2"]
+    first = _convert(text, target=target)
+    assert [line[12:16].strip() for line in first.pdb_text.splitlines()] == expected
+    assert _convert(first.pdb_text, target=target).pdb_text == first.pdb_text

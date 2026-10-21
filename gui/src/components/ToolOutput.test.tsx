@@ -64,4 +64,14 @@ describe('tool output presentation', () => {
     expect(markup.match(/tabindex="0"/g)).toHaveLength(2)
     expect(markup.slice(report, diagnostics)).toContain('aria-label="Run log"')
   })
+
+  it('does not offer a nonexistent file for an inline naming response', () => {
+    const markup = renderToStaticMarkup(<ToolOutput stdout="" stderr="" onOpenFile={vi.fn()}
+      reports={[{ file: 'Naming conversion', text: '{"changedAtoms":1}', inline: true, truncated: false }]} />)
+    expect(markup).toContain('changedAtoms')
+    expect(markup).not.toContain('Open in Text Files')
+    const withOutput = renderToStaticMarkup(<ToolOutput stdout="" stderr="" onOpenFile={vi.fn()}
+      outputFile="runs/named.pdb" reports={[{ file: 'Naming conversion', text: '{}', inline: true, truncated: false }]} />)
+    expect(withOutput.match(/Open in Text Files/g)).toHaveLength(1)
+  })
 })

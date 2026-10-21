@@ -23,7 +23,7 @@ import Tooltip from '@mui/material/Tooltip'
 import { useStructureStore } from '../stores/structureStore'
 import { alignSequences, chainToSequence } from '../lib/alignment'
 import { filterSequenceableChains } from '../lib/chain-grouping'
-import { useWorkspaceStore, workspaceFileUrl } from '../stores/workspaceStore'
+import { useWorkspaceStore, workspaceFileUrl, type WorkspaceArtifact } from '../stores/workspaceStore'
 import { createManagedJobRequest, isActiveManagedJob, managedJobStatusLabel, mergeManagedJobHistory, outputMatchesManagedJob, selectRestoredManagedJob, selectToolManagedJob, type ManagedJobRecord } from '../lib/managed-jobs'
 import { structureMetaFromArtifact } from '../lib/workspace-metadata'
 import { apiFetch, apiSse } from '../lib/api-client'
@@ -32,6 +32,7 @@ import { workflowOptionActive, workflowValues } from '../lib/workflow-backend-op
 import { ToolOutput } from './ToolOutput'
 import { loadToolReports, type ToolReportPreview } from '../lib/tool-output'
 import { orderToolTabs } from '../lib/tool-tab-order'
+import { namingOutputMatches, runNamingConversion } from '../lib/naming-conversion'
 import { actionGroupSx, controlSx, formActionRowSx, panelToolbarSx, primaryActionSx, wideControlSx } from '../ui/layout'
 
 // Re-declare the spec types here (mirrors server/dvbfixer-spec.ts) so the
@@ -263,6 +264,7 @@ export function DVBFixerPanel() {
   const [submitting, setSubmitting] = useState(false)
   const [cancelling, setCancelling] = useState(false)
   const [result, setResult] = useState<RunResult | null>(null)
+  const [namingResult, setNamingResult] = useState<RunResult | null>(null)
   const [error, setError] = useState<string | null>(null)
   const workspace = useWorkspaceStore(state => state.active)
   const workspaceRevision = useWorkspaceStore(state => state.revision)
@@ -270,6 +272,7 @@ export function DVBFixerPanel() {
   const updateToolState = useWorkspaceStore(state => state.updateToolState)
   const terminalHandledRef = useRef<Set<string>>(new Set())
   const submitInFlightRef = useRef(false)
+  const workspaceEpochRef = useRef(0)
 
   const categories = useMemo(() => Array.from(new Set(commands.map(command => command.category))), [commands])
   const visibleCommands = useMemo(() => orderToolTabs(commands.filter(command => command.category === category)), [commands, category])
@@ -279,7 +282,8 @@ export function DVBFixerPanel() {
   const toolJob = selectToolManagedJob(knownJobs, workspace?.id, activeCmd?.name)
   // Gate during render, not just in an effect: switching tabs must never flash
   // a previous tool's report while the new selection's logs are being fetched.
-  const toolResult = outputMatchesManagedJob(result, toolJob, workspace?.id) ? result : null
+  const namingToolResult = namingOutputMatches(namingResult, workspace?.id, activeCmd?.name) ? namingResult : null
+  const toolResult = namingToolResult || (outputMatchesManagedJob(result, toolJob, workspace?.id) ? result : null)
 
   const jobActive = job?.workspaceId === workspace?.id && isActiveManagedJob(job)
   const activeJobId = jobActive ? job?.id : undefined
@@ -288,9 +292,12 @@ export function DVBFixerPanel() {
   // active workspace changes. The server is the source of truth.
   useEffect(() => {
     const workspaceId = workspace?.id
+    workspaceEpochRef.current++
     setJob(null)
     setJobHistory([])
     setResult(null)
+    setNamingResult(null)
+    setError(null)
     setCancelling(false)
     if (!workspaceId) return
     const controller = new AbortController()
@@ -375,6 +382,28 @@ export function DVBFixerPanel() {
     return () => controller.abort()
   }, [toolJob, workspace?.id])
 
+  const loadOutputStructure = useCallback(async (workspaceId: string, outputFile: string, artifact?: WorkspaceArtifact) => {
+    if (useWorkspaceStore.getState().active?.id !== workspaceId) return
+    const plugin = useStructureStore.getState().plugin
+    if (!plugin) return
+    const response = await apiFetch(workspaceFileUrl(workspaceId, outputFile), { cache: 'no-store' })
+    if (!response.ok) throw new Error(`Output cannot be loaded: HTTP ${response.status}`)
+    const text = await response.text()
+    if (useWorkspaceStore.getState().active?.id !== workspaceId) return
+    const format = /\.(cif|mmcif)$/i.test(outputFile) ? 'mmcif' : 'pdb'
+    await plugin.clear()
+    const data = await plugin.builders.data.rawData({ data: text, label: outputFile })
+    const trajectory = await plugin.builders.structure.parseTrajectory(data, format as any)
+    await plugin.builders.structure.hierarchy.applyPreset(trajectory, 'default', {
+      structure: { name: 'model', params: {} },
+    })
+    if (useWorkspaceStore.getState().active?.id !== workspaceId) return
+    if (artifact) useStructureStore.getState().setMeta(structureMetaFromArtifact(artifact))
+    useStructureStore.getState().setFileName(outputFile)
+    userPickedInputRef.current = false
+    setInputFile(outputFile)
+  }, [])
+
   // A newly-completed successful job registers artifacts server-side. Refresh
   // once and load its primary structure, without replaying historical jobs.
   useEffect(() => {
@@ -385,24 +414,10 @@ export function DVBFixerPanel() {
     ;(async () => {
       const refreshed = await reloadWorkspace()
       if (job.status !== 'succeeded' || !job.outputFile || !/\.(pdb|cif|mmcif|gro)$/i.test(job.outputFile)) return
-      const plugin = useStructureStore.getState().plugin
-      if (!plugin) return
-      const response = await apiFetch(workspaceFileUrl(workspaceId, job.outputFile), { cache: 'no-store' })
-      if (!response.ok) throw new Error(`Output cannot be loaded: HTTP ${response.status}`)
-      const format = /\.(cif|mmcif)$/i.test(job.outputFile) ? 'mmcif' : 'pdb'
-      await plugin.clear()
-      const data = await plugin.builders.data.rawData({ data: await response.text(), label: job.outputFile })
-      const trajectory = await plugin.builders.structure.parseTrajectory(data, format as any)
-      await plugin.builders.structure.hierarchy.applyPreset(trajectory, 'default', {
-        structure: { name: 'model', params: {} },
-      })
       const artifact = refreshed?.artifacts.find(item => item.file === job.outputFile)
-      if (artifact) useStructureStore.getState().setMeta(structureMetaFromArtifact(artifact))
-      useStructureStore.getState().setFileName(job.outputFile)
-      userPickedInputRef.current = false
-      setInputFile(job.outputFile)
+      await loadOutputStructure(workspaceId, job.outputFile, artifact)
     })().catch(reason => setError(reason.message || String(reason)))
-  }, [job, reloadWorkspace, workspace?.id])
+  }, [job, reloadWorkspace, workspace?.id, loadOutputStructure])
 
   const fetchSpec = useCallback(() => {
     apiFetch(`/api/dvbfixer-spec?t=${Date.now()}`, { cache: 'no-store' })
@@ -598,7 +613,43 @@ export function DVBFixerPanel() {
     setSubmitting(true)
     setError(null)
     setResult(null)
+    const runEpoch = workspaceEpochRef.current
     try {
+      if (activeCmd.name === 'atom-names') {
+        setNamingResult(null)
+        const response = await runNamingConversion(workspace.id, inputFile, workspace.artifacts, activeValues, async file => {
+          const fetched = await apiFetch(workspaceFileUrl(workspace.id, file), { cache: 'no-store' })
+          if (!fetched.ok) throw new Error(`Cannot read variant overrides: HTTP ${fetched.status}`)
+          const text = await fetched.text()
+          if (text.length > 1024 * 1024) throw new Error('Variant overrides JSON exceeds 1 MiB')
+          return JSON.parse(text)
+        })
+        if (runEpoch !== workspaceEpochRef.current || useWorkspaceStore.getState().active?.id !== workspace.id) return
+        const { result: naming, outputArtifact } = response
+        setNamingResult({
+          jobId: response.operationId, workspaceId: workspace.id, ok: true, command: 'atom-names',
+          outputFile: outputArtifact?.file || '', outputDir: '', stdout: '', stderr: '', exitCode: 0,
+          reports: [{ file: 'Naming conversion', inline: true,
+            text: JSON.stringify({ dryRun: activeValues['--dry-run'] === true, summary: naming.summary,
+              diagnostics: naming.diagnostics.slice(0, 40), changes: naming.changes.slice(0, 40),
+              omittedDiagnostics: Math.max(0, naming.diagnostics.length - 40),
+              omittedChanges: Math.max(0, naming.changes.length - 40) }, null, 2),
+            truncated: false,
+          }],
+        })
+        if (outputArtifact) {
+          try {
+            const refreshed = await reloadWorkspace()
+            if (runEpoch !== workspaceEpochRef.current) return
+            await loadOutputStructure(workspace.id, outputArtifact.file, refreshed?.artifacts.find(item => item.id === outputArtifact.id))
+          } catch (reason) {
+            if (runEpoch === workspaceEpochRef.current) setNamingResult(current => current ? {
+              ...current, stderr: `Output saved, but could not refresh/load it: ${reason instanceof Error ? reason.message : String(reason)}`,
+            } : current)
+          }
+        }
+        return
+      }
       // For the `model` tab, materialise the per-chain text inputs into
       // a real FASTA string; backend writes it to a file and injects
       // --fasta automatically. Empty string = nothing shipped (backend
@@ -621,12 +672,18 @@ export function DVBFixerPanel() {
         setJob(data as ManagedJobRecord)
       }
     } catch (e: any) {
-      setError(e.message ?? String(e))
+      if (runEpoch === workspaceEpochRef.current) {
+        if (activeCmd.name === 'atom-names') setNamingResult({
+          jobId: '', workspaceId: workspace.id, ok: false, command: 'atom-names',
+          outputFile: '', outputDir: '', stdout: '', stderr: e.message ?? String(e), exitCode: -1,
+        })
+        else setError(e.message ?? String(e))
+      }
     } finally {
       submitInFlightRef.current = false
       setSubmitting(false)
     }
-  }, [activeCmd, inputFile, inputsByCommand, activeValues, buildFastaContent, jobActive, workspace])
+  }, [activeCmd, inputFile, inputsByCommand, activeValues, buildFastaContent, jobActive, workspace, reloadWorkspace, loadOutputStructure])
 
   const cancelJob = useCallback(async () => {
     if (!job || !workspace || !isActiveManagedJob(job) || cancelling) return
@@ -763,18 +820,19 @@ export function DVBFixerPanel() {
                 size="small"
               />
             </Box>}
+            {namingToolResult && <Chip label={namingToolResult.ok ? 'Succeeded' : 'Failed'} color={namingToolResult.ok ? 'success' : 'error'} size="small" sx={{ alignSelf: 'flex-start' }} />}
 
             {error && <Alert severity="error" sx={{ py: 0.25, fontSize: '0.75rem' }}>{error}</Alert>}
 
             {jobActive && job?.command !== activeCmd.name && <Typography variant="caption" color="text.secondary">
               {job?.command} is running. Open its tab to view or cancel that run.
             </Typography>}
-            {!toolJob && <Typography variant="caption" color="text.secondary">No runs yet for {activeCmd.label} in this workspace.</Typography>}
+            {!toolJob && !namingToolResult && !submitting && <Typography variant="caption" color="text.secondary">No runs yet for {activeCmd.label} in this workspace.</Typography>}
             {toolJob && !isActiveManagedJob(toolJob) && !toolResult && !error && <Typography variant="caption" color="text.secondary">Loading output for {activeCmd.label}…</Typography>}
             {toolResult && <ToolOutput stdout={toolResult.stdout} stderr={toolResult.stderr} reports={toolResult.reports}
               outputFile={toolResult.outputFile}
-              onOpenFile={toolJob ? file => {
-                useWorkspaceStore.getState().setTextPreview({ workspaceId: toolJob.workspaceId, file, name: file.split('/').pop() || file })
+              onOpenFile={toolResult ? file => {
+                useWorkspaceStore.getState().setTextPreview({ workspaceId: toolResult.workspaceId, file, name: file.split('/').pop() || file })
                 window.dispatchEvent(new Event('dvbfixer:open-text-viewer'))
               } : undefined}
               onOpenLog={toolJob ? stream => {
@@ -878,7 +936,8 @@ export function DVBFixerPanel() {
               const fields = group.fields
                 .map(flag => activeCmd.flags.find(field => field.flag === flag))
                 .filter((field): field is FlagDef => !!field)
-                .filter(field => !(activeCmd.name === 'model' && field.flag === '--fasta'))
+                 .filter(field => !(activeCmd.name === 'model' && field.flag === '--fasta'))
+                .filter(field => !(activeCmd.name === 'atom-names' && field.flag === '--verbose'))
                 .filter(field => workflowOptionActive(activeCmd.name, field.flag, activeValues))
               if (fields.length === 0) return null
               return (

@@ -1,13 +1,45 @@
 # `dvbfixer atom-names`
 
-Converts residue and atom names in a legacy PDB for the bundled legacy AMBER,
-Amber ff19SB, or CHARMM GROMACS dialect. Unlike `rename`, this command preserves explicit protonation
+Converts residue and atom names in a legacy PDB for native AMBER/CHARMM naming
+or the bundled legacy AMBER, Amber ff19SB, or CHARMM GROMACS dialect.
+Unlike `rename`, this command preserves explicit protonation
 variants and applies target-specific atom naming. Unlike `convert`, it does not
 convert glycan nomenclature or infer chemical connectivity.
 
 The source is never modified. V1 accepts `.pdb` and `.ent` input only, requires
 an explicit output, and rejects multi-model structures, naming collisions, and
 ambiguous residue identities before publishing an output.
+
+## Naming profiles
+
+`--target-ff` selects the force-field family/dialect; `--profile` selects its
+consumer naming convention. Both profiles are available in the GUI's **Profile**
+selector and the naming API:
+
+- **`gromacs`** (default, unchanged): bundled GROMACS atom names, including
+  dialect-specific hydrogen, cap and terminal aliases.
+- **`standard`**: native force-field names, not GROMACS-specific aliases.
+  For AMBER and Amber ff19SB this includes `H`, methylene `HB2`/`HB3`, and
+  terminal `O`/`OXT`. For CHARMM this includes `HN`, methylene `HB1`/`HB2`, and
+  free-terminal `HT1`/`HT2`/`HT3` and `OT1`/`OT2` names. Recognized GROMACS
+  aliases are normalized rather than simply left unchanged. Already-native
+  supported names remain unchanged on repeated conversion.
+
+For example, use native AMBER names without preparing input for GROMACS:
+
+```bash
+dvbfixer atom-names input.pdb -o amber_native.pdb \
+  --target-ff amber --profile standard
+```
+
+This is a naming operation, not a force-field parameterization or structure
+repair. It does not add missing atoms, infer protonation, choose terminal
+patches, merge separate caps into CHARMM patches, or guarantee arbitrary ligand
+compatibility. Unknown atom/residue names are not guessed; naming collisions
+remain errors. Selecting `standard` is not a general inverse for every naming
+scheme used by other programs.
+
+## GROMACS dialects
 
 ```bash
 dvbfixer atom-names input.pdb -o amber.pdb \

@@ -196,7 +196,7 @@ function validateReportRequest(report: NamingCliReport, request: NamingConversio
 function outputName(request: NamingConversionRequest, sourceFile: string): string {
   if (request.outputName) return request.outputName
   const stem = path.basename(sourceFile, path.extname(sourceFile))
-  return `${stem}_${request.target.forceField}_gromacs.pdb`
+  return `${stem}_${request.target.forceField}_${request.target.profile}.pdb`
 }
 
 function moveToFailureArea(operationDirectory: string, workspaceDirectory: string): void {

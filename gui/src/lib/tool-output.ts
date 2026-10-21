@@ -5,6 +5,8 @@ export interface ToolReportPreview {
   text: string
   truncated: boolean
   error?: string
+  /** A synchronous response, not a downloadable workspace report file. */
+  inline?: boolean
 }
 
 const TEXT_REPORT = /\.(txt|json|md|log|csv|tsv|fasta|fa|faa|pir|aln|dat|top|itp|mdp|ya?ml|toml|xml)$/i

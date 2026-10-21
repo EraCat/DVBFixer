@@ -224,7 +224,7 @@ export const GENERATED_COMMANDS = [
       {
         "flag": "--fasta",
         "dest": "fasta",
-        "label": "Fasta",
+        "label": "FASTA",
         "type": "artifact",
         "group": "Input / output",
         "help": "Complete sequence(s) used instead of SEQRES. Headers must encode chain IDs using the same formats as `dvbfixer model`.",
@@ -377,7 +377,7 @@ export const GENERATED_COMMANDS = [
       {
         "flag": "--fasta",
         "dest": "fasta",
-        "label": "Fasta",
+        "label": "FASTA",
         "type": "artifact",
         "group": "Input / output",
         "help": "FASTA file with complete sequence(s). Headers must encode chain IDs: '>chain_X', '>PDBID_X', or '>X'. Mapping is by chain ID, not file order. Use instead of SEQRES.",
@@ -767,7 +767,7 @@ export const GENERATED_COMMANDS = [
       {
         "flag": "--ff",
         "dest": "ff",
-        "label": "Ff",
+        "label": "FF",
         "type": "text",
         "group": "Force field",
         "help": "Force field selection. Accepts a short name (auto, amber, amber+glycam, charmm, ...) or an explicit list of OpenMM XML paths. Default: 'auto' — detect from residue names in the input. See docs/force-fields.md.",
@@ -981,7 +981,7 @@ export const GENERATED_COMMANDS = [
       {
         "flag": "--ff",
         "dest": "ff",
-        "label": "Ff",
+        "label": "FF",
         "type": "text",
         "group": "Force field / pH",
         "help": "Force field selection for heterogen-H addition. Accepts a short name (auto, amber, amber+glycam, charmm, ...) or an explicit list of OpenMM XML paths. Default: 'auto' — detect from residue names in the input. See docs/force-fields.md. Only consulted when heterogen-H addition runs; the protein-only PDBFixer path is unaffected.",
@@ -1216,7 +1216,7 @@ export const GENERATED_COMMANDS = [
       {
         "flag": "--ff",
         "dest": "ff",
-        "label": "Ff",
+        "label": "FF",
         "type": "text",
         "group": "Force field",
         "help": "Force field selection. Accepts a short name (auto, amber, amber+glycam, charmm, ...) or an explicit list of OpenMM XML paths. Default: 'auto' — detect from residue names in the input. See docs/force-fields.md.",
@@ -1426,7 +1426,7 @@ export const GENERATED_COMMANDS = [
       {
         "flag": "--obminimize-ff",
         "dest": "obminimize_ff",
-        "label": "Obminimize Ff",
+        "label": "Obminimize FF",
         "type": "select",
         "group": "Refinement (post-OpenMM)",
         "help": "OpenBabel force field for --obminimize-refine (default: UFF — handles N-glycosidic linkages correctly; MMFF94s mistypes the anomeric C as sp2 giving 120° angles instead of 109°)",
@@ -1695,7 +1695,7 @@ export const GENERATED_COMMANDS = [
       {
         "flag": "--ff",
         "dest": "ff",
-        "label": "Ff",
+        "label": "FF",
         "type": "text",
         "group": "Force field",
         "help": "Force field for hydrogen addition. Accepts a short name (auto, amber, amber+glycam, charmm, ...) or an explicit list of OpenMM XML paths. Default: 'auto' — detect from residue names in the input. See docs/force-fields.md.",
@@ -1897,7 +1897,7 @@ export const GENERATED_COMMANDS = [
       {
         "flag": "--target-ff",
         "dest": "target_ff",
-        "label": "Target Ff",
+        "label": "Target FF",
         "type": "select",
         "group": "Naming conversion",
         "help": "Target force-field naming dialect",
@@ -1916,13 +1916,14 @@ export const GENERATED_COMMANDS = [
         "label": "Profile",
         "type": "select",
         "group": "Naming conversion",
-        "help": "Target consumer naming profile",
+        "help": "Target naming profile: gromacs for bundled GROMACS dialects; standard for native force-field names",
         "required": false,
         "repeatable": false,
         "multi": false,
         "default": "gromacs",
         "options": [
-          "gromacs"
+          "gromacs",
+          "standard"
         ]
       },
       {
@@ -2006,7 +2007,7 @@ export const GENERATED_COMMANDS = [
       {
         "flag": "--pdb",
         "dest": "pdb",
-        "label": "Pdb",
+        "label": "PDB",
         "type": "text",
         "group": "Input / output",
         "help": "Output PDB file with topology-matched atom names",
@@ -2017,7 +2018,7 @@ export const GENERATED_COMMANDS = [
       {
         "flag": "--ff",
         "dest": "ff",
-        "label": "Ff",
+        "label": "FF",
         "type": "select",
         "group": "Force field / solvation",
         "help": "GROMACS force field (default: amber; amber19sb is protein-only)",
@@ -2034,7 +2035,7 @@ export const GENERATED_COMMANDS = [
       {
         "flag": "--ff-dir",
         "dest": "ff_dir",
-        "label": "Ff Dir",
+        "label": "FF Dir",
         "type": "text",
         "group": "Force field / solvation",
         "help": "Custom force field directory",
@@ -2838,7 +2839,7 @@ export const GENERATED_COMMANDS = [
       {
         "flag": "--separate-pdb",
         "dest": "separate_pdb",
-        "label": "Separate Pdb",
+        "label": "Separate PDB",
         "type": "bool",
         "group": "Representative PDBs",
         "help": "Write each cluster as separate PDB (default: multi-MODEL PDB)",
@@ -3452,7 +3453,7 @@ export const GENERATED_COMMANDS = [
       {
         "flag": "fasta",
         "dest": "fasta",
-        "label": "Fasta",
+        "label": "FASTA",
         "type": "artifact",
         "group": "Input / output",
         "help": "Target sequence FASTA (multi-chain, one >header per chain)",
@@ -3998,7 +3999,7 @@ export const GENERATED_COMMANDS = [
       {
         "flag": "--msa-engine",
         "dest": "msa_engine",
-        "label": "Msa Engine",
+        "label": "MSA Engine",
         "type": "select",
         "group": "Alignment",
         "help": "Sequence correspondence engine used by biopython (default: auto)",
@@ -4328,7 +4329,7 @@ export const GENERATED_COMMANDS = [
       {
         "flag": "--ff",
         "dest": "ff",
-        "label": "Ff",
+        "label": "FF",
         "type": "text",
         "group": "Force field",
         "help": "Force field selection forwarded to prepare / minimize. Accepts a short name (auto, amber, amber+glycam, charmm, ...) or an explicit list of OpenMM XML paths. Default: 'auto'. See docs/force-fields.md.",
@@ -4502,7 +4503,7 @@ export const GENERATED_COMMANDS = [
       {
         "flag": "--fasta",
         "dest": "fasta",
-        "label": "Fasta",
+        "label": "FASTA",
         "type": "artifact",
         "group": "Model step",
         "help": "FASTA file with complete sequence(s) for model step",

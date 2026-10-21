@@ -575,8 +575,16 @@
                 ]
               },
               "profile": {
-                "const": "gromacs",
-                "type": "string"
+                "anyOf": [
+                  {
+                    "const": "gromacs",
+                    "type": "string"
+                  },
+                  {
+                    "const": "standard",
+                    "type": "string"
+                  }
+                ]
               }
             }
           },

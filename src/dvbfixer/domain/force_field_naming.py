@@ -196,6 +196,81 @@ PROTEIN_RESNAMES = frozenset(
 TERMINAL_CHAIN_RESNAMES = PROTEIN_RESNAMES | {"ACE", "NME", "NHE", "NH2"}
 
 
+# Native CHARMM protein aliases, checked against OpenMM charmm36.xml and
+# amber14/protein.ff14SB.xml. Keep these separate from consumer-specific caps.
+NATIVE_CHARMM_ATOM_RENAMES: dict[str, dict[str, str]] = {
+    residue: dict(renames)
+    for residue, renames in GROMACS_AMBER_ATOM_RENAMES.items()
+    if residue in PROTEIN_RESNAMES and residue != "HYP"
+}
+for _residue in ("SER", "CYS", "CYX", "CYM"):
+    NATIVE_CHARMM_ATOM_RENAMES[_residue]["HG"] = "HG1"
+NATIVE_CHARMM_ATOM_RENAMES["ILE"].update(
+    {"CD1": "CD", "HD11": "HD1", "HD12": "HD2", "HD13": "HD3"}
+)
+# HYP has overlapping atom labels: choose the complete mapping by its oxygen
+# alias rather than inverting individual names and accidentally moving HD1 twice.
+NATIVE_CHARMM_HYP_RENAMES = {
+    "HB3": "HB1", "OD1": "OE", "HD1": "HE", "HD22": "HD1", "HD23": "HD2",
+}
+
+
+def _standard_atom_names(
+    source: str, target_residue: str, target: ForceFieldTarget, names: set[str],
+) -> dict[str, tuple[str, NamingRuleId]]:
+    """Normalize recognized native/PDB and GROMACS aliases without moving atoms."""
+    renames: dict[str, str] = {}
+    if target is ForceFieldTarget.CHARMM:
+        parent = PROTONATION_CHARMM_TO_AMBER.get(target_residue, target_residue)
+        renames.update(NATIVE_CHARMM_ATOM_RENAMES.get(parent, {}))
+        if source == "LYN" and not ({"HZ1", "HZ2"} <= names and "HZ3" not in names):
+            renames.update(PROTONATION_ATOM_RENAME_TO_CHARMM["LYN"])
+        if source in PROTEIN_RESNAMES:
+            renames["H"] = "HN"
+            if parent in {"PRO", "HYP"}:
+                renames.update({"H2": "HN1", "H3": "HN2", "H1": "HN2"})
+            else:
+                renames.update({"H1": "HT1", "H2": "HT2", "H3": "HT3"})
+            if "OXT" in names or "OC1" in names:
+                renames.update({"O": "OT1", "OXT": "OT2", "OC2": "OT1", "OC1": "OT2"})
+        renames.update(GROMACS_CHARMM_CAP_ATOM_RENAMES.get(target_residue, {}))
+        if parent == "HYP" and "OD1" in names:
+            renames.update(NATIVE_CHARMM_HYP_RENAMES)
+            renames["CD2"] = "CD"
+            if "HD21" in names:
+                renames.update({"HD21": "HD1", "HD22": "HD2"})
+        rule = NamingRuleId.CHARMM_ATOM_NAME
+    else:
+        # Both bundled AMBER dialects converge on native AMBER in this profile.
+        # The aliases are disjoint except for HYP, handled as a complete set.
+        aliases = dict(GROMACS_AMBER_ATOM_RENAMES.get(target_residue, {}))
+        aliases.update(NATIVE_CHARMM_ATOM_RENAMES.get(target_residue, {}))
+        if target_residue == "HYP":
+            aliases = {}
+            if "OE" in names:
+                aliases = NATIVE_CHARMM_HYP_RENAMES
+            else:
+                renames.update({"CD2": "CD", "HB1": "HB3"})
+                if "HD21" in names:
+                    renames.update({"HD21": "HD22", "HD22": "HD23"})
+        renames.update({destination: origin for origin, destination in aliases.items()})
+        if source in PROTEIN_RESNAMES:
+            renames.update({
+                "HN": "H", "OC1": "OXT", "OC2": "O", "OT1": "O", "OT2": "OXT",
+                "HT1": "H1", "HT2": "H2", "HT3": "H3",
+            })
+            if target_residue in {"PRO", "HYP"}:
+                renames.update({"HN1": "H2", "HN2": "H3", "H1": "H3"})
+        renames.update({
+            destination: origin
+            for origin, destination in GROMACS_AMBER_NA_ATOM_RENAMES.get(source, {}).items()
+        })
+        if source == "LSN":
+            renames.update(PROTONATION_ATOM_RENAME_TO_AMBER["LSN"])
+        rule = NamingRuleId.AMBER_ATOM_NAME
+    return {origin: (destination, rule) for origin, destination in renames.items()}
+
+
 def target_residue_name(source_name: str, target: ForceFieldTarget) -> str:
     """Map a recognized source variant without inferring canonical protonation."""
     if target is ForceFieldTarget.CHARMM:
@@ -214,6 +289,8 @@ def atom_name_policy(
     is_c_terminal: bool = False,
 ) -> dict[str, tuple[str, NamingRuleId]]:
     """Return source-to-target atom names and the rule responsible for each."""
+    if profile is NamingProfile.STANDARD:
+        return _standard_atom_names(source_residue_name, target_residue_name, target, atom_names)
     result: dict[str, tuple[str, NamingRuleId]] = {}
     if target is ForceFieldTarget.CHARMM:
         already_target_lyn_pair = {"HZ1", "HZ2"} <= atom_names and "HZ3" not in atom_names
@@ -237,16 +314,6 @@ def atom_name_policy(
                 result.setdefault(
                     "H", (CHARMM_UNIVERSAL_ATOM_RENAMES["H"], NamingRuleId.CHARMM_ATOM_NAME)
                 )
-        return result
-
-    if profile is NamingProfile.STANDARD:
-        if source_residue_name == "LSN":
-            result.update(
-                {
-                    source: (destination, NamingRuleId.AMBER_ATOM_NAME)
-                    for source, destination in PROTONATION_ATOM_RENAME_TO_AMBER["LSN"].items()
-                }
-            )
         return result
 
     amber_atom_renames = (

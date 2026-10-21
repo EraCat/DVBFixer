@@ -142,3 +142,15 @@ def test_gui_schema_exposes_workflow_backend_but_not_private_paths() -> None:
     assert {"--backend", "--diffusion-model", "--diffusion-seed"} <= flags
     assert not {"--diffusion-request", "--diffusion-work-parent", "--diffusion-resume"} & flags
     assert model["backendOutputModes"] == {"diffusion": "directory"}
+
+
+def test_atom_names_gui_preserves_ff_acronym_and_cli_profile_choices() -> None:
+    from scripts.gen_gui_spec import command_schema
+
+    schema = command_schema("atom-names", COMMAND_BY_NAME["atom-names"].description)
+    fields = {field["flag"]: field for field in schema["flags"]}
+    assert fields["--target-ff"]["label"] == "Target FF"
+    assert fields["--profile"]["options"] == ["gromacs", "standard"]
+    for command in COMMAND_BY_NAME.values():
+        generated = command_schema(command.name, command.description)
+        assert all("Ff" not in field["label"].split() for field in generated["flags"])

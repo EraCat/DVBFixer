@@ -78,8 +78,7 @@ export interface components {
             inputArtifactId: string;
             target: {
                 forceField: "amber" | "amber19sb" | "charmm";
-                /** @constant */
-                profile: "gromacs";
+                profile: "gromacs" | "standard";
             };
             variantOverrides?: {
                 chainId: string;

@@ -88,7 +88,7 @@ def _assert_report_schema(payload: dict[str, object], status: str) -> None:
         assert set(error) == {"code", "category", "message", "details"}
 
 
-def test_parser_requires_output_and_target_and_exposes_only_gromacs() -> None:
+def test_parser_requires_output_and_target_and_exposes_both_profiles() -> None:
     with pytest.raises(SystemExit) as missing:
         atom_names.parse_args(["input.pdb"])
     assert missing.value.code == 2
@@ -100,6 +100,9 @@ def test_parser_requires_output_and_target_and_exposes_only_gromacs() -> None:
     assert atom_names.parse_args(
         ["input.pdb", "-o", "output.pdb", "--target-ff", "amber19sb"]
     ).target_ff == "amber19sb"
+    assert atom_names.parse_args(
+        ["input.pdb", "-o", "output.pdb", "--target-ff", "amber", "--profile", "standard"]
+    ).profile == "standard"
     with pytest.raises(SystemExit) as unsupported:
         atom_names.parse_args(
             [
@@ -109,10 +112,24 @@ def test_parser_requires_output_and_target_and_exposes_only_gromacs() -> None:
                 "--target-ff",
                 "amber",
                 "--profile",
-                "standard",
+                "unsupported",
             ]
         )
     assert unsupported.value.code == 2
+
+
+@pytest.mark.parametrize("target", ["amber", "amber19sb", "charmm"])
+def test_standard_profile_converts_and_reports_native_names(tmp_path: Path, target: str) -> None:
+    text = _atom(1, "HN", "SER") + _atom(2, "HB1", "SER") + _atom(3, "HB2", "SER")
+    source, output = _base_paths(tmp_path, text)
+    report = tmp_path / "report.json"
+    _invoke(source, "-o", output, "--target-ff", target, "--profile", "standard", "--report-json", report)
+    expected = ["HN", "HB1", "HB2"] if target == "charmm" else ["H", "HB3", "HB2"]
+    assert [line[12:16].strip() for line in output.read_text().splitlines()] == expected
+    assert source.read_text() == text
+    payload = json.loads(report.read_text())
+    _assert_report_schema(payload, "success")
+    assert payload["request"]["profile"] == "standard"
 
 
 def test_parser_marks_batch_as_unsupported(capsys: pytest.CaptureFixture[str]) -> None:

@@ -51,7 +51,7 @@ export function ToolOutput({ stdout, stderr, reports = [], outputFile, onOpenFil
           <Typography variant="caption" sx={{ fontWeight: 600, overflowWrap: 'anywhere' }}>
             Report · {report.file.split('/').pop()}
           </Typography>
-          {onOpenFile && <Button size="small" onClick={() => onOpenFile(report.file)}
+          {onOpenFile && !report.inline && <Button size="small" onClick={() => onOpenFile(report.file)}
             endIcon={<OpenInNewIcon sx={{ fontSize: 12 }} />}
             sx={{ ...inlineActionSx, ml: 'auto' }}>
             Open in Text Files

@@ -67,7 +67,7 @@ export interface NamingConversionProvenance {
   sourceSha256: string
   command: 'atom-names'
   targetForceField: 'amber' | 'amber19sb' | 'charmm'
-  profile: 'gromacs'
+  profile: 'gromacs' | 'standard'
   variantOverrides: Array<{
     chainId: string
     residueNumber: string
@@ -596,7 +596,7 @@ function validNamingProvenance(value: unknown): value is NamingConversionProvena
     typeof item.sourceFile === 'string' && typeof item.sourceSha256 === 'string' &&
     (item.targetForceField === 'amber' || item.targetForceField === 'amber19sb' ||
       item.targetForceField === 'charmm') &&
-    item.profile === 'gromacs' && Array.isArray(item.variantOverrides) &&
+    (item.profile === 'gromacs' || item.profile === 'standard') && Array.isArray(item.variantOverrides) &&
     item.variantOverrides.every(override => {
       if (!override || typeof override !== 'object') return false
       const entry = override as Record<string, unknown>

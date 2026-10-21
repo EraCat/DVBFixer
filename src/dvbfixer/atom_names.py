@@ -72,9 +72,9 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     )
     conversion.add_argument(
         "--profile",
-        choices=("gromacs",),
+        choices=tuple(NamingProfile),
         default="gromacs",
-        help="Target consumer naming profile",
+        help="Target naming profile: gromacs for bundled GROMACS dialects; standard for native force-field names",
     )
     conversion.add_argument("--dry-run", action="store_true", help="Validate and report without writing output")
     diagnostics = parser.add_argument_group("Diagnostics")

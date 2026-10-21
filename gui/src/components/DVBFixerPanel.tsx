@@ -30,6 +30,7 @@ import { apiFetch, apiSse } from '../lib/api-client'
 import { v1Client } from '../lib/v1-client'
 import { workflowOptionActive, workflowValues } from '../lib/workflow-backend-options'
 import { ToolOutput } from './ToolOutput'
+import { loadToolReports, type ToolReportPreview } from '../lib/tool-output'
 
 // Re-declare the spec types here (mirrors server/dvbfixer-spec.ts) so the
 // frontend doesn't have to import server/. The actual spec is fetched at
@@ -88,6 +89,7 @@ interface RunResult {
   stdout: string
   stderr: string
   exitCode: number
+  reports?: ToolReportPreview[]
 }
 
 /**
@@ -272,6 +274,7 @@ export function DVBFixerPanel() {
   useEffect(() => {
     const workspaceId = workspace?.id
     setJob(null)
+    setResult(null)
     setCancelling(false)
     if (!workspaceId) return
     const controller = new AbortController()
@@ -327,17 +330,23 @@ export function DVBFixerPanel() {
 
   // Fetch terminal logs for the existing output pane.
   useEffect(() => {
-    if (!job || isActiveManagedJob(job) || !workspace?.id) return
+    if (!job || isActiveManagedJob(job) || workspace?.id !== job.workspaceId) return
     const controller = new AbortController()
-    Promise.all([job.stdoutLog, job.stderrLog].map(async file => {
-      const response = await apiFetch(workspaceFileUrl(workspace.id, file), { cache: 'no-store', signal: controller.signal })
-      return response.ok ? response.text() : ''
-    })).then(([stdout, stderr]) => {
+    const fetchFile = (file: string) => apiFetch(workspaceFileUrl(job.workspaceId, file), { cache: 'no-store', signal: controller.signal })
+    Promise.all([
+      Promise.all([job.stdoutLog, job.stderrLog].map(async file => {
+        const response = await fetchFile(file)
+        if (!response.ok) throw new Error(`Cannot read run log: HTTP ${response.status}`)
+        return response.text()
+      })),
+      loadToolReports(job, fetchFile),
+    ]).then(([[stdout, stderr], reports]) => {
       if (controller.signal.aborted) return
       setResult({
         ok: job.status === 'succeeded', command: [job.command, ...job.args].join(' '),
         outputFile: job.outputFile || '', outputDir: job.outputDir,
         stdout, stderr: stderr || job.error || '', exitCode: job.exitCode ?? -1,
+        reports,
       })
     }).catch(reason => { if (reason.name !== 'AbortError') setError(reason.message || String(reason)) })
     return () => controller.abort()
@@ -762,7 +771,12 @@ export function DVBFixerPanel() {
 
             {error && <Alert severity="error" sx={{ py: 0.25, fontSize: '0.75rem' }}>{error}</Alert>}
 
-            {result && <ToolOutput stdout={result.stdout} stderr={result.stderr}
+            {result && <ToolOutput stdout={result.stdout} stderr={result.stderr} reports={result.reports}
+              outputFile={result.outputFile}
+              onOpenFile={job && workspace?.id === job.workspaceId ? file => {
+                useWorkspaceStore.getState().setTextPreview({ workspaceId: job.workspaceId, file, name: file.split('/').pop() || file })
+                window.dispatchEvent(new Event('dvbfixer:open-text-viewer'))
+              } : undefined}
               onOpenLog={job && workspace?.id === job.workspaceId ? stream => {
                 useWorkspaceStore.getState().setTextPreview({
                   workspaceId: job.workspaceId,

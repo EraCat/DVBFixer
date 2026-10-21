@@ -28,7 +28,23 @@ describe('tool output presentation', () => {
     expect(renderToStaticMarkup(<ToolOutput stdout="Report" stderr="" />)).not.toContain('Open in Text Files')
   })
 
-  it('renders nothing for an empty report', () => {
-    expect(renderToStaticMarkup(<ToolOutput stdout="" stderr="" />)).toBe('')
+  it('explains an empty run instead of hiding the output block', () => {
+    expect(renderToStaticMarkup(<ToolOutput stdout="" stderr="" />)).toContain('This run produced no console output or report file.')
+  })
+
+  it('previews an output report even when both process streams are empty', () => {
+    const markup = renderToStaticMarkup(<ToolOutput stdout="" stderr="" onOpenFile={vi.fn()}
+      reports={[{ file: 'runs/diagnose/input_diagnose.txt', text: 'Summary: 2 warnings, 0 errors', truncated: true }]} />)
+    expect(markup).toContain('Report · input_diagnose.txt')
+    expect(markup).toContain('Summary: 2 warnings, 0 errors')
+    expect(markup).toContain('Open in Text Files')
+    expect(markup).toContain('Preview shortened')
+  })
+
+  it('keeps the report link when its preview could not be loaded', () => {
+    const markup = renderToStaticMarkup(<ToolOutput stdout="" stderr="" onOpenFile={vi.fn()}
+      reports={[{ file: 'diagnose.json', text: '', truncated: false, error: 'HTTP 404' }]} />)
+    expect(markup).toContain('Preview unavailable: HTTP 404')
+    expect(markup).toContain('Open in Text Files')
   })
 })

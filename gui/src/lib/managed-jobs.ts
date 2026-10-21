@@ -15,6 +15,7 @@ export interface ManagedJobRecord {
   stderrLog: string
   outputDir: string
   outputFile: string | null
+  provenance?: { outputs: Array<{ artifactId: string; file: string; sha256: string }> }
   error?: string
 }
 

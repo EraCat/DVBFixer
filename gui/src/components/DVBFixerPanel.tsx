@@ -31,6 +31,7 @@ import { v1Client } from '../lib/v1-client'
 import { workflowOptionActive, workflowValues } from '../lib/workflow-backend-options'
 import { ToolOutput } from './ToolOutput'
 import { loadToolReports, type ToolReportPreview } from '../lib/tool-output'
+import { orderToolTabs } from '../lib/tool-tab-order'
 
 // Re-declare the spec types here (mirrors server/dvbfixer-spec.ts) so the
 // frontend doesn't have to import server/. The actual spec is fetched at
@@ -465,7 +466,7 @@ export function DVBFixerPanel() {
   }, [])
 
   const categories = useMemo(() => Array.from(new Set(commands.map(command => command.category))), [commands])
-  const visibleCommands = useMemo(() => commands.filter(command => command.category === category), [commands, category])
+  const visibleCommands = useMemo(() => orderToolTabs(commands.filter(command => command.category === category)), [commands, category])
   const activeCmd = visibleCommands[tabIdx]
   const activeValues = useMemo(() => activeCmd ? values[activeCmd.name] ?? {} : {}, [activeCmd, values])
 

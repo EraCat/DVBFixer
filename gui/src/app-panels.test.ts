@@ -9,7 +9,7 @@ describe('application panel registry', () => {
     ]))
     expect(registered).not.toEqual(expect.arrayContaining(['mutations', 'antibody-engineer']))
     expect(DEFAULT_MAIN_PANELS.map(panel => panel.component)).toEqual([
-      'viewer', 'dvbfixer', 'homology',
+      'viewer', 'dvbfixer', 'homology', 'text-viewer',
     ])
   })
 })

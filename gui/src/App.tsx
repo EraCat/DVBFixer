@@ -48,6 +48,7 @@ import { useSequenceSync } from './hooks/useSequenceSync'
 import { useCameraSync } from './hooks/useCameraSync'
 import { useWorkspaceStore } from './stores/workspaceStore'
 import { DEFAULT_MAIN_PANELS, PANEL_DEFINITIONS } from './app-panels'
+import { focusTextViewer } from './lib/focus-text-viewer'
 
 const PANEL_ICONS = {
   viewer: ViewInArIcon, viewer2: ViewInArIcon, sequence: TextSnippetIcon,
@@ -161,13 +162,7 @@ function App() { // @dsp obj-a1000002
   }, [initializeWorkspace])
 
   useEffect(() => {
-    const openTextViewer = () => {
-      let target: TabNode | null = null
-      modelRef.current.visitNodes(node => {
-        if (node instanceof TabNode && node.getComponent() === 'text-viewer') target = node
-      })
-      if (target) modelRef.current.doAction(Actions.selectTab((target as TabNode).getId()))
-    }
+    const openTextViewer = () => focusTextViewer(modelRef.current)
     window.addEventListener('dvbfixer:open-text-viewer', openTextViewer)
     return () => window.removeEventListener('dvbfixer:open-text-viewer', openTextViewer)
   }, [])

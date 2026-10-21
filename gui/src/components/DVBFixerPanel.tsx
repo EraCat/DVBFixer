@@ -29,6 +29,7 @@ import { structureMetaFromArtifact } from '../lib/workspace-metadata'
 import { apiFetch, apiSse } from '../lib/api-client'
 import { v1Client } from '../lib/v1-client'
 import { workflowOptionActive, workflowValues } from '../lib/workflow-backend-options'
+import { ToolOutput } from './ToolOutput'
 
 // Re-declare the spec types here (mirrors server/dvbfixer-spec.ts) so the
 // frontend doesn't have to import server/. The actual spec is fetched at
@@ -761,6 +762,17 @@ export function DVBFixerPanel() {
 
             {error && <Alert severity="error" sx={{ py: 0.25, fontSize: '0.75rem' }}>{error}</Alert>}
 
+            {result && <ToolOutput stdout={result.stdout} stderr={result.stderr}
+              onOpenLog={job && workspace?.id === job.workspaceId ? stream => {
+                useWorkspaceStore.getState().setTextPreview({
+                  workspaceId: job.workspaceId,
+                  file: stream === 'stdout' ? job.stdoutLog : job.stderrLog,
+                  name: `${job.command} · ${stream === 'stdout' ? 'Output' : 'Diagnostics & messages'}`,
+                })
+                window.dispatchEvent(new Event('dvbfixer:open-text-viewer'))
+              } : undefined}
+            />}
+
             <Divider />
 
             {/* Model tab — per-chain FASTA inputs. Renders ONLY for the
@@ -875,28 +887,6 @@ export function DVBFixerPanel() {
               )
             })}
 
-            {result && (result.stdout || result.stderr) && (
-              <Box sx={{ mt: 1 }}>
-                <Typography variant="caption" sx={{ fontWeight: 700, color: 'text.secondary' }}>
-                  Output
-                </Typography>
-                {result.stdout && (
-                  <Box component="pre" sx={{
-                    bgcolor: '#fafafa', p: 1, mt: 0.5,
-                    border: 1, borderColor: 'divider', borderRadius: 1,
-                    fontSize: '0.7rem', whiteSpace: 'pre-wrap', maxHeight: 200, overflow: 'auto',
-                  }}>{result.stdout}</Box>
-                )}
-                {result.stderr && (
-                  <Box component="pre" sx={{
-                    bgcolor: '#fff5f5', p: 1, mt: 0.5,
-                    border: 1, borderColor: 'error.light', borderRadius: 1,
-                    fontSize: '0.7rem', whiteSpace: 'pre-wrap', maxHeight: 200, overflow: 'auto',
-                    color: 'error.dark',
-                  }}>{result.stderr}</Box>
-                )}
-              </Box>
-            )}
           </>
         )}
       </Box>

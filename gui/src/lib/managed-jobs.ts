@@ -45,6 +45,22 @@ export function selectRestoredManagedJob(jobs: readonly ManagedJobRecord[]): Man
   return jobs.find(isActiveManagedJob) || jobs[0] || null
 }
 
+export function mergeManagedJobHistory(jobs: readonly ManagedJobRecord[], latest: ManagedJobRecord | null): ManagedJobRecord[] {
+  const merged = latest ? [latest, ...jobs.filter(job => job.id !== latest.id || job.workspaceId !== latest.workspaceId)] : [...jobs]
+  return merged.sort((a, b) => b.createdAt.localeCompare(a.createdAt))
+}
+
+/** Select within BOTH the active tool and workspace; never borrow another tool's output. */
+export function selectToolManagedJob(jobs: readonly ManagedJobRecord[], workspaceId: string | undefined, command: string | undefined): ManagedJobRecord | null {
+  if (!workspaceId || !command) return null
+  return selectRestoredManagedJob(jobs.filter(job => job.workspaceId === workspaceId && job.command === command)
+    .sort((a, b) => b.createdAt.localeCompare(a.createdAt)))
+}
+
+export function outputMatchesManagedJob(output: { jobId: string; workspaceId: string } | null, job: ManagedJobRecord | null, workspaceId: string | undefined): boolean {
+  return Boolean(output && job && job.workspaceId === workspaceId && output.jobId === job.id && output.workspaceId === workspaceId)
+}
+
 export function managedJobStatusLabel(job: ManagedJobRecord): string {
   if (job.status === 'queued') return `Queued · ${job.command}`
   if (job.status === 'running') return `Running · ${job.command}`

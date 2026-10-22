@@ -1,5 +1,7 @@
 # CIF structure input
 
+[User guide](README.md) · [Command index](commands/index.md) · [Troubleshooting](known-issues.md)
+
 DVBfixer normalizes `.cif` and `.mmcif` at the CLI boundary for commands that
 enable structure normalization. Existing PDB inputs are unchanged. `atom-names`
 deliberately accepts legacy PDB (`.pdb`/`.ent`) only; `component-info` and

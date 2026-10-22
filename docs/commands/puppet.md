@@ -1,10 +1,13 @@
-# dvbfixer puppet — Backbone-Only Polyglycine Model
+# `dvbfixer puppet`
 
-[← command index](index.md) · [← README](../../README.md)
+[User guide](../README.md) · [Command index](index.md) · [CLI reference](../reference/puppet.md)
 
 Strips a PDB to a minimal backbone scaffold: removes all non-ATOM lines, removes all sidechain and hydrogen atoms (keeps only N, CA, C, O, OXT), and renames every residue to GLY. Useful for creating "puppet" models for backbone-level alignment, modeling templates, or visualization.
 
-## Usage
+## Quick start
+
+**Result:** `<input>_puppet.pdb`, a scaffold for modeling or visualization, not
+a chemically complete protein for simulation.
 
 ```bash
 # Basic usage — writes input_puppet.pdb
@@ -32,6 +35,7 @@ dvbfixer puppet input.pdb -o backbone.pdb
 - [Command index](index.md)
 
 ## How it works
+
 Strips PDB to backbone-only polyglycine model. Removes all non-ATOM lines, keeps only backbone atoms (N, CA, C, O, OXT), renames all residues to GLY. `--keep CHAIN:NUM` preserves specific residues intact (all atoms, original name) — accepts single, range (`A:100-110`), list (`A:100,105`), or mixed, repeatable. No dependencies beyond stdlib.
 
 ## Batch mode

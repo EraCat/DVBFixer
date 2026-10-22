@@ -1,6 +1,6 @@
-# `dvbfixer component-info` — CCD chemistry and structure completeness
+# `dvbfixer component-info`
 
-[← Command index](index.md) · [← README](../../README.md)
+[User guide](../README.md) · [Command index](index.md) · [CLI reference](../reference/component-info.md)
 
 Reads one wwPDB Chemical Component Dictionary (CCD) record and reports its
 formula, formal charge, atoms, bonds, ideal coordinates, source SHA-256, and
@@ -9,6 +9,16 @@ matching PDB residue with the CCD heavy-atom inventory.
 
 This command is read-only. It does not reconstruct, protonate, parameterize, or
 modify a structure.
+
+## Quick start
+
+Given a local CCD component record `LIG.cif` and a structure containing LIG:
+
+```bash
+dvbfixer component-info LIG --ccd-cif LIG.cif --structure input.pdb --json lig-info.json
+```
+
+**Result:** a chemistry/completeness report, not a repaired structure.
 
 ## Sources
 

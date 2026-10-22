@@ -1,8 +1,23 @@
-# dvbfixer model — Loop/Gap Rebuilding
+# `dvbfixer model`
 
-[← command index](index.md) · [← README](../../README.md)
+[User guide](../README.md) · [Command index](index.md) · [CLI reference](../reference/model.md)
 
 Rebuilds missing loops and gaps using Modeller's LoopModel. Identifies missing regions by aligning ATOM records to the SEQRES sequence (or a user-provided FASTA), then runs Modeller's loop modeling with MD refinement to fill them.
+
+## Quick start
+
+```bash
+dvbfixer model input.pdb --fasta sequence.fasta --no-terminal -o modeled.pdb
+```
+
+**Inputs:** a structure and its complete sequence, with case-sensitive chain-ID
+FASTA headers such as `>chain_H`. Omit `--fasta` when correct SEQRES is present.
+**Results:** `modeled.pdb` and `modeled.dat`. Keep them together for
+[prepare](prepare.md). MODELLER needs a license when rebuilding gaps.
+Inspect rebuilt regions; pinning during loop refinement is not an exact-coordinate
+guarantee for the full modeling pipeline.
+
+## Defaults and limits
 
 MODELLER remains the default. An experimental, explicit diffusion path is also
 available for canonical protein chains with internal gaps and, on the accepted
@@ -13,6 +28,12 @@ frameworks, download checkpoints, or fall back to MODELLER automatically.
 Non-protein chains (glycans, ligands) are included in the Modeller pipeline via `env.io.hetatm=True` with `'.'` (BLK residue) entries in the target sequence, so Modeller preserves them through loop modeling. Original chain IDs and residue numbering are restored automatically.
 
 Writes a `.dat` file recording all atoms in rebuilt gap residues. This is merged by `dvbfixer prepare` with its own additions, so that `dvbfixer minimize` applies appropriate restraints to all rebuilt regions. Water molecules are removed by default (`--keep-water` to preserve).
+
+<details>
+<summary>Advanced input handling and implementation background</summary>
+
+These details are not required for the first run. Use the quick start above
+and the common examples below before troubleshooting implementation behavior.
 
 **Key behaviour:**
 - **Robust multi-chain handling** — chains are reordered before Modeller so disjoint file-order blocks sharing a chain ID (ATOM protein + HETATM glycans split by other chains) are grouped into one contiguous segment. Fixes silent glycan drops (e.g. 3ry6 chain C, FcgRI chain A).
@@ -29,6 +50,8 @@ Writes a `.dat` file recording all atoms in rebuilt gap residues. This is merged
 - **Input residues pinned by default** — a `_PinnedLoopModel` subclass overrides `select_loop_atoms()` so only the newly-modeled gap residues move during Modeller's loop refinement MD. Prevents the ±~3 residue flank drift produced by stock LoopModel. The initial automodel CG is left untouched (all atoms) so any pre-existing input close contacts get relaxed as usual — otherwise they'd survive into the model output and trip OpenBabel's CONECT inference in the downstream `prepare` step (spurious external bonds → OpenMM template match failures on residues far from any gap). Downstream `minimize` still refines the whole system under a proper force field. Pass `--no-pin-input` to restore the legacy behaviour.
 - **Fast no-gap pre-check** (since v0.3) — before invoking Modeller, model.py compares each protein chain's ATOM sequence to its SEQRES via string equality. If every chain matches, no gaps → copy input verbatim and skip Modeller entirely. Runtime drops from ~2 min (align2d on a 5-chain × 829-residue complex is O(N²)) to ~0.25 s. Falls through to the full Modeller path when any chain has a mismatch (real gaps).
 - **CONECT inference runs BEFORE Modeller, by default** (since 0.7.9) — `_materialise_inferred_pdb` fills in missing SS/glycosidic/glycosylation CONECT records from coordinates on a temp copy of the input, which is what Modeller actually reads. Modeller has no other way to know two chains are covalently linked (e.g. an under-annotated N-glycosylation site with a real bond but no CONECT/LINK in the deposited PDB) and can reposition an undocumented chain arbitrarily far from its anchor during structure-building. Pass `--no-infer-conect` to skip this and use the file's CONECT/LINK records as-is.
+
+</details>
 
 ## Usage
 
@@ -81,6 +104,9 @@ dvbfixer model --input-dir structures --output-dir models \
   --backend diffusion --diffusion-model protenix --fasta sequence.fasta \
   --diffusion-resume
 ```
+
+<details>
+<summary>Experimental diffusion: installation, supported scope, and bundle validation</summary>
 
 ### Experimental diffusion scope
 
@@ -207,6 +233,8 @@ the unchanged raw sampler candidate is retained, provenance records
 as a rejected bundle. Unexpected exceptions and artifact-integrity failures remain
 fatal and publish nothing.
 
+</details>
+
 ## Options
 
 | Flag | Default | Description |
@@ -254,7 +282,15 @@ fatal and publish nothing.
 - [`homology`](homology.md) — multi-template alternative
 - [ARCHITECTURE.md](../../ARCHITECTURE.md) — `build_resnum_mapping`, `_reorder_chains_for_modeller`, `parse_fasta` internals
 
+<details>
+<summary>Historical implementation background</summary>
+
 ## How it works
+
+The notes below preserve implementation history. For current user behavior,
+follow the defaults and limits above; for engineering contracts, see
+[architecture](../../ARCHITECTURE.md).
+
 Rebuilds missing loops/gaps using Modeller's LoopModel. Takes SEQRES (or --fasta) as complete sequence, aligns to ATOM records via `align2d`, runs loop modeling with configurable MD refinement. Non-protein chains (glycans, ligands) are included in the Modeller pipeline via `env.io.hetatm=True` with `'.'` (BLK) entries in the target PIR sequence so Modeller keeps them through loop modeling. Post-processing restores: (1) original chain IDs from Modeller's A,B,C,..., (2) original residue numbering with insertion codes using the alignment. `--no-terminal` first aligns the observed chain to the complete reference, trims outside the first and last observed anchors, and retains genuine internal gaps between those anchors for modeling. Terminal alignment is auto-fixed after `align2d` with the same shared mapping. Writes a `.dat` file recording all atoms in rebuilt gap residues — prepare merges this with its own additions. Water removed by default (`--keep-water` to preserve). Protonation variant names (HIE/HID/HIP/ASH/GLH etc.) are renamed to standard (HIS/ASP/GLU) before Modeller reads the PDB (Modeller only knows standard names), then restored in the output.
 
 **Fast Python-only no-gap pre-check** (runs before Modeller loads the PDB): compares each protein chain's ATOM-derived sequence to its SEQRES via string equality. If every chain matches, no gaps → skip Modeller entirely, copy input verbatim + write empty `.dat`. Runtime drops from ~2 min (align2d on a 5-chain × 829-residue TCR/MHC complex is O(N²) DP) to ~0.25 s. The old `run_modeller` no-gap shortcut still exists as defensive fallback and now returns `[(str(input_path), 0.0)]` (list-of-one-tuple, same shape as the normal-path return) so the caller's `first_path, _ = candidates[0]` unpacking works uniformly. Prior bug: the shortcut returned raw `str(input_path)` → caller tried to unpack the first char of the path → `ValueError: not enough values to unpack (expected 2, got 1)`.
@@ -277,10 +313,13 @@ Rebuilds missing loops/gaps using Modeller's LoopModel. Takes SEQRES (or --fasta
 
 **HETATM resseq preservation** (in the deterministic paths of `build_resnum_mapping`): HETATMs attached to a protein chain (N-linked NAG and friends) keep their ORIGINAL input resseq instead of being renumbered to the next sequential integer after the last protein residue. Verified on FcgRI chain A (NAG stays at resseq 4) and 3ry6 chain C (NAG stays at resseq 206).
 
+</details>
+
 ## Batch mode
 
 The default MODELLER backend runs independently on every structure while applying
 the same FASTA and modeling options: `dvbfixer model --input-dir structures
---output-dir models --recursive`. Experimental diffusion rejects batch mode
-because its public result is a directory bundle rather than a PDB file.
+--output-dir models --recursive`. Experimental diffusion uses a separate,
+sequential batch path with one validated directory bundle per input; see its
+scope and [generated reference](../reference/model.md).
 See [Batch mode](../batch-mode.md) for shared keys.

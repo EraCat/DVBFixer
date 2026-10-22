@@ -1,221 +1,249 @@
 # Pipelines
 
-[← README](../README.md)
+[User guide](README.md) · [Quick start](quick-start.md) · [Command index](commands/index.md)
+
+These are independent recipes, not one long workflow. Replace the example input
+files with your own. Start with a working [installation](installation.md), inspect
+inputs with `diagnose`, and review outputs in a molecular viewer.
+
+| Goal | Recipe |
+|---|---|
+| Run protein preparation in one command | [Full pipeline](#quick-full-pipeline-with-zbs) |
+| Control intermediate files | [Step by step](#manual-step-by-step) |
+| Prepare existing glycans | [GLYCAM](#glycoprotein-preparation-with-glycam) |
+| Rename without structural repair | [Naming tools](#choose-a-naming-tool) |
+| Export topology | [GROMACS](#gromacs-topology-generation) |
+| Model an antibody from templates | [Homology](#homology-modeling-antibody-engineering) |
+
+Minimization examples use `--no-solvent` for a shorter vacuum workflow. They do
+not replace solvent equilibration or MD. All components need compatible chemistry
+and parameters; see [force fields](force-fields.md).
 
 ## Quick: Full pipeline with `zbs`
 
+Use for a protein with a complete SEQRES sequence, or supply a matching full-length
+FASTA. MODELLER and its license are needed when missing regions must be built.
+
 ```bash
-# Run everything: renumber -> model -> prepare -> minimize
-# (PROPKA + MolProbity Reduce run inside prepare, 0.7.7+ — no separate protonate step)
-dvbfixer zbs 6DDV.pdb -v
-# -> 6DDV_zbs.pdb
-
-# Skip terminal modeling for structures with missing N/C termini
-dvbfixer zbs 6DDV.pdb --no-terminal -v
-
-# Skip steps as needed
-dvbfixer zbs input.pdb --skip-model --skip-minimize -v
+dvbfixer zbs input.pdb --fasta sequence.fasta --no-terminal --no-solvent -o finished.pdb
 ```
 
-See [`zbs`](commands/zbs.md) for all flags.
+Omit `--fasta` when the input SEQRES is the intended complete sequence.
+`--no-terminal` leaves missing terminal tails unmodeled while rebuilding internal
+gaps. ZBS runs renumber → model → prepare → minimize, then postflight diagnostics.
+PROPKA and Reduce run inside prepare; no separate protonation stage is required.
+
+**Results:** `finished.pdb` and `finished.pdb.diagnose.json`.
+Use `--keep-interim` to retain intermediate structures and sidecars, or `--dry-run`
+to preview the plan. ERROR-level postflight findings warn by default; add
+`--strict-postflight` to make them fail the run. See [zbs](commands/zbs.md).
 
 ## Manual: Step by step
 
-For a GROMACS MD output PDB file with no chain IDs:
+Use when you want to inspect every stage. Supply `input.pdb` and a full-length
+`sequence.fasta` with chain-ID headers such as `>chain_H` and `>chain_L`.
+Chain IDs are case-sensitive. With correct SEQRES, omit both `--fasta` arguments.
 
 ```bash
-# 1. Split chains
-dvbfixer split md_output.pdb -v
-
-# 2. Renumber (requires SEQRES)
-dvbfixer renumber structure_with_seqres.pdb -v
-
-# 3. Rebuild missing loops (writes .dat for restraints)
-dvbfixer model renumbered.pdb -v
-
-# 4. Fix missing atoms/residues (merges model .dat); PROPKA + MolProbity Reduce
-#    run inside this step by default, picking AMBER protonation variants and
-#    placing final H accordingly
-dvbfixer prepare modeled.pdb -v
-
-# 5. Minimize the whole system; preserves AMBER variant names on write
-dvbfixer minimize prepared.pdb -v
+dvbfixer renumber input.pdb --fasta sequence.fasta -o renumbered.pdb
+dvbfixer model renumbered.pdb --fasta sequence.fasta --no-terminal -o modeled.pdb
+dvbfixer prepare modeled.pdb -o prepared.pdb
+dvbfixer minimize prepared.pdb --dat prepared.dat --no-solvent -o minimized.pdb
+dvbfixer diagnose minimized.pdb
 ```
 
-Standalone `dvbfixer protonate` is a post-hoc re-protonation tool, not a
-required pipeline stage — use it if you need to re-run PROPKA/Reduce on an
-already-prepared PDB (e.g. to switch pH after the fact):
+**Results:** each named PDB plus model/prepare `.dat` sidecars. Keep sidecars next
+to their structures: prepare merges model repair metadata, and minimize uses it
+for restraint selection. Inspect the rebuilt loops and diagnostic findings.
+
+If an MD export lacks chain IDs, first use [split](commands/split.md) with an
+explicit output and use that file as the pipeline input. Splitting does not
+recover a missing complete sequence; provide FASTA for sequence-aware modeling.
+
+### Optional: change pH after preparation
+
+Re-protonation rebuilds hydrogens for a new chemical state; it is not a mandatory
+follow-up to preparation:
 
 ```bash
-dvbfixer protonate minimized.pdb -o reprotonated.pdb --ph 6.5 -v
+dvbfixer protonate minimized.pdb --ph 6.5 -o reprotonated.pdb
+dvbfixer diagnose reprotonated.pdb
 ```
 
-An older 7-step pattern (`minimize` → `protonate --no-hydrogens` (rename
-only) → `minimize` → `protonate --no-hydrogens` (restore names)) was
-dropped in 0.7.7: `--no-hydrogens` leaves existing H atoms in the wrong
-positions relative to the newly-assigned variant names, and it's no longer
-needed now that `prepare` picks variants up front and `minimize` preserves
-AMBER names on its own.
-
-For a PDB database file with Kabat antibody numbering and missing loops:
-
-```bash
-# All at once (recommended)
-dvbfixer zbs 1HZH.pdb -v
-
-# Or step by step with custom options
-dvbfixer renumber 1HZH.pdb -v
-dvbfixer model 1HZH_renum.pdb --num-loops 4 -v
-dvbfixer prepare 1HZH_renum_model.pdb -v
-dvbfixer minimize 1HZH_renum_model_prepared.pdb -v
-```
+Use [prepare mutations](commands/prepare.md#mutations) for explicit residue
+substitutions, deletions, or variant overrides. Review attached-glycan removal
+and disulfide-partner cleanup before applying mutations.
 
 ## Glycoprotein preparation with GLYCAM
 
-**End-to-end pipeline** (recommended for glycoproteins with PDB-named sugars):
+Use for an existing glycoprotein with supported PDB-named sugars. Inspect glycan
+composition and covalent links first. This recipe does not construct new glycans
+or guarantee coverage for arbitrary ligands/cofactors.
 
 ```bash
-# 1. Convert PDB glycan names + atom names to GLYCAM convention.
-#    Detects glycosidic bonds from CONECT, renames sugars (NAG→UYB/0YB,
-#    BMA→VMB, MAN→2MA, etc.) and glycoprotein residues (ASN→NLN,
-#    SER→OLS, THR→OLT). Renames atoms (C7→C2N, O7→O2N, HO3→H3O, etc.).
-dvbfixer convert crystal.pdb -o glycam.pdb -v
-
-# 2. Add hydrogens with AMBER14+GLYCAM_06j-1 templates. Also runs PROPKA +
-#    MolProbity Reduce by default, picking AMBER protonation variants
-#    (ASH/GLH/HIP/LYN/CYM/CYX, HIS tautomer, ASN/GLN flips) up front.
-#    Auto-detects GLYCAM residues; runs add_glycam_bonds(positions=...)
-#    to populate intra-residue + peptide + sugar-sugar glycosidic bonds
-#    before addHydrogens. RDKit/OpenBabel H polish is skipped (GLYCAM
-#    already provides correct H placement). Output: NLN/UYB/4YB/VMB
-#    preserved with H atoms.
-dvbfixer prepare glycam.pdb -o prep.pdb -v
-
-# 3. Energy-minimize the whole system (protein + glycans) with
-#    AMBER14+GLYCAM. Glycan heavy atoms get the same weak restraint
-#    tier as newly-modeled backbone atoms (0.7.10 — prevents a
-#    multi-residue glycan tree drifting off its covalent anchor);
-#    protein heavy atoms strongly restrained. NLN/OLS/OLT names
-#    preserved.
-dvbfixer minimize prep.pdb -o min.pdb --no-solvent -v
-
-# 4. (Optional) Re-run PROPKA3 standalone if you want to re-derive
-#    protonation state after minimize's geometry changes — prepare
-#    (step 2) already assigned variants once, so this is a refinement,
-#    not a required step. Auto-renames NLN→ASN internally for the pKa
-#    calc, then maps results back. FF auto-switches to amber14+GLYCAM
-#    for the H addition.
-dvbfixer protonate min.pdb -o prot.pdb -v
-
-# 5. Generate GROMACS topology (AMBER14+GLYCAM, mixed 1-4 scaling
-#    via [ pairs_nb ]).
-dvbfixer top prot.pdb --acpype -o gmx/ -v
-# -> gmx/topol.top, gmx/prot.gro, gmx/posre_prot.itp
+dvbfixer convert crystal.pdb -o glycam.pdb
+dvbfixer prepare glycam.pdb -o prepared.pdb
+dvbfixer minimize prepared.pdb --dat prepared.dat --no-solvent -o minimized.pdb
+dvbfixer diagnose minimized.pdb
+dvbfixer top minimized.pdb --acpype -o gmx/
 ```
 
-GLYCAM names (NLN/UYB/4YB/VMB/0YB/0fA/0LA/2MA/...) and protonation
-variants (HID/HIE/HIP/ASH/GLH/CYX/CYM/LYN) survive end-to-end through
-all five steps. After the pipeline, run a normal GROMACS workflow:
-`gmx editconf` → `gmx solvate` → `gmx genion` → `gmx grompp` → `gmx mdrun`.
+Skip conversion if input already uses correct GLYCAM naming. Preparation assigns
+protein protonation states and adds hydrogens. Minimization restrains glycan
+heavy atoms weakly, rather than leaving the entire glycan free to drift.
+`top --acpype` requires AmberTools/ACPYPE and handles mixed AMBER/GLYCAM 1–4 scaling.
+
+**Results:** prepared/minimized structures and a GROMACS topology bundle under
+`gmx/`. Inspect topology-matched coordinates and glycosylation sites before MD.
+See [ACPYPE mode](commands/top.md#acpype-mode---acpype) for details.
+
+Unknown eligible organic ligands trigger automatic non-strict GAFF2 attempts in
+minimize. Add `--parametrize-ligands` when failure must abort rather than fall back.
+Complex cofactors such as FAD or HEM need validated parameters; missing atoms are
+not repaired merely by supplying force-field XML. See [minimize](commands/minimize.md).
 
 ### Switching the same structure to CHARMM36
 
-Use [`dvbfixer convert --to-charmm`](commands/convert.md) to reverse the
-GLYCAM naming back to standard PDB / CHARMM-compatible names, then use
-the RTP CHARMM path in [`top`](commands/top.md):
+This is an alternative export path, not an additional required GLYCAM step:
 
 ```bash
-# After step 1 (or any later step with GLYCAM names), reverse to CHARMM
-dvbfixer convert glycam.pdb --to-charmm -o charmm.pdb -v
-# -> charmm.pdb has NAG/NDG/BMA/MAN/GAL/FUL/SIA (no GLYCAM codes),
-#    ASN (no NLN), and standard PDB atom names
-
-# CHARMM36 GROMACS topology (modular .itp files)
-dvbfixer top charmm.pdb --ff charmm -o gmx_charmm/topol.top -v
+dvbfixer convert minimized.pdb --to-charmm -o charmm.pdb
+dvbfixer top charmm.pdb --ff charmm -o gmx_charmm/topol.top
 ```
 
-The same source structure can drive both AMBER14+GLYCAM (via `--acpype`)
-and CHARMM36 (via `--ff charmm`) — pick the FF by which renaming pass
-you use.
+Conversion changes naming; topology generation must still support every retained
+component. See [convert](commands/convert.md) and [top](commands/top.md).
 
 ### Alternative: GLYCAM-Web workflow (for adding glycans from scratch)
 
-When the input has no glycans and you need to add them via the GLYCAM-Web
-glycan builder:
+Prepare your protein, extract the glycosylation-site residues in a molecular
+editor as `donor.pdb`, and build glycans externally with GLYCAM-Web. Save the
+returned structure as `glycam_output.pdb`.
 
 ```bash
-# 1. Prepare the deglycosylated protein
-dvbfixer zbs antibody.pdb -v
-
-# 2. Extract glycosylation site residues into donor.pdb (PyMOL select)
-# 3. Submit donor.pdb to GLYCAM-Web -> download glycam_output.pdb
-
-# 4. Transplant GLYCAM output back, with relaxation
-dvbfixer transplant antibody_zbs.pdb --donor donor.pdb \
-    --graft glycam_output.pdb --relax -v
-
-# 5. Continue through prepare -> minimize -> top (prepare already runs
-#    PROPKA + Reduce internally; standalone protonate below is an
-#    optional re-derivation after minimize's geometry changes, not a
-#    required step)
-dvbfixer prepare   antibody_zbs_transplant_relaxed.pdb -o prep.pdb -v
-dvbfixer minimize  prep.pdb -o min.pdb --no-solvent -v
-dvbfixer protonate min.pdb -o prot.pdb -v
-dvbfixer top       prot.pdb --acpype -o gmx/ -v
+dvbfixer transplant protein.pdb --donor donor.pdb --graft glycam_output.pdb \
+  -o grafted.pdb
+dvbfixer prepare grafted.pdb -o prepared.pdb
+dvbfixer minimize prepared.pdb --dat prepared.dat --no-solvent -o minimized.pdb
+dvbfixer diagnose minimized.pdb
+dvbfixer top minimized.pdb --acpype -o gmx/
 ```
+
+The donor must identify the matching acceptor residues. Inspect the graft and
+linkage geometry; see [transplant](commands/transplant.md) for alignment options.
+
+### Optional geometry refinement
+
+OpenBabel and xtb post-passes are alternatives for particular geometry problems,
+not substitutes for missing parameters during initial OpenMM setup. They do not
+make arbitrary inputs supported. Read the limitations and interface-relaxation
+caveats in [minimize](commands/minimize.md) before enabling them.
+
+## Choose a naming tool
+
+| Goal | Tool | Important difference |
+|---|---|---|
+| Standard parent residue names, e.g. HIE → HIS | [rename](commands/rename.md) | Removes variant labels; does not rebuild H |
+| Native AMBER/CHARMM or GROMACS atom/residue labels | [atom-names](commands/atom-names.md) | Preserves known variants by default; explicit output required |
+| Glycan conventions and protein variant translation | [convert](commands/convert.md) | Handles GLYCAM naming and linkage-dependent sugar identities |
+| New pH-dependent state with hydrogen rebuilding | [protonate](commands/protonate.md) | Changes chemistry, not just labels |
+
+For native AMBER labels without structural preparation:
+
+```bash
+dvbfixer atom-names input.pdb -o native.pdb --target-ff amber --profile standard
+```
+
+`atom-names --infer-protonation` is opt-in and recognizes represented site-H
+patterns. It does not predict pKa, prove H completeness, or add/remove atoms.
+None of these naming operations assigns force-field parameters by itself.
 
 ## GROMACS topology generation
 
+Start with a prepared, inspected structure. Choose **one** compatible route:
+
 ```bash
-# RTP-based (fast, modular .itp output — no FF dir needed)
-dvbfixer top input.pdb --ff amber                   # AMBER + TIP3P + JC-TIP3P ions (default)
-dvbfixer top input.pdb --ff amber --water opc       # AMBER + OPC + Li-Merz HFE-OPC ions
-dvbfixer top input.pdb --ff amber --water tip4pew   # AMBER + TIP4P-Ew + JC-TIP4P-Ew ions
-dvbfixer top input.pdb --ff charmm                  # CHARMM + CHARMM-TIP3P + CHARMM ions
-
-# Override ion parameter set (AMBER only)
-dvbfixer top input.pdb --water opc --ion-set lm-iod-opc      # IOD-fit instead of HFE
-dvbfixer top input.pdb --water tip3p --ion-set dang-legacy   # bundled pre-2008 values
-
-# Glycolipid from CHARMM-GUI (auto-detected, CHARMM36 only)
-dvbfixer top glycolipid_charmm.pdb --ff charmm -o gmx_top/
-
-# ACPYPE-based (proteins + GLYCAM glycans, handles mixed 1-4 scaling)
-# Note: --acpype hardcodes TIP3P; --water/--ion-set are ignored.
-dvbfixer top input.pdb --acpype
+dvbfixer top prepared.pdb --ff amber -o gmx_amber/
 ```
 
-Ion atom-type set is auto-selected from `--water` and covers Na⁺/K⁺/Cl⁻/Ca²⁺/Mg²⁺/Zn²⁺.
-See [`top`](commands/top.md#water-matched-ions-amber) for the full mapping.
+For CHARMM-compatible input instead:
+
+```bash
+dvbfixer top charmm.pdb --ff charmm -o gmx_charmm/
+```
+
+For GLYCAM input, use the [glycoprotein recipe](#glycoprotein-preparation-with-glycam).
+The optional `--ff amber19sb` route is protein-only with stricter admission rules;
+it is not the same namespace as OpenMM's `--ff amber19`.
+
+**Results:** topology, modular includes, and topology-matched coordinates.
+Use the generated coordinates rather than assuming the source PDB has the same
+atom inventory/order. Export does not run solvation, ion addition, equilibration,
+or production MD. GROMACS and suitable `.mdp` files are needed for those stages.
+
+### Water and ions
+
+For the AMBER RTP route, select a water model with `--water`; the default ion
+set is matched automatically. For example:
+
+```bash
+dvbfixer top prepared.pdb --ff amber --water opc -o gmx_opc/
+```
+
+Do not mix unrelated ion and water parameter sets. CHARMM has its own supported
+water choices. ACPYPE uses TIP3P and ignores `--water`/`--ion-set`; see
+[water-matched ions](commands/top.md#water-matched-ions-amber).
+
+For ACPYPE outputs with an `interchain_ss.itp` include containing
+`[ intermolecular_interactions ]`, keep that include after all molecule entries,
+including solvent/ions added by GROMACS. See [known issues](known-issues.md).
 
 ## Glycan conformational analysis
 
+Use a topology and its matching MD trajectory, with supported glycan naming:
+
 ```bash
-# Cluster glycan conformations from MD trajectory
-dvbfixer cluster topol.tpr md.xtc --plot -v
-# -> md_representatives.pdb, md_summary.json, interactive HTML plots
+dvbfixer cluster topol.tpr md.xtc --plot
 ```
+
+Inspect representative structures, the summary JSON, and HTML torsion plots.
+See [cluster](commands/cluster.md) for clustering modes and output filenames.
 
 ## Homology modeling (antibody engineering)
 
-```bash
-# Combine Fv from Fab template + constant domains from IgG template
-dvbfixer homology target.fasta --template fab.pdb --template igg.pdb --antibody -v
+Provide a full target FASTA and structurally related templates. Antibody mode
+uses ANARCI for antibody-aware mapping:
 
-# With full pipeline
-dvbfixer homology target.fasta --template fab.pdb --template igg.pdb --minimize -v
+```bash
+dvbfixer homology target.fasta --template fab.pdb --template igg.pdb --antibody
 ```
+
+Inspect target/template assignments and modeled regions. For selected parts of
+multiple templates, use the [GUI Homology guide](gui-homology.md). For an existing
+antibody structure with gaps, use [model](commands/model.md); for numbering
+schemes, use [renumber](commands/renumber.md#antibody-schemes).
+
+Model can save an ensemble with `--num-output`; each candidate has a matching
+`.dat`. Default input pinning applies during loop-refinement MD, not the entire
+initial optimization: it is not an exact-coordinate guarantee.
 
 ## Small molecule parametrization
 
+Use an isolated eligible molecule with known chemistry and net charge. This
+example assumes an acetate input with charge −1:
+
 ```bash
-# Parametrize a buffer component for GROMACS
 dvbfixer parametrize acetate.pdb -n ACET --net-charge -1
-# -> ACET.itp, ACET.gro, posre_ACET.itp
 ```
+
+**Results:** `ACET.itp`, `ACET.gro`, and `posre_ACET.itp` in the selected output
+directory. The default AM1-BCC path requires AmberTools. RESP is an explicit
+alternative with a selected QM engine, not a universally better default.
+See [parametrize](commands/parametrize.md) for charge methods, admission limits,
+and combining ligand parameters with protein topology.
 
 ## See also
 
-- [Command index](commands/index.md)
-- [Known issues](known-issues.md)
-- [BEST_PRACTICES.md](../BEST_PRACTICES.md) — additional recipes and gotchas
+- [Batch mode and logging](batch-mode.md)
+- [Force fields](force-fields.md)
+- [Troubleshooting](known-issues.md)

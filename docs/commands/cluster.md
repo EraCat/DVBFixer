@@ -1,12 +1,18 @@
-# dvbfixer cluster — Glycan Conformational Clustering
+# `dvbfixer cluster`
 
-[← command index](index.md) · [← README](../../README.md)
+[User guide](../README.md) · [Command index](index.md) · [CLI reference](../reference/cluster.md)
 
-Clusters glycan conformations from GROMACS MD trajectories using glycosidic torsion angle RMSD — the gold-standard method used by the Glycan Fragment Database (GFDB) and CHARMM-GUI Glycan Modeler. Auto-detects glycosidic linkages from the topology, extracts phi/psi/omega torsion angles across all frames, and clusters with the GROMOS algorithm.
+Clusters glycan conformations from a matching topology and MD trajectory using
+glycosidic torsion-angle RMSD and the GROMOS algorithm. Use it for trajectory
+analysis, not structure preparation.
 
 Supports both CHARMM36 and GLYCAM force field naming, including sialic acid (Neu5Ac) which links via C2 instead of C1. Two clustering modes: `global` (all torsions at once) and `per-linkage` (each linkage independently, then combined into compound states — default, better for capturing per-linkage conformational variation). Representative structures are medoids (real frames closest to circular mean), automatically aligned on the root sugar or protein attachment point.
 
-## Usage
+## Quick start
+
+Use a trajectory and its matching topology. The command writes torsion and
+assignment tables, summaries, and representative PDB frames; `--plot` also
+writes interactive HTML plots. See [output files](#output-files) for names.
 
 ```bash
 # Basic usage — auto-detects linkages, per-linkage clustering
@@ -77,6 +83,7 @@ Crystallographic convention (IUPAC):
 - [BEST_PRACTICES.md](../../BEST_PRACTICES.md) — glycan conformational analysis recipe
 
 ## How it works
+
 Clusters glycan conformations from MD trajectories using glycosidic torsion angle RMSD (GFDB method). Auto-detects glycosidic linkages from topology, extracts phi/psi/omega torsion angles (crystallographic convention: phi=O5-C1-Ox-C'x, psi=C1-Ox-C'x-C'(x-1), omega for 1→6 linkages), builds circular-RMSD distance matrix, runs GROMOS-style clustering. Handles both CHARMM36 and GLYCAM force field naming. Sialic acid uses C2 anomeric carbon and O6 ring oxygen. Two modes: `--mode global` (cluster all torsions simultaneously) and `--mode per-linkage` (cluster each linkage independently, combine into compound states — default, better at capturing per-linkage conformational variation). Representative structures are medoids (real frames closest to circular mean), aligned by Kabsch superposition on root sugar (auto-detected) or protein attachment point. Output: torsion CSV, cluster assignments CSV, JSON/text summary, representative PDBs (multi-MODEL or separate), interactive plotly HTML plots (Ramachandran + free energy surface, time series, population bar chart). Dependencies: MDAnalysis, numpy, plotly (for plots).
 
 ## Batch mode

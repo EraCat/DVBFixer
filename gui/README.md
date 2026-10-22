@@ -4,6 +4,10 @@ Local graphical workspace for DVBfixer, protein structures, multiple alignment,
 and homology modeling. It runs in the browser with a Node backend hosted by
 Vite during development or by the bundled standalone server.
 
+For daily use, follow the [GUI user guide](../docs/gui.md). This README covers
+setup, server configuration, and implementation details. The broader
+[user manual](../docs/README.md) groups scientific tasks and command guides.
+
 Control dimensions, button variants, alignment, wrapping and accessibility follow
 the [GUI design system](../docs/gui-design-system.md). Shared MUI defaults live
 in `src/theme.ts`; reusable toolbar/action geometry lives in `src/ui/layout.ts`.
@@ -128,7 +132,7 @@ not guarantee that every optional scientific backend or license is installed.
 
 Create the repository's DVBfixer environment and install the package:
 
-```
+```bash
 micromamba create -f environment.yml
 micromamba activate dvbfixer
 pip install -e .
@@ -140,7 +144,7 @@ pip install -e .
 [Modeller](https://salilab.org/modeller/), which requires a free academic
 license. Register at <https://salilab.org/modeller/registration.html>, then:
 
-```
+```bash
 micromamba activate dvbfixer
 MODELLER_LICENSE_KEY=YOUR_LICENSE_KEY bash gui/scripts/set-modeller-key.sh
 ```
@@ -153,7 +157,7 @@ argument.
 
 Start the development server directly with Vite:
 
-```
+```bash
 cd gui
 npm ci
 micromamba activate dvbfixer
@@ -166,7 +170,7 @@ with `npm run build`; run the build with `npm start`.
 
 **Override DVBFixer** if it's not on PATH (e.g. wrapped in micromamba):
 
-```
+```bash
 export DVBFIXER_EXECUTABLE="micromamba"
 export DVBFIXER_ARGS='["run", "-n", "dvbfixer", "dvbfixer"]'
 ```
@@ -298,14 +302,14 @@ routes are not served.
 
 ## Build for production
 
-```
+```bash
 npm run build
 ```
 
 The browser client is written to `dist/` and the Node server bundle to
 `dist-server/server.js`. Start both the GUI and API on one origin with:
 
-```
+```bash
 npm start
 ```
 

@@ -1,6 +1,6 @@
 # `dvbfixer conect`
 
-[← Command index](index.md)
+[User guide](../README.md) · [Command index](index.md) · [CLI reference](../reference/conect.md)
 
 Infer missing `CONECT` records for a PDB file and write a copy with the
 merged bond block. The same inference engine runs **automatically** inside
@@ -8,6 +8,15 @@ merged bond block. The same inference engine runs **automatically** inside
 clean pipeline rarely need to invoke this subcommand directly. Use it
 when you want CONECT as a discrete preprocessing step, or to inspect
 what bonds dvbfixer perceives in a given input.
+
+## Quick start
+
+```bash
+dvbfixer conect input.pdb -o connected.pdb
+```
+
+**Result:** a separate PDB with merged existing and inferred CONECT records.
+Inspect proposed links; this does not assign force-field parameters.
 
 ## Why
 

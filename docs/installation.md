@@ -1,14 +1,61 @@
 # Installation
 
-[← README](../README.md)
+[User guide](README.md) · [Quick start](quick-start.md) · [Troubleshooting](known-issues.md)
 
-Create the environment and install:
+## 1. Get the source
+
+Install [micromamba](https://mamba.readthedocs.io/en/latest/installation/micromamba-installation.html)
+and Git first. The commands below assume a terminal on macOS or Linux; on
+Windows use WSL. Check backend availability with `doctor` after installation.
+
+```bash
+git clone https://github.com/lilpoundcake/DVBFixer.git
+cd DVBFixer
+```
+
+## 2. Create the environment
+
+Run these commands from the repository root:
 
 ```bash
 micromamba create -f environment.yml
 micromamba activate dvbfixer
 pip install -e .
 ```
+
+The full environment includes the scientific Python stack and external tools.
+Keep Python in the supported `>=3.11,<3.14` range. Editable installation uses
+the checkout directly; keep it in place while using this environment.
+
+## 3. Configure MODELLER
+
+Gap rebuilding and comparative modeling need a MODELLER license. Complete the
+[license instructions](#modeller-installation-and-license) before those workflows.
+Other tools can be checked without it.
+
+## 4. Verify the installation
+
+```bash
+dvbfixer --version
+# dvbfixer 0.9.1
+dvbfixer doctor
+dvbfixer msa --list-engines
+```
+
+Read unavailable-backend messages in the capability report. A missing optional
+tool does not block every workflow; consult the command you plan to run.
+
+Without activating the environment, prefix a command with
+`micromamba run -n dvbfixer`, for example:
+
+```bash
+micromamba run -n dvbfixer dvbfixer doctor
+```
+
+Continue to the [quick start](quick-start.md) or [GUI guide](gui.md).
+The remaining sections cover alternative installations and specific dependencies.
+
+## Wheel installation and bundled force fields
 
 For a non-editable installation, build or install the wheel normally. Release
 wheels include the AMBER99SB-ILDN/Lipid21, official GROMACS `v2026.3`
@@ -22,44 +69,6 @@ terms. Wheels install its complete byte-verified inventory and corresponding
 notice under `share/dvbfixer/`. Source provenance, hashes, citations, and the
 license assessment are recorded in
 [`provenance/amber19sb-gromacs.md`](provenance/amber19sb-gromacs.md).
-
-`environment.yml` pins `python >=3.11,<3.14`; Python 3.11 is the CI, mypy, and
-container-adapter baseline and is the recommended development version. The
-upper bound is required:
-propka 3.5.1 (used by `protonate` / `prepare`) reads the dataclass attribute
-`self.__annotations__` at the instance level, which Python 3.14's PEP 649/749
-change makes raise `AttributeError`, crashing the PROPKA step. Do not loosen
-the cap.
-
-NumPy is constrained to `<2.5` even when the environment itself uses Python
-3.12 or 3.13. DVBfixer's mypy gate deliberately checks the Python 3.11 API
-baseline, while NumPy 2.5 dropped Python 3.11 and publishes stubs containing
-Python 3.12-only syntax. For an existing environment that reports a mypy
-`Type statement is only supported in Python 3.12` error from `numpy/*.pyi`, run:
-
-```bash
-python -m pip install --upgrade "numpy<2.5"
-```
-
-## NumPy/SciPy BLAS backend
-
-The main conda environment explicitly selects OpenBLAS for `libblas`, `libcblas`
-and `liblapack`. Keep these wrappers on the same backend. A fresh Linux solve
-selected MKL 2026.2 with wrappers requiring a missing `libmkl_gf_lp64.so.3`, causing
-NumPy import to abort before CLI reference checks or scientific tests could run.
-This was a native-library environment failure, not a generated-document mismatch.
-
-For an existing affected environment:
-
-```bash
-micromamba install -n dvbfixer -c conda-forge \
-  'libblas=*=*openblas' 'libcblas=*=*openblas' 'liblapack=*=*openblas'
-```
-
-From a source checkout, verify actual NumPy/SciPy linear solves with
-`micromamba run -n dvbfixer python scripts/check_scientific_linalg.py`. CI runs the
-same smoke check before argparse reference generation. This conda backend policy
-does not change pip wheels or isolated research/RESP environments.
 
 ## CIF conversion backends
 
@@ -138,25 +147,6 @@ MUSCLE 5, Clustal Omega. See the official download pages for
 [MUSCLE 5](https://drive5.com/muscle5/manual/install.html), and
 [Clustal Omega](http://www.clustal.org/omega/).
 
-**macOS Docker (VirtioFS) users:** if your `MAMBA_ROOT_PREFIX` is under a host
-bind mount (e.g. `/home/agent`, a `fakeowner` mount of `/Users`), `micromamba
-create` will abort at `Linking 'ncurses'` with
-`filesystem error: cannot copy symlink: Invalid argument` — the bind mount is
-case-insensitive and rejects ncurses's case-variant terminfo symlinks, and no
-`always_copy`/`--copy` flag fixes it. Create the env on the container's native
-overlay filesystem instead:
-
-```bash
-sudo mkdir -p /opt/mamba && sudo chown -R agent:agent /opt/mamba
-export MAMBA_ROOT_PREFIX=/opt/mamba
-micromamba create -f environment.yml -n dvbfixer -y
-micromamba run -n dvbfixer pip install -e ".[dev]"
-```
-
-Persist `MAMBA_ROOT_PREFIX=/opt/mamba` and keep `/opt/mamba/envs/dvbfixer/bin`
-on `PATH` in your shell rc. See [known issues](known-issues.md) for the full
-diagnosis.
-
 ## Modeller installation and license
 
 Salilab MODELLER is currently required for `dvbfixer model` when gaps need to be
@@ -169,10 +159,8 @@ MODELLER needs a free academic license key. Register at
 <https://salilab.org/modeller/registration.html>, then set the key in
 `<env>/lib/modeller-10.8/modlib/modeller/config.py`.
 
-Research into open-source, custom closure, or diffusion-based modeling backends
-does not remove or deprecate MODELLER. It remains the supported production
-baseline unless a later, evidence-backed decision changes that policy; see the
-[backend research note](research/reconstruction-and-modeling-backends.md).
+MODELLER remains the default modeling backend. Experimental runners below are
+separate installations, not replacements installed by the main environment.
 
 ## Experimental diffusion runner environments
 
@@ -212,7 +200,9 @@ environment handshake with `dvbfixer doctor`; see the
 selected wrapper and checkpoint environment but does not replace hardware
 cohort acceptance or prove broader scientific support.
 
-**Free RESP charges (PySCF)** — already included in `environment.yml`:
+## Optional RESP charge engines
+
+**PySCF** is already included in `environment.yml`:
 
 PySCF is pip-installed automatically by `environment.yml`. It enables the recommended free RESP path:
 
@@ -220,7 +210,8 @@ PySCF is pip-installed automatically by `environment.yml`. It enables the recomm
 dvbfixer parametrize molecule.pdb -c resp --qm-engine pyscf -v
 ```
 
-The default AM1-BCC charge method needs no QM engine and is the right choice for ~95% of small-molecule use cases.
+The default AM1-BCC charge method needs no QM engine. Select RESP when your
+parameterization protocol requires it; see [parametrize](commands/parametrize.md).
 
 **Optional: PSI4 backend for RESP (alternative to PySCF).** The `--qm-engine psi4` path is supported but requires a **separate conda env** (PSI4 ships its own BLAS/MKL stack that conflicts with OpenMM's, and PSI4 conda-forge builds pull Python 3.9 which dvbfixer doesn't accept):
 
@@ -233,27 +224,33 @@ micromamba create -n psi4 -c conda-forge psi4 psiresp
 
 Fragile on macOS arm64 (libint2 SONAME mismatches). On macOS, prefer `--qm-engine pyscf`.
 
-After installation, `dvbfixer` is available as a CLI command:
+## NumPy/SciPy BLAS backend
+
+The main conda environment selects OpenBLAS for all three BLAS/LAPACK wrappers.
+If an older Linux environment aborts with missing `libmkl_gf_lp64.so.3`, repair it:
 
 ```bash
-dvbfixer <command> [options]
+micromamba install -n dvbfixer -c conda-forge \
+  'libblas=*=*openblas' 'libcblas=*=*openblas' 'liblapack=*=*openblas'
+micromamba run -n dvbfixer python scripts/check_scientific_linalg.py
 ```
 
-Confirm that the installed executable and package metadata agree:
+Run the smoke check from the checkout. It exercises real NumPy/SciPy solves.
+This policy does not change pip wheels or isolated RESP/research environments.
 
-```bash
-dvbfixer --version
-# dvbfixer 0.9.1
-```
+## Other installation problems
 
-Or without activating the environment:
+- Python 3.14 breaks the supported PROPKA version: retain the Python upper bound.
+- NumPy remains pinned below 2.5 for the Python 3.11 development baseline.
+- On macOS Docker bind mounts, create the environment on the container's native
+  filesystem if ncurses symlink creation fails.
 
-```bash
-micromamba run -n dvbfixer dvbfixer <command> [options]
-```
+See [environment troubleshooting](known-issues.md#environment-and-developer-notes)
+for symptoms and repair details.
 
 ## Next steps
 
+- Try the [quick start](quick-start.md) or [GUI guide](gui.md)
 - Browse the [command index](commands/index.md)
 - Read the [pipelines](pipelines.md) page for end-to-end recipes
 - Skim the [known issues](known-issues.md)

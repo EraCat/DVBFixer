@@ -1,6 +1,22 @@
-# dvbfixer homology — Multi-Template Homology Modeling
+# `dvbfixer homology`
 
-[← command index](index.md) · [← README](../../README.md)
+[User guide](../README.md) · [Command index](index.md) · [CLI reference](../reference/homology.md)
+
+Builds a target model from a full-length FASTA and structurally related templates.
+Use [model](model.md) instead for gaps in an existing structure.
+
+## Quick start
+
+```bash
+dvbfixer homology target.fasta --template template.pdb
+```
+
+**Inputs:** a target FASTA and one or more template structures. **Result:** modeled
+coordinates and workflow files named from the FASTA stem, or the prefix selected
+with `-o`. Inspect assignments and modeled regions before downstream preparation.
+MODELLER requires a license.
+
+## Template selection
 
 GUI users should also read the comprehensive
 [GUI Homology Workspace guide](../gui-homology.md).
@@ -88,7 +104,7 @@ frame for the complete mosaic.
 dvbfixer homology target.fasta --template fab.pdb --template fullsize.pdb -v
 
 # With pipeline (prepare + minimize)
-dvbfixer homology target.fasta --template fab.pdb --template fullsize.pdb --minimize -v
+dvbfixer homology target.fasta --template fab.pdb --template fullsize.pdb --minimize --no-solvent -v
 
 # Antibody mode
 dvbfixer homology target.fasta --template fab.pdb --template igg.pdb --antibody -v
@@ -159,6 +175,7 @@ are not truncated before coverage/ownership validation.
 - [BEST_PRACTICES.md](../../BEST_PRACTICES.md) — antibody workflow recipe
 
 ## How it works
+
 Multi-template homology modeling with Modeller. Takes a target FASTA (multi-chain) and one or more template PDB files. Auto-aligns target to templates via Modeller's `align2d` (or `salign` with `--salign`). Builds model with `automodel` or `LoopModel` using multiple `knowns`. Point mutations handled naturally by differing target sequence from templates. Post-processing restores chain IDs and residue numbering. Writes `.dat` file for downstream `prepare`/`minimize` restraints. `--prepare` and `--minimize` flags run the full pipeline automatically. Antibody mode (`--antibody`): uses ANARCI for Kabat/IMGT numbering, CDR detection, VH/VL/CH/CL domain classification, and auto-mapping of Fv from one template + constant domains from another. Dependencies: Modeller (required), ANARCI (for `--antibody` mode).
 
 ## Batch mode

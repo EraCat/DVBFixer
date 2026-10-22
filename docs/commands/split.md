@@ -1,8 +1,20 @@
-# dvbfixer split — Chain and Biological-Assembly Splitting
+# `dvbfixer split`
 
-[← command index](index.md) · [← README](../../README.md)
+[User guide](../README.md) · [Command index](index.md) · [CLI reference](../reference/split.md)
 
 Splits chains in PDB or GRO files that lack chain IDs (e.g. GROMACS MD output). Assigns unique chain IDs (A-Z, a-z, 0-9), inserts TER records, and renumbers residues per chain. GRO files are converted to PDB via MDAnalysis, preserving all residue names including protonation variants (GLUP, ASPP, etc.). Water, ions, and buffer particles (BUF/BUFF) are removed before chain detection to prevent false breaks, then optionally re-appended.
+
+## Quick start
+
+```bash
+dvbfixer split md_output.pdb -o split.pdb
+```
+
+**Result:** a PDB with empirically assigned chains. Inspect boundaries and
+numbering before using it for sequence-aware modeling. Use the explicit assembly
+mode below for metadata-defined biological assemblies instead.
+
+## Biological assemblies
 
 For deposited PDB files with biological-assembly metadata, explicit
 `--assembly ID|all` mode reads `REMARK 350`, selects the declared chains, and

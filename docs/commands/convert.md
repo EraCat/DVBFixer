@@ -1,8 +1,22 @@
-# dvbfixer convert — Convert between PDB/AMBER/GLYCAM and CHARMM naming
+# `dvbfixer convert`
 
-[← command index](index.md) · [← README](../../README.md)
+[User guide](../README.md) · [Command index](index.md) · [CLI reference](../reference/convert.md)
 
-Bidirectional converter for sugar nomenclature AND protein protonation variants. Both directions are idempotent — running on already-correct input is a no-op.
+Converts glycan naming conventions and protein protonation-variant labels.
+For ordinary protein atom-label conversion, use [atom-names](atom-names.md).
+This command does not predict pKa or parameterize a structure.
+
+## Quick start
+
+```bash
+dvbfixer convert crystal.pdb -o glycam.pdb
+```
+
+**Result:** a structure using GLYCAM/AMBER conventions for supported components.
+Inspect glycan identities and links before following the
+[glycoprotein recipe](../pipelines.md#glycoprotein-preparation-with-glycam).
+
+## Conversion behavior
 
 **Default direction (`--to-amber`)** — converts PDB / CHARMM-named input to AMBER-friendly naming:
 - Sugars: PDB codes (NAG, BMA, MAN, GAL, FUC, SIA, …) → GLYCAM 3-char codes `[linkage][sugar][anomer]` (UYB, VMB, 0MA, 6LB, 0fA, 0SA, …)
@@ -110,7 +124,7 @@ Methylene H renames (HB2/HB3 ↔ HB1/HB2 etc.) and backbone H ↔ HN are NOT app
 
 ## Example
 
-```
+```text
 BGC(res1, child at O4)     -> 4GB
 GAL(res2, children at O3+O4) -> WLB
 SIA(res6, terminal)        -> 0SA
@@ -128,6 +142,7 @@ FUC(res5, terminal)        -> 0fA
 - [BEST_PRACTICES.md](../../BEST_PRACTICES.md) — full GLYCAM glycoprotein recipe
 
 ## How it works
+
 Bidirectional converter for BOTH sugar nomenclature AND protein protonation variants between PDB/AMBER/GLYCAM and CHARMM conventions. Two modes selected by a mutually-exclusive flag pair, default is `--to-amber`:
 
 **Default (`--to-amber`)**: PDB/CHARMM → GLYCAM + AMBER. Renames sugars from standard PDB codes (BGC/GAL/NAG/...) to GLYCAM 3-character `[linkage][sugar][anomer]` codes (UYB/4YB/VMB/0SA/...). Linkage detected from CONECT records (or C1-O distance < 2.0 Å fallback). Single linkage: `0`=terminal, `2`-`9`=position. Multi-linkage: `V`=O3+O6, `W`=O3+O4, `U`=O4+O6, etc. Sugar codes: `G`=Glc, `L`=Gal, `M`=Man, `Y`=GlcNAc, `V`=GalNAc, `f`=Fuc (lowercase=L-sugar), `S`=Neu5Ac. Anomer: `A`=alpha, `B`=beta. Handles sialic acid (anomeric C2 not C1), ROH cap at reducing end, and protein-linked glycans (ASN→NLN, SER→OLS, THR→OLT). Also renames CHARMM protonation variants to AMBER (HSD→HID, HSE→HIE, HSP→HIP, ASPP→ASH, GLUP→GLH, LSN→LYN with HZ1→HZ2, HZ2→HZ3 atom rename via `PROTONATION_CHARMM_TO_AMBER` + `PROTONATION_ATOM_RENAME_TO_AMBER`). Text-based, no OpenMM dependency. H addition handled downstream by `transplant --relax` or `prepare`. Default output suffix: `_amber`.

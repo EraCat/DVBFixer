@@ -1,6 +1,6 @@
 # Force fields in dvbfixer
 
-[← README](../README.md) · [← command index](commands/index.md)
+[User guide](README.md) · [Command index](commands/index.md) · [Recipes](pipelines.md)
 
 `dvbfixer` uses OpenMM's bundled force fields for every energy-based step (`prepare`, `minimize`, `protonate`, `pull`, `zbs`). To spare you from typing raw XML paths, all of those tools accept a short-name alias via `--ff <name>`, and by default they auto-detect the right FF from the input's residue names.
 
@@ -57,7 +57,7 @@ When you say `--ff auto` (the default) or don't pass `--ff`, dvbfixer scans the 
 
 **PDB Chemical Component Dictionary sugar names** (since 0.7.6): `NAG`, `NDG`, `BMA`, `MAN`, `FUC`, `FUL`, `GAL`, `BGC`, `GLC`, `SIA` (etc.). These appear in raw crystal PDBs, in GLYCAM output *before* renaming, and in CHARMM-GUI output *before* CHARMM renaming. Neither `amber14+GLYCAM` nor `charmm36.xml` has templates for these bare PDB names — but rather than surrendering to the plain `amber` default, `detect_ff_from_pdb` now auto-selects `amber+glycam` and the pipeline auto-converts the sugar names to GLYCAM canonical naming (via `dvbfixer convert`'s machinery) before the FF is applied:
 
-```
+```text
 FF: amber+glycam  (PDB-standard sugar name(s) detected (FUC, GAL, MAN) —
   will auto-convert to GLYCAM canonical naming before FF apply. Pass
   --ff charmm to force CHARMM instead)
@@ -71,7 +71,7 @@ these ambiguous names (`dvbfixer convert --to-charmm` first).
 
 **Upgrade behaviour**: if you explicitly asked for `amber` (or `amber14` / `amber19`) but the input clearly has CHARMM or GLYCAM markers, dvbfixer *upgrades* your choice and prints why:
 
-```
+```text
 FF: amber+glycam  (upgraded from 'amber' → 'amber+glycam' because GLYCAM
    residue(s) detected (4YB, NLN, VMB))
   → amber14-all.xml amber14/GLYCAM_06j-1.xml amber14/tip3pfb.xml
@@ -83,7 +83,7 @@ Downgrading (e.g. `--ff charmm` on a plain-protein input) is respected — no au
 
 Every OpenMM-using tool prints two lines at startup so you always know what FF is in play:
 
-```
+```text
 FF: <alias>  (<reason if auto-selected or upgraded>)
   → <expanded XML list>
 ```

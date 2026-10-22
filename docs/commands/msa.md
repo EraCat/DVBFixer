@@ -1,17 +1,19 @@
-# dvbfixer msa — Multiple Sequence Alignment
+# `dvbfixer msa`
 
-[← command index](index.md) · [← README](../../README.md)
+[User guide](../README.md) · [Command index](index.md) · [CLI reference](../reference/msa.md)
 
 Align two or more protein sequences through a consistent interface. MAFFT is
 the default when several engines are installed; MUSCLE 5 and Clustal Omega can
 be selected explicitly. Output is validated to ensure that row identifiers and
 ungapped sequences were not changed by the external program.
 
+## Quick start
+
 ```bash
 dvbfixer msa sequences.fasta -o alignment.fasta
 dvbfixer msa sequences.fasta --engine muscle --format pir -o alignment.pir
 dvbfixer msa target.fasta --template template1.pdb:A --template template2.pdb:H
-dvbfixer msa ignored.fasta --list-engines
+dvbfixer msa --list-engines
 ```
 
 ## Supported options

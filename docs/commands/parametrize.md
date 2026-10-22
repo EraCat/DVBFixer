@@ -1,17 +1,30 @@
-# `dvbfixer parametrize` — GAFF2 small molecule parametrization
+# `dvbfixer parametrize`
 
-[← Command index](index.md) · [← README](../../README.md)
+[User guide](../README.md) · [Command index](index.md) · [CLI reference](../reference/parametrize.md)
 
-Parametrizes an arbitrary small molecule with **GAFF2** force field (single
+Parametrizes an eligible isolated small molecule with **GAFF2** force field (single
 point of compatibility with AMBER protein force fields) and writes a
 ready-to-use GROMACS topology bundle: `<name>.itp`, `<name>.gro`,
 `posre_<name>.itp`. Designed for the parts of a system that don't have
 RTP/template coverage in `dvbfixer top` — buffer components, drug molecules,
 co-factors, organic ligands.
 
+## Quick start
+
+Given an isolated acetate molecule with net charge −1:
+
+```bash
+dvbfixer parametrize acetate.pdb -n ACET --net-charge -1
+```
+
+**Result:** `ACET.itp`, `ACET.gro`, and `posre_ACET.itp` in the output directory.
+Requires AmberTools. Supply the actual net charge of your molecule; do not copy
+the example charge to unrelated inputs. This is not a generic cofactor or
+metal-coordination workflow.
+
 ## Pipeline
 
-```
+```text
 input (.pdb/.mol2/.sdf)
     └─→ antechamber  (GAFF2 atom types + charges)
             └─→ parmchk2  (fill in any missing bonded params)
@@ -186,7 +199,7 @@ dvbfixer parametrize molecule.pdb -n MOL --net-charge -1 \
 
 Writes `molecule.com`. The file is a complete Gaussian input with:
 
-```
+```text
 %mem=4GB
 %nproc=4
 %chk=molecule.chk
@@ -254,6 +267,7 @@ Listed in priority order — input & basic chemistry first, then the
 RESP backend selector, then per-backend tuning knobs.
 
 ### Input / output
+
 | Flag | Default | Description |
 |------|---------|-------------|
 | `input` | (required) | Input structure: `.pdb`, `.mol2`, `.sdf`, or `.mol` |
@@ -261,6 +275,7 @@ RESP backend selector, then per-backend tuning knobs.
 | `-n`, `--name` | input stem (uppercased) | Name for `[ moleculetype ]` (≤4 chars works best) |
 
 ### Chemistry
+
 | Flag | Default | Description |
 |------|---------|-------------|
 | `-c`, `--charge-method` | `bcc` | `bcc` (AM1-BCC, default — fast, ~95% RESP accuracy) or `resp` (slower, needs `--qm-engine`) |
@@ -268,11 +283,13 @@ RESP backend selector, then per-backend tuning knobs.
 | `--multiplicity` | `1` | Spin multiplicity (1 = singlet, 2 = doublet, …) |
 
 ### RESP backend (only when `-c resp`)
+
 | Flag | Default | Description |
 |------|---------|-------------|
 | `--qm-engine` | (required for `-c resp`) | `pyscf` (recommended — `pip install pyscf`, pure-Python), `gaussian` (commercial license, two-step), or `psi4` (separate conda env). All opt-in. |
 
 ### QM compute knobs (shared by `pyscf` and `psi4` backends)
+
 | Flag | Default | Description |
 |------|---------|-------------|
 | `--qm-method` | `HF/6-31G*` | QM method/basis. AMBER RESP-A1 standard. |
@@ -281,6 +298,7 @@ RESP backend selector, then per-backend tuning knobs.
 | `--psi4-env` | `psi4` | Name of the conda env with `psi4 + psiresp` (only for `--qm-engine psi4`) |
 
 ### Gaussian-specific (only when `--qm-engine gaussian`)
+
 | Flag | Default | Description |
 |------|---------|-------------|
 | `--gen-gaussian` | off | Generate `.com` and exit (implies `--qm-engine gaussian`) |
@@ -290,6 +308,7 @@ RESP backend selector, then per-backend tuning knobs.
 | `--gaussian-nproc` | `4` | `%nproc=` directive in the `.com` |
 
 ### Housekeeping
+
 | Flag | Default | Description |
 |------|---------|-------------|
 | `--keep-intermediate` | off | Keep `mol.mol2`, `mol.frcmod`, `mol.prmtop`, `leap.log` |
@@ -328,7 +347,7 @@ The `.itp` includes its own `[ atomtypes ]` block, so it can be `#include`-d
 **before** the protein moleculetype in a `topol.top`. Example combined
 with `dvbfixer top` output:
 
-```
+```text
 #include "ffparams.itp"        ; from dvbfixer top
 #include "MOL.itp"              ; from dvbfixer parametrize
 #include "Protein_chain_A.itp" ; from dvbfixer top
@@ -421,6 +440,7 @@ dvbfixer top complex.pdb --water opc -o gmx/
   9620 (1993) — application of RESP to amino acid charges.
 
 ## How it works
+
 Parametrises small molecules with GAFF2 force field and AM1-BCC or RESP charges for GROMACS MD. Wraps the AmberTools pipeline: `antechamber` (atom types + charges) → `parmchk2` (missing parameter check) → `tleap` (AMBER topology) → ParmEd (AMBER→GROMACS conversion). Output: standalone `.itp` file (with `[ defaults ]`, `[ atomtypes ]`, `[ moleculetype ]` sections), `.gro` coordinates, and `posre_*.itp` position restraints. **AM1-BCC is the default** (`-c bcc`, fast, no QM needed, ~95% of RESP accuracy per published OpenFF/AMBER benchmarks). For RESP charges (`-c resp`), the user must explicitly choose `--qm-engine gaussian` (commercial license, existing two-step `--gen-gaussian`/`--gaussian-log` workflow) or `--qm-engine psi4` (free PSI4+psiresp via conda, one-shot, ~5-7× slower than Gaussian). Both engines produce charges within 0.05 e/atom of each other. Supports PDB, MOL2, and SDF input formats.
 
 **PySCF backend (`--qm-engine pyscf`, RECOMMENDED for macOS arm64)**: pure-Python pipeline in the main dvbfixer env. `_compute_resp_charges_pyscf()` (a) loads coords + bond graph via OpenBabel, (b) builds `pyscf.gto.Mole` + runs HF/6-31G* SCF (uses input geometry — no geom opt; pre-minimise externally if needed), (c) generates Merz-Kollman ESP grid via `_generate_mk_grid()` (4 shells at 1.4-2.0× vdW radii, Connolly exclusion at 1.4× — implemented with Fibonacci sphere via `_fibonacci_sphere()`), (d) evaluates ESP via `_evaluate_esp()` using `mol.intor('int1e_grids')` contracted with the SCF density matrix + analytic nuclear sum, (e) runs `_stage1_resp_fit()` (KKT system: linear least-squares with charge-sum + H-equivalence constraints from `_h_equivalence_groups()`), (f) runs `_stage2_resp_fit()` (iterated hyperbolic restraint on heavy atoms, AMBER defaults a=0.001 Ha, b=0.1 e, max_iter=50, tol=1e-6). Quality on acetate test: net charge -0.999998 (target -1), methyl-H equivalent at +0.040 each, per-atom within ~0.01 e of published RESP-A1. PySCF in `environment.yml` pip section (`pip install pyscf` — wheels on PyPI for macOS arm64 + Linux x86_64, no conda dylib hell). Use `--qm-method` for the QM method (default HF/6-31G*); PySCF reads `OMP_NUM_THREADS` and `PYSCF_MAX_MEMORY` when those environment variables are set.

@@ -39,7 +39,7 @@ jobs:
           pytest -q tests/test_force_field_naming.py tests/test_ff_names.py \
             tests/test_atom_names_cli.py tests/test_atom_names_protonation.py tests/test_scientific_domain.py \
             tests/test_command_registry.py tests/test_fixture_manifest.py \
-            tests/test_sequence_alignment.py tests/test_environment_policy.py
+            tests/test_sequence_alignment.py tests/test_environment_policy.py tests/test_user_docs.py
 
       # mypy is REQUIRED on the API-surface modules as of Phase 3. Everything
       # in pyproject.toml's `[tool.mypy.overrides]` list runs strict; other
@@ -53,6 +53,9 @@ jobs:
 
       - name: agent documentation maps are valid
         run: python scripts/check_agent_docs.py
+
+      - name: user documentation links and Markdown are valid
+        run: python scripts/check_user_docs.py
 
   # Build the public artifacts and test the wheel from a clean, dependency-free
   # environment. This catches missing entry points and package data that an

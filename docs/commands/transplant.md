@@ -1,10 +1,14 @@
-# dvbfixer transplant — Molecule Transplanting
+# `dvbfixer transplant`
 
-[← command index](index.md) · [← README](../../README.md)
+[User guide](../README.md) · [Command index](index.md) · [CLI reference](../reference/transplant.md)
 
 Transplants molecules from a graft PDB into an acceptor PDB. Designed for the GLYCAM glycoprotein workflow: extract glycosylation site residues from your protein, submit to GLYCAM-Web, then transplant the GLYCAM output (renamed protein residues + glycan trees) back into the full structure. Also works with CHARMM-GUI output — use simple transplant mode (`--donor` + `--select`) to copy glycan chains or other molecules from CHARMM-GUI PDB into your structure.
 
-## Usage
+## Quick start
+
+**Inputs:** an acceptor structure, matching donor residues, and the external
+builder's graft output. **Result:** `<acceptor>_transplant.pdb` by default.
+Inspect attachment geometry and use `--superpose` if the frames need alignment.
 
 ```bash
 # Graft workflow: replace donor residues in acceptor with GLYCAM output
@@ -69,6 +73,7 @@ Same ACPYPE pipeline as `dvbfixer top --acpype`: OpenMM parametrization -> ParmE
 - [BEST_PRACTICES.md](../../BEST_PRACTICES.md) — full GLYCAM-Web glycoprotein workflow recipe
 
 ## How it works
+
 Transplants molecules from a graft PDB into an acceptor PDB, with optional AMBER+GLYCAM energy minimization. Designed for the GLYCAM glycoprotein workflow: extract glycosylation site residues → submit to GLYCAM-Web → transplant back with glycans attached. Also works with CHARMM-GUI output via simple transplant mode (`--donor` + `--select`) to copy glycan chains or other molecules.
 
 **Graft workflow** (`--donor` + `--graft`):

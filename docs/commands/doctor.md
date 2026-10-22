@@ -1,12 +1,14 @@
-# dvbfixer doctor — Capability Report
+# `dvbfixer doctor`
 
-[← command index](index.md) · [← README](../../README.md)
+[User guide](../README.md) · [Command index](index.md) · [CLI reference](../reference/doctor.md)
 
 Reports installed Python backends, external chemistry executables, available
 OpenMM platforms, and static experimental diffusion profile metadata without
 starting a structure-processing job.
 Modeller is probed in an isolated subprocess, so an installed package with an
 invalid or missing license is reported as unavailable without crashing Doctor.
+
+## Quick start
 
 ```bash
 dvbfixer doctor
@@ -16,6 +18,8 @@ dvbfixer doctor --format json --diffusion-model protpardelle
 
 Missing optional tools are reported rather than treated as an error. Use the
 JSON form in CI or before submitting a large folder-input run.
+
+## Experimental runner checks
 
 Without `--diffusion-model`, the additive `diffusion` section reports only
 the two profiles' immutable status, evidence labels, engine/source/patch and

@@ -1,8 +1,23 @@
-# dvbfixer top — GROMACS Topology Generation
+# `dvbfixer top`
 
-[← command index](index.md) · [← README](../../README.md)
+[User guide](../README.md) · [Command index](index.md) · [CLI reference](../reference/top.md)
 
 Generates GROMACS topology files directly from PDB or GRO files by parsing force field RTP/ARN/R2B/TDB files in Python — no `pdb2gmx` or GROMACS installation required. GRO files are auto-converted via MDAnalysis. Bundled choices are the default AMBER99SB-ILDN/Lipid21 route, opt-in protein-only Amber ff19SB, and CHARMM36. Output is a modular, self-contained set of `.itp` files plus `topol.top` and topology-matched coordinates. Broad mixed-system support remains on `amber`, `charmm`, or `--acpype`; `amber19sb` deliberately fails closed.
+
+## Quick start
+
+```bash
+dvbfixer top prepared.pdb --ff amber -o gmx/
+```
+
+**Input:** an inspected, prepared structure with supported chemistry.
+**Results:** topology, modular includes, and matching coordinates under `gmx/`.
+Use the generated coordinates for GROMACS setup, not an assumed matching source
+atom order. This command does not perform solvation, equilibration, or production MD.
+See [force fields](../force-fields.md) for the distinction between topology and
+OpenMM force-field aliases.
+
+## Defaults and limits
 
 ACE/NME-capped protein chains are accepted directly for both bundled force
 fields. The caps remain explicit residues, their peptide bonds are retained,
@@ -206,6 +221,7 @@ dvbfixer top FucGM1_Charmm.pdb --ff charmm -o gmx_top/ -v
 - [BEST_PRACTICES.md](../../BEST_PRACTICES.md) — CHARMM-GUI alternative path
 
 ## How it works
+
 Generates GROMACS topology files directly from PDB or GRO files by parsing force field RTP/ARN/R2B/TDB files in Python (no `pdb2gmx`). GRO files are auto-converted to PDB via MDAnalysis. Supports AMBER99SB-ILDN and CHARMM36 force fields (bundled in `FF/` directory). Output is a modular set of `.itp` files with a compact `topol.top` containing only `#include` directives, `[ system ]`, and `[ molecules ]` — no external FF directory needed in the GROMACS working directory. Water (SOL/HOH/WAT/TIP3) and ions are auto-detected and counted for `[ molecules ]`. Small CGenFF molecules (ACET, ACEH, etc.) are auto-detected via distance-based chain splitting and built as independent moleculetypes.
 
 **`--keep-all-hydrogens`** (default OFF): stored on `TopologyBuilder.keep_all_hydrogens`; when True, `build_glycan_chain` and `build_glycolipid_chain` skip populating the `remove_ho` dict (and the associated `charge_adjust` + `type_change` redistribution) at glycosidic-linkage sites, so `HO1`/`HO2`/`HO3`/`HO4`/`HO6` atoms present in the input PDB pass through to the output topology and the linked O keeps its `OC311` hydroxyl type + full RTP charge (instead of becoming `OC3C61` ether). Also plumbed into `acpype_export.export_gromacs` / `prepare_for_openmm` where it disables the `_GLYCAM_KEEP_H` allowlist filter (so `HD22` on NLN etc. survives). Intended for free-reducing-end sugars or charge-round-trip round-trips; at a real glycosidic linkage it produces over-valent O and grompp may warn — help text spells this out.

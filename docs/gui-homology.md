@@ -1,6 +1,6 @@
 # GUI Homology Workspace
 
-[← README](../README.md) · [GUI README](../gui/README.md) · [`dvbfixer homology`](commands/homology.md)
+[User guide](README.md) · [GUI basics](gui.md) · [`dvbfixer homology`](commands/homology.md)
 
 The Homology panel is a persistent, workspace-scoped interface for assembling
 a target from selected parts of structurally related templates. It combines
@@ -8,9 +8,16 @@ target parsing, template-chain assignment, editable multiple-sequence
 alignment, 2D/3D residue selection, structural fitting, mosaic-template
 construction, and Modeller comparative modeling.
 
-The GUI is an editor and orchestrator. Structural fitting, mask resolution,
-mosaic construction, PIR generation, and modeling are implemented by the
-Python `dvbfixer homology --template-plan` workflow.
+For importing files, opening viewers, running ordinary tools, and downloading
+results, start with [GUI basics](gui.md). This page covers template-based modeling.
+
+## Start with MODELLER
+
+Prepare a full target sequence and one or more related template structures.
+Check the requirements below, then follow **Target → Templates → Alignment → Model**.
+Inspect chain assignments and selected template regions before building a model.
+
+## Experimental diffusion
 
 The Model tab can select either **Modeller** or experimental **diffusion**, with
 Auto, Protenix, and Protpardelle model selection. Diffusion uses the same fitted mosaic and painted ownership masks,
@@ -27,20 +34,9 @@ protein sources of at most 512 residues. Explicit Legacy/none or Full is rejecte
 for this profile; the GUI forwards the choice without silently changing it.
 See the [CUDA setup](../deploy/protpardelle-1c/README.md#public-linuxnvidia-cuda-profile).
 
-The GUI runs scientific bundle publication in private native temporary storage,
-then verifies transport digests before copying results into the owning workspace
-and re-reading the manifest for registration. Publication rank determines the
-primary candidate. Rejected bundles remain inspectable but have no automatic
-primary output and are labeled `[rejected]`. Node does not duplicate scientific
-validation, fitting, or materialization. Covered substitutions remain fail closed.
-
-Target, Templates, Alignment, and Model follow the same
-[GUI design system](gui-design-system.md): 32-pixel controls, consistent action
-widths/spacing and wrapping, and an opaque panel background without toolbar
-outline boxes. Dimensions and button variants live in the shared theme and
-`gui/src/ui/layout.ts`, not per-stage overrides. The two Mol* viewers display the
-basename of their independently loaded structure directly over the viewport;
-the full workspace path remains available as the label title.
+Rejected candidates remain inspectable and are labeled `[rejected]`; they are
+not automatically selected as primary output. A published bundle is not by itself
+proof of a scientifically acceptable model. Check its validation report.
 
 ## Requirements
 

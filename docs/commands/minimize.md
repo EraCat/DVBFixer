@@ -1,153 +1,143 @@
-# dvbfixer minimize — Energy Minimization with OpenMM
+# `dvbfixer minimize`
 
-[← command index](index.md) · [← README](../../README.md)
+[User guide](../README.md) · [Command index](index.md) · [CLI reference](../reference/minimize.md)
 
-Energy-minimizes a PDB structure with OpenMM using selective restraints. **By default attempts to minimize the whole system** (protein + sugars + ligands) using the resolved `--ff` (short-name aliases + auto-detection — see [force-fields.md](../force-fields.md)). When GLYCAM residues are present, the FF is upgraded to AMBER14 + GLYCAM_06j-1 automatically; `add_glycam_bonds(positions=...)` populates intra-residue bonds for GLYCAM templates + protein-glycan peptide bonds + distance-based sugar-sugar glycosidic bonds, and `ignoreExternalBonds=True` is used for N-linked glycan junctions. Eligible unknown organic ligands trigger a non-strict automatic GAFF2 + AM1-BCC attempt when the required toolchain is available; explicit `--parametrize-ligands` requests the same path in strict mode, so parametrization failure aborts instead of falling back. Templates are cached under `~/.cache/dvbfixer/lig_params/`. Pass `--strip-heterogens` for the strip-and-splice flow (protein-only minimization with retained heterogens spliced back; linked glycan trees may be rigidly tracked). NLN/OLS/OLT names from the input PDB are snapshotted and restored just before the final write — defensive belt-and-braces for the strip-and-splice fallback. Reads a `.dat` file (from `dvbfixer model` + `dvbfixer prepare`) to apply different restraint strengths to original vs newly added atoms; heterogen heavy atoms use the weak restraint tier and hydrogens remain free. All HIS residues are automatically renamed to explicit variants (HIE/HID/HIP). By default keeps existing hydrogens from input; with `--rebuild-h`, strips and re-adds via OpenMM. Detects AMBER protonation names (HIE/GLH/CYX etc.) from the raw PDB and passes them as `variants` to `addHydrogens`. Calls `fix_atom_hetatm_records` on the output so protonation variants and NLN/OLS/OLT are written as ATOM records.
+Relaxes coordinates with OpenMM and selective restraints. Use after
+[prepare](prepare.md); minimization does not replace missing-sequence modeling,
+solvent equilibration, or assessment of experimental correctness.
 
-Whole-complex minimization requires compatible atom/bond templates for every
-retained component. Unknown complex cofactors (including FAD and HEM) raise
-before generic GAFF even in automatic non-strict mode. Supply validated
-`--extra-ff FILE` parameters, or explicitly select `--strip-heterogens` to
-exclude heterogens from OpenMM optimization. This option is not a guarantee of
-removing them from the output PDB. Other automatic parameterization/setup
-failures can still reach the legacy protein-only fallback; that fallback does
-not jointly relax a noncovalent ligand and its pocket.
+## Quick start
 
-An extra XML file does not rebuild missing cofactor atoms. The preparation
-`--backend` choice does not select a different minimizer, and optional
-xtb/OpenBabel post-passes cannot bypass an earlier setup rejection. See
-[whole-complex relaxation research](../research/whole-complex-relaxation.md)
-for the incomplete-FAD example, backend limits, and untested proposals.
+```bash
+dvbfixer minimize prepared.pdb --dat prepared.dat --no-solvent -o minimized.pdb
+dvbfixer diagnose minimized.pdb
+```
 
-Before setup, minimize warns when two complete protein chains have identical
-atom identities and coordinates. This strongly suggests merged coordinate
-frames without `MODEL` / `ENDMDL` separators, an input defect that can make
-OpenMM setup or minimization fail. The warning is informational; correct or
-split the file before relying on the minimized result.
+**Inputs:** a prepared structure and its matching repair sidecar.
+**Result:** `minimized.pdb`. The example uses vacuum minimization for a shorter
+run. Omit `--no-solvent` only when you intend solvent-box minimization.
 
-For BioLuminate-style refinement of arbitrary ligands/sugars **without per-ligand parametrization**, pass `--xtb-refine` (xtb GFN-FF universal force field) or `--obminimize-refine` (OpenBabel MMFF94/UFF/GAFF) — both auto-type any organic molecule from connectivity rules. Combine with `--refine-heterogens-only` to keep the AMBER-quality protein frozen and refine only the glycan/ligand geometry. Anchor residues (e.g. ASN of an N-linked glycan) are included as frozen atoms so protein-glycan bond geometry is preserved.
+## Defaults and limits
 
-> **Note**: `--obminimize-refine` gives sharper glycosidic bond geometry (e.g. ASN-NAG ~1.48 Å). `--xtb-refine` is slower and the v6.7.1 build in conda-forge has a known `$fix` bug that can stretch the linkage to ~1.66 Å. Prefer obminimize until xtb 6.8+ ships.
+- Whole-system minimization is attempted by default, including compatible
+  glycans and ligands. Every retained component needs suitable atoms, bonds,
+  and force-field parameters.
+- Temporary solvent is not retained in the output. `--keep-water` preserves
+  crystallographic waters that were already in the input.
+- Existing hydrogens are kept when possible. `--rebuild-h` requests rebuilding;
+  variant handling may also require a strip-and-rebuild path.
+- Protein protonation-variant identities are retained; a separate `protonate`
+  stage is not required simply to restore their names.
+- Complete chains with identical atom identities and coordinates produce a
+  warning. Check for accidentally merged coordinate frames before proceeding.
 
 ## Three-Tier Restraint System
 
-| Atom category | Force constant | Purpose |
-|---------------|----------------|---------|
-| Original heavy atoms | 100 kcal/mol/A^2 | Keep resolved structure in place |
-| New backbone (N, CA, C, O, CB) | 5 kcal/mol/A^2 | Maintain reasonable loop geometry |
-| Heterogen heavy atoms | 5 kcal/mol/A^2 | Prevent ligand/glycan drift |
-| New sidechain + all hydrogens | 0 (free) | Full relaxation |
+| Atom category | Default strength (kcal/mol/Å²) | Purpose |
+|---|---|---|
+| Original protein heavy atoms | 100 | Keep the observed structure near its starting geometry |
+| Rebuilt backbone, including CB | 5 | Restrain repaired regions weakly |
+| Heterogen heavy atoms | 5 | Limit ligand/glycan drift |
+| New sidechains and hydrogens | 0 | Allow local relaxation |
 
-Minimization runs in two phases:
-1. Full restraints (1000 iterations)
-2. Restraints reduced 10x (1000 iterations)
+Two phases use the configured strengths and then tenfold-weaker restraints.
+`--max-iter` limits each phase. Keep matching `.dat` metadata so rebuilt atoms
+receive the intended tier. Without it, protein heavy atoms are treated as original.
 
 ## Usage
 
+### Choose a force field
+
 ```bash
-# Minimize with .dat restraint info
-dvbfixer minimize input_prepared.pdb --dat input_prepared.dat -v
-# Outputs: input_prepared_minimized.pdb
-
-# Vacuum minimization (no solvent box)
-dvbfixer minimize input.pdb --no-solvent
-
-# Without .dat — all atoms get strong restraints
-dvbfixer minimize input.pdb
-
-# BioLuminate-style: AMBER protein + xtb GFN-FF refinement for any heterogen
-# (no per-ligand parametrization, works for arbitrary sugars/ligands)
-dvbfixer minimize glycoprotein.pdb --xtb-refine --refine-heterogens-only
-
-# Faster alternative using OpenBabel UFF (seconds vs minutes for xtb)
-dvbfixer minimize glycoprotein.pdb --obminimize-refine --refine-heterogens-only
+dvbfixer minimize prepared.pdb --dat prepared.dat --ff amber \
+  --no-solvent -o minimized.pdb
 ```
+
+The default is `--ff auto`; read its reported choice. GLYCAM-named input selects
+compatible AMBER/GLYCAM templates. See [force fields](../force-fields.md) before
+supplying custom aliases, XML files, or `--extra-ff` parameters.
+
+### Require ligand parameterization
+
+```bash
+dvbfixer minimize prepared.pdb --dat prepared.dat --parametrize-ligands \
+  --no-solvent -o minimized.pdb
+```
+
+Eligible unknown organic ligands trigger a non-strict automatic GAFF2/AM1-BCC
+attempt even without this flag. Explicit `--parametrize-ligands` makes failure
+fatal instead of falling back. Requires AmberTools and `openmmforcefields`;
+templates are cached under `~/.cache/dvbfixer/lig_params/`.
+
+Complex cofactors such as FAD and HEM are rejected before generic GAFF, even in
+automatic non-strict mode. Supply validated state-specific parameters. Parameter
+XML does not reconstruct missing atoms. Cross-residue covalent ligands also need
+compatible linkage templates.
+
+### Exclude heterogens from optimization
+
+```bash
+dvbfixer minimize prepared.pdb --strip-heterogens --no-solvent -o protein_relaxed.pdb
+```
+
+Despite its name, `--strip-heterogens` restores heterogens to the output afterward.
+It does not jointly relax a noncovalent ligand and its pocket; a restored ligand
+can clash with the moved protein. Other automatic setup failures may also reach
+this legacy protein-only fallback. Read warnings and inspect the output rather
+than assuming a whole-system calculation ran.
+
+### Optional geometry refinement
+
+```bash
+dvbfixer minimize prepared.pdb --dat prepared.dat --no-solvent \
+  --obminimize-refine --refine-heterogens-only -o refined.pdb
+```
+
+OpenBabel UFF refinement is an optional post-pass; xtb GFN-FF is available via
+`--xtb-refine`. Neither can bypass an earlier OpenMM setup rejection or guarantee
+support for arbitrary chemistry. `--refine-heterogens-only` retains fixed protein
+anchors, so the protein–ligand interface is not jointly relaxed.
+
+UFF is the default OpenBabel force field. MMFF94 variants can mis-type N-linked
+sugar geometry. The xtb 6.7.1 build has a known frozen-atom drift issue; inspect
+linkages carefully rather than assuming a universal-force-field pass improves them.
+For systems above 5,000 atoms, whole-system post-refinement can be switched to
+heterogens-only with an informational message. Read the run log.
 
 ## Options
 
-| Flag | Default | Description |
-|------|---------|-------------|
-| `-o`, `--output` | `<input>_minimized.pdb` | Output minimized PDB |
-| `--dat` | `<input>.dat` | Restraint data file from `dvbfixer prepare` |
-| `--ph` | 7.0 | pH for hydrogen addition if needed |
-| `--ff` | `auto` | Force field. Accepts a short name (`auto`, `amber`, `amber+glycam`, `charmm`, …) or explicit OpenMM XML paths. See [force-fields.md](../force-fields.md). |
-| `--padding` | 1.0 | Solvent padding in nm |
-| `--restraint-k` | 100.0 | Strong restraint constant (kcal/mol/A^2) |
-| `--weak-k` | 5.0 | Weak restraint constant for new backbone and heterogen heavy atoms (kcal/mol/A^2) |
-| `--max-iter` | 1000 | Max minimization iterations per phase |
-| `--rebuild-h` | off | Strip and re-add hydrogens via OpenMM (default: keep existing) |
-| `--strip-heterogens` | off (default: keep) | Protein-only mode; restore heterogens afterward. Noncovalent ligands may remain at their input coordinates while the pocket moves, straining the interface. Use whole-system minimization with compatible parameters when the interface matters. |
-| `--no-solvent` | off | Minimize in vacuum |
-| `--keep-water` | off | Preserve crystallographic waters present in the input while removing temporary minimization solvent from the final structure |
-| `--xtb-refine` | off | Post-pass: refine geometry with xtb GFN-FF universal force field (auto-parametrizes any organic molecule, no templates needed) |
-| `--xtb-cycles` | 200 | Max xtb optimization cycles |
-| `--obminimize-refine` | off | Post-pass: refine geometry with OpenBabel obminimize (faster than xtb, UFF / MMFF94 / GAFF) |
-| `--obminimize-ff` | UFF | OpenBabel force field. UFF is default — handles N-glycosidic linkages correctly. MMFF94s mistypes anomeric C as sp2 (gives ~120° instead of ~109° angles around the C1-N bond) |
-| `--obminimize-steps` | 500 | OpenBabel minimization steps |
-| `--refine-heterogens-only` | off | With `--xtb-refine`/`--obminimize-refine`: refine only heterogen residues (protein frozen). BioLuminate-style ligand-only minimization. **Caveat**: only the ligand's INTERNAL geometry gets refined — the protein-ligand INTERFACE is NOT relaxed, so any pre-existing clash there persists. Drop the flag for whole-system refinement when the interface matters. |
-| `--platform` | auto | OpenMM platform (CPU, CUDA, OpenCL, Reference) |
-| `--rename` | off | Rename non-canonical residues (AMBER/CHARMM) to standard names before processing |
-| `--parametrize-ligands` | off | Make the automatic GAFF2 + AM1-BCC attempt for eligible unknown organic ligands strict: abort on failure instead of using a fallback. Results are cached under `~/.cache/dvbfixer/lig_params/` (override with `$DVBFIXER_LIG_CACHE`). Requires AmberTools and `openmmforcefields`. See [force-fields.md](../force-fields.md). |
-| `-v`, `--verbose` | off | Print detailed progress |
+Frequently adjusted options are `--ff`, `--dat`, `--restraint-k`, `--weak-k`,
+`--max-iter`, `--platform`, and `--atom-naming`. Use `--atom-naming standard`
+for native output labels or the default `gromacs` for its consumer aliases.
+The [generated reference](../reference/minimize.md) lists all defaults and choices.
 
 ## Recommended Workflow
 
-```bash
-# 1. Fix structure
-dvbfixer prepare input.pdb -v
-# -> input_prepared.pdb + input_prepared.dat
-
-# 2. Inspect in PyMOL/VMD/ChimeraX, edit .dat if needed
-
-# 3. Minimize
-dvbfixer minimize input_prepared.pdb --dat input_prepared.dat -v
-# -> input_prepared_minimized.pdb
-```
-
-## See also
-
-- [`prepare`](prepare.md) — produces the `.dat` file `minimize` consumes
-- [`protonate`](protonate.md) — standalone post-hoc protonation and hydrogen repair
-- [BEST_PRACTICES.md](../../BEST_PRACTICES.md) — xtb / obminimize refinement notes
+Follow the [manual recipe](../pipelines.md#manual-step-by-step) for connected
+filenames and sidecars. Do not reuse repair metadata after a viewer silently
+changes chain or residue identities. Inspect diagnostics, modeled regions,
+ligands, and covalent links after relaxation.
 
 ## How it works
-Energy-minimizes with OpenMM using selective restraints from the `.dat` file. Original heavy atoms use the strong tier (100); new backbone and heterogen heavy atoms use the weak tier (5); new sidechains and hydrogens are free. Two phases use full restraints and then 10x-reduced restraints. **Default: keeps heterogens and minimizes the whole system** (protein + sugars + ligands). Temporary solvent is removed from the written structure; `--keep-water` identifies waters that existed in the input and preserves only those waters through the final cleanup. The `--ff` is resolved through `ffutils.resolve_ff` (short-name aliases + auto-detection — see the "Shared FF selection" section below); when GLYCAM residues are detected the alias upgrades to `amber+glycam` automatically. `create_forcefield_with_openff` loads the resolved XMLs and prunes GLYCAM sugar/NA templates that would fuzzy-match PDB-named sugars to the wrong entry. Then `acpype_export.add_glycam_bonds(positions=...)` populates intra-residue bonds + protein-glycan peptide bonds + sugar-sugar glycosidic bonds (distance-based), and `ignoreExternalBonds=True` is used for N-linked glycan junctions. Pre-solvent `createSystem` checks pass `residueTemplates` (built from CYX/HIE/HID/HIP/LYN auto-detection) to avoid CYM/CYX false positives. `main()` snapshots NLN/OLS/OLT names from the raw input PDB at startup and restores them on the final topology just before `PDBFile.writeFile`. Calls `fix_atom_hetatm_records` on the output.
 
-**Unknown organic ligands:** `minimize` automatically tries GAFF2 + AM1-BCC
-when a retained eligible ligand has no template in the chosen force field. This
-requires AmberTools and `openmmforcefields`; ordinary automatic failures can
-fall back to protein-only minimization. Add `--parametrize-ligands` when the
-ligand must be parameterized or the command must fail. Complex cofactors are
-rejected before generic GAFF, and cross-residue ligand bonds need a compatible
-validated template. See [force fields](../force-fields.md) for the decision
-matrix.
-
-`--strip-heterogens` opt-in mode: strip-and-splice path — heterogens removed before parametrization, minimized protein-only with original `--ff`, HETATM coords restored by `(chain, resid, insertion code, parent resname, atom name)` identity matching.
-
-**Strip-and-splice fallback path** (automatic when full-system GLYCAM parametrization fails on PDB-named sugars like NAG/BMA/MAN without GLYCAM templates): `_rigid_track_glycan_trees` runs after the protein-only minimize, doing Kabsch tracking of each glycan tree to follow the post-minimize protein anchor. Computes ideal trans-amide C1 position via `u_C1 = cos(120°)*u_CG + sin(120°)*(-u_perp_toward_OD1)` (places C1 in the amide plane on the OPPOSITE side of OD1 across the CG-ND2 axis — canonical E,Z amide). Also snaps HD21 to the canonical cis-OD1 position. Heterogen subsystem extraction (`_extract_heterogen_subsystem`) freezes only the protein BACKBONE of the anchor residue (`N/CA/HA/CB/HB2/HB3/C/O/H` for ASN; `N/CA/HA/CB/HB2/HB3/CG2/HG21/HG22/HG23/C/O` for THR) — the amide group (CG, OD1, ND2, HD21) and the heterogen linkage atom (NAG C1) are LEFT FREE so the subsequent xtb/obminimize refinement pass actually minimizes the ND2-C1 bond, angle, and amide planarity. **Critical**: neither the pre-solvent fallback nor the post-createSystem fallback calls `_restore_glycosylated_h` — it would overwrite the post-min amide (CG/OD1/ND2/HD21) with stale prep coords, breaking the bond to the rigid-tracked glycan. The rigid-tracker owns the geometry.
-
-**BioLuminate-style refinement passes** (for arbitrary heterogens, no per-ligand parametrization):
-- `--xtb-refine` runs xtb GFN-FF (universal force field, ~minutes for 400-atom glycan tree) via subprocess on a temp XYZ file. `_run_xtb()` writes XYZ, runs `xtb input.xyz --opt --gfnff --cycles N --norestart`, parses `xtbopt.xyz`.
-- `--obminimize-refine` runs OpenBabel obminimize (MMFF94/UFF/GAFF, seconds). `_run_obminimize()` writes PDB, runs `obminimize -ff <FF> -n <steps> in.pdb`, parses stdout PDB. UFF works for any atom; MMFF94 may fail with "USING EMPIRICAL RULE / could not find van der Waals parameters" on atypical sugar atoms.
-- `--refine-heterogens-only` extracts a sub-topology via `_extract_heterogen_subsystem()` that includes: (a) all heterogen residues + their internal bonds, (b) the FULL anchor residues (e.g. ASN that bonds to NAG via ND2 — entire ASN gets included, not just ND2, otherwise xtb perceives a lone N and pulls the C-N bond to ~1 Å), (c) the cross-residue bond preserved. After refinement, anchor atoms are frozen via `$fix atoms:` xcontrol block (xtb) or `OBFFConstraints.AddAtomConstraint()` (obminimize); only heterogen heavy atoms move. Refined coords spliced back into full topology; anchor coords kept verbatim (don't overwrite OpenMM-minimized protein).
-- **xtb v6.7.1 `$fix` bug**: ~0.1 Å drift on nominally-frozen atoms. Acceptable but the glycosidic bond may stretch slightly. Fixed in v6.8 (not yet in conda-forge). obminimize via `OBFFConstraints` is rock-solid by comparison.
-- **obminimize Python API path** (`_run_obminimize_pybel`): when frozen atoms are needed, switches from CLI to pybel. `obff.Setup(mol.OBMol, constraints)` + `obff.SteepestDescent(steps)` + `obff.GetCoordinates(mol.OBMol)`. CLI obminimize has NO freeze flag.
-- **Auto-switch for big systems**: when the user passes `--xtb-refine` or `--obminimize-refine` without `--refine-heterogens-only`, and topology has >5000 atoms, auto-switches to heterogens-only with an INFO note. Avoids the OOM (UFF) / hours-long (xtb) trap on whole-protein invocations.
-- **obminimize MMFF94 → UFF auto-fallback**: MMFF94/MMFF94s often lacks VdW params for atypical sugar atoms ("COULD NOT FIND VAN DER WAALS PARAMETERS"). `_run_obminimize` detects this in stderr/stdout and silently retries with UFF (covers any element).
-- **`--obminimize-ff` default is UFF** (not MMFF94s). Rationale: MMFF94/MMFF94s mistypes the anomeric C of N-glycosidic linkages (ASN ND2 - NAG C1) as sp2. Result: angles around C1 settle at ~120° instead of the correct ~109° tetrahedral. UFF uses geometry-from-atomic-number typing and gives proper sp3 geometry (ND2-C1-C2 ≈ 110°, ND2-C1-O5 ≈ 108°).
-- **Frozen anchors include the heterogen-side linkage atom** (e.g. NAG C1) in addition to the full protein anchor residue (full ASN). UFF/MMFF lack the amide-planarity term, so without freezing C1 the linkage carbon can rotate ~15° out of the amide plane during refinement. Freezing it preserves the OpenMM-AMBER interface geometry; the rest of the sugar refines freely.
-- **`_restore_glycosylated_h` post-AMBER**: legacy strip-and-splice fallback renames NLN→ASN before AMBER parametrization. AMBER doesn't know about the glycan and may flip HD21/HD22 to the wrong side of ND2 (collision with linked C1, broken amide planarity). After minimize+splice, restore only the **amide group atoms** (CG/OD1/ND2/HD21 for NLN; OG for OLS; OG1 for OLT) from prep positions. CB and HB2/HB3 are NOT restored — they get proper sp3 tetrahedral geometry from the AMBER minimization (HB2-CB-HB3 ≈ 107.5°, HB*-CB-CA/CG ≈ 108-110°). Restoring more than the amide breaks methylene angles; restoring less breaks amide planarity.
-- `_find_binary()` looks for `xtb`/`obminimize` first in PATH, then in `os.path.dirname(sys.executable)` — handles direct-executable env invocation where the env's bin dir isn't on PATH.
-- Both engines run AFTER OpenMM minimize, after solvent stripping, before final PDB write.
-
-**Known bug fixed**: RDKit's `AddHs(addCoords=True)` sometimes leaves an H atom at origin (0,0,0) when 3D placement fails. `prepare.add_heterogen_h_via_rdkit` now detects this and offsets the H from its parent atom by ~1 Å — otherwise xtb crashes on "very short distance" between zero-coord atoms. All HIS residues renamed to explicit variants (HIE/HID/HIP) before any OpenMM operation. Default: keeps existing hydrogens from input; missing protein hydrogens are placed through OpenMM after any necessary heavy-atom repair. `--rebuild-h` strips existing H, runs PDBFixer to fix missing heavy atoms and terminal atoms (OXT), then re-adds correct H via OpenMM. Detects AMBER protonation names (HIE/GLH/CYX etc.) from raw PDB text before OpenMM normalizes them, and passes them as `variants` to `addHydrogens` so correct protonation hydrogens are added (e.g. HE2 for GLH). Also reads `variant_overrides` from `.dat` file (saved by prepare) to recover protonation info even when output PDB has standard names.
-
-**Important:** OpenMM's `PDBFile` reader normalizes AMBER names (GLH→GLU, HIE→HIS, CYX→CYS). The raw PDB must be read first with `_read_amber_renames()` to capture original names before loading with PDBFile.
-
-**Known issue:** `.dat` stores chain IDs from PDBFixer. External tools may reassign chain IDs, breaking `.dat` matching.
+Minimization applies two restraint phases and chirality protection. Emergency
+chirality repairs are recorded in `REMARK 999 DVBFIXER CHIRALITY_REPAIR`; inspect
+their local hydrogen angles. Unresolved D geometry aborts output. Seeded repair
+does not imply bit-identical coordinates across numerical platforms.
+See [architecture](../../ARCHITECTURE.md) for implementation contracts and
+[historical troubleshooting](../known-issues-history.md) for resolved issues.
 
 ## Batch mode
 
-`minimize` supports folder input and applies the same force-field/restraint options
-to every structure: `dvbfixer minimize --input-dir structures --output-dir minimized`.
-See [Batch mode](../batch-mode.md) for shared keys.
+```bash
+dvbfixer minimize --input-dir prepared --output-dir minimized --no-solvent
+```
+
+Options are shared across inputs. See [batch mode](../batch-mode.md).
+
+## See also
+
+- [prepare](prepare.md) — produce the matching structure and sidecar
+- [protonate](protonate.md) — explicitly reassign states at another pH
+- [diagnose](diagnose.md) — inspect structural findings
+- [Troubleshooting](../known-issues.md) — setup failures and fallback limitations

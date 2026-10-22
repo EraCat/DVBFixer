@@ -1,11 +1,23 @@
-# dvbfixer diagnose — structure quality report
+# `dvbfixer diagnose`
 
-[← command index](index.md) · [← README](../../README.md)
+[User guide](../README.md) · [Command index](index.md) · [CLI reference](../reference/diagnose.md)
 
 Inspects a PDB file and emits a plain-text per-residue findings report.
 **Report-only** — never mutates the input. Users pick the appropriate
 dvbfixer tool (`prepare` / `minimize` / `protonate` / `pull`) to
 actually fix any issue.
+
+## Quick start
+
+```bash
+dvbfixer diagnose input.pdb
+```
+
+**Result:** a terminal findings report; no coordinates are changed. Exit code `1`
+means ERROR-level findings were detected, not necessarily that analysis failed.
+Use [doctor](doctor.md) instead to check installed tools and licenses.
+
+## What is checked
 
 Modelled after MolProbity's all-atom validation and BioLuminate's
 Protein Report widget. Three families of checks run against every
@@ -86,7 +98,7 @@ residues, duplicate/missing atoms, and absent peptide bonds are skipped.
 
 ## Options
 
-```
+```text
 usage: dvbfixer diagnose [-h] [-o OUTPUT]
                          [--only {all,structural,chemistry,steric}]
                          [--severity {ERROR,WARNING,INFO}] [--include-water]
@@ -150,7 +162,7 @@ topology has the C-N bond; proximity alone never establishes continuity.
 
 ## Sample output
 
-```
+```text
 ================================================================================
 dvbfixer diagnose — input.pdb
 ================================================================================

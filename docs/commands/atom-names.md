@@ -1,5 +1,7 @@
 # `dvbfixer atom-names`
 
+[User guide](../README.md) · [Command index](index.md) · [CLI reference](../reference/atom-names.md)
+
 Converts residue and atom names in a legacy PDB for native AMBER/CHARMM naming
 or the bundled legacy AMBER, Amber ff19SB, or CHARMM GROMACS dialect.
 Unlike `rename`, this command preserves known protonation variants by default
@@ -9,6 +11,16 @@ convert glycan nomenclature or infer chemical connectivity.
 The source is never modified. V1 accepts `.pdb` and `.ent` input only, requires
 an explicit output, and rejects multi-model structures, naming collisions, and
 ambiguous residue identities before publishing an output.
+
+## Quick start
+
+```bash
+dvbfixer atom-names input.pdb -o named.pdb --target-ff amber --profile standard
+```
+
+**Result:** a separate `named.pdb` with native AMBER labels. Use `--dry-run`
+to inspect a conversion without writing the PDB; add `--report-json report.json`
+for a report. This is not atom repair or force-field parameterization.
 
 ## Naming profiles
 
@@ -33,7 +45,7 @@ dvbfixer atom-names input.pdb -o amber_native.pdb \
 ```
 
 This is a naming operation, not a force-field parameterization or structure
-repair. It does not add missing atoms, infer protonation, choose terminal
+repair. It does not add missing atoms, infer protonation by default, choose terminal
 patches, merge separate caps into CHARMM patches, or guarantee arbitrary ligand
 compatibility. Unknown atom/residue names are not guessed; naming collisions
 remain errors. Selecting `standard` is not a general inverse for every naming

@@ -1,6 +1,6 @@
-# dvbfixer salign — Structural Alignment
+# `dvbfixer salign`
 
-[← command index](index.md) · [← README](../../README.md)
+[User guide](../README.md) · [Command index](index.md) · [CLI reference](../reference/salign.md)
 
 Align and superpose multiple structures. The default engine uses an external
 sequence aligner to establish residue correspondence and Biopython's SVD
@@ -10,6 +10,8 @@ remains available as an optional engine.
 Inputs may be complete PDB files or a single chain written as `PATH:CHAIN`.
 The default Biopython engine requires a chain for each input. The primary
 output is PIR alignment; `--fit-dir` retains all superposed structures.
+
+## Quick start
 
 ```bash
 dvbfixer salign template1.pdb:A template2.pdb:H \

@@ -1,11 +1,16 @@
-# `dvbfixer reconstruct-component` — fixed-anchor small-molecule reconstruction
+# `dvbfixer reconstruct-component`
 
-[← Command index](index.md) · [← README](../../README.md)
+[User guide](../README.md) · [Command index](index.md) · [CLI reference](../reference/reconstruct-component.md)
 
 Reconstructs missing **heavy atoms** in one exact, isolated Class A `HETATM`
 residue from an explicitly selected local wwPDB CCD component CIF. It rigidly
 fits CCD ideal coordinates to at least three non-collinear observed atoms. Every
 observed atom coordinate and every source coordinate record remains unchanged.
+
+## Quick start
+
+This example requires the actual SHA-256 of the selected local CCD file.
+Replace the quoted placeholder, component ID, and residue selector before use.
 
 ```bash
 dvbfixer reconstruct-component input.pdb LIG \

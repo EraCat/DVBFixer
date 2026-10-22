@@ -1,6 +1,6 @@
-# dvbfixer renumber — SEQRES- or Antibody-Scheme Residue Renumbering
+# `dvbfixer renumber`
 
-[← command index](index.md) · [← README](../../README.md)
+[User guide](../README.md) · [Command index](index.md) · [CLI reference](../reference/renumber.md)
 
 Renumbers residues with one of two strategies:
 
@@ -13,6 +13,16 @@ Updates **all** PDB sections that reference residue numbers:
 - HET, DBREF, SEQADV
 - CONECT (atom serial remapping)
 - REMARK 465, 500, 610
+
+## Quick start
+
+```bash
+dvbfixer renumber input.pdb --fasta sequence.fasta -o renumbered.pdb
+```
+
+**Result:** a structure numbered against complete sequence positions. Omit FASTA
+when correct SEQRES is present. This does not generate coordinates for missing
+residues; use [model](model.md) afterward if needed.
 
 ## Antibody schemes
 
@@ -102,6 +112,7 @@ dvbfixer renumber input.pdb -o renumbered.pdb
 - [`homology`](homology.md) — antibody-aware homology modeling (also uses ANARCI)
 
 ## How it works
+
 Renumbers residues with one of two strategies. **Default (`--scheme seqres`)**: affine-align ATOM records to `--fasta` or SEQRES and number by full-reference position while removing insertion codes. **Antibody schemes** (`--scheme kabat|chothia|imgt|martin|aho|eu`, plus per-chain `--chain-scheme H:kabat`): apply an antibody numbering convention via ANARCI for V-domains and bundled human IgG1/Cκ/Cλ EU reference sequences for C-domains. Updates **all** PDB sections: ATOM, HETATM, TER, HELIX, SHEET, SSBOND, LINK, CISPEP, HET, DBREF, SEQADV, CONECT, REMARK 465/500/610.
 
 **Antibody numbering** (`src/dvbfixer/antibody.py`): V-domains use ANARCI directly (Kabat/Chothia/IMGT/Martin/Aho; EU's V-domain numbering matches Kabat's). C-domains are placed by semi-global Needleman-Wunsch alignment against three embedded EU references (`IGG1_HEAVY_CONST_SEQ` covers CH1+Hinge+CH2+CH3 EU 118-447, `CK_SEQ` covers EU 108-214, `CL_SEQ` covers IGLC2 EU 108-214). Best-scoring reference wins; matches >50% of input length required. C-domain numbering is always EU regardless of the V-scheme — Kabat/Chothia/Martin/Aho don't define C-domain positions. When the V-scheme extends past EU position 117 (IMGT/Martin/Aho), the EU C-domain numbers are shifted forward by `(max_V_resseq + 5 - first_C_EU)` to avoid collisions and a warning is emitted. Chains with no antibody domain detected fall back to the SEQRES path. ANARCI is an OPTIONAL dependency — the antibody import is deferred inside the scheme branch, so users on the default `seqres` path are unaffected. Chain-map values are widened from `int` to `(resseq, icode)` tuples so iCodes from CDR insertions reach the ATOM/HETATM/TER writers (was hardcoded `' '`). Each section has specific column positions — see the `update_*` functions and `remap_resid()` helper.

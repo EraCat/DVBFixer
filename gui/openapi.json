@@ -662,6 +662,9 @@
           },
           "dryRun": {
             "type": "boolean"
+          },
+          "inferProtonation": {
+            "type": "boolean"
           }
         }
       },

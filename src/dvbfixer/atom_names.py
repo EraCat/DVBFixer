@@ -76,6 +76,10 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         default="gromacs",
         help="Target naming profile: gromacs for bundled GROMACS dialects; standard for native force-field names",
     )
+    conversion.add_argument(
+        "--infer-protonation", action="store_true",
+        help="Identify supported titratable residue variants from names and existing site hydrogens; no H addition or pKa prediction",
+    )
     conversion.add_argument("--dry-run", action="store_true", help="Validate and report without writing output")
     diagnostics = parser.add_argument_group("Diagnostics")
     diagnostics.add_argument(
@@ -284,6 +288,7 @@ def _report_envelope(
             "profile": args.profile,
             "dryRun": args.dry_run,
             "variantOverrides": [_serialize_override(item) for item in overrides],
+            **({"inferProtonation": True} if args.infer_protonation else {}),
         },
         "output": {
             "path": str(Path(args.output)),
@@ -394,6 +399,7 @@ def main(argv: list[str] | None = None) -> None:
                 target=ForceFieldTarget(args.target_ff),
                 profile=NamingProfile(args.profile),
                 variant_overrides=overrides,
+                infer_protonation=args.infer_protonation,
             )
         )
         output_bytes = result.pdb_text.encode("latin-1")
@@ -433,6 +439,11 @@ def main(argv: list[str] | None = None) -> None:
     except OSError as exc:
         _exit_error(f"Could not publish output: {exc}", 1)
 
+    for diagnostic in result.diagnostics:
+        if diagnostic.code in {"PROTONATION_UNRESOLVED", "PROTONATION_CONFLICT"}:
+            residue = diagnostic.residue
+            label = f"{residue.chain}:{residue.residue_number}{residue.insertion_code}" if residue else "structure"
+            print(f"WARNING: {label}: {diagnostic.message}", file=sys.stderr)
     if args.verbose:
         print(
             f"Converted {result.summary.changed_atoms} atom record(s) in "

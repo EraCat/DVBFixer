@@ -2,8 +2,8 @@
 
 Converts residue and atom names in a legacy PDB for native AMBER/CHARMM naming
 or the bundled legacy AMBER, Amber ff19SB, or CHARMM GROMACS dialect.
-Unlike `rename`, this command preserves explicit protonation
-variants and applies target-specific atom naming. Unlike `convert`, it does not
+Unlike `rename`, this command preserves known protonation variants by default
+and applies target-specific atom naming. Unlike `convert`, it does not
 convert glycan nomenclature or infer chemical connectivity.
 
 The source is never modified. V1 accepts `.pdb` and `.ent` input only, requires
@@ -38,6 +38,55 @@ patches, merge separate caps into CHARMM patches, or guarantee arbitrary ligand
 compatibility. Unknown atom/residue names are not guessed; naming collisions
 remain errors. Selecting `standard` is not a general inverse for every naming
 scheme used by other programs.
+
+## Optional identification from observed hydrogens
+
+By default, naming conversion uses the source residue name and explicit variant
+overrides only: `HIS` stays `HIS` even if it contains HD1/HE2. Enable
+`--infer-protonation` to first recognize the residue family/state from its name,
+then refine that identification from existing diagnostic site hydrogens, and
+finally translate the result into the selected force-field/profile dialect:
+
+```bash
+dvbfixer atom-names input.pdb -o named.pdb --target-ff amber \
+  --profile gromacs --infer-protonation --report-json naming-report.json
+```
+
+| Family | Supported positive H evidence | AMBER residue identity |
+|---|---|---|
+| HIS (including HID/HIE/HIP and CHARMM equivalents) | HD1 only / HE2 only / both | HID / HIE / HIP |
+| ASP | One carboxyl H (HD1 or HD2) | ASH |
+| GLU | One carboxyl H (HE1 or HE2) | GLH |
+| LYS | NZ HZ1/HZ2 or HZ2/HZ3 / HZ1/HZ2/HZ3 | LYN / LYS |
+| CYS | One sulfur H (HG or HG1) | CYS; conflicting CYX identity is retained with a warning |
+
+CHARMM output translates identified variants to HSD/HSE/HSP, ASPP, GLUP and LSN
+as appropriate. No new TYR/ARG variant vocabulary is invented. No atoms are
+added/deleted, coordinates moved, pKa predicted, or protonation recomputed at a
+new pH. Existing atom labels still undergo the ordinary selected naming policy.
+Use `protonate` when a new pH-dependent chemical state and H rebuilding are wanted.
+
+The option reads the **represented H pattern**, so use complete, correctly named
+hydrogenated residues: a partially missing set can resemble another valid state
+(for example, HIP missing HE2 resembles HID). The code cannot prove that an absent
+hydrogen was intentionally omitted. No diagnostic H, missing ionizable-group
+heavy atoms or unsupported site patterns retain the name-derived state with a
+warning. In particular, absence of CYS HG does not distinguish CYM from CYX or
+missing hydrogen; disulfides are not inferred by distance. Explicit variant
+overrides always win over H-based identification.
+
+Common blank-altloc atoms are considered with each conformer independently;
+different conformer H patterns are not merged into a fictitious protonation
+state. Disagreement leaves the name-derived state and a diagnostic. Chain case
+and insertion codes remain distinct. Conflicting explicit names versus usable H
+patterns are reported before using the observed state. JSON reports record
+`inferProtonation: true`, identification/uncertainty diagnostics, and
+`observed-protonation` change rules when enabled. Dry runs perform the same
+analysis without publishing a PDB.
+
+The GUI **Infer Protonation** checkbox appears before **Dry Run** and is off by
+default. This feature belongs to `atom-names`; `rename` remains the existing
+canonicalizer and is unchanged.
 
 ## GROMACS dialects
 

@@ -72,6 +72,7 @@ function successfulRunner(options: {
       tool: { name: 'dvbfixer', version: '0.8.5' },
       request: {
         targetForceField, profile: args[args.indexOf('--profile') + 1], dryRun: Boolean(options.dryRun), variantOverrides: [],
+        ...(args.includes('--infer-protonation') ? { inferProtonation: true } : {}),
       },
       output: { path: output, written: !options.dryRun, bytes: outputBytes.length, sha256: digest },
       result: {
@@ -238,6 +239,27 @@ describe('naming conversion application boundary', () => {
     expect(result.response.outputArtifact?.name).toMatch(new RegExp(`_${forceField}_standard\\.pdb$`))
     expect(loadWorkspace(dataRoot, 'workspace-a').artifacts[1].namingProvenance)
       .toMatchObject({ targetForceField: forceField, profile: 'standard' })
+  })
+
+  it('threads opt-in protonation identification through CLI and reloaded provenance', async () => {
+    const dataRoot = temp()
+    workspace(dataRoot)
+    const runner = vi.fn(successfulRunner())
+    const inferredRequest: NamingConversionRequest = { ...request, inferProtonation: true }
+    const result = await executeNamingConversion(dataRoot, 'workspace-a', inferredRequest, runner)
+    expect(result.statusCode).toBe(201)
+    expect(runner.mock.calls[0][1]).toContain('--infer-protonation')
+    expect(loadWorkspace(dataRoot, 'workspace-a').artifacts[1].namingProvenance?.inferProtonation).toBe(true)
+  })
+
+  it('rejects a CLI report that did not acknowledge requested inference', async () => {
+    const dataRoot = temp()
+    workspace(dataRoot)
+    const ignoreFlag: Parameters<typeof executeNamingConversion>[3] = async (command, args) =>
+      successfulRunner()(command, args.filter(arg => arg !== '--infer-protonation'))
+    await expect(executeNamingConversion(dataRoot, 'workspace-a', { ...request, inferProtonation: true }, ignoreFlag))
+      .rejects.toThrow('does not match the API request')
+    expect(loadWorkspace(dataRoot, 'workspace-a').artifacts).toHaveLength(1)
   })
 
   it('returns a dry-run report without changing the manifest or retaining output', async () => {

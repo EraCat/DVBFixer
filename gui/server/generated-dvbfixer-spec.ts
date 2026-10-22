@@ -1927,6 +1927,18 @@ export const GENERATED_COMMANDS = [
         ]
       },
       {
+        "flag": "--infer-protonation",
+        "dest": "infer_protonation",
+        "label": "Infer Protonation",
+        "type": "bool",
+        "group": "Naming conversion",
+        "help": "Identify supported titratable residue variants from names and existing site hydrogens; no H addition or pKa prediction",
+        "required": false,
+        "repeatable": false,
+        "multi": false,
+        "default": false
+      },
+      {
         "flag": "--dry-run",
         "dest": "dry_run",
         "label": "Dry Run",
@@ -1963,6 +1975,7 @@ export const GENERATED_COMMANDS = [
         "fields": [
           "--target-ff",
           "--profile",
+          "--infer-protonation",
           "--dry-run"
         ]
       },

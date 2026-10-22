@@ -92,8 +92,12 @@ application service: it accepts PDB text and typed options, validates the whole
 conversion plan, and returns transformed text with per-atom changes, summary
 counts, diagnostics, and model identity.
 
-Explicit overrides take precedence over recognized source variants. Canonical
-names such as `HIS` never cause the service to invent a protonation state.
+Explicit overrides take precedence over recognized source variants. By default,
+canonical names such as `HIS` remain canonical, regardless of site H. The opt-in
+`infer_protonation` policy uses `domain.protonation_identity` to recognize supported
+families from names, then identify the represented variant from existing H.
+It does not predict pKa or invent missing atoms; unsupported/incomplete patterns
+retain the name-derived state with diagnostics, and explicit overrides still win.
 Residue identity preserves case-sensitive chain ID, residue number, and
 insertion code; reports additionally preserve model, alternate location, atom
 serial, and atom name. V1 rejects multi-model input before rendering, rejects

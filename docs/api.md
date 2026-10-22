@@ -154,6 +154,15 @@ matching is case-insensitive. The server generates an output name when one is
 omitted, including the selected force field and profile in the default filename.
 The GUI's Atom Names Run action calls this endpoint, never `/jobs`.
 
+Optional `inferProtonation: true` forwards `--infer-protonation` to the Python
+CLI: identify supported titratable variants from names and observed site H before
+dialect conversion. Omitted/false preserves the existing name-only behavior.
+Explicit overrides remain authoritative. Diagnostics distinguish identified,
+conflicting and unresolved H patterns; no H rebuilding or pKa prediction occurs.
+See [identification limits](commands/atom-names.md#optional-identification-from-observed-hydrogens).
+The report and published provenance record the enabled option; Node verifies
+that the CLI acknowledged the requested inference mode before publication.
+
 A successful conversion returns `201` and registers exactly one new structure
 artifact. Its manifest metadata records the source artifact ID, request options,
 hosting-service and DVBFixer package versions, operation/report schema versions,

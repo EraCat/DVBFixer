@@ -21,6 +21,7 @@ class NamingProfile(StrEnum):
 class NamingRuleId(StrEnum):
     EXPLICIT_VARIANT = "explicit-variant"
     SOURCE_VARIANT = "source-variant"
+    OBSERVED_PROTONATION = "observed-protonation"
     AMBER_ATOM_NAME = "amber-atom-name"
     CHARMM_ATOM_NAME = "charmm-atom-name"
     TERMINAL_ATOM_NAME = "terminal-atom-name"

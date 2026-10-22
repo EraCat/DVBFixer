@@ -24,6 +24,7 @@ export async function runNamingConversion(
   const body: NamingRequest = {
     inputArtifactId: input.id, target: { forceField, profile }, dryRun: values['--dry-run'] === true,
   }
+  if (values['--infer-protonation'] === true) body.inferProtonation = true
   const overridesFile = values['--variant-overrides']
   if (overridesFile) {
     if (typeof overridesFile !== 'string' || !artifacts.some(artifact => artifact.file === overridesFile)) {

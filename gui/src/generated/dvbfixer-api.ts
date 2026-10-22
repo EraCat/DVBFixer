@@ -88,6 +88,7 @@ export interface components {
             }[];
             outputName?: string;
             dryRun?: boolean;
+            inferProtonation?: boolean;
         };
         NamingConversionResponse: {
             operationId: string;

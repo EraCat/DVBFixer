@@ -25,6 +25,7 @@ export const NamingConversionRequestSchema = Type.Object({
     minLength: 5, maxLength: 255, pattern: '^[A-Za-z0-9][A-Za-z0-9._ -]*\\.pdb$',
   })),
   dryRun: Type.Optional(Type.Boolean()),
+  inferProtonation: Type.Optional(Type.Boolean()),
 }, { additionalProperties: false, $id: 'NamingConversionRequest' })
 
 const NamingSummarySchema = Type.Object({
@@ -77,6 +78,7 @@ export const NamingCliReportSchema = Type.Object({
     ]),
     profile: Type.Union([Type.Literal('gromacs'), Type.Literal('standard')]),
     dryRun: Type.Boolean(),
+    inferProtonation: Type.Optional(Type.Boolean()),
     variantOverrides: Type.Array(VariantOverrideSchema),
   }, { additionalProperties: false }),
   output: Type.Object({

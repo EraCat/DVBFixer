@@ -156,6 +156,9 @@ def test_atom_names_gui_preserves_ff_acronym_and_cli_profile_choices() -> None:
     fields = {field["flag"]: field for field in schema["flags"]}
     assert fields["--target-ff"]["label"] == "Target FF"
     assert fields["--profile"]["options"] == ["gromacs", "standard"]
+    assert fields["--infer-protonation"]["default"] is False
+    order = [field["flag"] for field in schema["flags"]]
+    assert order.index("--infer-protonation") < order.index("--dry-run")
     # Test the shared label builder directly. Importing every command parser
     # here would drag OpenMM into CI's intentionally dependency-light lane.
     parser = argparse.ArgumentParser(add_help=False)

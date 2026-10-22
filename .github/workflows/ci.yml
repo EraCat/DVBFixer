@@ -37,7 +37,7 @@ jobs:
           # This lane selects contracts that do not import scientific backends.
           pip install --no-deps -e .
           pytest -q tests/test_force_field_naming.py tests/test_ff_names.py \
-            tests/test_atom_names_cli.py tests/test_scientific_domain.py \
+            tests/test_atom_names_cli.py tests/test_atom_names_protonation.py tests/test_scientific_domain.py \
             tests/test_command_registry.py tests/test_fixture_manifest.py \
             tests/test_sequence_alignment.py
 

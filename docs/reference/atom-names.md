@@ -8,7 +8,8 @@
 usage: dvbfixer atom-names [-h] -o OUTPUT [--variant-overrides JSON]
                            [--report-json JSON] --target-ff
                            {amber,amber19sb,charmm}
-                           [--profile {gromacs,standard}] [--dry-run] [-v]
+                           [--profile {gromacs,standard}]
+                           [--infer-protonation] [--dry-run] [-v]
                            [--log-file PATH]
                            input
 
@@ -32,6 +33,9 @@ Naming conversion:
   --profile {gromacs,standard}
                         Target naming profile: gromacs for bundled GROMACS
                         dialects; standard for native force-field names
+  --infer-protonation   Identify supported titratable residue variants from
+                        names and existing site hydrogens; no H addition or
+                        pKa prediction
   --dry-run             Validate and report without writing output
 
 Diagnostics:

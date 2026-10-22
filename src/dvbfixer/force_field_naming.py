@@ -18,6 +18,7 @@ from dvbfixer.domain.force_field_naming import (
     atom_name_policy,
     target_residue_name,
 )
+from dvbfixer.domain.protonation_identity import identify_protonation
 
 
 @dataclass(frozen=True, slots=True)
@@ -26,8 +27,11 @@ class NamingConversionRequest:
     target: ForceFieldTarget
     profile: NamingProfile = NamingProfile.GROMACS
     variant_overrides: tuple[VariantOverride, ...] = field(default_factory=tuple)
+    infer_protonation: bool = False
 
     def __post_init__(self) -> None:
+        if not isinstance(self.infer_protonation, bool):
+            raise TypeError("infer_protonation must be a bool")
         try:
             if not isinstance(self.target, ForceFieldTarget):
                 object.__setattr__(self, "target", ForceFieldTarget(self.target))
@@ -188,18 +192,28 @@ def _target_for_atom(
     overrides: dict[ResidueIdentity, str],
     residue_atoms: dict[tuple[int, ResidueIdentity, str], set[str]],
     terminals: dict[tuple[int, ResidueIdentity], set[str]],
+    inferred: dict[ResidueIdentity, str],
 ) -> tuple[str, str, tuple[NamingRuleId, ...]]:
     explicit = overrides.get(atom.identity)
-    source_variant = explicit or atom.residue_name
+    observed = inferred.get(atom.identity)
+    source_variant = explicit or observed or atom.residue_name
     new_residue = target_residue_name(source_variant, request.target)
     rules: list[NamingRuleId] = []
     if explicit is not None and new_residue != atom.residue_name:
         rules.append(NamingRuleId.EXPLICIT_VARIANT)
+    elif observed is not None and new_residue != atom.residue_name:
+        rules.append(NamingRuleId.OBSERVED_PROTONATION)
     elif explicit is None and source_variant in AMBER_VARIANTS | CHARMM_VARIANTS and new_residue != atom.residue_name:
         rules.append(NamingRuleId.SOURCE_VARIANT)
 
     atom_key = (atom.model, atom.identity, atom.altloc)
     atoms_here = residue_atoms[atom_key]
+    if atom.identity in inferred:
+        # Blank-altloc atoms belong to each conformer. In particular, a LYN
+        # HZ1/HZ2 pair split between shared and alternate records is still one
+        # complete pair for atom-name policy, not two incomplete singletons.
+        altloc = atom.altloc or next((key[2] for key in residue_atoms if key[:2] == atom_key[:2] and key[2]), "")
+        atoms_here = residue_atoms.get((atom.model, atom.identity, ""), set()) | residue_atoms.get((atom.model, atom.identity, altloc), set())
     terminal = terminals.get((atom.model, atom.identity), set())
     atom_policy = atom_name_policy(
         source_residue_name=source_variant,
@@ -215,6 +229,61 @@ def _target_for_atom(
         assert atom_rule is not None
         rules.append(atom_rule)
     return new_residue, new_atom, tuple(dict.fromkeys(rules))
+
+
+def _identify_observed_variants(
+    atoms: list[_AtomRecord], lines: list[str], overrides: dict[ResidueIdentity, str],
+) -> tuple[dict[ResidueIdentity, str], list[NamingDiagnostic]]:
+    grouped: dict[ResidueIdentity, list[_AtomRecord]] = {}
+    for atom in atoms:
+        grouped.setdefault(atom.identity, []).append(atom)
+    inferred: dict[ResidueIdentity, str] = {}
+    diagnostics: list[NamingDiagnostic] = []
+    for identity, records in grouped.items():
+        if identity in overrides:
+            continue  # User-specified chemistry is authoritative.
+        source_names = {atom.residue_name for atom in records}
+        if len(source_names) != 1:
+            diagnostics.append(NamingDiagnostic("PROTONATION_UNRESOLVED", "Mixed residue names; no H-based inference", identity))
+            continue
+        source = next(iter(source_names))
+        conformers = {atom.altloc for atom in records if atom.altloc} or {""}
+        decisions = []
+        hydrogen_patterns: set[frozenset[str]] = set()
+        for conformer in sorted(conformers):
+            selected = [atom for atom in records if atom.altloc in {"", conformer}]
+            hydrogens = set()
+            for atom in selected:
+                element = lines[atom.line_index][76:78].strip().upper()
+                name = atom.atom_name
+                if element in {"H", "D"} or (not element and name.lstrip("123").startswith(("H", "D"))):
+                    if name[0].isdigit():
+                        name = name[1:] + name[0]
+                    if name.startswith("D"):
+                        name = "H" + name[1:]
+                    hydrogens.add(name)
+            decision = identify_protonation(source, {atom.atom_name for atom in selected}, hydrogens)
+            if decision is not None:
+                decisions.append(decision)
+                hydrogen_patterns.add(frozenset(hydrogens))
+        if not decisions:
+            continue
+        if len({decision.residue_name for decision in decisions}) != 1 or len(hydrogen_patterns) > 1:
+            diagnostics.append(NamingDiagnostic(
+                "PROTONATION_UNRESOLVED", "Alternate conformers disagree on observed H or protonation; retaining name-derived state", identity,
+            ))
+            continue
+        decision = decisions[0]
+        for warning in sorted({item.warning for item in decisions if item.warning}):
+            diagnostics.append(NamingDiagnostic(
+                "PROTONATION_CONFLICT" if all(item.from_hydrogens for item in decisions) else "PROTONATION_UNRESOLVED",
+                warning, identity,
+            ))
+        if all(item.from_hydrogens for item in decisions):
+            diagnostics.append(NamingDiagnostic("PROTONATION_IDENTIFIED", f"Observed site H identify {decision.residue_name}", identity))
+            if target_residue_name(source, ForceFieldTarget.AMBER) != decision.residue_name:
+                inferred[identity] = decision.residue_name
+    return inferred, diagnostics
 
 
 def convert_force_field_naming(request: NamingConversionRequest) -> NamingConversionResult:
@@ -289,6 +358,7 @@ def convert_force_field_naming(request: NamingConversionRequest) -> NamingConver
     overrides = {
         override.residue: override.variant_name for override in request.variant_overrides
     }
+    inferred, diagnostics = _identify_observed_variants(atoms, lines, overrides) if request.infer_protonation else ({}, [])
 
     for (model, identity, altloc), atom_names in residue_atoms.items():
         source_residue_name = next(
@@ -296,7 +366,7 @@ def convert_force_field_naming(request: NamingConversionRequest) -> NamingConver
             for atom in atoms
             if atom.model == model and atom.identity == identity and atom.altloc == altloc
         )
-        source_variant = overrides.get(identity) or source_residue_name
+        source_variant = overrides.get(identity) or inferred.get(identity) or source_residue_name
         if (
             request.target is ForceFieldTarget.CHARMM
             and source_variant == "LYN"
@@ -319,7 +389,7 @@ def convert_force_field_naming(request: NamingConversionRequest) -> NamingConver
     collision_groups: dict[tuple[int, ResidueIdentity, str, str], set[str]] = {}
     for atom in atoms:
         target_residue, target_atom, rule_ids = _target_for_atom(
-            atom, request, overrides, residue_atoms, terminals
+            atom, request, overrides, residue_atoms, terminals, inferred
         )
         planned[atom.line_index] = (target_residue, target_atom, rule_ids)
         collision_groups.setdefault(
@@ -422,6 +492,7 @@ def convert_force_field_naming(request: NamingConversionRequest) -> NamingConver
         pdb_text="".join(output),
         model=reported_model,
         changes=tuple(changes),
+        diagnostics=tuple(diagnostics),
         summary=NamingConversionSummary(
             changed_atoms=len(changes),
             changed_residues=len(changed_residues),

@@ -59,6 +59,20 @@ describe('GUI atom-names transport', () => {
     expect(fetch).not.toHaveBeenCalled()
   })
 
+  it('sends inference only when its checkbox is enabled', async () => {
+    const bodies: any[] = []
+    vi.stubGlobal('fetch', vi.fn(async (input, init) => {
+      bodies.push(await new Request(input, init).json())
+      return Response.json(result, { status: 201 })
+    }))
+    for (const enabled of [false, true]) {
+      await runNamingConversion('workspace-a', artifacts[0].file, artifacts,
+        { '--target-ff': 'amber', '--infer-protonation': enabled }, vi.fn())
+    }
+    expect(bodies[0]).not.toHaveProperty('inferProtonation')
+    expect(bodies[1].inferProtonation).toBe(true)
+  })
+
   it('reports server validation errors without a fallback to /jobs', async () => {
     const fetch = vi.fn(async () => Response.json({ error: { code: 'NAMING_COLLISION', message: 'Atom names collide' } }, { status: 422 }))
     vi.stubGlobal('fetch', fetch)

@@ -35,7 +35,8 @@ export interface WorkspaceArtifact {
     sourceSha256: string
     command: 'atom-names'
     targetForceField: 'amber' | 'amber19sb' | 'charmm'
-    profile: 'gromacs'
+    profile: 'gromacs' | 'standard'
+    inferProtonation?: boolean
     variantOverrides: Array<{ chainId: string; residueNumber: string; insertionCode: string; variant: string }>
     reportSha256: string
     outputSha256: string

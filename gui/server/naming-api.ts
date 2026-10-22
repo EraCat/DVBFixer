@@ -181,6 +181,7 @@ function validateReportRequest(report: NamingCliReport, request: NamingConversio
   if (report.request.targetForceField !== request.target.forceField ||
       report.request.profile !== request.target.profile ||
       report.request.dryRun !== (request.dryRun || false) ||
+      (report.request.inferProtonation || false) !== (request.inferProtonation || false) ||
       JSON.stringify(report.request.variantOverrides) !== JSON.stringify(overrides)) {
     throw new NamingApiError(500, 'CLI_REPORT_MISMATCH', 'atom-names report does not match the API request')
   }
@@ -297,6 +298,7 @@ export async function executeNamingConversion(
       args.push('--variant-overrides', overridesFile)
     }
     if (request.dryRun) args.push('--dry-run')
+    if (request.inferProtonation) args.push('--infer-protonation')
 
     const run = await runner('atom-names', args, operationDirectory, {
       timeoutMs: settings.timeoutMs, maxOutputBytes: MAX_OUTPUT_BYTES, killGraceMs: 2_000, signal,
@@ -376,6 +378,7 @@ export async function executeNamingConversion(
         reportSchemaVersion: 1, sourceArtifactId: sourceArtifact.id,
         sourceFile: sourceArtifact.file, sourceSha256, command: 'atom-names',
         targetForceField: request.target.forceField, profile: request.target.profile,
+        ...(request.inferProtonation ? { inferProtonation: true } : {}),
         variantOverrides: request.variantOverrides || [], reportSha256: sha256(parsed.bytes),
         outputSha256: report.output.sha256, dvbfixerVersion: report.tool.version, serviceVersion,
       }

@@ -234,8 +234,12 @@ Workspace and loaded into viewer A when they are structures.
 
 Atom Names calls the dedicated V1 naming endpoint with the selected workspace
 artifact ID. **Target FF** selects AMBER, Amber19SB, or CHARMM; **Profile** selects
-`gromacs` (default) or native `standard` naming. **Dry Run** returns a report without
-registering an output. The GUI reads an optional selected variant-overrides JSON
+`gromacs` (default) or native `standard` naming.
+**Infer Protonation** (before **Dry Run**, off by default)
+identifies supported variants from residue names and existing site H before
+dialect conversion; it does not rebuild H or run PROPKA/Reduce. Missing/ambiguous
+evidence is reported, not guessed, and explicit overrides win. **Dry Run** returns
+a report without registering an output. The GUI reads an optional selected variant-overrides JSON
 artifact and sends its array inline. Successful conversions register one new
 structure and refresh Workspace; synchronous conversions do not create managed
 job history or a Cancel action. See the [naming guide](../docs/commands/atom-names.md).

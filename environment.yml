@@ -6,6 +6,11 @@ channels:
 dependencies:
   - python >=3.11,<3.14
   - numpy <2.5       # mypy targets Python 3.11; NumPy 2.5 stubs require 3.12
+  # Keep NumPy/SciPy BLAS wrappers on one backend. MKL 2026.2 Linux solves
+  # can select wrappers that require the missing libmkl_gf_lp64.so.3.
+  - libblas=*=*openblas
+  - libcblas=*=*openblas
+  - liblapack=*=*openblas
   - scipy
   - openmm >=8.1
   - pdbfixer >=1.9

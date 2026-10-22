@@ -37,6 +37,15 @@
   Repeated short-target and long-target CUDA refinement gates pass; details are in
   [`docs/research/openmm-cuda-refinement.md`](research/openmm-cuda-refinement.md).
 
+- **Linux NumPy import can fail with MKL 2026.2:** a fresh conda solve selected
+  MKL BLAS/LAPACK wrappers requiring the absent `libmkl_gf_lp64.so.3`. The process
+  aborts before normal Python exception handling, so CI can fail at CLI reference
+  generation without any actual documentation drift. The main `environment.yml`
+  now selects consistent OpenBLAS wrappers and CI exercises native NumPy/SciPy
+  solves before the reference/test steps. See the
+  [BLAS repair instructions](installation.md#numpyscipy-blas-backend). Isolated
+  runner/RESP environments retain their own independently pinned dependencies.
+
 - **Mypy must use NumPy `<2.5` while targeting Python 3.11.** NumPy 2.5
   dropped Python 3.11 and its bundled stubs use Python 3.12-only `type`
   statements. Running dvbfixer's Python 3.11-targeted mypy configuration from

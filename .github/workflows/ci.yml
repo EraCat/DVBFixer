@@ -39,7 +39,7 @@ jobs:
           pytest -q tests/test_force_field_naming.py tests/test_ff_names.py \
             tests/test_atom_names_cli.py tests/test_atom_names_protonation.py tests/test_scientific_domain.py \
             tests/test_command_registry.py tests/test_fixture_manifest.py \
-            tests/test_sequence_alignment.py
+            tests/test_sequence_alignment.py tests/test_environment_policy.py
 
       # mypy is REQUIRED on the API-surface modules as of Phase 3. Everything
       # in pyproject.toml's `[tool.mypy.overrides]` list runs strict; other
@@ -114,6 +114,10 @@ jobs:
           python -c 'import sys; assert sys.version_info[:2] == (3, 11)'
           pip install -e ".[dev]"
 
+      - name: NumPy and SciPy native libraries are usable
+        shell: bash -el {0}
+        run: python scripts/check_scientific_linalg.py
+
       - name: docs reference in sync with argparse
         shell: bash -el {0}
         run: python scripts/gen_cli_reference.py --check
@@ -172,6 +176,9 @@ jobs:
       - name: Install scientific CLI
         shell: bash -el {0}
         run: pip install -e .
+      - name: NumPy and SciPy native libraries are usable
+        shell: bash -el {0}
+        run: python scripts/check_scientific_linalg.py
       - name: Build standalone server
         working-directory: gui
         run: |

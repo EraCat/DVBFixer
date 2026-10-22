@@ -41,6 +41,26 @@ Python 3.12-only syntax. For an existing environment that reports a mypy
 python -m pip install --upgrade "numpy<2.5"
 ```
 
+## NumPy/SciPy BLAS backend
+
+The main conda environment explicitly selects OpenBLAS for `libblas`, `libcblas`
+and `liblapack`. Keep these wrappers on the same backend. A fresh Linux solve
+selected MKL 2026.2 with wrappers requiring a missing `libmkl_gf_lp64.so.3`, causing
+NumPy import to abort before CLI reference checks or scientific tests could run.
+This was a native-library environment failure, not a generated-document mismatch.
+
+For an existing affected environment:
+
+```bash
+micromamba install -n dvbfixer -c conda-forge \
+  'libblas=*=*openblas' 'libcblas=*=*openblas' 'liblapack=*=*openblas'
+```
+
+From a source checkout, verify actual NumPy/SciPy linear solves with
+`micromamba run -n dvbfixer python scripts/check_scientific_linalg.py`. CI runs the
+same smoke check before argparse reference generation. This conda backend policy
+does not change pip wheels or isolated research/RESP environments.
+
 ## CIF conversion backends
 
 PDBx/mmCIF input uses Gemmi; small-molecule crystallographic CIF uses Open

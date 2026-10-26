@@ -96,6 +96,7 @@ class NamingConversionResult:
 class _AtomRecord:
     line_index: int
     model: int
+    segment: int
     serial: int
     atom_name: str
     altloc: str
@@ -125,7 +126,7 @@ def _residue_name(line: str) -> str:
     return line[17:20].strip()
 
 
-def _parse_atom_record(line: str, line_index: int, model: int) -> _AtomRecord:
+def _parse_atom_record(line: str, line_index: int, model: int, segment: int) -> _AtomRecord:
     record = line[:6].strip()
     if len(line.rstrip("\r\n")) < 27:
         raise _malformed(line_index, record, "record is shorter than 27 columns")
@@ -142,6 +143,7 @@ def _parse_atom_record(line: str, line_index: int, model: int) -> _AtomRecord:
     return _AtomRecord(
         line_index=line_index,
         model=model,
+        segment=segment,
         serial=serial,
         atom_name=atom_name,
         altloc=line[16].strip(),
@@ -171,16 +173,16 @@ def _rewrite_labels(
 
 
 def _terminal_positions(atoms: list[_AtomRecord]) -> dict[tuple[int, ResidueIdentity], set[str]]:
-    per_chain: dict[tuple[int, str], list[ResidueIdentity]] = {}
+    per_chain: dict[tuple[int, int, str], list[ResidueIdentity]] = {}
     seen: set[tuple[int, ResidueIdentity]] = set()
     for atom in atoms:
         key = (atom.model, atom.identity)
         if atom.residue_name not in TERMINAL_CHAIN_RESNAMES or key in seen:
             continue
         seen.add(key)
-        per_chain.setdefault((atom.model, atom.identity.chain), []).append(atom.identity)
+        per_chain.setdefault((atom.model, atom.segment, atom.identity.chain), []).append(atom.identity)
     result: dict[tuple[int, ResidueIdentity], set[str]] = {}
-    for (model, _chain), residues in per_chain.items():
+    for (model, _segment, _chain), residues in per_chain.items():
         result.setdefault((model, residues[0]), set()).add("nter")
         result.setdefault((model, residues[-1]), set()).add("cter")
     return result
@@ -303,18 +305,41 @@ def convert_force_field_naming(request: NamingConversionRequest) -> NamingConver
     atoms: list[_AtomRecord] = []
     anisou: list[_AtomRecord] = []
     current_model = reported_model
+    current_segment = 0
     for index, line in enumerate(lines):
         record_name = line[:6].strip()
         if record_name == "MODEL":
             current_model = _parse_model_number(line, index)
+        elif record_name == "TER":
+            # Bare TER records are valid boundaries too; their labels are optional.
+            current_segment += 1
         elif record_name in {"ATOM", "HETATM"}:
-            atoms.append(_parse_atom_record(line, index, current_model))
+            atoms.append(_parse_atom_record(line, index, current_model, current_segment))
         elif record_name == "ANISOU":
-            anisou.append(_parse_atom_record(line, index, current_model))
+            anisou.append(_parse_atom_record(line, index, current_model, current_segment))
 
+    residue_segments: dict[tuple[int, ResidueIdentity], tuple[int, int]] = {}
     source_identities: dict[tuple[int, ResidueIdentity, str, str], int] = {}
     coordinate_serials: dict[tuple[int, int], int] = {}
     for atom in atoms:
+        first_segment, first_line = residue_segments.setdefault(
+            (atom.model, atom.identity), (atom.segment, atom.line_index)
+        )
+        if first_segment != atom.segment:
+            # Reports, overrides and protonation inference use ResidueIdentity,
+            # which cannot distinguish residues on opposite sides of a TER.
+            raise NamingConversionError(
+                NamingErrorCode.NAMING_COLLISION,
+                "Residue identity is reused across TER-separated segments; "
+                "assign distinct chain IDs or residue numbers before conversion",
+                details={
+                    "model": atom.model,
+                    "chain": atom.identity.chain,
+                    "residue_number": atom.identity.residue_number,
+                    "insertion_code": atom.identity.insertion_code,
+                    "lines": [first_line + 1, atom.line_index + 1],
+                },
+            )
         source_key = (atom.model, atom.identity, atom.altloc, atom.atom_name)
         previous_line = source_identities.setdefault(source_key, atom.line_index)
         if previous_line != atom.line_index:

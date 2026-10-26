@@ -54,6 +54,7 @@ test_files = [
   "gui/server/naming-api.test.ts",
   "gui/server/naming-retention.test.ts",
   "tests/test_atom_names_cli.py",
+  "tests/test_atom_names_ter_integration.py",
   "tests/test_force_field_naming.py",
   "tests/test_ff_names.py",
   "tests/test_variants_gromacs_lyn.py",
@@ -61,7 +62,7 @@ test_files = [
   "tests/test_terminal_caps.py",
 ]
 verification = [
-  "pytest -q tests/test_atom_names_cli.py tests/test_force_field_naming.py tests/test_ff_names.py tests/test_variants_gromacs_lyn.py tests/test_prepare_icode_variants.py tests/test_terminal_caps.py tests/test_scientific_domain.py",
+  "pytest -q tests/test_atom_names_cli.py tests/test_atom_names_ter_integration.py tests/test_force_field_naming.py tests/test_ff_names.py tests/test_variants_gromacs_lyn.py tests/test_prepare_icode_variants.py tests/test_terminal_caps.py tests/test_scientific_domain.py",
   "cd gui && npm test -- --run server/naming-api.test.ts server/naming-retention.test.ts server/dvbfixer-runner.test.ts",
 ]
 

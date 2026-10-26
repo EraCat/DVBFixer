@@ -123,6 +123,22 @@ Use `--dry-run` to validate and summarize a conversion without writing the PDB.
 Use `--report-json report.json` for a machine-readable report on either success
 or a validation failure.
 
+In the `gromacs` profile, protein terminal naming respects both chain IDs and
+explicit `TER` boundaries.
+For example, two fragments with chain ID `A` separated by `TER` each receive
+their own N- and C-terminal naming rules. Bare `TER` lines are sufficient;
+residue numbering gaps alone do not create new termini. Caps such as ACE/NME
+remain part of their fragment and prevent adjacent residues from being treated
+as free termini. The command preserves the input boundaries; it does not infer
+missing chain breaks or decide whether a break should be capped.
+
+The same `(chain ID, residue number, insertion code)` cannot occur on both sides
+of a `TER`, even with different atom names or alternate locations. Reports and
+variant overrides cannot distinguish those residues, so both profiles reject
+the input with `NAMING_COLLISION` before writing an output. Assign distinct
+chain IDs or residue numbers to those fragments first; chain case and insertion
+codes remain significant.
+
 Variant overrides are supplied as a JSON array. Residue identity includes the
 case-sensitive chain ID, residue number, and insertion code:
 

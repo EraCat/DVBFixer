@@ -53,12 +53,13 @@ consumers = [
 identity_keys = ["model", "chain", "residue_number", "insertion_code", "alternate_location", "atom_name"]
 source_mutation = "The pure service and atom-names CLI do not mutate their input; the legacy path adapter atomically replaces its path only after successful conversion."
 commit_behavior = "The service validates the complete naming plan before rendering. The CLI stages report and output in their destination directories and publishes output last; the compatibility adapter atomically replaces changed output."
-failure_behavior = "Malformed supported records, invalid or ambiguous variants, multiple MODEL blocks, unsupported directions, target-name collisions, and CLI path conflicts fail without publishing a transformed output. HTTP failure diagnostics are quarantined and lazily pruned by age/count under the workspace run lock; quota exhaustion discards operation data."
+failure_behavior = "Malformed supported records, invalid or ambiguous variants, multiple MODEL blocks, unsupported directions, target-name collisions, residue identities reused across TER-delimited segments, and CLI path conflicts fail without publishing a transformed output. HTTP failure diagnostics are quarantined and lazily pruned by age/count under the workspace run lock; quota exhaustion discards operation data."
 test_files = [
   "gui/server/naming-api.test.ts",
   "gui/server/naming-retention.test.ts",
   "tests/test_force_field_naming.py",
   "tests/test_atom_names_cli.py",
+  "tests/test_atom_names_ter_integration.py",
   "tests/test_ff_names.py",
   "tests/test_variants_gromacs_lyn.py",
   "tests/test_terminal_caps.py",

@@ -21,6 +21,7 @@ verify that none of the source fixtures changed accidentally.
 | `lipid/*` | `test/lipid/*` | 7X35 protein/PLM residue-number collision; companion FASTA |
 | `regressions/1DQJ.pdb` | `test/shit/1DQJ_original.pdb` | Disulfide-rich antibody |
 | `regressions/{1EMV,1FR2,2VLN,2VLQ}.pdb` | Corresponding `test/shit/*_original.pdb` | Historical coincident-H/chirality/NaN failures |
+| `regressions/4tut_1uc.pdb` | Unmodified [`Amber-MD/AmberClassic` 4TUT example](https://github.com/Amber-MD/AmberClassic/blob/76b00b2e9d7dc41ab1ce7c7aa2fe52b3608ec002/examples/4tut/4tut_1uc.pdb) at commit `76b00b2e9d7dc41ab1ce7c7aa2fe52b3608ec002` | Same-chain protein fragments separated by `TER`; force-field atom-name conversion at both C termini |
 | `trastuzumab.pdb` | `test/shit/trastuzumab.pdb` | PDB-named glycoprotein stress case |
 | `1VCU.pdb` | `test/protein_ligand/1VCU.pdb` | Protein with DAN and two EPE ligands |
 | `3ry6.pdb` | `test/3ry6/3ry6.pdb` | Under-annotated four-site glycoprotein |
@@ -46,6 +47,19 @@ coordinates retained, residue IDs densely mapped by the audited mosaic builder.
 They are not generated model outputs. `scripts/prepare_apple_cc89_handoff.py`
 recreates masked inputs and separates evaluation references. See
 [`docs/plans/apple-cc89-handoff.md`](../../docs/plans/apple-cc89-handoff.md).
+
+## 4TUT TER-boundary naming
+
+`regressions/4tut_1uc.pdb` is the complete upstream AmberClassic example,
+copied byte-for-byte from the commit-pinned source above (SHA-256
+`ad65166d9f69cff807ddc915730cd7670ecfc8dcb98072b0ef58eec7f43cc030`).
+It contains two protein fragments that reuse chain `A` but have distinct residue
+numbers and are separated by `TER` records. The regression verifies only that
+`atom-names --target-ff amber --profile gromacs` recognizes both fragment
+termini while preserving every non-name field. The source file has no
+hydrogens, so it does not exercise N-terminal hydrogen renaming. It also makes
+no claim about force-field suitability, topology generation, or molecular
+dynamics behavior.
 
 ## 8UCD molecule retention and connectivity
 

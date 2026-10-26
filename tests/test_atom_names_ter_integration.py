@@ -131,3 +131,62 @@ def test_cli_caps_and_chain_case_remain_distinct_across_ter(tmp_path: Path) -> N
     _run(source, output, "--target-ff", "amber")
     names = [line[12:16].strip() for line in output.read_bytes().splitlines() if line.startswith(b"ATOM  ")]
     assert names == [b"C", b"H", b"OC2", b"OC1", b"H1", b"OC2", b"OC1"]
+
+
+def test_cli_converts_both_amberclassic_4tut_c_termini(tmp_path: Path) -> None:
+    source = Path(__file__).parent / "fixtures" / "regressions" / "4tut_1uc.pdb"
+    original = source.read_bytes()
+    output = tmp_path / "4tut_amber.pdb"
+
+    report = _run(source, output, "--target-ff", "amber", "--profile", "gromacs")
+
+    assert source.read_bytes() == original
+    assert report["status"] == "success"
+    assert report["error"] is None
+    assert report["result"] == {
+        "changes": [
+            {
+                "alternateLocation": "",
+                "atomSerial": serial,
+                "chainId": "A",
+                "insertionCode": "",
+                "model": 1,
+                "residueNumber": residue_number,
+                "ruleIds": ["terminal-atom-name"],
+                "sourceAtomName": source_name,
+                "sourceResidueName": "GLY",
+                "targetAtomName": target_name,
+                "targetResidueName": "GLY",
+            }
+            for serial, residue_number, source_name, target_name in (
+                (40, "6", "O", "OC2"),
+                (41, "6", "OXT", "OC1"),
+                (86, "17", "O", "OC2"),
+                (87, "17", "OXT", "OC1"),
+            )
+        ],
+        "diagnostics": [],
+        "model": 1,
+        "summary": {
+            "atomNameChanges": 4,
+            "changedAtoms": 4,
+            "changedResidues": 2,
+            "variantChanges": 0,
+        },
+    }
+
+    converted = output.read_bytes()
+    before = original.splitlines(keepends=True)
+    after = converted.splitlines(keepends=True)
+    assert len(before) == len(after)
+    changed_lines: list[int] = []
+    for line_number, (left, right) in enumerate(zip(before, after, strict=True), 1):
+        if left != right:
+            changed_lines.append(line_number)
+        assert left[:12] == right[:12]
+        assert left[16:] == right[16:]
+    assert changed_lines == [43, 44, 91, 92]
+    assert [
+        (int(after[number - 1][6:11]), after[number - 1][12:16].strip())
+        for number in changed_lines
+    ] == [(40, b"OC2"), (41, b"OC1"), (86, b"OC2"), (87, b"OC1")]

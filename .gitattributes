@@ -1,5 +1,6 @@
 # PDB is a fixed-column format; trailing spaces may be meaningful padding.
 tests/fixtures/**/*.pdb whitespace=-blank-at-eol
+tests/fixtures/regressions/4tut_1uc.pdb text eol=lf
 
 # Preserve source FASTA files byte-for-byte, including an optional final blank line.
 tests/fixtures/**/*.fasta whitespace=-blank-at-eof
